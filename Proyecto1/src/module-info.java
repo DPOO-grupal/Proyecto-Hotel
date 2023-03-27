@@ -2,7 +2,7 @@
  * 
  */
 /**
- * @author juand
+ * @author juand, Onsdtrax
  *
  */
 module Proyecto1 {
