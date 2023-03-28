@@ -1,7 +1,11 @@
 package modelo;
 
+import java.util.ArrayList;
+
 public class Restaurante {
+	private ArrayList<ProductoMenu> menu;
+	
 	public Restaurante() {
-		/* constructor */
+		this.menu = new ArrayList<ProductoMenu>();
 	}
 }
