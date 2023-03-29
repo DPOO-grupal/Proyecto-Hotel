@@ -27,7 +27,7 @@ public class Hotel {
 	
 	public ArrayList<Habitacion> crearReserva(Date fechaI, Date fechaF, int tamanioGrupo, String[] nombres, String[] documentos, String[] emails, String[] telefonos, Integer[] ids, Integer[] edades) {
 		/* por ahora solo crea la reserva, huespedes y grupo 
-		 * FALTA HACER LA PARTE DE RETORNAR LA LISTA DE HABITACIONES LLENA*
+		 * TODO FALTA HACER LA PARTE DE RETORNAR LA LISTA DE HABITACIONES DISPONIBLES*
 		 */
 		ArrayList<Habitacion> habitaciones = new ArrayList<Habitacion>();
 		Reserva reserva = new Reserva(fechaI, fechaF);
