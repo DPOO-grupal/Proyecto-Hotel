@@ -17,4 +17,28 @@ public class Huesped {
 		this.edad = edad;
 	}
 
+	public String getDocumento() {
+		return documento;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public int getEdad() {
+		return edad;
+	}
+
 }
