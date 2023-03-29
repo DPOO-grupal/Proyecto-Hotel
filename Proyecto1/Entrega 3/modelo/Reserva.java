@@ -9,9 +9,13 @@ public class Reserva {
 	private double precioReserva;
 	
 	public Reserva(Date fechaI, Date fechaF) {
-		/*FALTA ESTABLECER EL PRECIO USANDO LAS TARIFAS */
 		this.fechaI = fechaI;
 		this.fechaF = fechaF;
+		this.precioReserva = 0;
+	}
+
+	public void setPrecioReserva(double precioReserva) {
+		this.precioReserva = precioReserva;
 	}
 
 }
