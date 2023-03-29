@@ -11,6 +11,11 @@ public class Usuario {
 		this.login = login;
 		this.password = password;
 	}
+
+	public static void setHotel(Hotel hotel) {
+		Usuario.hotel = hotel;
+	}
+	
 	
 	
 }

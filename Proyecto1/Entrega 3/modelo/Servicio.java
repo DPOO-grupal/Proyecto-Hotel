@@ -14,4 +14,8 @@ public class Servicio {
 		numServicios ++;
 	}
 
+	public static void setNumServicios(int numServicios) {
+		Servicio.numServicios = numServicios;
+	}
+
 }

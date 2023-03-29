@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Grupo {
 	private int id;
-	private static int numGrupo = 1;
+	private static int numGrupo;
 	private ArrayList<Huesped> huespedes;
 	private ArrayList<Integer> listaHabitaciones;
 	private double saldoPagado = 0;
@@ -18,7 +18,7 @@ public class Grupo {
 		this.listaHabitaciones = new ArrayList<Integer>();
 		this.vReal = huespedes.size();
 		this.vRelativo = calcularVRelativo(huespedes);
-		this.id = numGrupo;
+		this.id = numGrupo++;
 		numGrupo ++;
 		this.reserva = reserva;
 	}
@@ -30,6 +30,14 @@ public class Grupo {
 				total ++;
 		}
 		return total;
+	}
+
+	public static int getNumGrupo() {
+		return numGrupo;
+	}
+
+	public static void setNumGrupo(int numGrupo) {
+		Grupo.numGrupo = numGrupo;
 	}
 
 	public int getId() {

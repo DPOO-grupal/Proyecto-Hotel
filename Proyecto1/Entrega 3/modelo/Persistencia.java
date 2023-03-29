@@ -19,19 +19,19 @@ public class Persistencia {
 	
 	// abrir archivo guardar
 	public void abrirOutput () throws IOException{
-		fileOut = new FileOutputStream("hotel.ser");
+		fileOut = new FileOutputStream("./data/hotel.ser");
 		ouput = new ObjectOutputStream(fileOut);
 	}
 	
 	// abrir archivo leectura
 	public void abrirInput () throws IOException{
-		fileInput = new FileInputStream("hotel.ser");
+		fileInput = new FileInputStream("./data/hotel.ser");
 		input = new ObjectInputStream(fileInput);
 	}
 	
 	// cerrar el fichero guardar
 	
-	public void cerrarOutpur() throws IOException{
+	public void cerrarOutput() throws IOException{
 		if (ouput != null)
 			ouput.close();
 	}
