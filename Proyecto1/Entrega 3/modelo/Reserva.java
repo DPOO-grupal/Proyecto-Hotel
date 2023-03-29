@@ -9,7 +9,7 @@ public class Reserva {
 	private double precioReserva;
 	
 	public Reserva(Date fechaI, Date fechaF) {
-		/*FALTA ESTABLECER EL PRECIO USANDO LAS TARIFAS*/
+		/*FALTA ESTABLECER EL PRECIO USANDO LAS TARIFAS */
 		this.fechaI = fechaI;
 		this.fechaF = fechaF;
 	}

@@ -15,7 +15,7 @@ public class Grupo {
 	
 	public Grupo(ArrayList<Huesped> huespedes, Reserva reserva) {
 		this.huespedes = huespedes;
-		/*this.listaHabitaciones = habitaciones; */
+		/*this.listaHabitaciones = habitaciones;*/
 		this.vReal = huespedes.size();
 		this.vRelativo = calcularVRelativo(huespedes);
 		this.id = numGrupo;
