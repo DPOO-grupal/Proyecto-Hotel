@@ -30,7 +30,7 @@ public class Hotel {
 	private Restaurante restaurante;
 	
 	
-	private Hotel() {
+	public Hotel() {
 		datos = new Persistencia();
 		Hotel hotelDatos = cargarInformacion();
 		
