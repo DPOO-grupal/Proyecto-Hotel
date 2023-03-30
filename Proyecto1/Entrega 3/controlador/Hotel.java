@@ -28,8 +28,13 @@ public class Hotel {
 	private HashMap<String, Usuario> usuarios;
 	private HashMap<Integer, Habitacion> habitaciones;
 	private Restaurante restaurante;
+	private Usuario usuarioActual;
 	
 	
+	public Usuario getUsuarioActual() {
+		return usuarioActual;
+	}
+
 	public Hotel() {
 		datos = new Persistencia();
 		Hotel hotelDatos = cargarInformacion();
@@ -50,6 +55,22 @@ public class Hotel {
 		// TODO Aumentar el contador de servicios, sumar los productos menu y servicios
 		Usuario.setHotel(this);
 	}
+	
+	public boolean autenticar(String login, String password) {
+		
+		boolean autent = false;
+		Usuario usuarioActual = null;
+		
+		usuarioActual = usuarios.get(login);
+		
+		if (usuarioActual != null) {
+			autent = true;
+			this.usuarioActual = usuarioActual;
+		} 
+		
+		return autent;
+	}
+	
 	
 	public ArrayList<Habitacion> crearReserva(Date fechaI, Date fechaF, int tamanioGrupo, String[] nombres, String[] documentos, String[] emails, String[] telefonos, Integer[] ids, Integer[] edades, TipoHabitacion tipo) {
 		
@@ -180,4 +201,5 @@ public class Hotel {
 	public void setRestaurante(Restaurante restaurante) {
 		this.restaurante = restaurante;
 	}
+
 }

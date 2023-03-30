@@ -35,6 +35,21 @@ public class Aplicacion {
 	}
 	
 	public void iniciarSeccion() {
+		boolean inciado = false;
+		int num;
+		
+		do {
+			String login = input("Ingrese login: ");
+			String password = input("Ingrese password: ");
+			inciado = hotel.autenticar(login, password);
+			if (inciado) {
+				this.usuarioActual = hotel.getUsuarioActual();
+			}
+		} while (!inciado); 
+		
+		
+			this.usuarioActual = hotel.getUsuarioActual();
+		 
 		
 	}
 	
@@ -52,20 +67,23 @@ public class Aplicacion {
 		
 		int opcionSeleccionada;
 		
-		try {
-			opcionSeleccionada = Integer.parseInt(input("Seleccione una opción"));
-			ejecutarOpcionEmpleado(opcionSeleccionada);
-			input("Presione 'Enter' para continuar");
-		}
-		catch (NumberFormatException e)
-		{
-			System.out.println("Debe seleccionar uno de los números de las opciones.");
-		}
+		opcionSeleccionada = num();
+		ejecutarOpcionEmpleado(opcionSeleccionada);
 	}
 	
 	private void ejecutarOpcionEmpleado(int opcionSeleccionada) {
 		// TODO Ejecutar las opciones del empleado
-		
+		switch (opcionSeleccionada) {
+		case 1:
+			
+			break;
+		case 2:
+			
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	public void menuAdmin() {
@@ -86,6 +104,21 @@ public class Aplicacion {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public int num() {
+		int num = -1;
+		try {
+			num = Integer.parseInt(input("Seleccione una opción"));
+			ejecutarOpcionEmpleado(num);
+			input("Presione 'Enter' para continuar");
+		}
+		catch (NumberFormatException e)
+		{
+			System.out.println("Debe seleccionar uno de los números de las opciones.");
+		}
+		return num;
+		
 	}
 	
 	
