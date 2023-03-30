@@ -35,20 +35,33 @@ public class Aplicacion {
 	}
 	
 	public void iniciarSeccion() {
-		boolean inciado = false;
-		int num;
+		boolean autent = false;
+		int intentos = 0;
 		
+		
+		System.out.println("---------- INICIO DE SESION ----------");
+		String login = input("Ingrese login: ");
 		do {
-			String login = input("Ingrese login: ");
+			
 			String password = input("Ingrese password: ");
-			inciado = hotel.autenticar(login, password);
-			if (inciado) {
-				this.usuarioActual = hotel.getUsuarioActual();
+			autent = hotel.autenticar(login, password);
+			
+			if (autent) {
+					this.usuarioActual = hotel.getUsuarioActual();	
+			} else {
+				System.out.println("Contraseña Incorrecta");
 			}
-		} while (!inciado); 
+			
+			intentos ++;
+			
+		} while (!autent && intentos < 3); 
 		
-		
+		if (intentos < 3) {
+			
 			this.usuarioActual = hotel.getUsuarioActual();
+		} else {
+			input("Acceso denegado, ENTER para continuar");
+		}
 		 
 		
 	}

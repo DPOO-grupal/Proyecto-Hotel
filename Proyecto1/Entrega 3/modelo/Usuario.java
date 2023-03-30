@@ -11,7 +11,17 @@ public class Usuario {
 		this.login = login;
 		this.password = password;
 	}
-
+	
+	public boolean iniciarSesion(String password) {
+		
+		boolean autent = false;
+		
+		if (this.password.equals(password)) {
+			autent = true;
+		}
+		
+		return autent;
+	}
 	public static void setHotel(Hotel hotel) {
 		Usuario.hotel = hotel;
 	}

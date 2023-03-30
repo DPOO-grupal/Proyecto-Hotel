@@ -1,7 +1,9 @@
 package modelo;
 
 import java.io.EOFException;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -16,17 +18,42 @@ public class Persistencia {
 	private ObjectOutputStream ouput;
 	private ObjectInputStream input;
 	
+	// constructor
 	
+	public Persistencia () {
+		File directorio=new File("./data/");
+		File dataFile = new File("./data/hotel.ser");
+		
+		if(!directorio.exists()) {
+			directorio.mkdir();
+		}
+		
+		try {
+			if(!dataFile.exists()) {
+				dataFile.createNewFile();
+				abrirOutput();
+				escribir(null);
+				cerrarOutput();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	// abrir archivo guardar
-	public void abrirOutput () throws IOException{
+	public void abrirOutput () throws IOException {
+		
 		fileOut = new FileOutputStream("./data/hotel.ser");
+		
 		ouput = new ObjectOutputStream(fileOut);
+
 	}
 	
 	// abrir archivo leectura
-	public void abrirInput () throws IOException{
+	public void abrirInput () throws IOException {
+		
 		fileInput = new FileInputStream("./data/hotel.ser");
 		input = new ObjectInputStream(fileInput);
+
 	}
 	
 	// cerrar el fichero guardar

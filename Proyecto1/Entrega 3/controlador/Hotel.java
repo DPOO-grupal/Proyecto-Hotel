@@ -13,7 +13,6 @@ import modelo.Huesped;
 import modelo.Persistencia;
 import modelo.Reserva;
 import modelo.Restaurante;
-import modelo.Servicio;
 import modelo.Tarifa;
 import modelo.TipoHabitacion;
 import modelo.Usuario;
@@ -36,7 +35,11 @@ public class Hotel {
 	}
 
 	public Hotel() {
+		// TODO inicializar todas las estructuras
 		datos = new Persistencia();
+		grupos = new HashMap <Integer, Grupo>();
+		usuarios = new HashMap<String, Usuario>();
+		
 		Hotel hotelDatos = cargarInformacion();
 		
 		if (hotelDatos != null) {
@@ -64,8 +67,11 @@ public class Hotel {
 		usuarioActual = usuarios.get(login);
 		
 		if (usuarioActual != null) {
-			autent = true;
-			this.usuarioActual = usuarioActual;
+	
+			if (usuarioActual.iniciarSesion(password)) {
+				autent = true;
+				this.usuarioActual = usuarioActual;
+			}
 		} 
 		
 		return autent;
