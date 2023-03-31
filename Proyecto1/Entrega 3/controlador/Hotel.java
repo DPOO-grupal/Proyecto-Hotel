@@ -99,6 +99,9 @@ public class Hotel implements Serializable{
 		int annoI = fechaI.getYear();
 		annoI++;
 		fechaF.setYear(annoI);
+		
+		
+		
 	}
 	
 	public ArrayList<Tarifa> checkTarifas(Date fechaI, Date fechaF) {
