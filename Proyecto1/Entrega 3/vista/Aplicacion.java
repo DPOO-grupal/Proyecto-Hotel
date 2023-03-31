@@ -46,7 +46,7 @@ public class Aplicacion {
 					break;
 					
 				case 2:
-					hotel.guardarInformacion(hotel);
+					//hotel.guardarInformacion(hotel);
 					continuar = false;
 					break;
 				default:
