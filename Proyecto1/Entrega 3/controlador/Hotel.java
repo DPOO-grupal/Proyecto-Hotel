@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import javax.swing.text.GapContent;
@@ -161,10 +162,32 @@ public class Hotel{
 	public boolean completarReserva(int idHabitacion) {
 		boolean resultado = false;
 		llenarOcupados(idHabitacion);
-		
+		establecerPrecio(idHabitacion);
+		resultado = llenarHabitacion(idHabitacion);
 		return resultado;
 	}
 	
+	private boolean llenarHabitacion(int idHabitacion) {
+		boolean resultado = false;
+		return resultado;
+	}
+
+
+	private void establecerPrecio(int idHabitacion) {
+		Date fechaInicial = grupoEnCurso.getReserva().getFechaI();
+		Date fechaFinal = grupoEnCurso.getReserva().getFechaF();
+		SortedMap<Date, Tarifa> subMapa = tarifas.subMap(fechaInicial, fechaFinal);
+		Habitacion habitacion = habitaciones.get(idHabitacion);
+		TipoHabitacion tipo = habitacion.getTipo();
+		double costo = 0;
+		for(Tarifa tarifa : subMapa.values()) {
+			costo += tarifa.getPrecio(tipo);
+		}
+		costo += grupoEnCurso.getReserva().getPrecioReserva();
+		grupoEnCurso.getReserva().setPrecioReserva(costo);
+	}
+
+
 	public void llenarOcupados(int idHabitacion) {
 		Date fechaInicial = grupoEnCurso.getReserva().getFechaI();
 		Date fechaFinal = grupoEnCurso.getReserva().getFechaF();
