@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 import controlador.Hotel;
 
-public class Persistencia {
+public class Persistencia implements Serializable{
 	private FileOutputStream fileOut;
 	private FileInputStream fileInput;
 	private ObjectOutputStream ouput;
@@ -21,8 +21,8 @@ public class Persistencia {
 	// constructor
 	
 	public Persistencia () {
-		File directorio=new File("./data/");
-		File dataFile = new File("./data/hotel.ser");
+		File directorio=new File("./Entrega 3/data/");
+		File dataFile = new File("./Entrega 3/data/hotel.ser");
 		
 		if(!directorio.exists()) {
 			directorio.mkdir();
@@ -30,6 +30,7 @@ public class Persistencia {
 		
 		try {
 			if(!dataFile.exists()) {
+				
 				dataFile.createNewFile();
 				abrirOutput();
 				escribir(null);
@@ -42,7 +43,7 @@ public class Persistencia {
 	// abrir archivo guardar
 	public void abrirOutput () throws IOException {
 		
-		fileOut = new FileOutputStream("./data/hotel.ser");
+		fileOut = new FileOutputStream("./Entrega 3/data/hotel.ser");
 		
 		ouput = new ObjectOutputStream(fileOut);
 
@@ -51,7 +52,7 @@ public class Persistencia {
 	// abrir archivo leectura
 	public void abrirInput () throws IOException {
 		
-		fileInput = new FileInputStream("./data/hotel.ser");
+		fileInput = new FileInputStream("./Entrega 3/data/hotel.ser");
 		input = new ObjectInputStream(fileInput);
 
 	}

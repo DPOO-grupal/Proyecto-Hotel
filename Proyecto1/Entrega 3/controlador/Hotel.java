@@ -1,24 +1,24 @@
 package controlador;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import modelo.Grupo;
-import modelo.Habitacion;
-import modelo.Huesped;
-import modelo.Persistencia;
-import modelo.Reserva;
-import modelo.Restaurante;
-import modelo.Tarifa;
-import modelo.TipoHabitacion;
-import modelo.Usuario;
+import modelo.*;
 
-public class Hotel {
+/**
+ * @author tu papa
+ *
+ */
+public class Hotel{
 	
+	/**
+	 * 
+	 */
 	private TreeMap<Date, HashMap<Integer, Integer>> ocupados;
 	private Grupo grupoEnCurso;
 	private HashMap<Integer, Grupo> grupos;
@@ -30,9 +30,6 @@ public class Hotel {
 	private Usuario usuarioActual;
 	
 	
-	public Usuario getUsuarioActual() {
-		return usuarioActual;
-	}
 
 	public Hotel() {
 		// TODO inicializar todas las estructuras
@@ -46,17 +43,31 @@ public class Hotel {
 			
 			setOcupados(hotelDatos.getOcupados());
 			
-			setGrupoEnCurso(hotelDatos.getGrupoEnCurso());			setGrupos(hotelDatos.getGrupos());
-						setTarifas(hotelDatos.getTarifas());
-						setUsuarios(hotelDatos.getUsuarios());
-			setHabitaciones(hotelDatos.getHabitaciones());
-						setRestaurante(hotelDatos.getRestaurante());
+			setGrupoEnCurso(hotelDatos.getGrupoEnCurso());
+			setGrupos(hotelDatos.getGrupos());			
+			setTarifas(hotelDatos.getTarifas());			
+			setUsuarios(hotelDatos.getUsuarios());
+			setHabitaciones(hotelDatos.getHabitaciones());			
+			setRestaurante(hotelDatos.getRestaurante());		} else {
+			
+			añadirUsuario("root", "Cookie", 1);
 		}
 		
 		int sizeGrupo = grupos.size();
 		Grupo.setNumGrupo(sizeGrupo);
 		// TODO Aumentar el contador de servicios, sumar los productos menu y servicios
 		Usuario.setHotel(this);
+	}
+	
+	
+	public boolean usuarioExiste(String login) {
+		
+		boolean exist = false;
+		
+		if (usuarios.containsKey(login))
+			exist = false;
+		
+		return exist;
 	}
 	
 	public boolean autenticar(String login, String password) {
@@ -76,7 +87,27 @@ public class Hotel {
 		
 		return autent;
 	}
-	
+	/**
+	 * Crea un Usuario dependiento su tipo y lo añade al HashMap Usuarios
+	 * @param tipo 1 para Admin, 2 para Empleado
+	 */
+	public void añadirUsuario(String login, String password, int tipo) {
+		switch (tipo) {
+		case 1:
+			Admin admin = new Admin(login, password);
+			usuarios.put(login, admin);
+			break;
+		
+		case 2:
+			Empleado empleado = new Empleado(login, password);
+			usuarios.put(login, empleado);
+			break;
+			
+		default:
+			break;
+		}
+		
+	}
 	
 	public ArrayList<Habitacion> crearReserva(Date fechaI, Date fechaF, int tamanioGrupo, String[] nombres, String[] documentos, String[] emails, String[] telefonos, Integer[] ids, Integer[] edades, TipoHabitacion tipo) {
 		
@@ -132,24 +163,23 @@ public class Hotel {
 			hotelDatos = datos.leer();
 			datos.cerrarInput();
 		} catch (ClassNotFoundException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		return hotelDatos;
 	}
 	
-	public Hotel guardarInformacion(Hotel hotelDatos) {
+	public void guardarInformacion(Hotel hotel) {
 		try {
 			datos.abrirOutput();
-			datos.escribir(hotelDatos);
+			datos.escribir(hotel);
 			datos.cerrarOutput();
+			
+			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		return hotelDatos;
 	}
 
 	public TreeMap<Date, HashMap<Integer, Integer>> getOcupados() {
@@ -207,5 +237,15 @@ public class Hotel {
 	public void setRestaurante(Restaurante restaurante) {
 		this.restaurante = restaurante;
 	}
+	public Usuario getUsuarioActual() {
+		return usuarioActual;
+	}
+
+	public void setUsuarioActual(Usuario usuarioActual) {
+		this.usuarioActual = usuarioActual;
+	}
+
+
+
 
 }

@@ -1,11 +1,13 @@
 package modelo;
 
+import java.io.Serializable;
+
 import controlador.Hotel;
 
-public class Usuario {
-	private String login;
-	private String password;
-	private static Hotel hotel;
+public class Usuario{
+	protected String login;
+	protected String password;
+	protected static Hotel hotel;
 	
 	public Usuario(String login, String password) {
 		this.login = login;
@@ -22,9 +24,17 @@ public class Usuario {
 		
 		return autent;
 	}
+	
+	public void cerrarSesion() {
+		hotel.setUsuarioActual(null);
+		
+	}
+	
 	public static void setHotel(Hotel hotel) {
 		Usuario.hotel = hotel;
 	}
+	
+	
 	
 	
 	

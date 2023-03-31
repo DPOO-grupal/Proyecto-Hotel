@@ -12,42 +12,67 @@ import modelo.Usuario;
 public class Aplicacion {
 	private Hotel hotel;
 	private boolean continuar;
-	private Usuario usuarioActual;
 	
 	
 	
 	public void ejecutarAplicacion() {
 		hotel = new Hotel();
-		
+		Usuario usuarioActual = null;
 		continuar = true;
 		
 		while (continuar) {
+			System.out.println("1. Iniciar Sesion");
+			System.out.println("2. Salir");
 			
-			if (usuarioActual == null) {
-				iniciarSeccion();
-			} else if (usuarioActual.getClass() == Empleado.class) {
-				menuEmpleado();
-			} else if (usuarioActual.getClass() == Admin.class) {
-				menuAdmin();
-			}			
+			int opcionSeleccionada;
+			
+			opcionSeleccionada = num("Seleccione una opción");
+			
+			switch (opcionSeleccionada) {
+				case 1:
+					while (continuar) {
+						if (usuarioActual == null) {
+							usuarioActual = iniciarSeccion(usuarioActual);
+						} else if (usuarioActual.getClass() == Empleado.class) {
+							Empleado empleado = (Empleado)usuarioActual;
+							menuEmpleado(empleado);
+						} else if (usuarioActual.getClass() == Admin.class) {
+							Admin admin = (Admin)usuarioActual;
+							menuAdmin(admin);
+						}
+					}
+					
+					continuar = true;
+					break;
+					
+				case 2:
+					hotel.guardarInformacion(hotel);
+					continuar = false;
+					break;
+				default:
+					input("Debe seleccionar una de las opciones del menú");
+					break;
+			}
+						
 		
 		}
 	}
 	
-	public void iniciarSeccion() {
+	
+	public Usuario iniciarSeccion(Usuario usuarioActual) {
 		boolean autent = false;
 		int intentos = 0;
 		
 		
 		System.out.println("---------- INICIO DE SESION ----------");
-		String login = input("Ingrese login: ");
+		String login = input("Ingrese login");
 		do {
 			
-			String password = input("Ingrese password: ");
+			String password = input("Ingrese password");
 			autent = hotel.autenticar(login, password);
 			
 			if (autent) {
-					this.usuarioActual = hotel.getUsuarioActual();	
+					usuarioActual = hotel.getUsuarioActual();	
 			} else {
 				System.out.println("Contraseña Incorrecta");
 			}
@@ -58,17 +83,18 @@ public class Aplicacion {
 		
 		if (intentos < 3) {
 			
-			this.usuarioActual = hotel.getUsuarioActual();
+			usuarioActual = hotel.getUsuarioActual();
 		} else {
 			input("Acceso denegado, ENTER para continuar");
 		}
+		return usuarioActual;
 		 
 		
 	}
 	
-	public void menuEmpleado() {
+	public void menuEmpleado(Empleado empleado) {
 		
-		
+		System.out.println("0. Cerrar Sesion");
 		System.out.println("1. ");
 		System.out.println("2. ");
 		System.out.println("3. ");
@@ -80,13 +106,20 @@ public class Aplicacion {
 		
 		int opcionSeleccionada;
 		
-		opcionSeleccionada = num();
-		ejecutarOpcionEmpleado(opcionSeleccionada);
+		opcionSeleccionada = num("Seleccione una opción");
+		ejecutarOpcionEmpleado(empleado, opcionSeleccionada);
+		input("Presione 'Enter' para continuar");
+
 	}
 	
-	private void ejecutarOpcionEmpleado(int opcionSeleccionada) {
+	private void ejecutarOpcionEmpleado(Empleado empleado, int opcionSeleccionada) {
 		// TODO Ejecutar las opciones del empleado
 		switch (opcionSeleccionada) {
+		case 0:
+			empleado.cerrarSesion();
+			continuar = false;
+			input("Sesion cerrada.....");
+			break;
 		case 1:
 			
 			break;
@@ -99,11 +132,54 @@ public class Aplicacion {
 		}
 	}
 
-	public void menuAdmin() {
-		// TODO Listar las opciones del Admin
+	public void menuAdmin(Admin admin) {
+		System.out.println("0. Cerrar Sesion");
+		System.out.println("1. Añadir Usuario");
+		System.out.println("2. ");
+		System.out.println("3. ");
+		System.out.println("4. ");
+		System.out.println("5. ");
+		System.out.println("6. ");
+		System.out.println("7. ");
+		System.out.println("8. ");
+		
+		int opcionSeleccionada;
+		
+		opcionSeleccionada = num("Seleccione una opción");
+		ejecutarOpcionAdmin(admin, opcionSeleccionada);
+		input("Presione 'Enter' para continuar");
+
 	}
 	
 	
+	private void ejecutarOpcionAdmin(Admin admin, int opcionSeleccionada) {
+		// TODO Ejecutar las opciones del Admin
+				switch (opcionSeleccionada) {
+				case 0:
+					admin.cerrarSesion();
+					continuar = false;
+					input("Sesion cerrada.....");
+					break;
+				case 1:
+					String login = input("\nIngrese login del nuevo usuario");
+						
+					String password = input("Ingrese password del nuevo usuario");
+					
+					int tipo = num("Ingrese tipo de Usuario:\n1. Admin\n2. Empleado");
+					
+					admin.añadirUsuario(login, password, tipo);;
+					
+					break;
+				case 2:
+					
+					break;
+
+				default:
+					break;
+				}
+		
+	}
+
 	public String input(String mensaje){
 		try
 		{
@@ -119,12 +195,10 @@ public class Aplicacion {
 		return null;
 	}
 	
-	public int num() {
+	public int num(String mensaje) {
 		int num = -1;
 		try {
-			num = Integer.parseInt(input("Seleccione una opción"));
-			ejecutarOpcionEmpleado(num);
-			input("Presione 'Enter' para continuar");
+			num = Integer.parseInt(input(mensaje));
 		}
 		catch (NumberFormatException e)
 		{
