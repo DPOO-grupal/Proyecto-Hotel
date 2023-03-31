@@ -17,23 +17,22 @@ public class Persistencia implements Serializable{
 	private FileInputStream fileInput;
 	private ObjectOutputStream ouput;
 	private ObjectInputStream input;
+	private File directorio=new File("./Entrega 3/data/");
+	private File dataFile = new File("./Entrega 3/data/hotel.ser");
 	
 	// constructor
 	
-	public Persistencia () {
-		File directorio=new File("./Entrega 3/data/");
-		File dataFile = new File("./Entrega 3/data/hotel.ser");
+	public Persistencia () {;
 		
 		if(!directorio.exists()) {
 			directorio.mkdir();
 		}
 		
 		try {
-			if(!dataFile.exists()) {
-				
+			if(!dataFile.exists()) {				
 				dataFile.createNewFile();
 				abrirOutput();
-				escribir(null);
+				escribir(new Hotel());
 				cerrarOutput();
 			}
 		} catch (IOException e) {
@@ -42,7 +41,8 @@ public class Persistencia implements Serializable{
 	}
 	// abrir archivo guardar
 	public void abrirOutput () throws IOException {
-		
+		dataFile.delete();
+		dataFile.createNewFile();
 		fileOut = new FileOutputStream("./Entrega 3/data/hotel.ser");
 		
 		ouput = new ObjectOutputStream(fileOut);

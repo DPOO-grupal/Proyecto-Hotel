@@ -1,8 +1,9 @@
 package modelo;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Habitacion {
+public class Habitacion implements Serializable{
 
 //Atributos 
 	private int id;

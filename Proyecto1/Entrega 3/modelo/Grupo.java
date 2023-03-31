@@ -1,8 +1,9 @@
 package modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Grupo {
+public class Grupo implements Serializable{
 	private int id;
 	private static int numGrupo;
 	private ArrayList<Huesped> huespedes;

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import controlador.Hotel;
 
-public class Usuario{
+public class Usuario implements Serializable{
 	protected String login;
 	protected String password;
 	protected static Hotel hotel;

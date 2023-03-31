@@ -17,6 +17,7 @@ public class Aplicacion {
 	
 	public void ejecutarAplicacion() {
 		hotel = new Hotel();
+		hotel.cargarInformacion();
 		Usuario usuarioActual = null;
 		continuar = true;
 		
@@ -46,7 +47,9 @@ public class Aplicacion {
 					break;
 					
 				case 2:
-					//hotel.guardarInformacion(hotel);
+					Hotel h = hotel;
+					hotel.guardarInformacion(h);
+					System.out.print("Taluego");
 					continuar = false;
 					break;
 				default:

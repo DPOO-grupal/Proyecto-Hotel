@@ -16,7 +16,7 @@ import modelo.*;
  * @author tu papa
  *
  */
-public class Hotel{
+public class Hotel implements Serializable{
 	
 	/**
 	 * 
@@ -38,27 +38,7 @@ public class Hotel{
 		datos = new Persistencia();
 		grupos = new HashMap <Integer, Grupo>();
 		usuarios = new HashMap<String, Usuario>();
-		
-		Hotel hotelDatos = cargarInformacion();
-		
-		if (hotelDatos != null) {
-			
-			setOcupados(hotelDatos.getOcupados());
-			
-			setGrupoEnCurso(hotelDatos.getGrupoEnCurso());
-			setGrupos(hotelDatos.getGrupos());			
-			setTarifas(hotelDatos.getTarifas());			
-			setUsuarios(hotelDatos.getUsuarios());
-			setHabitaciones(hotelDatos.getHabitaciones());			
-			setRestaurante(hotelDatos.getRestaurante());		} else {
-			
-			añadirUsuario("root", "Cookie", 1);
-		}
-		
-		int sizeGrupo = grupos.size();
-		Grupo.setNumGrupo(sizeGrupo);
-		// TODO Aumentar el contador de servicios, sumar los productos menu y servicios
-		Usuario.setHotel(this);
+	
 	}
 	
 	
@@ -200,7 +180,7 @@ public class Hotel{
 	}
 
 
-	public Hotel cargarInformacion() {
+	public void cargarInformacion() {
 		Hotel hotelDatos = null;
 		try {
 			datos.abrirInput();
@@ -209,8 +189,32 @@ public class Hotel{
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
+				
 		
-		return hotelDatos;
+		if (hotelDatos != null) {
+			setOcupados(hotelDatos.getOcupados());
+			
+			setGrupoEnCurso(hotelDatos.getGrupoEnCurso());
+
+			setGrupos(hotelDatos.getGrupos());
+			
+			setTarifas(hotelDatos.getTarifas());
+			
+			setUsuarios(hotelDatos.getUsuarios());
+
+			setHabitaciones(hotelDatos.getHabitaciones());
+			
+			setRestaurante(hotelDatos.getRestaurante());
+		} else {
+			
+			añadirUsuario("root", "Cookie", 1);
+		}
+		
+		int sizeGrupo = grupos.size();
+		Grupo.setNumGrupo(sizeGrupo);
+		// TODO Aumentar el contador de servicios, sumar los productos menu y servicios
+		Usuario.setHotel(this);
+		
 	}
 	
 	public void guardarInformacion(Hotel hotel) {

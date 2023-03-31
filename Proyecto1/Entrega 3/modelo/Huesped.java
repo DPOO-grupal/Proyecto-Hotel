@@ -1,6 +1,8 @@
 package modelo;
 
-public class Huesped {
+import java.io.Serializable;
+
+public class Huesped implements Serializable{
 	private String documento;
 	private String nombre;
 	private String email;

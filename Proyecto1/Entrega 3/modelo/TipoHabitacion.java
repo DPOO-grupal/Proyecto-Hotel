@@ -1,6 +1,8 @@
 package modelo;
 
-public enum TipoHabitacion {
+import java.io.Serializable;
+
+public enum TipoHabitacion implements Serializable {
 	ESTANDAR, SUITE, SUITEDOUBLE;
 	
 	public String darTipoHab() {
