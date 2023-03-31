@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import javax.swing.text.GapContent;
@@ -89,6 +91,40 @@ public class Hotel implements Serializable{
 		}
 		
 	}
+	
+	public void inicializarTarifas() {
+		tarifas = new TreeMap<Date, Tarifa>();
+		Date fechaI = new Date(2023, 3, 31);
+		Date fechaF = fechaI;
+		int annoI = fechaI.getYear();
+		annoI++;
+		fechaF.setYear(annoI);
+	}
+	
+	public ArrayList<Tarifa> checkTarifas(Date fechaI, Date fechaF) {
+		boolean completo;
+		ArrayList<Tarifa> faltantes = new ArrayList<Tarifa>();
+		SortedMap<Date, Tarifa> rangoTarifas = tarifas.subMap(fechaI, fechaF);
+		
+		for (Tarifa tarifa : rangoTarifas.values()) {
+			
+			completo = tarifa.completo();
+			
+			if (!completo) {
+				faltantes.add(tarifa); 
+			}
+		}
+		return faltantes;
+	}
+	
+	public void crearTarifa(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor) {
+		SortedMap<Date, Tarifa> rangoTarifas = tarifas.subMap(fechaI, fechaF);
+		
+		for (Tarifa tarifa : rangoTarifas.values()) {
+			tarifa.updatePrecio(tipo, valor);
+		}
+	}
+	
 	
 	public ArrayList<Habitacion> crearReserva(Date fechaI, Date fechaF, int tamanioGrupo, String[] nombres, String[] documentos, String[] emails, String[] telefonos, Integer[] ids, Integer[] edades, TipoHabitacion tipo) {
 		
