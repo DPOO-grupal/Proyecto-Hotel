@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.swing.text.GapContent;
+
 import modelo.*;
 
 /**
@@ -156,6 +158,48 @@ public class Hotel{
 		return habLista;
 	}
 	
+	public boolean completarReserva(int idHabitacion) {
+		boolean resultado = false;
+		llenarOcupados(idHabitacion);
+		
+		return resultado;
+	}
+	
+	public void llenarOcupados(int idHabitacion) {
+		Date fechaInicial = grupoEnCurso.getReserva().getFechaI();
+		Date fechaFinal = grupoEnCurso.getReserva().getFechaF();
+		int idGrupo = grupoEnCurso.getId();
+		ArrayList<Date> llaves = getDateRange(fechaInicial, fechaFinal);
+		for(Date fecha : llaves) {
+			HashMap<Integer, Integer> mapa = ocupados.get(fecha);
+			if (mapa == null) {
+				mapa = new HashMap<Integer, Integer>();
+			}
+			mapa.put(idHabitacion, idGrupo);
+			ocupados.put(fecha, mapa);
+		}
+	}
+	
+	
+    public ArrayList<Date> getDateRange(Date start, Date end) {
+        ArrayList<Date> rango = new ArrayList<Date>();
+        Date fechaI = start;
+        while(fechaI.before(end) || fechaI.equals(end)) {
+            rango.add(fechaI); 
+            fechaI = pasarDia(fechaI);
+        }
+        return rango;
+    }
+	
+	private Date pasarDia(Date start) {
+		Date end = start;
+		int diaI = start.getDate();
+		diaI++;
+		end.setDate(diaI);
+		return end;
+	}
+
+
 	public Hotel cargarInformacion() {
 		Hotel hotelDatos = null;
 		try {

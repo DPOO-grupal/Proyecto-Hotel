@@ -18,4 +18,26 @@ public class Reserva {
 		this.precioReserva = precioReserva;
 	}
 
+	public Date getFechaI() {
+		return fechaI;
+	}
+
+	public Date getFechaF() {
+		return fechaF;
+	}
+
+	public double getPrecioReserva() {
+		return precioReserva;
+	}
+
+	public void setFechaI(Date fechaI) {
+		this.fechaI = fechaI;
+	}
+
+	public void setFechaF(Date fechaF) {
+		this.fechaF = fechaF;
+	}
+	
+	
+
 }
