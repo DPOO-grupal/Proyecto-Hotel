@@ -46,7 +46,7 @@ public class Aplicacion {
 					break;
 					
 				case 2:
-					hotel.guardarInformacion(hotel);
+					//hotel.guardarInformacion(hotel);
 					continuar = false;
 					break;
 				default:
@@ -211,7 +211,7 @@ public class Aplicacion {
 	
 	public static void main(String[] args) {
 		Aplicacion app = new Aplicacion();
-		app.ejecutarAplicacion();
+		//app.ejecutarAplicacion();
 
 	}
 

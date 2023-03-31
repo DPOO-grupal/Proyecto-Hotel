@@ -12,7 +12,8 @@ public class Restaurante {
 	{
 		this.menu = new ArrayList<ProductoMenu>();
 	}
-	
+
+//Metodos
 	public void añadirProducto(ProductoMenu producto) 
 	{
 		menu.add(producto);
