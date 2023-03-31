@@ -35,10 +35,9 @@ public class Hotel implements Serializable{
 
 	public Hotel() {
 		// TODO inicializar todas las estructuras
-		datos = new Persistencia();
 		grupos = new HashMap <Integer, Grupo>();
 		usuarios = new HashMap<String, Usuario>();
-	
+		
 	}
 	
 	
@@ -181,6 +180,8 @@ public class Hotel implements Serializable{
 
 
 	public void cargarInformacion() {
+		datos = new Persistencia();
+		
 		Hotel hotelDatos = null;
 		try {
 			datos.abrirInput();
@@ -190,21 +191,9 @@ public class Hotel implements Serializable{
 			e.printStackTrace();
 		}
 				
-		
+		System.out.println(hotelDatos);
 		if (hotelDatos != null) {
-			setOcupados(hotelDatos.getOcupados());
-			
-			setGrupoEnCurso(hotelDatos.getGrupoEnCurso());
-
-			setGrupos(hotelDatos.getGrupos());
-			
-			setTarifas(hotelDatos.getTarifas());
-			
-			setUsuarios(hotelDatos.getUsuarios());
-
-			setHabitaciones(hotelDatos.getHabitaciones());
-			
-			setRestaurante(hotelDatos.getRestaurante());
+			data(hotelDatos);
 		} else {
 			
 			añadirUsuario("root", "Cookie", 1);
@@ -216,10 +205,28 @@ public class Hotel implements Serializable{
 		Usuario.setHotel(this);
 		
 	}
+	public void data (Hotel hotelDatos) {
+		setOcupados(hotelDatos.getOcupados());
+		
+		setGrupoEnCurso(hotelDatos.getGrupoEnCurso());
+
+		setGrupos(hotelDatos.getGrupos());
+		
+		setTarifas(hotelDatos.getTarifas());
+		
+		setUsuarios(hotelDatos.getUsuarios());
+
+		setHabitaciones(hotelDatos.getHabitaciones());
+		
+		setRestaurante(hotelDatos.getRestaurante());
+	}
 	
-	public void guardarInformacion(Hotel hotel) {
+	public void guardarInformacion() {
+		Hotel hotel = new Hotel();
+		hotel.data(this);
 		try {
 			datos.abrirOutput();
+			
 			datos.escribir(hotel);
 			datos.cerrarOutput();
 			

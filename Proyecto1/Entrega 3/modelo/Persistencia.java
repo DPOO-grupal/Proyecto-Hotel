@@ -29,10 +29,11 @@ public class Persistencia implements Serializable{
 		}
 		
 		try {
-			if(!dataFile.exists()) {				
+			if(!dataFile.exists()) {	
+	
 				dataFile.createNewFile();
 				abrirOutput();
-				escribir(new Hotel());
+				escribir(null);
 				cerrarOutput();
 			}
 		} catch (IOException e) {
@@ -75,6 +76,7 @@ public class Persistencia implements Serializable{
 	
 	public void escribir(Hotel hotel) throws IOException{
 		if (ouput != null)
+			ouput.reset();
 			ouput.writeObject(hotel);
 	}
 	

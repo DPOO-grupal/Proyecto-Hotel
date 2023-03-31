@@ -47,8 +47,7 @@ public class Aplicacion {
 					break;
 					
 				case 2:
-					Hotel h = hotel;
-					hotel.guardarInformacion(h);
+					hotel.guardarInformacion();
 					System.out.print("Taluego");
 					continuar = false;
 					break;
@@ -121,7 +120,7 @@ public class Aplicacion {
 		case 0:
 			empleado.cerrarSesion();
 			continuar = false;
-			input("Sesion cerrada.....");
+			System.out.println("Sesion cerrada.....");
 			break;
 		case 1:
 			
@@ -161,14 +160,14 @@ public class Aplicacion {
 				case 0:
 					admin.cerrarSesion();
 					continuar = false;
-					input("Sesion cerrada.....");
+					System.out.println("Sesion cerrada.....");
 					break;
 				case 1:
 					String login = input("\nIngrese login del nuevo usuario");
 						
 					String password = input("Ingrese password del nuevo usuario");
 					
-					int tipo = num("Ingrese tipo de Usuario:\n1. Admin\n2. Empleado");
+					int tipo = num("Ingrese tipo de Usuario:\n1. Admin\n2. Empleado\nSelecione una opción");
 					
 					admin.añadirUsuario(login, password, tipo);;
 					
