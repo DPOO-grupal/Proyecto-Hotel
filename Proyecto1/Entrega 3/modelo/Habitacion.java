@@ -17,19 +17,18 @@ public class Habitacion {
 	}
 	
 //Metodos
-	public double getPrecio(Date fechaI, Date fechaF) 
+	public int getId() 
 	{
-		return 0;
+		return this.id;
 	}
-	
 	public int getCapacidad () 
 	{
-		return 0;
+		return this.capacidad;
 	}	
 	
 	public void añadirServicioHabitacion (Servicio servicio) 
 	{
-		
+		listaServicios.add(servicio);
 	}
 	
 	public TipoHabitacion getTipo() {
