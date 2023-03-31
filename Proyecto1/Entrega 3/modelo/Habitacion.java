@@ -8,36 +8,60 @@ public class Habitacion {
 	private int id;
 	private int capacidad;
 	private ArrayList<Servicio> listaServicios;
+	private ArrayList<Cama> listaCamas;
 
 //Constructor
-	public Habitacion(String tipo, int capacidad, int id) 
+	public Habitacion(String tipo, int id,ArrayList<Cama> listaCamas) 
 	{
-		this.capacidad=capacidad;
+		this.capacidad=getCapacidad(listaCamas);
 		this.id=id;
 	}
 	
 //Metodos
-	public double getPrecio(Date fechaI, Date fechaF) 
+	public int getId () 
 	{
-		return 0;
+		return this.id;
 	}
 	
-	public int getCapacidad () 
+	public int getCapacidad (ArrayList<Cama> listaCamas) 
 	{
-		return 0;
+		int capacidad=0;
+		
+		for (int i = 0; i < listaCamas.size(); i++) 
+		{
+			Cama cama= listaCamas.get(i);
+			capacidad += cama.getCapacidadCama();
+		}
+		this.capacidad=capacidad;
+		return capacidad;
 	}	
 	
 	public void añadirServicioHabitacion (Servicio servicio) 
 	{
-		
+		listaServicios.add(servicio);
+	}
+	
+	public void añadirCamas (Cama cama) 
+	{
+		listaCamas.add(cama);
 	}
 	
 	public TipoHabitacion getTipo() {
 		return TipoHabitacion.ESTANDAR;
 	}
 	
-	public String getCaracteristicas() 
+	public int getApto(ArrayList<Cama> listaCamas) 
 	{
-		return null;
+		int apto = 0;
+		for (int i = 0; i < listaCamas.size(); i++) 
+		{
+			boolean cama = listaCamas.get(i).getAptoParaNiño();
+			if (cama==true) 
+			{
+				apto++;
+			}
+			
+		}
+		return apto;
 	}
 }
