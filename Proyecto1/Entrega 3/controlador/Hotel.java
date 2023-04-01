@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import javax.sql.RowSetReader;
 import javax.swing.text.GapContent;
 
 import modelo.*;
@@ -31,6 +32,7 @@ public class Hotel implements Serializable{
 	private Persistencia datos;
 	private HashMap<String, Usuario> usuarios;
 	private HashMap<Integer, Habitacion> habitaciones;
+	private HashMap<Integer, Servicio> serviciosHotel;
 	private Restaurante restaurante;
 	private Usuario usuarioActual;
 	private Date hoy;
@@ -172,16 +174,25 @@ public class Hotel implements Serializable{
 		}
 	}
 	
-	
+	public void crearServicio(String nombre, double precio) {
+		Servicio servicio = new Servicio(nombre, precio);
+		serviciosHotel.put(servicio.getId(), servicio);
+	}
 
-	public Cama crearCama(String tipo, int capacidadCama, boolean aptoParaNiño) {
-		Cama cama = new Cama(tipo, capacidadCama, aptoParaNiño);
-		return cama;
-		
+	public void añadirServicioHabitacion(int id, Servicio servicio) {
+		Habitacion habitacion =	habitaciones.get(id);
+		habitacion.añadirServicioHabitacion(servicio);
 	}
 	
-	public void crearHabitacion(TipoHabitacion tipo, int id,ArrayList<Cama> listaCamas, String caracteristicas) {
-		Habitacion habitacion = new Habitacion(tipo, listaCamas, id, caracteristicas);
+	
+	public Cama crearCama(String tipo, int capacidadCama, boolean aptoParaNiño) {
+		Cama cama = new Cama(tipo, capacidadCama, aptoParaNiño);
+		return cama;	
+	}
+	
+	
+	public void crearHabitacion(TipoHabitacion tipo, int id,ArrayList<Cama> listaCamas, ArrayList<Servicio> listaServicios, String caracteristicas) {
+		Habitacion habitacion = new Habitacion(tipo, id, listaCamas, listaServicios, caracteristicas);
 		habitaciones.put(id, habitacion);
 	}
 	
