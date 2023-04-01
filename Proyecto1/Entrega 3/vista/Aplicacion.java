@@ -14,6 +14,7 @@ import modelo.Admin;
 import modelo.Cama;
 import modelo.Empleado;
 import modelo.Tarifa;
+import modelo.TipoHabitacion;
 import modelo.Usuario;
 
 public class Aplicacion {
@@ -69,25 +70,10 @@ public class Aplicacion {
 		}
 	}
 	public void setDay() {
-		Date dia = null;
-		boolean right;
-		do {
-			
-			String diaString = input("Intrese el dia de hoy (dd/MM/yyyy)");
-			DateFormat DFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-			try {
-				dia = DFormat.parse(diaString);
-				right = false;
-			} catch (ParseException e) {
-				System.out.println("Formato Incorrecto");
-				right = true;
-			}
-			
-		} while (right);
 		
-		hotel.setHoy(dia);
+		hotel.setHoy(getDate("Intrese el dia de hoy "));
 	}
+	
 	public Usuario iniciarSeccion(Usuario usuarioActual) {
 		boolean autent = false;
 		int intentos = 0;
@@ -162,7 +148,7 @@ public class Aplicacion {
 	public void menuAdmin(Admin admin) {
 		System.out.println("0. Cerrar Sesion");
 		System.out.println("1. Añadir Usuario");
-		System.out.println("2. ");
+		System.out.println("2. Crear Tarifas");
 		System.out.println("3. ");
 		System.out.println("4. Crear habitacion");
 		System.out.println("5. ");
@@ -180,9 +166,10 @@ public class Aplicacion {
 
 	private void ejecutarOpcionAdmin(Admin admin, int opcionSeleccionada) {
 		// TODO Ejecutar las opciones del Admin
-
 		
-		tarifasFaltantes();
+		if (!tarifasCompletas());{
+			System.out.println("LLENAR TARIFAS, OPCION 2");
+		}	
 		
 		switch (opcionSeleccionada) {
 		case 0:
@@ -202,7 +189,7 @@ public class Aplicacion {
 
 			break;
 		case 2:
-
+			CrearTarifa();
 			break;
 		case 4:
 			crearHabitacion();
@@ -213,12 +200,31 @@ public class Aplicacion {
 		}
 
 	}
-	public void tarifasFaltantes() {
+	
+	public void CrearTarifa() {
 		ArrayList<Tarifa> faltantes = hotel.checkTarifas();
-
-		for (Tarifa tarifa : faltantes) {
-			System.out.println(tarifa.getFaltantes().toString() + " " + formatoFecha(tarifa.getFecha()));
+		
+		if (faltantes.size() > 0) {
+			System.out.println("Faltan la siguientes Tarifas para los tipos de Habitación");
+			for (Tarifa tarifa : faltantes) {
+				System.out.println(tarifa.getFaltantes().toString() + " " + formatoFecha(tarifa.getFecha()));
+			}		
 		}
+		
+		getDate("ingrese fecha inicial de la tarifa");
+		getDate("ingrese fecha fiinal de la tarifa");
+		
+		
+	}
+	
+	public boolean tarifasCompletas() {
+		ArrayList<Tarifa> faltantes = hotel.checkTarifas();
+		boolean completo = true;
+		if (faltantes.size()>0) {
+			completo = false;
+		}
+		
+		return completo;
 	}
 	
 	public String formatoFecha(Date fecha) {
@@ -267,14 +273,110 @@ public class Aplicacion {
 
 	public int num(String mensaje) {
 		int num = -1;
-		try {
-			num = Integer.parseInt(input(mensaje));
-		} catch (NumberFormatException e) {
-			System.out.println("Debe seleccionar uno de los números de las opciones.");
-		}
+		boolean right;
+		do {
+			try {
+				num = Integer.parseInt(input(mensaje));
+				right = false;
+			} catch (NumberFormatException e) {
+				System.out.println("Debe ingresar un números.");
+				right = true;
+			} 
+		}while (right);
+			
 		return num;
 
 	}
+	
+	public Date getDate(String mensaje) {
+		Date dia = null;
+		boolean right;
+		do {
+			
+			String diaString = input(mensaje + " (dd/MM/yyyy)");
+			DateFormat DFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+			try {
+				dia = DFormat.parse(diaString);
+				right = false;
+			} catch (ParseException e) {
+				System.out.println("Formato Incorrecto");
+				right = true;
+			}
+			
+		} while (right);
+		
+		return dia;
+	}
+	
+	
+	public TipoHabitacion getTipoHabitacion(String mensaje) {
+		TipoHabitacion tipo = null;
+		
+		boolean right;
+		do {
+			right = false;
+			
+			System.out.println(mensaje);
+			System.out.println("Ingrese Una de las opciones");
+			System.out.println("1. Estandar");
+			System.out.println("2. Suite");
+			System.out.println("3. Suite Double");
+			
+			int opcion = num("Seleccione una de las opciones");
+			
+			switch (opcion) {
+			case 1:
+				tipo = TipoHabitacion.ESTANDAR;
+				break;
+			case 2:
+				tipo = TipoHabitacion.SUITE;
+				break;
+			case 3:
+				tipo = TipoHabitacion.SUITEDOUBLE;
+				break;
+	
+			default:
+				input("Debe selecionar una de las opciones");
+				right = true;
+				break;
+			}
+		} while(right);
+
+		
+		return tipo;
+	}
+	public boolean getboolean(String mensaje) {
+		boolean valor = false;
+		boolean right;
+		do {
+			System.out.println(mensaje);
+			System.out.println("Ingrese Una de las opciones");
+			System.out.println("1. Verdadero");
+			System.out.println("2. Falso");
+			
+			int opcion = num("Seleccione una de las opciones");
+			
+			switch (opcion) {
+			case 1:
+				valor = true;
+				right = false;
+				break;
+			case 2:
+				valor = false;
+				right = false;
+
+			default:
+				input("Debe selecionar una de las opciones");
+				right = true;
+				break;
+			}
+		} while(right);
+
+		
+		return valor;
+	}
+	
 
 	public static void main(String[] args) {
 		Aplicacion app = new Aplicacion();
