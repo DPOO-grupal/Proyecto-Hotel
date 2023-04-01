@@ -139,7 +139,7 @@ public class Aplicacion {
 		System.out.println("1. Añadir Usuario");
 		System.out.println("2. ");
 		System.out.println("3. ");
-		System.out.println("4. ");
+		System.out.println("4. Crear habitacion");
 		System.out.println("5. ");
 		System.out.println("6. ");
 		System.out.println("7. ");
@@ -175,12 +175,22 @@ public class Aplicacion {
 				case 2:
 					
 					break;
-
+				case 4:
+					crearHabitacion();
+					break;
+					
 				default:
 					break;
 				}
 		
 	}
+
+	private void crearHabitacion() {
+		// TODO Auto-generated method stub
+		System.out.println("Creando habitacion...");
+		
+	}
+
 
 	public String input(String mensaje){
 		try

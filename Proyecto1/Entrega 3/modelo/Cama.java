@@ -7,6 +7,7 @@ public class Cama {
 	private int capacidadCama;
 	private boolean aptoParaNiño;
 	
+	
 //Constructor
 	public Cama(String tipo, int capacidadCama, boolean aptoParaNiño) 
 	{
