@@ -11,9 +11,7 @@ import java.util.Date;
 
 import controlador.Hotel;
 import modelo.Admin;
-import modelo.Cama;
 import modelo.Empleado;
-import modelo.Servicio;
 import modelo.Tarifa;
 import modelo.TipoHabitacion;
 import modelo.Usuario;
@@ -150,13 +148,14 @@ public class Aplicacion {
 		System.out.println("0. Cerrar Sesion");
 		System.out.println("1. Añadir Usuario");
 		System.out.println("2. Crear Tarifas");
-		System.out.println("3. ");
+		System.out.println("3. Crear servicio hotel");
 		System.out.println("4. Crear habitacion");
-		System.out.println("5. ");
+		System.out.println("5. Crear producto menu");
 		System.out.println("6. ");
 		System.out.println("7. ");
 		System.out.println("8. ");
 
+		
 		int opcionSeleccionada;
 
 		opcionSeleccionada = num("Seleccione una opción");
@@ -193,12 +192,14 @@ public class Aplicacion {
 			CrearTarifa(admin);
 			break;
 		case 3:
-			crearServicio(admin);
+			crearServicioHotel(admin);
 			break;
 		case 4:
 			crearHabitacion(admin);
 			break;
-
+		case 5:
+			crearProductoMenu(admin);
+			break;
 		default:
 			break;
 		}
@@ -224,7 +225,7 @@ public class Aplicacion {
 			Date fechaI = getDate("ingrese fecha inicial de la tarifa");
 			Date fechaF = getDate("ingrese fecha fiinal de la tarifa");
 			TipoHabitacion tipo = getTipoHabitacion("Ingrse el tipo de habitahocion");
-			double precio = numDouble("Ingrese el precio de la habitacion");
+			double precio = getDouble("Ingrese el precio de la habitacion");
 			ArrayList<Tarifa> faltantesRango = admin.crearTarifa(fechaI, fechaF, tipo, precio);
 			
 			if (faltantesRango.size() > 0) {
@@ -258,19 +259,26 @@ public class Aplicacion {
 		return fechaString;
 	}
 	
-	public void crearServicio(Admin admin) {
-		System.out.println("Creando servicio...");
+	public void crearServicioHotel(Admin admin) {
+		System.out.println("Creando servicio hotel...");
 		boolean centinela = true;
 		while (centinela) {
 			String nombre = input("Nombre servicio");
 			double precio = getDouble("Precio");
-			admin.crearServicio(nombre, precio);
+			admin.crearServicioHotel(nombre, precio);
 			centinela = getboolean("Desea añadir otra servicio?(true/false)");
 		}
 	}
 	
-	public void añadirServicioHabitacion(Admin admin) {
-		
+	public void añadirServicioHabitacion(Admin admin, int id) {
+		System.out.println("Creando servicio habitacion...");
+		boolean centinela = true;
+		while (centinela) {
+			String nombre = input("Nombre servicio habitacion");
+			double precio = getDouble("Precio");
+			admin.añadirServicioHabitacion(id, nombre, precio);
+			centinela = getboolean("Desea añadir otra servicio?(true/false)");
+		}
 	}
 	
 	
@@ -279,33 +287,41 @@ public class Aplicacion {
 		boolean centinela1=true;
 		while (centinela1) {
 			TipoHabitacion tipoHabitacion = getTipoHabitacion("Tipo habitacion");
-			int id = num("ID habitacion");
-			//TODO listaServicios
+			int id = num("Numero habitacion");
+			admin.crearHabitacion(tipoHabitacion, id);
 			
-			System.out.println("Añadir camas");
-			ArrayList<Cama> listaCamas = new ArrayList<>();
+			System.out.println("Añadiendo camas...");
 			boolean centinela2=true;
 			while (centinela2) {
-				String tipoCama = input("Tipo de cama");
 				int capacidadCama = num("Capacidad cama");
 				boolean apto = getboolean("Apto para niños(true/false)");
-				listaCamas.add(admin.crearCama(tipoCama, capacidadCama, apto));
+				admin.crearCama(id, capacidadCama, apto);
 				centinela2 = getboolean("Desea añadir otra cama?(true/false)");
 			}
+			
 			System.out.println("Añadir servicios");
-			ArrayList<Servicio> listaServicios = new ArrayList<>();
 			boolean centinela3=true;
 			while (centinela3) {
+				String nombre = input("Nombre servicio habitacion");
+				double precio = getDouble("Precio");
+				admin.añadirServicioHabitacion(id, nombre, precio);
 				centinela3 = getboolean("Desea añadir otra servicio?(true/false)");
 			
 			String caracteristicas = input("Caracteristicas");
-			admin.crearHabitacion(tipoHabitacion, id, listaCamas, listaServicios, caracteristicas);
+			admin.setCaracteristicasHabitacion(caracteristicas, id);
 			centinela1 = getboolean("Desea añadir otra habitacion?(true/false)");
 
 		}
 		}
 	}
 
+	private void crearProductoMenu(Admin admin) {
+		System.out.println("Creando producto menu\n");
+		boolean centinela = true;
+		while (centinela) {
+			
+		}
+	}
 
 	public String input(String mensaje){
 		try
@@ -357,6 +373,7 @@ public class Aplicacion {
 	
 	public Date getDate(String mensaje) {
 		boolean right;
+		Date dia = null;
 		do{
 			String diaString = input(mensaje + " (dd/MM/yyyy)");
 			DateFormat DFormat = new SimpleDateFormat("dd/MM/yyyy");

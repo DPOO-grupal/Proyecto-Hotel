@@ -17,19 +17,23 @@ public class Admin extends Usuario {
 		return hotel.crearTarifa(fechaI, fechaF, tipo, valor);
 	}
 
-	public void crearServicio(String nombre, double precio) {
-		hotel.crearServicio(nombre, precio);
+	public void crearServicioHotel(String nombre, double precio) {
+		hotel.crearServicioHotel(nombre, precio);
 	}
 	
-	public void añadirServicioHabitacion(int id, Servicio servicio) {
-		hotel.añadirServicioHabitacion(id, servicio);
+	public void añadirServicioHabitacion(int id, String nombre, double precio) {
+		hotel.añadirServicioHabitacion(id, nombre, precio);
 	}
 	
-	public Cama crearCama(String tipo, int capacidadCama, boolean aptoParaNiño) {
-		return hotel.crearCama(tipo, capacidadCama, aptoParaNiño);
+	public void crearCama(int id, int capacidadCama, boolean aptoParaNiño) {
+		hotel.crearCama(id, capacidadCama, aptoParaNiño);
 	}
 	
-	public void crearHabitacion(TipoHabitacion tipo, int id,ArrayList<Cama> listaCamas, ArrayList<Servicio> listaServicios, String caracteristicas) {
-		hotel.crearHabitacion(tipo, id, listaCamas, listaServicios, caracteristicas);
+	public void crearHabitacion(TipoHabitacion tipo,int id) {
+		hotel.crearHabitacion(tipo, id);
+	}
+	
+	public void setCaracteristicasHabitacion(String habitacion, int id) {
+		hotel.setCaracteristicas(habitacion, id);
 	}
 }

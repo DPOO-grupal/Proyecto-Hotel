@@ -14,13 +14,11 @@ public class Habitacion implements Serializable{
 	private TipoHabitacion tipo;
 	
 //Constructor
-	public Habitacion(TipoHabitacion tipo, int id, ArrayList<Cama> listaCamas, ArrayList<Servicio> listaServicios,  String caracteristicas) {
+	public Habitacion(TipoHabitacion tipo, int id) {
+		listaServicios = new ArrayList<Servicio>();
+		listaCamas = new ArrayList<Cama>();
 		this.tipo=tipo;
 		this.id=id;
-		this.listaCamas=listaCamas;
-		this.listaServicios=listaServicios;
-		this.capacidad=getCapacidad(listaCamas);
-		this.caracteristicas=caracteristicas;
 	}
 
 //Metodos
@@ -40,12 +38,13 @@ public class Habitacion implements Serializable{
 		return capacidad;
 	}	
 	
-	public void añadirServicioHabitacion (Servicio servicio) {
+	public void añadirServicioHabitacion(Servicio servicio) {
 		listaServicios.add(servicio);
 	}
 	
-	public void añadirCamas (Cama cama) {
+	public void añadirCamas(Cama cama) {
 		listaCamas.add(cama);
+		this.capacidad=getCapacidad(listaCamas);
 	}
 	
 	public TipoHabitacion getTipo() {
@@ -67,5 +66,9 @@ public class Habitacion implements Serializable{
 	
 	public String getCaracteristicas() {
 		return this.caracteristicas;
+	}
+
+	public void setCaracteristicas(String caracteristicas) {
+		this.caracteristicas = caracteristicas;
 	}
 }
