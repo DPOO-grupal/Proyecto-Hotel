@@ -10,12 +10,15 @@ public class Habitacion implements Serializable{
 	private int capacidad;
 	private ArrayList<Servicio> listaServicios;
 	private ArrayList<Cama> listaCamas;
+	private String caracteristicas;
 
 //Constructor
-	public Habitacion(String tipo, int id,ArrayList<Cama> listaCamas) 
+	public Habitacion(String tipo, int id,ArrayList<Cama> listaCamas, String caracteristicas) 
 	{
+		this.listaCamas=listaCamas;
 		this.capacidad=getCapacidad(listaCamas);
 		this.id=id;
+		this.caracteristicas=caracteristicas;
 	}
 	
 //Metodos
@@ -26,14 +29,11 @@ public class Habitacion implements Serializable{
 	
 	public int getCapacidad (ArrayList<Cama> listaCamas) 
 	{
-		int capacidad=0;
-		
 		for (int i = 0; i < listaCamas.size(); i++) 
 		{
 			Cama cama= listaCamas.get(i);
 			capacidad += cama.getCapacidadCama();
 		}
-		this.capacidad=capacidad;
 		return capacidad;
 	}	
 	
@@ -64,5 +64,10 @@ public class Habitacion implements Serializable{
 			
 		}
 		return apto;
+	}
+	
+	public String getCaracteristicas() 
+	{
+		return this.caracteristicas;
 	}
 }

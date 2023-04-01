@@ -98,6 +98,7 @@ public class Hotel implements Serializable{
 		
 	}
 	
+
 	
 	public void inicializarTarifas(){
 		// TODO promando
@@ -172,6 +173,19 @@ public class Hotel implements Serializable{
 	}
 	
 	
+
+	public Cama crearCama(String tipo, int capacidadCama, boolean aptoParaNiño) {
+		Cama cama = new Cama(tipo, capacidadCama, aptoParaNiño);
+		return cama;
+		
+	}
+	
+	public void crearHabitacion(String tipo, int id,ArrayList<Cama> listaCamas, String caracteristicas) {
+		Habitacion habitacion = new Habitacion(tipo, id, listaCamas, caracteristicas);
+		habitaciones.put(id, habitacion);
+	}
+	
+
 	public ArrayList<Habitacion> crearReserva(Date fechaI, Date fechaF, int tamanioGrupo, String[] nombres, String[] documentos, String[] emails, String[] telefonos, Integer[] ids, Integer[] edades, TipoHabitacion tipo) {
 		
 		Reserva reserva = new Reserva(fechaI, fechaF);
