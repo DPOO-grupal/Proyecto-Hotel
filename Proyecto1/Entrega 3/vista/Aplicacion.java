@@ -11,6 +11,7 @@ import java.util.Date;
 
 import controlador.Hotel;
 import modelo.Admin;
+import modelo.Cama;
 import modelo.Empleado;
 import modelo.Tarifa;
 import modelo.Usuario;
@@ -230,7 +231,23 @@ public class Aplicacion {
 	private void crearHabitacion() {
 		// TODO Auto-generated method stub
 		System.out.println("Creando habitacion...");
-		
+		boolean centinela=true;
+		System.out.println("Añadir camas");
+		ArrayList<Cama> listaCamas = new ArrayList<>();
+		while (centinela) {
+			String tipo = input("Tipo de cama");
+			int capacidadCama = num("Capacidad cama");
+			boolean apto = Boolean.parseBoolean(input("Apto para niños(true/false)"));
+			boolean añadirOtra = Boolean.parseBoolean(input("Desea añadir otra cama?(true/false)"));
+			listaCamas.add(hotel.crearCama(tipo, capacidadCama, apto));
+			centinela=añadirOtra;
+		centinela=true;
+		while (centinela) {
+			int id = num("ID cama");
+			
+			
+		}
+		}
 	}
 
 

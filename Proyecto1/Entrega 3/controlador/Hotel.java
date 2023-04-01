@@ -180,8 +180,8 @@ public class Hotel implements Serializable{
 		
 	}
 	
-	public void crearHabitacion(String tipo, int id,ArrayList<Cama> listaCamas, String caracteristicas) {
-		Habitacion habitacion = new Habitacion(tipo, id, listaCamas, caracteristicas);
+	public void crearHabitacion(TipoHabitacion tipo, int id,ArrayList<Cama> listaCamas, String caracteristicas) {
+		Habitacion habitacion = new Habitacion(tipo, listaCamas, id, caracteristicas);
 		habitaciones.put(id, habitacion);
 	}
 	

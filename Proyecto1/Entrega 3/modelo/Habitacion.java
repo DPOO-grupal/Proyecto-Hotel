@@ -11,24 +11,27 @@ public class Habitacion implements Serializable{
 	private ArrayList<Servicio> listaServicios;
 	private ArrayList<Cama> listaCamas;
 	private String caracteristicas;
-
+	private TipoHabitacion tipo;
+	
 //Constructor
-	public Habitacion(String tipo, int id,ArrayList<Cama> listaCamas, String caracteristicas) 
-	{
+	public Habitacion(TipoHabitacion tipo, ArrayList<Cama> listaCamas, int id, String caracteristicas) {
+		this.tipo=tipo;
 		this.listaCamas=listaCamas;
 		this.capacidad=getCapacidad(listaCamas);
 		this.id=id;
 		this.caracteristicas=caracteristicas;
 	}
-	
+
 //Metodos
-	public int getId () 
-	{
+	public TipoHabitacion getTipoHabitacion(TipoHabitacion tipo) {
+		return this.tipo=tipo;
+	}
+	
+	public int getId () {
 		return this.id;
 	}
 	
-	public int getCapacidad (ArrayList<Cama> listaCamas) 
-	{
+	public int getCapacidad (ArrayList<Cama> listaCamas) {
 		for (int i = 0; i < listaCamas.size(); i++) 
 		{
 			Cama cama= listaCamas.get(i);
@@ -37,13 +40,11 @@ public class Habitacion implements Serializable{
 		return capacidad;
 	}	
 	
-	public void añadirServicioHabitacion (Servicio servicio) 
-	{
+	public void añadirServicioHabitacion (Servicio servicio) {
 		listaServicios.add(servicio);
 	}
 	
-	public void añadirCamas (Cama cama) 
-	{
+	public void añadirCamas (Cama cama) {
 		listaCamas.add(cama);
 	}
 	
@@ -51,8 +52,7 @@ public class Habitacion implements Serializable{
 		return TipoHabitacion.ESTANDAR;
 	}
 	
-	public int getApto(ArrayList<Cama> listaCamas) 
-	{
+	public int getApto(ArrayList<Cama> listaCamas) {
 		int apto = 0;
 		for (int i = 0; i < listaCamas.size(); i++) 
 		{
@@ -66,8 +66,7 @@ public class Habitacion implements Serializable{
 		return apto;
 	}
 	
-	public String getCaracteristicas() 
-	{
+	public String getCaracteristicas() {
 		return this.caracteristicas;
 	}
 }
