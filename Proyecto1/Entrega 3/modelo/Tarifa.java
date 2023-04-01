@@ -121,6 +121,10 @@ public class Tarifa implements Serializable{
 		Tarifa other = (Tarifa) obj;
 		return Objects.equals(fecha, other.fecha);
 	}
+
+	public Date getFecha() {
+		return this.fecha;
+	}
 	
 	
 	

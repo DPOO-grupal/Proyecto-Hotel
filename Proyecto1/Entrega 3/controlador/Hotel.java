@@ -3,6 +3,7 @@ package controlador;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +33,7 @@ public class Hotel implements Serializable{
 	private HashMap<Integer, Habitacion> habitaciones;
 	private Restaurante restaurante;
 	private Usuario usuarioActual;
+	private Date hoy;
 	
 	
 
@@ -39,10 +41,14 @@ public class Hotel implements Serializable{
 		// TODO inicializar todas las estructuras
 		grupos = new HashMap <Integer, Grupo>();
 		usuarios = new HashMap<String, Usuario>();
+		tarifas = new TreeMap<Date, Tarifa>();
+
 		
 	}
 	
 	
+
+
 	public boolean usuarioExiste(String login) {
 		
 		boolean exist = false;
@@ -92,25 +98,62 @@ public class Hotel implements Serializable{
 		
 	}
 	
-	public void inicializarTarifas() {
-		tarifas = new TreeMap<Date, Tarifa>();
-		Date fechaI = new Date(2023, 3, 31);
-		Date fechaF = fechaI;
-		int annoI = fechaI.getYear();
-		annoI++;
-		fechaF.setYear(annoI);
+	
+	public void inicializarTarifas(){
+		// TODO promando
+		Tarifa tarifa;
+		Date fechaI;
+		Date fechaF;
+		
+		// Arbol completamente vacio
+		if (tarifas.size() == 0) {
+			fechaI = hoy;
+			fechaF = pasarAnno(hoy);
+			
+			for (Date fecha : getDateRange(fechaI, fechaF)) {
+				tarifa = new Tarifa(fecha);
+				tarifas.put(fecha, tarifa);
+			}
+		} else {
+			
+			// Llenar dias antes de los que estan en el arbol
+			fechaI = hoy;
+			fechaF = tarifas.firstKey();
+			if(fechaI.before(fechaF)) {
+				ArrayList<Date> rango = getDateRange(fechaI, fechaF);
+				for (Date fecha : rango) {
+					if (fecha.before(fechaF)) {
+						tarifa = new Tarifa(fecha);
+						tarifas.put(fecha, tarifa);
+					}
+				}
+			}
+			
+			// Llenar dias despues de los que estan en el arbol
+			fechaI = tarifas.lastKey();
+			fechaF = pasarAnno(hoy);
+			if (fechaI.before(fechaF)) {
+				for (Date fecha : getDateRange(fechaI, fechaF)) {
+					if (fecha.before(fechaF)) {
+						tarifa = new Tarifa(fecha);
+						tarifas.put(fecha, tarifa);
+					}
+				}
+			}
+		}
+		
 		
 		
 		
 	}
 	
-	public ArrayList<Tarifa> checkTarifas(Date fechaI, Date fechaF) {
+	public ArrayList<Tarifa> checkTarifas() {
+		Date fechaF = pasarAnno(hoy);
 		boolean completo;
 		ArrayList<Tarifa> faltantes = new ArrayList<Tarifa>();
-		SortedMap<Date, Tarifa> rangoTarifas = tarifas.subMap(fechaI, fechaF);
-		
+		SortedMap<Date, Tarifa> rangoTarifas = tarifas.subMap(hoy, fechaF);
 		for (Tarifa tarifa : rangoTarifas.values()) {
-			
+
 			completo = tarifa.completo();
 			
 			if (!completo) {
@@ -201,21 +244,29 @@ public class Hotel implements Serializable{
 	
     public ArrayList<Date> getDateRange(Date start, Date end) {
         ArrayList<Date> rango = new ArrayList<Date>();
-        Date fechaI = start;
+        Date fechaI = (Date) start.clone();
+
         while(fechaI.before(end) || fechaI.equals(end)) {
             rango.add(fechaI); 
             fechaI = pasarDia(fechaI);
         }
+        
         return rango;
     }
 	
-	private Date pasarDia(Date start) {
-		Date end = start;
-		int diaI = start.getDate();
-		diaI++;
-		end.setDate(diaI);
-		return end;
-	}
+    private Date pasarDia(Date start) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(start);
+        cal.add(Calendar.DAY_OF_MONTH, 1);
+        return cal.getTime();
+    }
+	
+    private Date pasarAnno(Date start) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(start);
+        cal.add(Calendar.YEAR, 1);
+        return cal.getTime();
+    }
 
 
 	public void cargarInformacion() {
@@ -230,11 +281,10 @@ public class Hotel implements Serializable{
 			e.printStackTrace();
 		}
 				
-		System.out.println(hotelDatos);
 		if (hotelDatos != null) {
 			data(hotelDatos);
 		} else {
-			
+			inicializarTarifas();
 			añadirUsuario("root", "Cookie", 1);
 		}
 		
@@ -262,10 +312,10 @@ public class Hotel implements Serializable{
 	
 	public void guardarInformacion() {
 		Hotel hotel = new Hotel();
+		hotel.setHoy(hoy);
 		hotel.data(this);
 		try {
 			datos.abrirOutput();
-			
 			datos.escribir(hotel);
 			datos.cerrarOutput();
 			
@@ -318,6 +368,7 @@ public class Hotel implements Serializable{
 
 	public void setTarifas(TreeMap<Date, Tarifa> tarifas) {
 		this.tarifas = tarifas;
+		inicializarTarifas();
 	}
 
 	public void setUsuarios(HashMap<String, Usuario> usuarios) {
@@ -340,6 +391,14 @@ public class Hotel implements Serializable{
 	}
 
 
+	public Date getHoy() {
+		return hoy;
+	}
+	
+	
+	public void setHoy(Date hoy) {
+		this.hoy = hoy;
+	}
 
 
 }
