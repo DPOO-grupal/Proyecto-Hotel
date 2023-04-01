@@ -11,39 +11,40 @@ public class Habitacion implements Serializable{
 	private ArrayList<Servicio> listaServicios;
 	private ArrayList<Cama> listaCamas;
 	private String caracteristicas;
-
+	private TipoHabitacion tipo;
+	
 //Constructor
-	public Habitacion(String tipo, int id,ArrayList<Cama> listaCamas, String caracteristicas) 
-	{
-		this.listaCamas=listaCamas;
-		this.capacidad=getCapacidad(listaCamas);
+	public Habitacion(TipoHabitacion tipo, int id, ArrayList<Cama> listaCamas, ArrayList<Servicio> listaServicios,  String caracteristicas) {
+		this.tipo=tipo;
 		this.id=id;
+		this.listaCamas=listaCamas;
+		this.listaServicios=listaServicios;
+		this.capacidad=getCapacidad(listaCamas);
 		this.caracteristicas=caracteristicas;
 	}
-	
+
 //Metodos
-	public int getId () 
-	{
+	public TipoHabitacion getTipoHabitacion() {
+		return this.tipo;
+	}
+	
+	public int getId () {
 		return this.id;
 	}
 	
-	public int getCapacidad (ArrayList<Cama> listaCamas) 
-	{
-		for (int i = 0; i < listaCamas.size(); i++) 
-		{
+	public int getCapacidad (ArrayList<Cama> listaCamas) {
+		for (int i = 0; i < listaCamas.size(); i++) {
 			Cama cama= listaCamas.get(i);
 			capacidad += cama.getCapacidadCama();
 		}
 		return capacidad;
 	}	
 	
-	public void añadirServicioHabitacion (Servicio servicio) 
-	{
+	public void añadirServicioHabitacion (Servicio servicio) {
 		listaServicios.add(servicio);
 	}
 	
-	public void añadirCamas (Cama cama) 
-	{
+	public void añadirCamas (Cama cama) {
 		listaCamas.add(cama);
 	}
 	
@@ -51,11 +52,9 @@ public class Habitacion implements Serializable{
 		return TipoHabitacion.ESTANDAR;
 	}
 	
-	public int getApto(ArrayList<Cama> listaCamas) 
-	{
+	public int getApto(ArrayList<Cama> listaCamas) {
 		int apto = 0;
-		for (int i = 0; i < listaCamas.size(); i++) 
-		{
+		for (int i = 0; i < listaCamas.size(); i++) {
 			boolean cama = listaCamas.get(i).getAptoParaNiño();
 			if (cama==true) 
 			{
@@ -66,8 +65,7 @@ public class Habitacion implements Serializable{
 		return apto;
 	}
 	
-	public String getCaracteristicas() 
-	{
+	public String getCaracteristicas() {
 		return this.caracteristicas;
 	}
 }

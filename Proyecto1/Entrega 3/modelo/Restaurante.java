@@ -9,34 +9,27 @@ public class Restaurante implements Serializable{
 	private ArrayList<ProductoMenu> menu;
 	
 //Constructor
-	public Restaurante() 
-	{
+	public Restaurante() {
 		this.menu = new ArrayList<ProductoMenu>();
 	}
 	
-	public void añadirProducto(ProductoMenu producto) 
-	{
+	public void añadirProducto(ProductoMenu producto) {
 		menu.add(producto);
 	}
 	
-	public void quitarProducto(ProductoMenu producto) 
-	{
-		for (int i = 0; i < menu.size(); i++) 
-		{
-			if (producto.equals(menu.get(i))) 
-			{
+	public void quitarProducto(ProductoMenu producto) {
+		for (int i = 0; i < menu.size(); i++) {
+			if (producto.equals(menu.get(i))) {
 				menu.remove(i);
 			}
 		}
 	}
 	
-	public ArrayList<ProductoMenu> getMenu()
-	{
+	public ArrayList<ProductoMenu> getMenu(){
 		return this.menu;
 	}
 	
-	public ProductoMenu getProducto(int id) 
-	{
+	public ProductoMenu getProducto(int id) {
 		return menu.get(id);	
 	}
 	

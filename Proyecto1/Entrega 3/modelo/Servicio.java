@@ -11,8 +11,7 @@ public class Servicio implements Serializable{
 	private static int numServicios;
 	
 //Constructor
-	public Servicio(String nombre, double precio) 
-	{
+	public Servicio(String nombre, double precio) {
 		this.nombre = nombre;
 		this.precio = precio;
 		this.id = numServicios;
@@ -20,23 +19,19 @@ public class Servicio implements Serializable{
 	}
 
 //Metodos
-	public static void setNumServicios(int numServicios) 
-	{
+	public static void setNumServicios(int numServicios) {
 		Servicio.numServicios = numServicios;
 	}
 	
-	public String getNombre() 
-	{
+	public String getNombre() {
 		return this.nombre;
 	}
 	
-	public double getPrecio() 
-	{
+	public double getPrecio() {
 		return this.precio;
 	}
 	
-	public int getId() 
-	{
+	public int getId() {
 		return this.id;
 	}
 }

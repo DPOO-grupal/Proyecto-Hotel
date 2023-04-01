@@ -11,7 +11,9 @@ import java.util.Date;
 
 import controlador.Hotel;
 import modelo.Admin;
+import modelo.Cama;
 import modelo.Empleado;
+import modelo.Servicio;
 import modelo.Tarifa;
 import modelo.TipoHabitacion;
 import modelo.Usuario;
@@ -190,8 +192,11 @@ public class Aplicacion {
 		case 2:
 			CrearTarifa(admin);
 			break;
+		case 3:
+			crearServicio(admin);
+			break;
 		case 4:
-			crearHabitacion();
+			crearHabitacion(admin);
 			break;
 
 		default:
@@ -252,12 +257,53 @@ public class Aplicacion {
 	    String fechaString = sdf.format(fecha);
 		return fechaString;
 	}
-
 	
-	private void crearHabitacion() {
-		// TODO Auto-generated method stub
-		System.out.println("Creando habitacion...");
+	public void crearServicio(Admin admin) {
+		System.out.println("Creando servicio...");
+		boolean centinela = true;
+		while (centinela) {
+			String nombre = input("Nombre servicio");
+			double precio = getDouble("Precio");
+			admin.crearServicio(nombre, precio);
+			centinela = getboolean("Desea añadir otra servicio?(true/false)");
+		}
+	}
+	
+	public void añadirServicioHabitacion(Admin admin) {
 		
+	}
+	
+	
+	private void crearHabitacion(Admin admin) {
+		System.out.println("Creando habitacion...");
+		boolean centinela1=true;
+		while (centinela1) {
+			TipoHabitacion tipoHabitacion = getTipoHabitacion("Tipo habitacion");
+			int id = num("ID habitacion");
+			//TODO listaServicios
+			
+			System.out.println("Añadir camas");
+			ArrayList<Cama> listaCamas = new ArrayList<>();
+			boolean centinela2=true;
+			while (centinela2) {
+				String tipoCama = input("Tipo de cama");
+				int capacidadCama = num("Capacidad cama");
+				boolean apto = getboolean("Apto para niños(true/false)");
+				listaCamas.add(admin.crearCama(tipoCama, capacidadCama, apto));
+				centinela2 = getboolean("Desea añadir otra cama?(true/false)");
+			}
+			System.out.println("Añadir servicios");
+			ArrayList<Servicio> listaServicios = new ArrayList<>();
+			boolean centinela3=true;
+			while (centinela3) {
+				centinela3 = getboolean("Desea añadir otra servicio?(true/false)");
+			
+			String caracteristicas = input("Caracteristicas");
+			admin.crearHabitacion(tipoHabitacion, id, listaCamas, listaServicios, caracteristicas);
+			centinela1 = getboolean("Desea añadir otra habitacion?(true/false)");
+
+		}
+		}
 	}
 
 
@@ -292,8 +338,7 @@ public class Aplicacion {
 
 	}
 	
-	
-	public double numDouble(String mensaje) {
+	public double getDouble(String mensaje) {
 		double num = -1;
 		boolean right;
 		do {
@@ -310,12 +355,9 @@ public class Aplicacion {
 
 	}
 	
-	
 	public Date getDate(String mensaje) {
-		Date dia = null;
 		boolean right;
-		do {
-			
+		do{
 			String diaString = input(mensaje + " (dd/MM/yyyy)");
 			DateFormat DFormat = new SimpleDateFormat("dd/MM/yyyy");
 

@@ -9,26 +9,22 @@ public class Cama {
 	
 	
 //Constructor
-	public Cama(String tipo, int capacidadCama, boolean aptoParaNiño) 
-	{
+	public Cama(String tipo, int capacidadCama, boolean aptoParaNiño) {
 		this.tipo=tipo;
 		this.capacidadCama=capacidadCama;
 		this.aptoParaNiño=aptoParaNiño;
 	}
 
 //Metodos
-	public String getTipo() 
-	{
+	public String getTipo() {
 		return this.tipo;
 	}
 	
-	public int getCapacidadCama() 
-	{
+	public int getCapacidadCama() {
 		return this.capacidadCama;
 	}
 	
-	public boolean getAptoParaNiño() 
-	{
+	public boolean getAptoParaNiño() {
 		return this.aptoParaNiño;
 	}
 }
