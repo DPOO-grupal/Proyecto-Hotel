@@ -164,12 +164,24 @@ public class Hotel implements Serializable{
 		return faltantes;
 	}
 	
-	public void crearTarifa(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor) {
+	public ArrayList<Tarifa> crearTarifa(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor) {
 		SortedMap<Date, Tarifa> rangoTarifas = tarifas.subMap(fechaI, fechaF);
+		boolean completo;
+		ArrayList<Tarifa> faltantes = new ArrayList<Tarifa>();
 		
 		for (Tarifa tarifa : rangoTarifas.values()) {
 			tarifa.updatePrecio(tipo, valor);
+			
+			completo = tarifa.completo();
+			
+			if (!completo) {
+				faltantes.add(tarifa); 
+			}
+			
 		}
+		
+		
+		return faltantes;
 	}
 	
 	

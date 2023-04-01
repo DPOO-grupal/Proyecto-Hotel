@@ -188,7 +188,7 @@ public class Aplicacion {
 
 			break;
 		case 2:
-			CrearTarifa();
+			CrearTarifa(admin);
 			break;
 		case 4:
 			crearHabitacion();
@@ -200,18 +200,39 @@ public class Aplicacion {
 
 	}
 	
-	public void CrearTarifa() {
-		ArrayList<Tarifa> faltantes = hotel.checkTarifas();
+	public void CrearTarifa(Admin admin) {
 		
-		if (faltantes.size() > 0) {
-			System.out.println("Faltan la siguientes Tarifas para los tipos de Habitación");
-			for (Tarifa tarifa : faltantes) {
-				System.out.println(tarifa.getFaltantes().toString() + " " + formatoFecha(tarifa.getFecha()));
-			}		
-		}
+		boolean verFaltantes = true;
+		boolean añadir;
 		
-		getDate("ingrese fecha inicial de la tarifa");
-		getDate("ingrese fecha fiinal de la tarifa");
+		do {
+			if (verFaltantes) {
+				ArrayList<Tarifa> faltantes = hotel.checkTarifas();
+				if (faltantes.size() > 0) {
+					System.out.println("Faltan la siguientes Tarifas para los tipos de Habitación");
+					for (Tarifa tarifa : faltantes) {
+						System.out.println(tarifa.getFaltantes().toString() + " " + formatoFecha(tarifa.getFecha()));
+					}		
+				}
+			}
+			
+			Date fechaI = getDate("ingrese fecha inicial de la tarifa");
+			Date fechaF = getDate("ingrese fecha fiinal de la tarifa");
+			TipoHabitacion tipo = getTipoHabitacion("Ingrse el tipo de habitahocion");
+			double precio = numDouble("Ingrese el precio de la habitacion");
+			ArrayList<Tarifa> faltantesRango = admin.crearTarifa(fechaI, fechaF, tipo, precio);
+			
+			if (faltantesRango.size() > 0) {
+				System.out.println(" En ese rango faltan la siguientes Tarifas para los tipos de Habitación");
+				for (Tarifa tarifa : faltantesRango) {
+					System.out.println(tarifa.getFaltantes().toString() + " " + formatoFecha(tarifa.getFecha()));
+				}		
+			}
+		
+		añadir = getboolean("¿Desea añadir otra tarifa?");
+		verFaltantes = getboolean("¿Desea ver todas las tarifas Faltantes?");
+		
+		}while(añadir);
 		
 		
 	}
@@ -270,6 +291,25 @@ public class Aplicacion {
 		return num;
 
 	}
+	
+	
+	public double numDouble(String mensaje) {
+		double num = -1;
+		boolean right;
+		do {
+			try {
+				num = Double.parseDouble(input(mensaje));
+				right = false;
+			} catch (NumberFormatException e) {
+				System.out.println("Debe ingresar un números.");
+				right = true;
+			} 
+		}while (right);
+			
+		return num;
+
+	}
+	
 	
 	public Date getDate(String mensaje) {
 		Date dia = null;
@@ -348,7 +388,7 @@ public class Aplicacion {
 			case 2:
 				valor = false;
 				right = false;
-
+				break;
 			default:
 				input("Debe selecionar una de las opciones");
 				right = true;
