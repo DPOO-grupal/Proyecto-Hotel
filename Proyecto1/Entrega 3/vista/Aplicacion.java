@@ -26,12 +26,6 @@ public class Aplicacion {
 		setDay();
 		
 		hotel.cargarInformacion();
-		
-		ArrayList<Tarifa> faltantes = hotel.checkTarifas();
-
-		for (Tarifa tarifa : faltantes) {
-			System.out.println(tarifa.getFaltantes().toString() + " " + tarifa.getFecha());
-		}
 
 		Usuario usuarioActual = null;
 		continuar = true;
@@ -78,8 +72,8 @@ public class Aplicacion {
 		boolean right;
 		do {
 			
-			String diaString = input("Intrese el dia de hoy (yyyy-mm-dd)");
-			DateFormat DFormat = new SimpleDateFormat("yyyy-MM-dd");
+			String diaString = input("Intrese el dia de hoy (dd/MM/yyyy)");
+			DateFormat DFormat = new SimpleDateFormat("dd/MM/yyyy");
 
 			try {
 				dia = DFormat.parse(diaString);
@@ -185,6 +179,9 @@ public class Aplicacion {
 
 	private void ejecutarOpcionAdmin(Admin admin, int opcionSeleccionada) {
 		// TODO Ejecutar las opciones del Admin
+		
+		tarifasFaltantes();
+		
 		switch (opcionSeleccionada) {
 		case 0:
 			admin.cerrarSesion();
@@ -210,6 +207,19 @@ public class Aplicacion {
 			break;
 		}
 
+	}
+	public void tarifasFaltantes() {
+		ArrayList<Tarifa> faltantes = hotel.checkTarifas();
+
+		for (Tarifa tarifa : faltantes) {
+			System.out.println(tarifa.getFaltantes().toString() + " " + formatoFecha(tarifa.getFecha()));
+		}
+	}
+	
+	public String formatoFecha(Date fecha) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	    String fechaString = sdf.format(fecha);
+		return fechaString;
 	}
 
 	public String input(String mensaje) {
