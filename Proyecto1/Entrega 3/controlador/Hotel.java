@@ -7,12 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import javax.sql.RowSetReader;
-import javax.swing.text.GapContent;
 
 import modelo.*;
 
@@ -44,7 +40,8 @@ public class Hotel implements Serializable{
 		grupos = new HashMap <Integer, Grupo>();
 		usuarios = new HashMap<String, Usuario>();
 		tarifas = new TreeMap<Date, Tarifa>();
-
+		habitaciones = new HashMap<Integer, Habitacion>();
+		restaurante= new Restaurante();
 		
 	}
 	
@@ -166,33 +163,60 @@ public class Hotel implements Serializable{
 		return faltantes;
 	}
 	
-	public void crearTarifa(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor) {
+	public ArrayList<Tarifa> crearTarifa(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor) {
 		SortedMap<Date, Tarifa> rangoTarifas = tarifas.subMap(fechaI, fechaF);
+		boolean completo;
+		ArrayList<Tarifa> faltantes = new ArrayList<Tarifa>();
 		
 		for (Tarifa tarifa : rangoTarifas.values()) {
 			tarifa.updatePrecio(tipo, valor);
+			
+			completo = tarifa.completo();
+			
+			if (!completo) {
+				faltantes.add(tarifa); 
+			}
+			
 		}
+		
+		
+		return faltantes;
 	}
 	
-	public void crearServicio(String nombre, double precio) {
+	public void crearServicioHotel(String nombre, double precio) {
 		Servicio servicio = new Servicio(nombre, precio);
 		serviciosHotel.put(servicio.getId(), servicio);
 	}
 
-	public void añadirServicioHabitacion(int id, Servicio servicio) {
+	public void crearServicioHabitacion(String nombre, double precio) {
+		
+	}
+	
+	public void setCaracteristicas(String caracteristicas, int id) {
 		Habitacion habitacion =	habitaciones.get(id);
+		habitacion.setCaracteristicas(caracteristicas);;
+		habitaciones.put(id, habitacion);
+		
+	}
+	
+	public void añadirServicioHabitacion(int id, String nombre, double precio) {
+		Habitacion habitacion =	habitaciones.get(id);
+		Servicio servicio = new Servicio(nombre, precio);
 		habitacion.añadirServicioHabitacion(servicio);
+		habitaciones.put(id, habitacion);
 	}
 	
 	
-	public Cama crearCama(String tipo, int capacidadCama, boolean aptoParaNiño) {
-		Cama cama = new Cama(tipo, capacidadCama, aptoParaNiño);
-		return cama;	
+	public void crearCama(int id, int capacidadCama, boolean aptoParaNiño) {
+		Habitacion habitacion =	habitaciones.get(id);
+		Cama cama = new Cama(capacidadCama, aptoParaNiño);
+		habitacion.añadirCamas(cama);
+		habitaciones.put(id, habitacion);	
 	}
 	
 	
-	public void crearHabitacion(TipoHabitacion tipo, int id,ArrayList<Cama> listaCamas, ArrayList<Servicio> listaServicios, String caracteristicas) {
-		Habitacion habitacion = new Habitacion(tipo, id, listaCamas, listaServicios, caracteristicas);
+	public void crearHabitacion(TipoHabitacion tipo, int id) {
+		Habitacion habitacion = new Habitacion(tipo, id);
 		habitaciones.put(id, habitacion);
 	}
 	
@@ -264,6 +288,15 @@ public class Hotel implements Serializable{
 			mapa.put(idHabitacion, idGrupo);
 			ocupados.put(fecha, mapa);
 		}
+	}
+	
+	public void crearProductoMenu(Date horario, boolean llevable,String nombre, double precio) {
+		ProductoMenu productoMenu = new ProductoMenu(horario, llevable, nombre, precio);
+		restaurante.añadirProducto(productoMenu);
+	}
+	
+	public void añadirProductoRestaurante(ProductoMenu productoMenu) {
+		restaurante.añadirProducto(productoMenu);
 	}
 	
 	
@@ -424,6 +457,10 @@ public class Hotel implements Serializable{
 	public void setHoy(Date hoy) {
 		this.hoy = hoy;
 	}
+
+
+
+
 
 
 }

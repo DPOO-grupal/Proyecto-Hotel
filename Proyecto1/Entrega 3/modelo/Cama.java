@@ -1,25 +1,21 @@
 package modelo;
 
-public class Cama {
+import java.io.Serializable;
+
+public class Cama implements Serializable{
 	
 //Atributos	
-	private String tipo;
 	private int capacidadCama;
 	private boolean aptoParaNiño;
 	
 	
 //Constructor
-	public Cama(String tipo, int capacidadCama, boolean aptoParaNiño) {
-		this.tipo=tipo;
+	public Cama(int capacidadCama, boolean aptoParaNiño) {
 		this.capacidadCama=capacidadCama;
 		this.aptoParaNiño=aptoParaNiño;
 	}
 
 //Metodos
-	public String getTipo() {
-		return this.tipo;
-	}
-	
 	public int getCapacidadCama() {
 		return this.capacidadCama;
 	}
