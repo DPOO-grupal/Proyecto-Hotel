@@ -2,6 +2,7 @@ package modelo;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Admin extends Usuario {
 	
@@ -12,10 +13,48 @@ public class Admin extends Usuario {
 	public void añadirUsuario(String login, String password, int tipo) {
 		hotel.añadirUsuario(login, password, tipo);
 	}
+
+// INICIO TARIFAS ---------------------------------------------
 	
-	public ArrayList<Tarifa> crearTarifa(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor) {
-		return hotel.crearTarifa(fechaI, fechaF, tipo, valor);
+	public boolean tarifasCompletas() {
+		return checkTarifas().size() == 0;
 	}
+
+	
+	public ArrayList<Tarifa> checkTarifas() {
+		return hotel.checkTarifas();
+	}
+	
+	public void crearTarifa(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor) {
+		hotel.crearTarifa(fechaI, fechaF, tipo, valor);
+	}
+	
+	public ArrayList<Tarifa> consultarTarifas(Date fechaI, Date fechaF) {
+		return hotel.consultarTarifas(fechaI, fechaF);
+	}
+// FIN TARIFAS ----------------------------------------------
+
+// INICIO RESERVAS ------------------------------------------
+
+	public HashMap<Integer,Grupo> mostrarReservas(Date fechaI, Date fechaF) {
+		return hotel.mostrarReservas(fechaI, fechaF); 
+		
+	}
+	
+	public ArrayList<Habitacion> crearReserva(Date fechaI, Date fechaF, int tamanioGrupo, String[] nombres, String[] documentos, String[] emails, String[] telefonos, int[] edades, TipoHabitacion tipo) {
+		return hotel.crearReserva(fechaI, fechaF, tamanioGrupo, nombres, documentos, emails, telefonos, edades, tipo);
+	}
+	
+	public boolean completarReserva(int idHabitacion) {
+		return hotel.completarReserva(idHabitacion);
+	}
+	
+	public double getPrecioHabitacionReserva(Habitacion habitacion) {
+		return hotel.getPrecioHabitacionReserva(habitacion);
+	}
+	
+// FIN RESERVAS ---------------------------------------------
+
 
 	public void crearServicioHotel(String nombre, double precio) {
 		hotel.crearServicioHotel(nombre, precio);
@@ -36,4 +75,7 @@ public class Admin extends Usuario {
 	public void setCaracteristicasHabitacion(String habitacion, int id) {
 		hotel.setCaracteristicas(habitacion, id);
 	}
+
+
+
 }
