@@ -12,6 +12,8 @@ public class Grupo implements Serializable{
 	private ArrayList<Servicio> listaServicios = new ArrayList<Servicio>();
 	private int vReal;
 	private int vRelativo;
+	private int capacidadCamas;
+
 	private Reserva reserva;
 	
 	public Grupo(ArrayList<Huesped> huespedes, Reserva reserva) {
@@ -39,6 +41,11 @@ public class Grupo implements Serializable{
 
 	public static void setNumGrupo(int numGrupo) {
 		Grupo.numGrupo = numGrupo;
+	}
+	
+	public void añadirHabitacion(int id, int capacidad) {
+		listaHabitaciones.add(id);
+		capacidadCamas += capacidad;
 	}
 
 	public int getId() {
@@ -79,5 +86,9 @@ public class Grupo implements Serializable{
 
 	public void setListaServicios(ArrayList<Servicio> listaServicios) {
 		this.listaServicios = listaServicios;
+	}
+	
+	public int getCapacidadCamas() {
+		return capacidadCamas;
 	}
 }
