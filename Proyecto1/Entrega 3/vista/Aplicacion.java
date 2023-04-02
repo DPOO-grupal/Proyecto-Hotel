@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.SortedMap;
 import java.util.HashMap;
@@ -14,9 +15,11 @@ import java.util.HashMap;
 import controlador.Hotel;
 import modelo.Admin;
 import modelo.Empleado;
+import modelo.Grupo;
 import modelo.ProductoMenu;
 import modelo.Servicio;
 import modelo.Habitacion;
+import modelo.Huesped;
 import modelo.Tarifa;
 import modelo.TipoHabitacion;
 import modelo.Usuario;
@@ -270,7 +273,7 @@ public class Aplicacion {
 		ArrayList<Tarifa> faltantes = admin.checkTarifas();
 		System.out.println(faltantes.size());
 		if (faltantes.size() > 0) {
-			System.out.println("Faltan la siguientes Tarifas para los tipos de Habitación");
+			System.out.println("Faltan crear las siguientes Tarifas para los tipos de Habitación");
 			for (Tarifa tarifa : faltantes) {
 				System.out.println(tarifa.getFaltantes().toString() + " " + formatoFecha(tarifa.getFecha()));
 			}		
@@ -279,19 +282,39 @@ public class Aplicacion {
 		}
 	}
 	
-	public void consultarTarifas(Admin admin) {
+	public void consultarTarifas(Empleado empleado) {
 		Date fechaI = getDate("ingrese fecha inicial de la tarifa");
 		Date fechaF = getDate("ingrese fecha final de la tarifa");
 		
-		mostarTarifasRango(admin, fechaI, fechaF);		
+		mostarTarifasRango(empleado, fechaI, fechaF);		
 		
 	}
 	
-	public void mostarTarifasRango(Admin admin, Date fechaI, Date fechaF) {
-		ArrayList<Tarifa> rangoTarifas = admin.consultarTarifas(fechaI, fechaF);
-
+	public void mostarTarifasRango(Empleado empleado, Date fechaI, Date fechaF) {
+		Collection<Tarifa> rangoTarifas = empleado.consultarTarifas(fechaI, fechaF);
+		double precio;
 		for (Tarifa tarifa : rangoTarifas) {
-			System.out.println(tarifa.getFaltantes().toString() + " " + formatoFecha(tarifa.getFecha()));
+			System.out.println(formatoFecha(tarifa.getFecha()));
+			
+			precio = tarifa.getPrecio(TipoHabitacion.ESTANDAR);
+			if (precio > 0) {
+				System.out.println("Estandar: $" + precio);
+
+			}
+			precio = tarifa.getPrecio(TipoHabitacion.SUITE);
+			if (precio > 0) {
+				System.out.println("Suite: $" + precio);
+
+			}
+			precio = tarifa.getPrecio(TipoHabitacion.SUITEDOUBLE);
+			if (precio > 0) {
+				System.out.println("Suite Double: $" + precio);
+
+			}
+			
+			System.out.println("");
+			
+
 		}	
 	}
 	
@@ -337,7 +360,7 @@ public class Aplicacion {
 	
 // INICIO RESERVAS ------------------------------------------
 	
-public void menuReservasAdmin(Admin admin) {
+	public void menuReservasAdmin(Admin admin) {
 	boolean continuarTarifa = true;
 	System.out.println("\n-------- RESERVAS --------");
 	System.out.println("1. Consular Reserva por rango de fechas ");
@@ -371,8 +394,19 @@ public void menuReservasAdmin(Admin admin) {
 	} while(continuarTarifa);
 }	
 
-	private void cancelarReserva(Admin admin) {
+	private void cancelarReserva(Empleado empleado) {
 		
+		mostrarReservas(empleado);
+		
+		int id = num("Ingrese Identificador de la Reserva");
+		
+		boolean cancelada = empleado.cancelarReserva(id);
+		
+		if(cancelada) {
+			System.out.println("La reserva fue cancelada");
+		} else {
+			System.out.println("La reserva ya no puede ser cancelada");
+		}
 	
 }
 	private void llenarReserva(Admin admin) {
@@ -438,10 +472,20 @@ public void menuReservasAdmin(Admin admin) {
 		admin.crearReserva(fechaI, fechaF, tamañoGrupo, nombres, documentos, emails, telefonos, edades);
 		
 	}
-	private void mostrarReservas(Admin admin) {
-		Date fechaI = getDate("ingrese fecha inicial de la tarifa");
-		Date fechaF = getDate("ingrese fecha final de la tarifa");
-		admin.mostrarReservas(fechaI, fechaF);
+	private void mostrarReservas(Empleado empleado) {
+		Date fechaI = getDate("ingrese fecha inicial de la reserva");
+		Date fechaF = getDate("ingrese fecha final de la reserva");
+		HashMap<Integer,Grupo> reservas = empleado.mostrarReservas(fechaI, fechaF);
+		Huesped lider;
+		for (Grupo grupo : reservas.values()) {
+			lider = grupo.getLider();
+			System.out.println("\nIdentificador de reserva: " + grupo.getId());
+			System.out.println("Lider del grupo:");
+			System.out.println("Nombre: " + lider.getNombre());
+			System.out.println("Numero de documento: " + lider.getDocumento());
+		}
+		System.out.println("\n");
+		
 	}
 	
 	

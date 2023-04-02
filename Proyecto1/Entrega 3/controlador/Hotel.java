@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -151,16 +152,18 @@ public class Hotel implements Serializable{
 
 
 
-	public ArrayList<Tarifa> consultarTarifas(Date fechaI, Date fechaF) {
+	public Collection<Tarifa> consultarTarifas(Date fechaI, Date fechaF) {
+		fechaF = pasarDia(fechaF);
 		SortedMap<Date, Tarifa> rangoTarifas = tarifas.subMap(fechaI, fechaF);		
 		
-		return (ArrayList<Tarifa>) rangoTarifas.values();
+		return rangoTarifas.values();
 	}
 	
 	public ArrayList<Tarifa> checkTarifas() {
 		Date fechaF = pasarAnno(hoy);
 		boolean completo;
 		ArrayList<Tarifa> faltantes = new ArrayList<Tarifa>();
+		fechaF = pasarDia(fechaF);
 		SortedMap<Date, Tarifa> rangoTarifas = tarifas.subMap(hoy, fechaF);
 		for (Tarifa tarifa : rangoTarifas.values()) {
 
@@ -175,7 +178,7 @@ public class Hotel implements Serializable{
 	
 	public boolean crearTarifa(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor) {
 		boolean completado = true;
-		
+		fechaF = pasarDia(fechaF);
 		SortedMap<Date, Tarifa> rangoTarifas = tarifas.subMap(fechaI, fechaF);
 		
 		for (Tarifa tarifa : rangoTarifas.values()) {
@@ -229,7 +232,7 @@ public class Hotel implements Serializable{
 		HashMap<Integer,Grupo> resultado = new HashMap<Integer,Grupo>();
 		Grupo grupo;
 		Reserva reserva;
-		
+		fechaF = pasarDia(fechaF);
 		SortedMap<Date, HashMap<Integer, Integer>> rangoTarifas = ocupados.subMap(fechaI, fechaF);
 		
 		for (HashMap<Integer, Integer> mapa : rangoTarifas.values()) {
@@ -257,6 +260,29 @@ public class Hotel implements Serializable{
 				
 	}
 	
+	public boolean cancelarReserva(int id) {
+		Grupo grupo = grupos.get(id);
+		Date fechaI = grupo.getReserva().getFechaI();
+		boolean cancelada = false;
+		
+		// 48 horas, dos dias
+		
+		fechaI = volverDia(fechaI);
+		fechaI = volverDia(fechaI);
+		
+		if(hoy.before(fechaI)) {
+			grupos.remove(id);
+			cancelada = true;
+			
+		}
+		return cancelada;
+				
+	}
+
+
+
+
+
 	private ArrayList<Huesped> crearHuespedes(int tamanioGrupo, String[] nombres, String[] documentos, String[] emails, String[] telefonos, int[] edades) {
 		ArrayList<Huesped> huespedes = new ArrayList<Huesped>();
 		for(int i=0; i < tamanioGrupo; i++) {
@@ -268,7 +294,7 @@ public class Hotel implements Serializable{
 	
 	private ArrayList<Habitacion> consultarDisponibilidad (Date FechaI, Date FechaF, TipoHabitacion tipo) {
 		ArrayList<Habitacion> habLista = new ArrayList<Habitacion>();
-		
+		FechaF = pasarDia(FechaF);
 		SortedMap<Date, HashMap<Integer, Integer>> filtrado =  ocupados.subMap(FechaI, FechaF);
 		
 		for (Entry<Integer, Habitacion> kv : habitaciones.entrySet()) {
@@ -374,6 +400,14 @@ public class Hotel implements Serializable{
         cal.add(Calendar.DAY_OF_MONTH, 1);
         return cal.getTime();
     }
+    
+	
+	private Date volverDia(Date end) {
+		Calendar cal = Calendar.getInstance();
+        cal.setTime(end);
+        cal.add(Calendar.DAY_OF_MONTH, -1);
+        return cal.getTime();
+	}
 	
     private Date pasarAnno(Date start) {
         Calendar cal = Calendar.getInstance();

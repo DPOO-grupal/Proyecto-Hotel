@@ -1,10 +1,11 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
-public class Admin extends Usuario {
+public class Admin extends Empleado {
 	
 	public Admin(String login, String password) {
 		super(login, password);
@@ -29,22 +30,10 @@ public class Admin extends Usuario {
 		return hotel.crearTarifa(fechaI, fechaF, tipo, valor);
 	}
 	
-	public boolean cancelarReserva() {
-		return false;
-		
-	}
 	
-	public ArrayList<Tarifa> consultarTarifas(Date fechaI, Date fechaF) {
-		return hotel.consultarTarifas(fechaI, fechaF);
-	}
 // FIN TARIFAS ----------------------------------------------
 
 // INICIO RESERVAS ------------------------------------------
-
-	public HashMap<Integer,Grupo> mostrarReservas(Date fechaI, Date fechaF) {
-		return hotel.mostrarReservas(fechaI, fechaF); 
-		
-	}
 	
 	public void crearReserva(Date fechaI, Date fechaF, int tamanioGrupo, String[] nombres, String[] documentos, String[] emails, String[] telefonos, int[] edades) {
 		hotel.crearReserva(fechaI, fechaF, tamanioGrupo, nombres, documentos, emails, telefonos, edades);
