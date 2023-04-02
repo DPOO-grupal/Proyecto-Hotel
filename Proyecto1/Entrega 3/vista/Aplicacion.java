@@ -8,10 +8,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import controlador.Hotel;
 import modelo.Admin;
 import modelo.Empleado;
+import modelo.ProductoMenu;
+import modelo.Servicio;
 import modelo.Tarifa;
 import modelo.TipoHabitacion;
 import modelo.Usuario;
@@ -260,73 +263,96 @@ public class Aplicacion {
 	}
 	
 	public void crearServicioHotel(Admin admin) {
-		System.out.println("Creando servicio hotel...");
+		HashMap<Integer,Servicio> listaServicios = admin.getServiciosHotel();
+		if (!(listaServicios.isEmpty())) {
+			System.out.println("\nServicios");
+			for (int i = 0; i < listaServicios.size(); i++) {
+				Servicio servicio = listaServicios.get(i);
+				String nombre = servicio.getNombre();
+				System.out.println(nombre + " (" + i + ")");
+			}
+		}
+		System.out.println("\nCreando servicio hotel...");
 		boolean centinela = true;
 		while (centinela) {
 			String nombre = input("Nombre servicio");
 			double precio = getDouble("Precio");
 			admin.crearServicioHotel(nombre, precio);
-			centinela = getboolean("Desea añadir otra servicio?(true/false)");
+			centinela = getboolean("\n¿Desea añadir otro servicio?");
 		}
 	}
 	
 	public void añadirServicioHabitacion(Admin admin, int id) {
-		System.out.println("Creando servicio habitacion...");
+		System.out.println("\nCreando servicio habitacion...");
 		boolean centinela = true;
 		while (centinela) {
 			String nombre = input("Nombre servicio habitacion");
 			double precio = getDouble("Precio");
 			admin.añadirServicioHabitacion(id, nombre, precio);
-			centinela = getboolean("Desea añadir otra servicio?(true/false)");
+			centinela = getboolean("\n¿Desea añadir otro servicio?");
 		}
 	}
 	
-	public void listaHabitaciones(Admin admin) {
-		
-	}
 	
 	private void crearHabitacion(Admin admin) {
-		System.out.println("Creando habitacion...");
+		System.out.println("\nCreando habitacion...");
 		boolean centinela1=true;
 		while (centinela1) {
 			TipoHabitacion tipoHabitacion = getTipoHabitacion("Tipo habitacion");
 			int id = num("Numero habitacion");
 			admin.crearHabitacion(tipoHabitacion, id);
 			
-			System.out.println("Añadiendo camas...");
+			System.out.println("\nAñadiendo camas...");
 			boolean centinela2=true;
 			while (centinela2) {
 				int capacidadCama = num("Capacidad cama");
-				boolean apto = getboolean("Apto para niños(true/false)");
+				boolean apto = getboolean("\n¿Apto para niños?");
 				admin.crearCama(id, capacidadCama, apto);
-				centinela2 = getboolean("Desea añadir otra cama?(true/false)");
+				centinela2 = getboolean("\n¿Desea añadir otra cama?");
 			}
 			
-			System.out.println("Añadir servicios");
+			System.out.println("\nAñadiendo servicios...");
 			boolean centinela3=true;
 			while (centinela3) {
 				String nombre = input("Nombre servicio habitacion");
 				double precio = getDouble("Precio");
 				admin.añadirServicioHabitacion(id, nombre, precio);
-				centinela3 = getboolean("Desea añadir otra servicio?(true/false)");
+				centinela3 = getboolean("\n¿Desea añadir otra servicio?");
 			
 			String caracteristicas = input("Caracteristicas");
 			admin.setCaracteristicasHabitacion(caracteristicas, id);
-			centinela1 = getboolean("Desea añadir otra habitacion?(true/false)");
+			centinela1 = getboolean("\n¿Desea añadir otra habitacion?");
 
 		}
 		}
 	}
 
 	private void crearProductoMenu(Admin admin) {
-		System.out.println("Creando producto menu\n");
+		ArrayList<ProductoMenu> listaProductosMenu = admin.getMenu();
+		if (!(listaProductosMenu.isEmpty())) {
+			System.out.println("\nMenu");
+			for (int i = 0; i < listaProductosMenu.size(); i++) {
+				String nombre = listaProductosMenu.get(i).getNombre();
+				int precio = (int)listaProductosMenu.get(i).getPrecio();
+				boolean llevable = listaProductosMenu.get(i).getLlevable();
+				String esLlevable;
+				if (llevable) {
+					esLlevable = "(Llevable)";
+				} else {
+					esLlevable = "(No llevable)";
+				}
+				System.out.println(nombre + ": " + precio +" "+ esLlevable);
+			}
+		}
+		
+		System.out.println("\nCreando producto menu...");
 		boolean centinela = true;
 		while (centinela) {
 			//Date date = getDate("Hora admitida");
-			boolean llevable = getboolean("Es llevable");
+			boolean llevable = getboolean("\n¿Es llevable?");
 			String nombre = input("Nombre producto menu");
 			double precio = getDouble("Precio");
-			admin.crearProductoMenu(null, llevable, nombre, precio);
+			admin.crearProductoMenu(null, llevable, nombre, precio);			centinela=getboolean("\n¿Desea añadir otro producto?");
 		}
 	}
 

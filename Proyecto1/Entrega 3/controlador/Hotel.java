@@ -41,8 +41,9 @@ public class Hotel implements Serializable{
 		usuarios = new HashMap<String, Usuario>();
 		tarifas = new TreeMap<Date, Tarifa>();
 		habitaciones = new HashMap<Integer, Habitacion>();
-		restaurante= new Restaurante();
-		
+		restaurante = new Restaurante();
+		serviciosHotel = new HashMap<Integer, Servicio>();
+ 		
 	}
 	
 	
@@ -187,9 +188,9 @@ public class Hotel implements Serializable{
 		Servicio servicio = new Servicio(nombre, precio);
 		serviciosHotel.put(servicio.getId(), servicio);
 	}
-
-	public void crearServicioHabitacion(String nombre, double precio) {
-		
+	
+	public HashMap<Integer, Servicio> getServiciosHotel(){
+		return serviciosHotel;
 	}
 	
 	public void setCaracteristicas(String caracteristicas, int id) {
@@ -299,6 +300,9 @@ public class Hotel implements Serializable{
 		restaurante.añadirProducto(productoMenu);
 	}
 	
+	public ArrayList<ProductoMenu> getMenu() {
+		return restaurante.getMenu();
+	}
 	
     public ArrayList<Date> getDateRange(Date start, Date end) {
         ArrayList<Date> rango = new ArrayList<Date>();
