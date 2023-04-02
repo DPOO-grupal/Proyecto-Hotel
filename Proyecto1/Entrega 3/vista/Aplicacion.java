@@ -286,7 +286,7 @@ public class Aplicacion {
 		Date fechaI = getDate("Ingrese fecha inicial de la tarifa");
 		Date fechaF = getDate("Ingrese fecha final de la tarifa");
 		
-		mostarTarifasRango(empleado, fechaI, fechaF);		
+		mostarTarifasRango(admin, fechaI, fechaF);		
 		
 	}
 	
