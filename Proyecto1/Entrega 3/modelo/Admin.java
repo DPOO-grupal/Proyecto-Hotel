@@ -36,4 +36,8 @@ public class Admin extends Usuario {
 	public void setCaracteristicasHabitacion(String habitacion, int id) {
 		hotel.setCaracteristicas(habitacion, id);
 	}
+	
+	public void crearProductoMenu(Date horario, boolean llevable,String nombre, double precio) {
+		hotel.crearProductoMenu(horario, llevable, nombre, precio);
+	}
 }

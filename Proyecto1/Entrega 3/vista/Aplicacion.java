@@ -281,6 +281,9 @@ public class Aplicacion {
 		}
 	}
 	
+	public void listaHabitaciones(Admin admin) {
+		
+	}
 	
 	private void crearHabitacion(Admin admin) {
 		System.out.println("Creando habitacion...");
@@ -319,7 +322,11 @@ public class Aplicacion {
 		System.out.println("Creando producto menu\n");
 		boolean centinela = true;
 		while (centinela) {
-			
+			//Date date = getDate("Hora admitida");
+			boolean llevable = getboolean("Es llevable");
+			String nombre = input("Nombre producto menu");
+			double precio = getDouble("Precio");
+			admin.crearProductoMenu(null, llevable, nombre, precio);
 		}
 	}
 
