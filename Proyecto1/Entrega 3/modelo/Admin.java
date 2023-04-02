@@ -33,28 +33,6 @@ public class Admin extends Empleado {
 	
 // FIN TARIFAS ----------------------------------------------
 
-// INICIO RESERVAS ------------------------------------------
-	
-	public void crearReserva(Date fechaI, Date fechaF, int tamanioGrupo, String[] nombres, String[] documentos, String[] emails, String[] telefonos, int[] edades) {
-		hotel.crearReserva(fechaI, fechaF, tamanioGrupo, nombres, documentos, emails, telefonos, edades);
-	}
-	
-
-	public boolean completarReserva(int idHabitacion) {
-		return hotel.completarReserva(idHabitacion);
-	}
-	
-	public ArrayList<Habitacion> DiponiblesParaGrupoEnCurso(TipoHabitacion tipo) {
-		return hotel.DiponiblesParaGrupoEnCurso(tipo);
-		
-	}
-	
-	public double getPrecioHabitacionReserva(Habitacion habitacion) {
-		return hotel.getPrecioHabitacionReserva(habitacion);
-	}
-	
-// FIN RESERVAS ---------------------------------------------
-
 
 	public void crearServicioHotel(String nombre, double precio) {
 		hotel.crearServicioHotel(nombre, precio);
