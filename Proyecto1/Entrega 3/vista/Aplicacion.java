@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.SortedMap;
 import java.util.HashMap;
 
 import controlador.Hotel;
@@ -15,6 +16,7 @@ import modelo.Admin;
 import modelo.Empleado;
 import modelo.ProductoMenu;
 import modelo.Servicio;
+import modelo.Habitacion;
 import modelo.Tarifa;
 import modelo.TipoHabitacion;
 import modelo.Usuario;
@@ -143,18 +145,28 @@ public class Aplicacion {
 			break;
 
 		default:
+			input("Debe seleccionar una de las opciones del menú");
 			break;
 		}
 	}
+	
 
 	public void menuAdmin(Admin admin) {
+		
+		System.out.println(" ---------- Menú ----------");
+
+		
+		if (!admin.tarifasCompletas());{
+			System.out.println("LLENAR TARIFAS, OPCION 2");
+		}	
+		
 		System.out.println("0. Cerrar Sesion");
 		System.out.println("1. Añadir Usuario");
-		System.out.println("2. Crear Tarifas");
+		System.out.println("2. Tarifas");
 		System.out.println("3. Crear servicio hotel");
 		System.out.println("4. Crear habitacion");
 		System.out.println("5. Crear producto menu");
-		System.out.println("6. ");
+		System.out.println("6. Reservas");
 		System.out.println("7. ");
 		System.out.println("8. ");
 
@@ -170,9 +182,6 @@ public class Aplicacion {
 	private void ejecutarOpcionAdmin(Admin admin, int opcionSeleccionada) {
 		// TODO Ejecutar las opciones del Admin
 		
-		if (!tarifasCompletas());{
-			System.out.println("LLENAR TARIFAS, OPCION 2");
-		}	
 		
 		switch (opcionSeleccionada) {
 		case 0:
@@ -192,7 +201,7 @@ public class Aplicacion {
 
 			break;
 		case 2:
-			CrearTarifa(admin);
+			menuTarifasAdmin(admin);
 			break;
 		case 3:
 			crearServicioHotel(admin);
@@ -203,58 +212,240 @@ public class Aplicacion {
 		case 5:
 			crearProductoMenu(admin);
 			break;
+		case 6:
+			menuReservasAdmin(admin);
+			break;
 		default:
+			input("Debe seleccionar una de las opciones del menú");
 			break;
 		}
 
 	}
+
+// INICIO TARIFAS ---------------------------------------------
+	public void menuTarifasAdmin(Admin admin) {
+		boolean continuarTarifa = true;
+		do {
+			
+			System.out.println("\n-------- TARIFAS --------");
+			System.out.println("1. Ver Tarifas faltantes");
+			System.out.println("2. Consular Tarifa por rango de fechas");
+			System.out.println("3. Establecer tarifa en un rango de fechas");
+			System.out.println("4. Salir");
+
+
+		
+			int opcionSeleccionada;
+		
+			opcionSeleccionada= num("Seleccione una Opcion");
+			
+			switch (opcionSeleccionada) {
+			case 1:
+				mostrarTarifasFaltantes(admin); 
+				input("Presione 'Enter' para continuar");
+
+				break;
+			case 2:
+				consultarTarifas(admin);
+				input("Presione 'Enter' para continuar");
+
+				break;
+			case 3:
+				CrearTarifa(admin);
+				input("Presione 'Enter' para continuar");
+
+				break;
+			case 4:
+				continuarTarifa = false;
+				break;
+
+			default:
+				input("Debe seleccionar una de las opciones del menú");
+				break;
+			}
+		} while(continuarTarifa);
+	}
+	
+	public void mostrarTarifasFaltantes(Admin admin) {
+		ArrayList<Tarifa> faltantes = admin.checkTarifas();
+		System.out.println(faltantes.size());
+		if (faltantes.size() > 0) {
+			System.out.println("Faltan la siguientes Tarifas para los tipos de Habitación");
+			for (Tarifa tarifa : faltantes) {
+				System.out.println(tarifa.getFaltantes().toString() + " " + formatoFecha(tarifa.getFecha()));
+			}		
+		} else {
+			System.out.println("No faltan llenar tarifas");
+		}
+	}
+	
+	public void consultarTarifas(Admin admin) {
+		Date fechaI = getDate("ingrese fecha inicial de la tarifa");
+		Date fechaF = getDate("ingrese fecha final de la tarifa");
+		
+		mostarTarifasRango(admin, fechaI, fechaF);		
+		
+	}
+	
+	public void mostarTarifasRango(Admin admin, Date fechaI, Date fechaF) {
+		ArrayList<Tarifa> rangoTarifas = admin.consultarTarifas(fechaI, fechaF);
+
+		for (Tarifa tarifa : rangoTarifas) {
+			System.out.println(tarifa.getFaltantes().toString() + " " + formatoFecha(tarifa.getFecha()));
+		}	
+	}
 	
 	public void CrearTarifa(Admin admin) {
 		
-		boolean verFaltantes = true;
 		boolean añadir;
-		
+		boolean completado;
 		do {
-			if (verFaltantes) {
-				ArrayList<Tarifa> faltantes = hotel.checkTarifas();
-				if (faltantes.size() > 0) {
-					System.out.println("Faltan la siguientes Tarifas para los tipos de Habitación");
-					for (Tarifa tarifa : faltantes) {
-						System.out.println(tarifa.getFaltantes().toString() + " " + formatoFecha(tarifa.getFecha()));
-					}		
+			
+			Date fechaI = getDate("ingrese fecha inicial de la tarifa");
+			Date fechaF = getDate("ingrese fecha final de la tarifa");
+			TipoHabitacion tipo = getTipoHabitacion("Ingrse el tipo de habitahocion");
+			double precio = getDouble("Ingrese el precio de la habitacion");
+			completado = admin.crearTarifa(fechaI, fechaF, tipo, precio);
+			
+			if (!completado) {
+				System.out.println("Alguna de las Tarifas es menor que la ingresada");
+				if (getboolean("¿Desea sobre escribirlas?")) {
+					admin.crearTarifa(fechaI, fechaF, tipo, -precio);
 				}
 			}
 			
-			Date fechaI = getDate("ingrese fecha inicial de la tarifa");
-			Date fechaF = getDate("ingrese fecha fiinal de la tarifa");
-			TipoHabitacion tipo = getTipoHabitacion("Ingrse el tipo de habitahocion");
-			double precio = getDouble("Ingrese el precio de la habitacion");
-			ArrayList<Tarifa> faltantesRango = admin.crearTarifa(fechaI, fechaF, tipo, precio);
+			System.out.println("\n Tarifas Actualizadas...");
+			mostarTarifasRango(admin, fechaI, fechaF);;
+
 			
-			if (faltantesRango.size() > 0) {
-				System.out.println(" En ese rango faltan la siguientes Tarifas para los tipos de Habitación");
-				for (Tarifa tarifa : faltantesRango) {
-					System.out.println(tarifa.getFaltantes().toString() + " " + formatoFecha(tarifa.getFecha()));
-				}		
-			}
-		
-		añadir = getboolean("¿Desea añadir otra tarifa?");
-		verFaltantes = getboolean("¿Desea ver todas las tarifas Faltantes?");
-		
+			añadir = getboolean("¿Desea añadir otra tarifa?");
+			
 		}while(añadir);
 		
 		
 	}
 	
-	public boolean tarifasCompletas() {
-		ArrayList<Tarifa> faltantes = hotel.checkTarifas();
+	public boolean tarifasCompletas(Admin admin) {
+		ArrayList<Tarifa> faltantes = admin.checkTarifas();
 		boolean completo = true;
 		if (faltantes.size()>0) {
 			completo = false;
 		}
-		
 		return completo;
 	}
+// FIN TARIFAS ----------------------------------------------
+	
+// INICIO RESERVAS ------------------------------------------
+	
+public void menuReservasAdmin(Admin admin) {
+	boolean continuarTarifa = true;
+	System.out.println("\n-------- RESERVAS --------");
+	System.out.println("1. Consular Reserva por rango de fechas ");
+	System.out.println("2. Crear Reserva");
+	System.out.println("3. Cancelar Reserva");
+	System.out.println("4. Salir");
+
+
+	int opcionSeleccionada;
+	
+	do {
+		opcionSeleccionada = num("Seleccione una Opcion");
+		switch (opcionSeleccionada) {
+		case 1:
+			mostrarReservas(admin); 
+			break;
+		case 2:
+			crearReservas(admin);
+			llenarReserva(admin);
+			break;
+		case 3:
+			cancelarReserva(admin);
+			break;
+		case 4:
+			continuarTarifa = false;
+			break;
+
+		default:
+			break;
+		}
+	} while(continuarTarifa);
+}	
+
+	private void cancelarReserva(Admin admin) {
+		
+	
+}
+	private void llenarReserva(Admin admin) {
+		boolean repetir = false;
+		Habitacion habitacion;
+		TipoHabitacion tipo;
+		ArrayList<Habitacion> habitacionesConsulta;
+
+		do {
+			System.out.println("\nSeleccionar habitaciones Dispobibles");
+			tipo = getTipoHabitacion("Ingrse el tipo de habitación que desea consultar");
+			habitacionesConsulta = admin.DiponiblesParaGrupoEnCurso(tipo);
+			
+			if (habitacionesConsulta.size()> 0) {
+				
+				for (int i = 0; i < habitacionesConsulta.size(); i++) {
+					habitacion = habitacionesConsulta.get(i);
+					System.out.println("Numero " + habitacion.getId() + " precio " + admin.getPrecioHabitacionReserva(habitacion));
+					int pos = num("Seleccione una Habitación");
+					repetir = admin.completarReserva(pos);	
+				}
+			} else {
+				System.out.println("No hay habitaciones Disponibles para este dia");
+				repetir = false;
+			}
+			
+			
+					
+
+		} while (repetir);
+
+	
+}
+	private void crearReservas(Admin admin) {
+		Date fechaI = getDate("ingrese fecha inicial de la tarifa");
+		Date fechaF = getDate("ingrese fecha final de la tarifa");
+		int tamañoGrupo= num("Ingrse el el numero de personas");
+		
+		String[] nombres = new String[tamañoGrupo];
+		String[] documentos = new String[tamañoGrupo];
+		String[] emails = new String[tamañoGrupo];
+		String[] telefonos = new String[tamañoGrupo];
+		int[] edades =new int[tamañoGrupo];
+		
+		for (int i = 0; i <tamañoGrupo; i++) {
+			
+			if(i == 0) {
+				nombres[i] = input("Ingrese el nombre del lider del grupo");
+				documentos[i] = input("Ingrese el numero de documento del lider del grupo");
+				emails[i] = input("Ingrese el correo del lider del grupo");
+				telefonos[i] = input("Ingrese el numero de telefono del lider del grupo");
+				edades[i] = num("Ingrese la edad del lider del grupo");
+			} else {
+				nombres[i] = input("Ingrese el nombre de la " + (i+1) +" persona del grupo");
+				documentos[i] = input("Ingrese el numero de documento de la " + (i+1) +" persona del grupo");
+				emails[i] = input("Ingrese el correo de la " + (i+1) +" persona del grupo");
+				telefonos[i] = input("Ingrese el numero de telefono de la " + (i+1) +" persona del grupo");
+				edades[i] = num("Ingrese la edad de la " + (i+1) +" persona del grupo");
+			}
+			
+		}
+				
+		admin.crearReserva(fechaI, fechaF, tamañoGrupo, nombres, documentos, emails, telefonos, edades);
+		
+	}
+	private void mostrarReservas(Admin admin) {
+		Date fechaI = getDate("ingrese fecha inicial de la tarifa");
+		Date fechaF = getDate("ingrese fecha final de la tarifa");
+		admin.mostrarReservas(fechaI, fechaF);
+	}
+	
+	
+// FIN RESERVAS ---------------------------------------------
 	
 	public String formatoFecha(Date fecha) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -341,7 +532,7 @@ public class Aplicacion {
 				} else {
 					esLlevable = "(No llevable)";
 				}
-				System.out.println(nombre + ": " + precio + "$" +" "+ esLlevable);
+				System.out.println(nombre + ": " + precio +" "+ esLlevable);
 			}
 		}
 		
@@ -352,7 +543,8 @@ public class Aplicacion {
 			boolean llevable = getboolean("\n¿Es llevable?");
 			String nombre = input("Nombre producto menu");
 			double precio = getDouble("Precio");
-			admin.crearProductoMenu(null, llevable, nombre, precio);			centinela=getboolean("\n¿Desea añadir otro producto?");
+			admin.crearProductoMenu(null, llevable, nombre, precio);
+			centinela=getboolean("\n¿Desea añadir otro producto?");
 		}
 	}
 

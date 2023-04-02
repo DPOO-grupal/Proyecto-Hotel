@@ -30,7 +30,7 @@ public class Habitacion implements Serializable{
 		return this.id;
 	}
 	
-	public int getCapacidad (ArrayList<Cama> listaCamas) {
+	public int getCapacidad () {
 		for (int i = 0; i < listaCamas.size(); i++) {
 			Cama cama= listaCamas.get(i);
 			capacidad += cama.getCapacidadCama();
@@ -48,11 +48,12 @@ public class Habitacion implements Serializable{
 	
 	public void añadirCamas(Cama cama) {
 		listaCamas.add(cama);
-		this.capacidad=getCapacidad(listaCamas);
+		this.capacidad=getCapacidad();
 	}
 	
-	public TipoHabitacion getTipo() {
-		return TipoHabitacion.ESTANDAR;
+
+	public void setListaServicios(ArrayList<Servicio> listaServicios) {
+		this.listaServicios = listaServicios;
 	}
 	
 	public int getApto(ArrayList<Cama> listaCamas) {
@@ -74,5 +75,13 @@ public class Habitacion implements Serializable{
 
 	public void setCaracteristicas(String caracteristicas) {
 		this.caracteristicas = caracteristicas;
+	}
+	
+	public double getPrecioServicios() {
+		double precio = 0;
+		for (Servicio servicio : listaServicios) {
+			precio += servicio.getPrecio();
+		}
+		return precio;
 	}
 }
