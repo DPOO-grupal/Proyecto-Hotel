@@ -21,7 +21,6 @@ public class Admin extends Empleado {
 		return checkTarifas().size() == 0;
 	}
 
-	
 	public ArrayList<Tarifa> checkTarifas() {
 		return hotel.checkTarifas();
 	}
@@ -29,7 +28,6 @@ public class Admin extends Empleado {
 	public boolean crearTarifa(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor) {
 		return hotel.crearTarifa(fechaI, fechaF, tipo, valor);
 	}
-	
 	
 // FIN TARIFAS ----------------------------------------------
 
@@ -39,14 +37,12 @@ public class Admin extends Empleado {
 		hotel.crearReserva(fechaI, fechaF, tamanioGrupo, nombres, documentos, emails, telefonos, edades);
 	}
 	
-
 	public boolean completarReserva(int idHabitacion) {
 		return hotel.completarReserva(idHabitacion);
 	}
 	
 	public ArrayList<Habitacion> DiponiblesParaGrupoEnCurso(TipoHabitacion tipo) {
 		return hotel.DiponiblesParaGrupoEnCurso(tipo);
-		
 	}
 	
 	public double getPrecioHabitacionReserva(Habitacion habitacion) {
@@ -55,23 +51,16 @@ public class Admin extends Empleado {
 	
 // FIN RESERVAS ---------------------------------------------
 
-
+//INICIO SERVICIOS HOTEL -----------------------------------------------------
+	
 	public void crearServicioHotel(String nombre, double precio) {
 		hotel.crearServicioHotel(nombre, precio);
 	}
 	
-	public HashMap<Integer, Servicio> getServiciosHotel(){
-		return hotel.getServiciosHotel();
-	}
-	
-	public void añadirServicioHabitacion(int id, String nombre, double precio) {
-		hotel.añadirServicioHabitacion(id, nombre, precio);
-	}
-	
-	public void añadirServicioHotelHabitacion(int idHabitacion, int idServicio) {
-		hotel.añadirServicioHotelHabitacion(idHabitacion, idServicio);
-	}
-	
+//FIN SERVICIOS HOTEL -----------------------------------------------------------
+
+//INICIO HABITACIONES -----------------------------------------------------------
+
 	public void crearCama(int id, int capacidadCama, boolean aptoParaNiño) {
 		hotel.crearCama(id, capacidadCama, aptoParaNiño);
 	}
@@ -84,16 +73,16 @@ public class Admin extends Empleado {
 		hotel.setCaracteristicas(habitacion, id);
 	}
 	
-	public HashMap<Integer, Habitacion> getHabitaciones() {
-		return hotel.getHabitaciones();
-		
+	public void añadirServicioHabitacion(int id, String nombre, double precio) {
+		hotel.añadirServicioHabitacion(id, nombre, precio);
 	}
 	
+//FIN HABITACIONES -----------------------------------------------------------
+
+//INICIO PRODUCTO MENU -----------------------------------------------------------
+
 	public void crearProductoMenu(Date horario, boolean llevable,String nombre, double precio) {
 		hotel.crearProductoMenu(horario, llevable, nombre, precio);
 	}
-	
-	public ArrayList<ProductoMenu> getMenu() {
-		return hotel.getMenu();
-	}
+//FIN PRODUCTO MENU -----------------------------------------------------------
 }

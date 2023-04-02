@@ -9,7 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.SortedMap;
 import java.util.HashMap;
 
 import controlador.Hotel;
@@ -115,14 +114,13 @@ public class Aplicacion {
 	public void menuEmpleado(Empleado empleado) {
 
 		System.out.println("0. Cerrar Sesión");
-		System.out.println("1. ");
-		System.out.println("2. ");
-		System.out.println("3. ");
-		System.out.println("4. ");
-		System.out.println("5. ");
+		System.out.println("1. Tarifas");
+		System.out.println("2. Servicios hotel");
+		System.out.println("3. Habitaciones");
+		System.out.println("4. Producto menú");
+		System.out.println("5. Reservas");
 		System.out.println("6. ");
 		System.out.println("7. ");
-		System.out.println("8. ");
 
 		int opcionSeleccionada;
 
@@ -133,7 +131,6 @@ public class Aplicacion {
 	}
 
 	private void ejecutarOpcionEmpleado(Empleado empleado, int opcionSeleccionada) {
-		// TODO Ejecutar las opciones del empleado
 		switch (opcionSeleccionada) {
 		case 0:
 			empleado.cerrarSesion();
@@ -141,12 +138,20 @@ public class Aplicacion {
 			System.out.println("Sesion cerrada.....");
 			break;
 		case 1:
-
+			menuTarifasEmpleado(empleado);;
 			break;
 		case 2:
-
+			menuServiciosEmpleado(empleado);
 			break;
-
+		case 3:
+			menuHabitacionesEmpleado(empleado);
+			break;
+		case 4:
+			menuProductoMenuEmpleado(empleado);
+			break;
+		case 5:
+			menuReservasEmpleado(empleado);
+			break;	
 		default:
 			input("Debe seleccionar una de las opciones del menú");
 			break;
@@ -183,9 +188,6 @@ public class Aplicacion {
 	}
 
 	private void ejecutarOpcionAdmin(Admin admin, int opcionSeleccionada) {
-		// TODO Ejecutar las opciones del Admin
-		
-		
 		switch (opcionSeleccionada) {
 		case 0:
 			admin.cerrarSesion();
@@ -200,7 +202,6 @@ public class Aplicacion {
 			int tipo = num("Ingrese tipo de Usuario:\n1. Admin\n2. Empleado\nSelecione una opción");
 
 			admin.añadirUsuario(login, password, tipo);
-			;
 
 			break;
 		case 2:
@@ -210,10 +211,10 @@ public class Aplicacion {
 			menuServiciosAdmin(admin);
 			break;
 		case 4:
-			crearHabitacion(admin);
+			menuHabitacionesAdmin(admin);
 			break;
 		case 5:
-			menuProductoMenu(admin);
+			menuProductoMenuAdmin(admin);
 			break;
 		case 6:
 			menuReservasAdmin(admin);
@@ -222,10 +223,40 @@ public class Aplicacion {
 			input("Debe seleccionar una de las opciones del menú");
 			break;
 		}
-
 	}
 
 // INICIO TARIFAS ---------------------------------------------
+	
+	public void menuTarifasEmpleado(Empleado empleado) {
+		boolean continuarTarifa = true;
+		do {
+			
+			System.out.println("\n-------- TARIFAS --------");
+			System.out.println("1. Consular Tarifa por rango de fechas");
+			System.out.println("2. Salir");
+
+
+		
+			int opcionSeleccionada;
+		
+			opcionSeleccionada= num("Seleccione una opción");
+			
+			switch (opcionSeleccionada) {
+			case 1:
+				consultarTarifas(empleado);
+				input("Presione 'Enter' para continuar");
+				break;
+			case 2:
+				continuarTarifa = false;
+				break;
+
+			default:
+				input("Debe seleccionar una de las opciones del menú");
+				break;
+			}
+		} while(continuarTarifa);
+	}
+	
 	public void menuTarifasAdmin(Admin admin) {
 		boolean continuarTarifa = true;
 		do {
@@ -282,11 +313,11 @@ public class Aplicacion {
 		}
 	}
 	
-	public void consultarTarifas(Admin admin) {
+	public void consultarTarifas(Empleado empleado) {
 		Date fechaI = getDate("Ingrese fecha inicial de la tarifa");
 		Date fechaF = getDate("Ingrese fecha final de la tarifa");
 		
-		mostarTarifasRango(admin, fechaI, fechaF);		
+		mostarTarifasRango(empleado, fechaI, fechaF);		
 		
 	}
 	
@@ -359,6 +390,35 @@ public class Aplicacion {
 // FIN TARIFAS ----------------------------------------------
 	
 // INICIO RESERVAS ------------------------------------------
+	
+	public void menuReservasEmpleado(Empleado empleado) {
+		boolean continuarTarifa = true;
+		System.out.println("\n-------- RESERVAS --------");
+		System.out.println("1. Consular Reserva por rango de fechas ");
+		System.out.println("2. Cancelar Reserva");
+		System.out.println("3. Salir");
+
+
+		int opcionSeleccionada;
+		
+		do {
+			opcionSeleccionada = num("Seleccione una opción");
+			switch (opcionSeleccionada) {
+			case 1:
+				mostrarReservas(empleado); 
+				break;
+			case 2:
+				cancelarReserva(empleado);
+				break;
+			case 3:
+				continuarTarifa = false;
+				break;
+
+			default:
+				break;
+			}
+		} while(continuarTarifa);
+	}
 	
 	public void menuReservasAdmin(Admin admin) {
 	boolean continuarTarifa = true;
@@ -499,6 +559,36 @@ public class Aplicacion {
 	
 // INICIO SERVICIO HOTEL -----------------------------------------------------
 	
+	public void menuServiciosEmpleado(Empleado empleado) {
+		boolean continuar = true;
+		int opcionSeleccionada;
+		
+		do {
+			System.out.println("\n-------- SERVICIOS HOTEL --------");
+			System.out.println("1. Consular servicios del hotel");
+			System.out.println("2. Añadir servicio hotel a habitación");
+			System.out.println("3. Salir");
+			opcionSeleccionada = num("Seleccione una opción");
+			switch (opcionSeleccionada) {
+			case 1:
+				mostrarServiciosHotel(empleado);
+				input("Presione 'Enter' para continuar");
+				break;
+			case 2:
+				añadirServicioHotelHabitacion(empleado);
+				input("Presione 'Enter' para continuar");
+				break;
+			case 3:
+				continuar = false;
+				break;
+
+			default:
+				input("Presione 'Enter' para continuar");
+				break;
+			}
+		} while(continuar);
+	}
+	
 	public void menuServiciosAdmin(Admin admin) {
 		boolean continuar = true;
 		int opcionSeleccionada;
@@ -534,8 +624,8 @@ public class Aplicacion {
 		} while(continuar);
 	}
 	
-	public void mostrarServiciosHotel(Admin admin) {
-		HashMap<Integer,Servicio> Servicios = admin.getServiciosHotel();
+	public void mostrarServiciosHotel(Empleado empleado) {
+		HashMap<Integer,Servicio> Servicios = empleado.getServiciosHotel();
 		if (!(Servicios.isEmpty())) {
 			System.out.println("\nServicios");
 			Collection<Servicio> listaServicios = Servicios.values();
@@ -561,15 +651,15 @@ public class Aplicacion {
 		}
 	}
 	
-	public void añadirServicioHotelHabitacion(Admin admin) {
+	public void añadirServicioHotelHabitacion(Empleado empleado) {
 		System.out.println("\nAñadiendo servicio hotel...");
 		boolean centinela = true;
 		while (centinela) {
-			mostrarServiciosHotel(admin);
+			mostrarServiciosHotel(empleado);
 			int idServicio = num("ID del servicio hotel");
 			int idHabitacion = num("ID habitación");
 			try {
-				admin.añadirServicioHotelHabitacion(idHabitacion, idServicio);
+				empleado.añadirServicioHotelHabitacion(idHabitacion, idServicio);
 				
 			} catch (Exception e) {
 				System.out.println("No existe la habitacion o el servicio");
@@ -583,7 +673,30 @@ public class Aplicacion {
 	
 //INICIO HABITACION ---------------------------------------------------------------
 	
-	public void menuHabitaciones(Admin admin) {
+	public void menuHabitacionesEmpleado(Empleado empleado) {
+		boolean continuar = true;
+		int opcionSeleccionada;
+		
+		do {
+			System.out.println("\n-------- HABITACION --------");
+			System.out.println("1. Consular habitaciones");
+			System.out.println("2. Salir");
+			opcionSeleccionada = num("Seleccione una opción");
+			switch (opcionSeleccionada) {
+			case 1:
+				mostrarHabitaciones(empleado); 
+				break;
+			case 2:
+				continuar = false;
+				break;
+
+			default:
+				break;
+			}
+		} while(continuar);
+	}
+	
+	public void menuHabitacionesAdmin(Admin admin) {
 		boolean continuar = true;
 		int opcionSeleccionada;
 		
@@ -615,8 +728,8 @@ public class Aplicacion {
 	}
 	
 	
-	private void mostrarHabitaciones(Admin admin) {
-		HashMap<Integer, Habitacion> listaHabitaciones = admin.getHabitaciones();
+	private void mostrarHabitaciones(Empleado empleado) {
+		HashMap<Integer, Habitacion> listaHabitaciones = empleado.getHabitaciones();
 		if (!(listaHabitaciones.isEmpty())) {
 			System.out.println("\nHabitaciones");
 			for (int i = 0; i < listaHabitaciones.size(); i++) {
@@ -690,7 +803,34 @@ public class Aplicacion {
 	
 //INICIO PRODUCTO MENU -------------------------------------------------------	
 	
-	public void menuProductoMenu(Admin admin) {
+	public void menuProductoMenuEmpleado(Empleado empleado) {
+		boolean continuar = true;
+		int opcionSeleccionada;
+		
+		do {
+			System.out.println("\n-------- PRODUCTO MENU --------");
+			System.out.println("1. Consular menu");
+			System.out.println("2. Añadir producto menu a habitación");
+			System.out.println("3. Salir");
+			opcionSeleccionada = num("Seleccione una opción");
+			switch (opcionSeleccionada) {
+			case 1:
+				mostrarMenuProductos(empleado); 
+				break;
+			case 2:
+				añadirProductoMenuHabitacion(empleado);
+				break;
+			case 3:
+				continuar = false;
+				break;
+
+			default:
+				break;
+			}
+		} while(continuar);
+	}
+	
+	public void menuProductoMenuAdmin(Admin admin) {
 		boolean continuar = true;
 		int opcionSeleccionada;
 		
@@ -721,8 +861,8 @@ public class Aplicacion {
 		} while(continuar);
 	}
 	
-	private void mostrarMenuProductos(Admin admin) {
-		ArrayList<ProductoMenu> listaProductosMenu = admin.getMenu();
+	private void mostrarMenuProductos(Empleado empleado) {
+		ArrayList<ProductoMenu> listaProductosMenu = empleado.getMenu();
 		if (!(listaProductosMenu.isEmpty())) {
 			System.out.println("\nMenu");
 			for (int i = 0; i < listaProductosMenu.size(); i++) {
@@ -757,15 +897,15 @@ public class Aplicacion {
 		}
 	}
 	
-	private void añadirProductoMenuHabitacion(Admin admin) {
+	private void añadirProductoMenuHabitacion(Empleado empleado) {
 		System.out.println("\nAñadiendo producto menu...");
 		boolean centinela = true;
 		while (centinela) {
-			mostrarMenuProductos(admin);
+			mostrarMenuProductos(empleado);
 			int idProductoMenu = num("ID del producto menu");
 			int idHabitacion = num("ID habitacion");
 			try {
-				admin.añadirServicioHotelHabitacion(idHabitacion, idProductoMenu);
+				empleado.añadirServicioHotelHabitacion(idHabitacion, idProductoMenu);
 				
 			} catch (Exception e) {
 				System.out.println("No existe la habitacion o el producto menú");
