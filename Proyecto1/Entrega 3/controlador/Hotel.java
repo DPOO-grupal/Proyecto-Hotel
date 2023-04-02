@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -42,7 +43,7 @@ public class Hotel implements Serializable{
 		tarifas = new TreeMap<Date, Tarifa>();
 		habitaciones = new HashMap<Integer, Habitacion>();
 		restaurante= new Restaurante();
-		
+		ocupados = new TreeMap<Date, HashMap<Integer, Integer>>();
 	}
 	
 	
@@ -171,13 +172,18 @@ public class Hotel implements Serializable{
 		return faltantes;
 	}
 	
-	public void crearTarifa(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor) {
+	public boolean crearTarifa(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor) {
+		boolean completado = true;
+		
 		SortedMap<Date, Tarifa> rangoTarifas = tarifas.subMap(fechaI, fechaF);
 		
 		for (Tarifa tarifa : rangoTarifas.values()) {
-			tarifa.updatePrecio(tipo, valor);
+			if(!tarifa.updatePrecio(tipo, valor)) {
+				completado = false;
+			}
 			
 		}
+		return completado;
 		
 	}
 	
@@ -240,17 +246,14 @@ public class Hotel implements Serializable{
 		return resultado;
 	}
 
-	public ArrayList<Habitacion> crearReserva(Date fechaI, Date fechaF, int tamanioGrupo, String[] nombres, String[] documentos, String[] emails, String[] telefonos, int[] edades, TipoHabitacion tipo) {
+	public void crearReserva(Date fechaI, Date fechaF, int tamanioGrupo, String[] nombres, String[] documentos, String[] emails, String[] telefonos, int[] edades) {
 		
 		Reserva reserva = new Reserva(fechaI, fechaF);
 		ArrayList<Huesped> huespedes = crearHuespedes(tamanioGrupo, nombres, documentos, emails, telefonos, edades);
 		Grupo grupo = new Grupo(huespedes, reserva);
 		grupos.put(grupo.getId(), grupo);
 		grupoEnCurso = grupo;
-		
-		ArrayList<Habitacion> habitaciones = consultarDisponibilidad(fechaI, fechaF, tipo);
-		
-		return habitaciones;
+				
 	}
 	
 	private ArrayList<Huesped> crearHuespedes(int tamanioGrupo, String[] nombres, String[] documentos, String[] emails, String[] telefonos, int[] edades) {
@@ -265,9 +268,9 @@ public class Hotel implements Serializable{
 	private ArrayList<Habitacion> consultarDisponibilidad (Date FechaI, Date FechaF, TipoHabitacion tipo) {
 		ArrayList<Habitacion> habLista = new ArrayList<Habitacion>();
 		
-		TreeMap<Date, HashMap<Integer, Integer>> filtrado = (TreeMap<Date, HashMap<Integer, Integer>>) ocupados.subMap(FechaI, FechaF);
+		SortedMap<Date, HashMap<Integer, Integer>> filtrado =  ocupados.subMap(FechaI, FechaF);
 		
-		for (Map.Entry<Integer, Habitacion> kv : habitaciones.entrySet()) {
+		for (Entry<Integer, Habitacion> kv : habitaciones.entrySet()) {
 			boolean aniadir = false;
 			int id = kv.getKey();
 			
@@ -287,19 +290,28 @@ public class Hotel implements Serializable{
 		return habLista;
 	}
 	
+	public ArrayList<Habitacion> DiponiblesParaGrupoEnCurso(TipoHabitacion tipo) {
+		return consultarDisponibilidad(grupoEnCurso.getReserva().getFechaI(), grupoEnCurso.getReserva().getFechaF(), tipo);
+		
+	}
+
 	public boolean completarReserva(int idHabitacion) {
 		boolean resultado = false;
 		llenarOcupados(idHabitacion);
-		int suma = 0;
-		ArrayList<Integer> habitacionesGrupo = grupoEnCurso.getListaHabitaciones();
-		for (Integer idsHabitaciones : habitacionesGrupo) {
-			suma += habitaciones.get(idsHabitaciones).getCapacidad();
-		}
+		Habitacion habi = habitaciones.get(idHabitacion);
+		grupoEnCurso.añadirHabitacion(idHabitacion, habi.getCapacidad());
 		
-		resultado =(grupoEnCurso.getvRelativo() - suma) <= 0;
+		resultado =(grupoEnCurso.getvRelativo() <= grupoEnCurso.getCapacidadCamas());
+		
+		if(resultado) {
+			grupos.put(grupoEnCurso.getId(), grupoEnCurso);
+			grupoEnCurso = null;
+		}
 		
 		return resultado;
 	}
+		
+	
 	
 	public double getPrecioHabitacionReserva(Habitacion habitacion) {
 		TipoHabitacion tipo = habitacion.getTipoHabitacion(); 

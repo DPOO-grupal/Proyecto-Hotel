@@ -25,8 +25,13 @@ public class Admin extends Usuario {
 		return hotel.checkTarifas();
 	}
 	
-	public void crearTarifa(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor) {
-		hotel.crearTarifa(fechaI, fechaF, tipo, valor);
+	public boolean crearTarifa(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor) {
+		return hotel.crearTarifa(fechaI, fechaF, tipo, valor);
+	}
+	
+	public boolean cancelarReserva() {
+		return false;
+		
 	}
 	
 	public ArrayList<Tarifa> consultarTarifas(Date fechaI, Date fechaF) {
@@ -41,12 +46,18 @@ public class Admin extends Usuario {
 		
 	}
 	
-	public ArrayList<Habitacion> crearReserva(Date fechaI, Date fechaF, int tamanioGrupo, String[] nombres, String[] documentos, String[] emails, String[] telefonos, int[] edades, TipoHabitacion tipo) {
-		return hotel.crearReserva(fechaI, fechaF, tamanioGrupo, nombres, documentos, emails, telefonos, edades, tipo);
+	public void crearReserva(Date fechaI, Date fechaF, int tamanioGrupo, String[] nombres, String[] documentos, String[] emails, String[] telefonos, int[] edades) {
+		hotel.crearReserva(fechaI, fechaF, tamanioGrupo, nombres, documentos, emails, telefonos, edades);
 	}
 	
+
 	public boolean completarReserva(int idHabitacion) {
 		return hotel.completarReserva(idHabitacion);
+	}
+	
+	public ArrayList<Habitacion> DiponiblesParaGrupoEnCurso(TipoHabitacion tipo) {
+		return hotel.DiponiblesParaGrupoEnCurso(tipo);
+		
 	}
 	
 	public double getPrecioHabitacionReserva(Habitacion habitacion) {
