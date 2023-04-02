@@ -217,7 +217,7 @@ public class Aplicacion {
 			menuProductoMenuAdmin(admin);
 			break;
 		case 6:
-			menuReservasAdmin(admin);
+			menuReservas(admin);
 			break;
 		default:
 			input("Debe seleccionar una de las opciones del menú");
@@ -226,36 +226,6 @@ public class Aplicacion {
 	}
 
 // INICIO TARIFAS ---------------------------------------------
-	
-	public void menuTarifasEmpleado(Empleado empleado) {
-		boolean continuarTarifa = true;
-		do {
-			
-			System.out.println("\n-------- TARIFAS --------");
-			System.out.println("1. Consular Tarifa por rango de fechas");
-			System.out.println("2. Salir");
-
-
-		
-			int opcionSeleccionada;
-		
-			opcionSeleccionada= num("Seleccione una opción");
-			
-			switch (opcionSeleccionada) {
-			case 1:
-				consultarTarifas(empleado);
-				input("Presione 'Enter' para continuar");
-				break;
-			case 2:
-				continuarTarifa = false;
-				break;
-
-			default:
-				input("Debe seleccionar una de las opciones del menú");
-				break;
-			}
-		} while(continuarTarifa);
-	}
 	
 	public void menuTarifasAdmin(Admin admin) {
 		boolean continuarTarifa = true;
@@ -290,6 +260,36 @@ public class Aplicacion {
 
 				break;
 			case 4:
+				continuarTarifa = false;
+				break;
+
+			default:
+				input("Debe seleccionar una de las opciones del menú");
+				break;
+			}
+		} while(continuarTarifa);
+	}
+	
+	public void menuTarifasEmpleado(Empleado empleado) {
+		boolean continuarTarifa = true;
+		do {
+			
+			System.out.println("\n-------- TARIFAS --------");
+			System.out.println("1. Consular Tarifa por rango de fechas");
+			System.out.println("1. Salir");
+
+
+		
+			int opcionSeleccionada;
+		
+			opcionSeleccionada= num("Seleccione una opción");
+			
+			switch (opcionSeleccionada) {
+			case 1:
+				consultarTarifas(empleado);
+				input("Presione 'Enter' para continuar");
+
+			case 2:
 				continuarTarifa = false;
 				break;
 
@@ -391,68 +391,41 @@ public class Aplicacion {
 	
 // INICIO RESERVAS ------------------------------------------
 	
-	public void menuReservasEmpleado(Empleado empleado) {
+	public void menuReservas(Empleado empleado) {
 		boolean continuarTarifa = true;
-		System.out.println("\n-------- RESERVAS --------");
-		System.out.println("1. Consular Reserva por rango de fechas ");
-		System.out.println("2. Cancelar Reserva");
-		System.out.println("3. Salir");
-
-
+	
+	
 		int opcionSeleccionada;
 		
 		do {
+			System.out.println("\n-------- RESERVAS --------");
+			System.out.println("1. Consular Reserva por rango de fechas ");
+			System.out.println("2. Crear Reserva");
+			System.out.println("3. Cancelar Reserva");
+			System.out.println("4. Salir");
 			opcionSeleccionada = num("Seleccione una opción");
 			switch (opcionSeleccionada) {
 			case 1:
 				mostrarReservas(empleado); 
 				break;
 			case 2:
-				cancelarReserva(empleado);
+				crearReservas(empleado);
+				llenarReserva(empleado);
 				break;
 			case 3:
+				cancelarReserva(empleado);
+				break;
+			case 4:
 				continuarTarifa = false;
 				break;
-
+	
 			default:
 				break;
 			}
 		} while(continuarTarifa);
 	}
 	
-	public void menuReservasAdmin(Admin admin) {
-	boolean continuarTarifa = true;
-	System.out.println("\n-------- RESERVAS --------");
-	System.out.println("1. Consular Reserva por rango de fechas ");
-	System.out.println("2. Crear Reserva");
-	System.out.println("3. Cancelar Reserva");
-	System.out.println("4. Salir");
-
-
-	int opcionSeleccionada;
 	
-	do {
-		opcionSeleccionada = num("Seleccione una opción");
-		switch (opcionSeleccionada) {
-		case 1:
-			mostrarReservas(admin); 
-			break;
-		case 2:
-			crearReservas(admin);
-			llenarReserva(admin);
-			break;
-		case 3:
-			cancelarReserva(admin);
-			break;
-		case 4:
-			continuarTarifa = false;
-			break;
-
-		default:
-			break;
-		}
-	} while(continuarTarifa);
-}	
 
 	private void cancelarReserva(Empleado empleado) {
 		
@@ -469,7 +442,7 @@ public class Aplicacion {
 		}
 	
 }
-	private void llenarReserva(Admin admin) {
+	private void llenarReserva(Empleado empleado) {
 		boolean repetir = false;
 		Habitacion habitacion;
 		TipoHabitacion tipo;
@@ -478,15 +451,15 @@ public class Aplicacion {
 		do {
 			System.out.println("\nSeleccionar habitaciones Dispobibles");
 			tipo = getTipoHabitacion("Ingrese el tipo de habitación que desea consultar");
-			habitacionesConsulta = admin.DiponiblesParaGrupoEnCurso(tipo);
+			habitacionesConsulta = empleado.DiponiblesParaGrupoEnCurso(tipo);
 			
 			if (habitacionesConsulta.size()> 0) {
 				
 				for (int i = 0; i < habitacionesConsulta.size(); i++) {
 					habitacion = habitacionesConsulta.get(i);
-					System.out.println("Número " + habitacion.getId() + " precio " + admin.getPrecioHabitacionReserva(habitacion));
+					System.out.println("Número " + habitacion.getId() + " precio " + empleado.getPrecioHabitacionReserva(habitacion));
 					int pos = num("Seleccione una Habitación");
-					repetir = admin.completarReserva(pos);	
+					repetir = empleado.completarReserva(pos);	
 				}
 			} else {
 				System.out.println("No hay habitaciones Disponibles para este día");
@@ -500,7 +473,7 @@ public class Aplicacion {
 
 	
 }
-	private void crearReservas(Admin admin) {
+	private void crearReservas(Empleado empleado) {
 		Date fechaI = getDate("Ingrese fecha inicial de la tarifa");
 		Date fechaF = getDate("Ingrese fecha final de la tarifa");
 		int tamañoGrupo= num("Ingrse el el número de personas");
@@ -529,7 +502,7 @@ public class Aplicacion {
 			
 		}
 				
-		admin.crearReserva(fechaI, fechaF, tamañoGrupo, nombres, documentos, emails, telefonos, edades);
+		empleado.crearReserva(fechaI, fechaF, tamañoGrupo, nombres, documentos, emails, telefonos, edades);
 		
 	}
 	private void mostrarReservas(Empleado empleado) {
