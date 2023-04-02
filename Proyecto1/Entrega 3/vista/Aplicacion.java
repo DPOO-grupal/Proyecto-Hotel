@@ -341,7 +341,7 @@ public class Aplicacion {
 				} else {
 					esLlevable = "(No llevable)";
 				}
-				System.out.println(nombre + ": " + precio +" "+ esLlevable);
+				System.out.println(nombre + ": " + precio + "$" +" "+ esLlevable);
 			}
 		}
 		
