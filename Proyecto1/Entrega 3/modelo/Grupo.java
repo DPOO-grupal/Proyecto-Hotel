@@ -91,4 +91,9 @@ public class Grupo implements Serializable{
 	public int getCapacidadCamas() {
 		return capacidadCamas;
 	}
+	
+	public Huesped getLider() {
+		return huespedes.get(0);
+	}
+	
 }
