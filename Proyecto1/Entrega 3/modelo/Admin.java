@@ -2,6 +2,7 @@ package modelo;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Admin extends Usuario {
 	
@@ -21,6 +22,10 @@ public class Admin extends Usuario {
 		hotel.crearServicioHotel(nombre, precio);
 	}
 	
+	public HashMap<Integer, Servicio> getServiciosHotel(){
+		return hotel.getServiciosHotel();
+	}
+	
 	public void añadirServicioHabitacion(int id, String nombre, double precio) {
 		hotel.añadirServicioHabitacion(id, nombre, precio);
 	}
@@ -35,5 +40,13 @@ public class Admin extends Usuario {
 	
 	public void setCaracteristicasHabitacion(String habitacion, int id) {
 		hotel.setCaracteristicas(habitacion, id);
+	}
+	
+	public void crearProductoMenu(Date horario, boolean llevable,String nombre, double precio) {
+		hotel.crearProductoMenu(horario, llevable, nombre, precio);
+	}
+	
+	public ArrayList<ProductoMenu> getMenu() {
+		return hotel.getMenu();
 	}
 }
