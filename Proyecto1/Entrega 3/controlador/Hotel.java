@@ -211,6 +211,13 @@ public class Hotel implements Serializable{
 		habitaciones.put(id, habitacion);
 	}
 	
+	public void añadirServicioHotelHabitacion(int idHabitacion, int idServicio) {
+		Habitacion habitacion =	habitaciones.get(idHabitacion);
+		Servicio servicio = serviciosHotel.get(idServicio);
+		habitacion.añadirServicioHabitacion(servicio);
+		habitaciones.put(idHabitacion, habitacion);
+	}
+	
 	
 	public void crearCama(int id, int capacidadCama, boolean aptoParaNiño) {
 		Habitacion habitacion =	habitaciones.get(id);
@@ -224,6 +231,7 @@ public class Hotel implements Serializable{
 		Habitacion habitacion = new Habitacion(tipo, id);
 		habitaciones.put(id, habitacion);
 	}
+	
 	
 	public HashMap<Integer,Grupo> mostrarReservas(Date fechaI, Date fechaF) {
 		HashMap<Integer,Grupo> resultado = new HashMap<Integer,Grupo>();

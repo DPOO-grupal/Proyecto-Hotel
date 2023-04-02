@@ -79,6 +79,10 @@ public class Admin extends Usuario {
 		hotel.añadirServicioHabitacion(id, nombre, precio);
 	}
 	
+	public void añadirServicioHotelHabitacion(int idHabitacion, int idServicio) {
+		hotel.añadirServicioHotelHabitacion(idHabitacion, idServicio);
+	}
+	
 	public void crearCama(int id, int capacidadCama, boolean aptoParaNiño) {
 		hotel.crearCama(id, capacidadCama, aptoParaNiño);
 	}
@@ -89,6 +93,11 @@ public class Admin extends Usuario {
 	
 	public void setCaracteristicasHabitacion(String habitacion, int id) {
 		hotel.setCaracteristicas(habitacion, id);
+	}
+	
+	public HashMap<Integer, Habitacion> getHabitaciones() {
+		return hotel.getHabitaciones();
+		
 	}
 	
 	public void crearProductoMenu(Date horario, boolean llevable,String nombre, double precio) {
