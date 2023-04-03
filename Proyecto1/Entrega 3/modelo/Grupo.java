@@ -2,6 +2,7 @@ package modelo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Grupo implements Serializable{
 	private int id;
@@ -9,7 +10,7 @@ public class Grupo implements Serializable{
 	private ArrayList<Huesped> huespedes;
 	private ArrayList<Integer> listaHabitaciones;
 	private double saldoPagado = 0;
-	private ArrayList<Servicio> listaServicios = new ArrayList<Servicio>();
+	private HashMap<Servicio, Integer> listaServicios = new HashMap<Servicio, Integer>();
 	private int vReal;
 	private int vRelativo;
 	private int capacidadCamas;
@@ -66,7 +67,7 @@ public class Grupo implements Serializable{
 		return saldoPagado;
 	}
 
-	public ArrayList<Servicio> getListaServicios() {
+	public HashMap<Servicio, Integer> getListaServicios() {
 		return listaServicios;
 	}
 
@@ -86,7 +87,7 @@ public class Grupo implements Serializable{
 		this.saldoPagado = saldoPagado;
 	}
 
-	public void setListaServicios(ArrayList<Servicio> listaServicios) {
+	public void setListaServicios(HashMap<Servicio, Integer> listaServicios) {
 		this.listaServicios = listaServicios;
 	}
 	
@@ -96,6 +97,13 @@ public class Grupo implements Serializable{
 	
 	public Huesped getLider() {
 		return huespedes.get(0);
+	}
+	
+	public void añadirServicio(Servicio servicio, int cantidad, boolean pagarEnSitio) {
+		listaServicios.put(servicio, cantidad);
+		if (pagarEnSitio) {
+			saldoPagado+=servicio.getPrecio()*cantidad;
+		}
 	}
 	
 }

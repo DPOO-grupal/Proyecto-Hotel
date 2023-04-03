@@ -2,19 +2,20 @@ package modelo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Restaurante implements Serializable{
 	
 //Atributos
-	private ArrayList<ProductoMenu> menu;
+	private HashMap<Integer, ProductoMenu> menu;
 	
 //Constructor
 	public Restaurante() {
-		this.menu = new ArrayList<ProductoMenu>();
+		this.menu = new HashMap<Integer, ProductoMenu>();
 	}
 	
 	public void añadirProducto(ProductoMenu producto) {
-		menu.add(producto);
+		menu.put(producto.getId(), producto);
 	}
 	
 	public void quitarProducto(ProductoMenu producto) {
@@ -25,7 +26,7 @@ public class Restaurante implements Serializable{
 		}
 	}
 	
-	public ArrayList<ProductoMenu> getMenu(){
+	public HashMap<Integer, ProductoMenu> getMenu(){
 		return this.menu;
 	}
 	

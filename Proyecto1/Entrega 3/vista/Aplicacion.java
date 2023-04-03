@@ -10,12 +10,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import controlador.Hotel;
 import modelo.Admin;
 import modelo.Empleado;
 import modelo.Grupo;
 import modelo.ProductoMenu;
+import modelo.Reserva;
 import modelo.Servicio;
 import modelo.Habitacion;
 import modelo.Huesped;
@@ -112,12 +114,13 @@ public class Aplicacion {
 	}
 
 	public void menuEmpleado(Empleado empleado) {
-
+		
+		System.out.println("---------- Menú ----------");
 		System.out.println("0. Cerrar Sesión");
 		System.out.println("1. Tarifas");
 		System.out.println("2. Servicios hotel");
 		System.out.println("3. Habitaciones");
-		System.out.println("4. Producto menú");
+		System.out.println("4. Restaurante");
 		System.out.println("5. Reservas");
 		System.out.println("7. Check in");
 		System.out.println("8. Check out");
@@ -161,7 +164,7 @@ public class Aplicacion {
 
 	public void menuAdmin(Admin admin) {
 		
-		System.out.println(" ---------- Menú ----------");
+		System.out.println("---------- Menú ----------");
 
 		
 		if (!admin.tarifasCompletas());{
@@ -173,7 +176,7 @@ public class Aplicacion {
 		System.out.println("2. Tarifas");
 		System.out.println("3. Servicios hotel");
 		System.out.println("4. Habitaciones");
-		System.out.println("5. Producto menú");
+		System.out.println("5. Restaurante");
 		System.out.println("6. Reservas");
 		System.out.println("7. Check in");
 		System.out.println("8. Check out");
@@ -294,6 +297,7 @@ public class Aplicacion {
 			case 1:
 				consultarTarifas(empleado);
 				input("Presione 'Enter' para continuar");
+				break;
 
 			case 2:
 				continuarTarifa = false;
@@ -308,7 +312,6 @@ public class Aplicacion {
 	
 	public void mostrarTarifasFaltantes(Admin admin) {
 		ArrayList<Tarifa> faltantes = admin.checkTarifas();
-		System.out.println(faltantes.size());
 		if (faltantes.size() > 0) {
 			System.out.println("Faltan crear las siguientes Tarifas para los tipos de Habitación");
 			for (Tarifa tarifa : faltantes) {
@@ -337,17 +340,25 @@ public class Aplicacion {
 			if (precio > 0) {
 				System.out.println("Estandar: $" + precio);
 
+			} else {
+				System.out.println("No hay tarifa para estandar");
 			}
 			precio = tarifa.getPrecio(TipoHabitacion.SUITE);
 			if (precio > 0) {
 				System.out.println("Suite: $" + precio);
 
+			}else {
+				System.out.println("No hay tarifa para suite");
 			}
 			precio = tarifa.getPrecio(TipoHabitacion.SUITEDOUBLE);
 			if (precio > 0) {
 				System.out.println("Suite Double: $" + precio);
 
+			}else {
+				System.out.println("No hay tarifa para double suite");
 			}
+			
+
 			
 			System.out.println("");
 			
@@ -407,8 +418,9 @@ public class Aplicacion {
 			System.out.println("\n-------- RESERVAS --------");
 			System.out.println("1. Consular Reserva por rango de fechas ");
 			System.out.println("2. Crear Reserva");
-			System.out.println("3. Cancelar Reserva");
-			System.out.println("4. Salir");
+			System.out.println("3. Continuar Reserva");
+			System.out.println("4. Cancelar Reserva");
+			System.out.println("5. Salir");
 			
 			opcionSeleccionada = num("Seleccione una opción");
 			switch (opcionSeleccionada) {
@@ -420,9 +432,12 @@ public class Aplicacion {
 				llenarReserva(empleado);
 				break;
 			case 3:
-				cancelarReserva(empleado);
+				llenarReserva(empleado);
 				break;
 			case 4:
+				cancelarReserva(empleado);
+				break;
+			case 5:
 				continuarTarifa = false;
 				break;
 	
@@ -454,41 +469,40 @@ public class Aplicacion {
 		Habitacion habitacion;
 		TipoHabitacion tipo;
 		ArrayList<Habitacion> habitacionesConsulta;
-
-		do {
-			System.out.println("\nSeleccionar habitaciones Dispobibles");
-			tipo = getTipoHabitacion("Ingrese el tipo de habitación que desea consultar");
-			habitacionesConsulta = empleado.DiponiblesParaGrupoEnCurso(tipo);
-			
-			if (habitacionesConsulta.size()> 0) {
+		if (empleado.hayReserva()) {
+			do {
+				System.out.println("\nSeleccionar habitaciones Dispobibles");
+				tipo = getTipoHabitacion("Ingrese el tipo de habitación que desea consultar");
+				habitacionesConsulta = empleado.DiponiblesParaGrupoEnCurso(tipo);
 				
-				for (int i = 0; i < habitacionesConsulta.size(); i++) {
-					habitacion = habitacionesConsulta.get(i);
-					double precioHabitacion = empleado.getPrecioHabitacionReserva(habitacion);
+				if (!(habitacionesConsulta.isEmpty())) {
 					
-					
-					System.out.println("Número " + habitacion.getId() + " precio " + precioHabitacion);
-					int id = num("Seleccione una Habitación");
-					
-					
-					repetir = empleado.completarReserva(id, precioHabitacion);	
+					for (int i = 0; i < habitacionesConsulta.size(); i++) {
+						habitacion = habitacionesConsulta.get(i);
+						int precioHabitacion = (int)empleado.getPrecioHabitacionReserva(habitacion);
+						
+						System.out.println("\nId: " + habitacion.getId());
+						System.out.println("Servicios: " + habitacion.getServicios().toString());
+						System.out.println("Caracteristicas: " + habitacion.getCaracteristicas());
+						System.out.println("Precio: $" + precioHabitacion);
+					}
+					int id = num("Ingrese el ID de la habitación");
+
+					repetir = empleado.completarReserva(id);	
+				} else {
+					System.out.println("No hay habitaciones Disponibles para este día");
+					repetir = false;
 				}
-			} else {
-				System.out.println("No hay habitaciones Disponibles para este día");
-				repetir = false;
-			}
-			
-			
-					
-
-		} while (repetir);
-
-	
+				
+			} while (repetir);
+		} else {
+			System.out.println("No hay reserva en curso");
+		}
 }
 	private void crearReservas(Empleado empleado) {
-		Date fechaI = getDate("Ingrese fecha inicial de la tarifa");
-		Date fechaF = getDate("Ingrese fecha final de la tarifa");
-		int tamañoGrupo= num("Ingrse el el número de personas");
+		Date fechaI = getDate("Ingrese fecha inicial de la reserva");
+		Date fechaF = getDate("Ingrese fecha final de la reserva");
+		int tamañoGrupo= num("Ingrese el número de personas");
 		
 		String[] nombres = new String[tamañoGrupo];
 		String[] documentos = new String[tamañoGrupo];
@@ -521,13 +535,17 @@ public class Aplicacion {
 		Date fechaI = getDate("Ingrese fecha inicial de la reserva");
 		Date fechaF = getDate("Ingrese fecha final de la reserva");
 		HashMap<Integer,Grupo> reservas = empleado.mostrarReservas(fechaI, fechaF);
-		Huesped lider;
-		for (Grupo grupo : reservas.values()) {
-			lider = grupo.getLider();
-			System.out.println("\nIdentificador de reserva: " + grupo.getId());
-			System.out.println("Lider del grupo:");
-			System.out.println("Nombre: " + lider.getNombre());
-			System.out.println("Numero de documento: " + lider.getDocumento());
+		if (reservas.isEmpty()) {
+			System.out.println("No hay reservas");
+		}else {
+			Huesped lider;
+			for (Grupo grupo : reservas.values()) {
+				lider = grupo.getLider();
+				System.out.println("\nIdentificador de reserva: " + grupo.getId());
+				System.out.println("Lider del grupo:");
+				System.out.println("Nombre: " + lider.getNombre());
+				System.out.println("Numero de documento: " + lider.getDocumento());
+			}
 		}
 		System.out.println("\n");
 		
@@ -637,11 +655,17 @@ public class Aplicacion {
 			mostrarServiciosHotel(empleado);
 			int idServicio = num("ID del servicio hotel");
 			int idHabitacion = num("ID habitación");
+			int cantidad = num("Cuantos van usar el servicio");
+			boolean pagarEnSitio = getboolean("\n¿Van a pagar aqui?");
 			try {
-				empleado.añadirServicioHotelHabitacion(idHabitacion, idServicio);
-				
+				Servicio servicio = empleado.añadirServicioHotelHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);
+				if (pagarEnSitio) {
+					System.out.println("Su factura es: ");
+					System.out.println("Servicio: " + servicio.getNombre() + ", precio: $" + servicio.getPrecio()*cantidad + ", cantidad: " + cantidad);
+				}
 			} catch (Exception e) {
-				System.out.println("No existe la habitacion o el servicio");
+				System.out.println("No existe la habitacion o el servicio, o la habitacion no esta reservada el dia de hoy"
+						+ "");
 			}
 			centinela = getboolean("\n¿Desea añadir otro servicio hotel?");
 		}
@@ -683,8 +707,7 @@ public class Aplicacion {
 			System.out.println("\n-------- HABITACION --------");
 			System.out.println("1. Consular habitaciones");
 			System.out.println("2. Crear habitación");
-			System.out.println("3. Añadir servicio a habitación");
-			System.out.println("4. Salir");
+			System.out.println("3. Salir");
 			opcionSeleccionada = num("Seleccione una opción");
 			switch (opcionSeleccionada) {
 			case 1:
@@ -694,9 +717,6 @@ public class Aplicacion {
 				crearHabitacion(admin);
 				break;
 			case 3:
-				añadirServicioHabitacion(admin, opcionSeleccionada);
-				break;
-			case 4:
 				continuar = false;
 				break;
 
@@ -711,8 +731,7 @@ public class Aplicacion {
 		HashMap<Integer, Habitacion> listaHabitaciones = empleado.getHabitaciones();
 		if (!(listaHabitaciones.isEmpty())) {
 			System.out.println("\nHabitaciones");
-			for (int i = 0; i < listaHabitaciones.size(); i++) {
-				Habitacion habitacion = listaHabitaciones.get(i);
+			for (Habitacion habitacion: listaHabitaciones.values()) {
 				int id = habitacion.getId();
 				ArrayList<Servicio> servicios =habitacion.getServicios();
 				String caracteristicas = habitacion.getCaracteristicas();
@@ -759,24 +778,6 @@ public class Aplicacion {
 		}
 	}
 	
-
-	public void añadirServicioHabitacion(Admin admin, int id) {
-		System.out.println("\nCreando servicio habitación...");
-		boolean centinela = true;
-		while (centinela) {
-			mostrarHabitaciones(admin);
-			String nombre = input("Nombre servicio habitación");
-			double precio = getDouble("Precio");
-			try {
-				admin.añadirServicioHabitacion(id, nombre, precio);
-				
-			} catch (Exception e) {
-				System.out.println("No existe la habitación");
-			}
-			centinela = getboolean("\n¿Desea añadir otro servicio?");
-		}
-	}
-	
 	
 //FIN HABITACION --------------------------------------------------------------
 	
@@ -787,7 +788,7 @@ public class Aplicacion {
 		int opcionSeleccionada;
 		
 		do {
-			System.out.println("\n-------- PRODUCTO MENU --------");
+			System.out.println("\n-------- RESTAURANTE --------");
 			System.out.println("1. Consular menu");
 			System.out.println("2. Añadir producto menu a habitación");
 			System.out.println("3. Salir");
@@ -841,23 +842,23 @@ public class Aplicacion {
 	}
 	
 	private void mostrarMenuProductos(Empleado empleado) {
-		ArrayList<ProductoMenu> listaProductosMenu = empleado.getMenu();
+		HashMap<Integer, ProductoMenu> listaProductosMenu = empleado.getMenu();
 		if (!(listaProductosMenu.isEmpty())) {
 			System.out.println("\nMenu");
-			for (int i = 0; i < listaProductosMenu.size(); i++) {
-				String nombre = listaProductosMenu.get(i).getNombre();
-				int precio = (int)listaProductosMenu.get(i).getPrecio();
-				boolean llevable = listaProductosMenu.get(i).getLlevable();
-				int id = listaProductosMenu.get(i).getId();
-				Date horaI = listaProductosMenu.get(i).getHorarioI();
-				Date horaF = listaProductosMenu.get(i).getHorarioF();
+			for (ProductoMenu productoMenu: listaProductosMenu.values()) {
+				String nombre = productoMenu.getNombre();
+				int precio = (int)productoMenu.getPrecio();
+				boolean llevable = productoMenu.getLlevable();
+				int id = productoMenu.getId();
+				Date horaI = productoMenu.getHorarioI();
+				Date horaF = productoMenu.getHorarioF();
 				String esLlevable;
 				if (llevable) {
 					esLlevable = "(Llevable)";
 				} else {
 					esLlevable = "(No llevable)";
 				}
-				System.out.println(nombre + "(" + id + ")" + ": " + precio +" "+ esLlevable +" "+ horaI.toString() + "-" + horaF.toString());
+				System.out.println(nombre + "(" + id + ")" + ": " + precio +" "+ esLlevable +" "+ formatoHora(horaI) + "-" + formatoHora(horaF));
 			}
 		} else {
 			System.out.println("\nNo hay productos en el menú");
@@ -875,7 +876,7 @@ public class Aplicacion {
 			String nombre = input("Nombre producto menú");
 			double precio = getDouble("Precio");
 			admin.crearProductoMenu(horaI, horaF, llevable, nombre, precio);
-			centinela=getboolean("\n¿Desea añadir otro producto?");
+			centinela=getboolean("\n¿Desea añadir otro producto al menu?");
 		}
 	}
 	
@@ -886,13 +887,18 @@ public class Aplicacion {
 			mostrarMenuProductos(empleado);
 			int idProductoMenu = num("ID del producto menu");
 			int idHabitacion = num("ID habitacion");
+			int cantidad = num("Cuantos van a consumir el producto");
+			boolean pagarEnSitio = getboolean("\n¿Van a pagar aqui?");
 			try {
-				empleado.añadirServicioHotelHabitacion(idHabitacion, idProductoMenu);
-				
+				Servicio servicio = empleado.añadirProductoMenuHabitacion(idHabitacion, idProductoMenu, cantidad, pagarEnSitio);
+				if (pagarEnSitio) {
+					System.out.println("Su factura es: ");
+					System.out.println("Servicio: " + servicio.getNombre() + ", precio: $" + servicio.getPrecio()*cantidad + ", cantidad: " + cantidad);
+				}
 			} catch (Exception e) {
-				System.out.println("No existe la habitacion o el producto menú");
+				System.out.println("No existe la habitacion o el producto menú, o no hay reserva");
 			}
-			centinela = getboolean("\n¿Desea añadir otro servicio hotel?");
+			centinela = getboolean("\n¿Desea añadir otro producto del menu?");
 		}
 	}
 	
@@ -918,10 +924,31 @@ public class Aplicacion {
 		System.out.println("\n-------- CHECK OUT --------");
 		int idGrupo = num("ID grupo");
 		boolean todos = getboolean("\n¿Todos los del grupo estan?");
+		
 		if (todos) {
+			int pagoTotal = 0;
+			Grupo grupo = empleado.checkOut(idGrupo);
+			Reserva reserva = grupo.getReserva();
+			double precioReserva = reserva.getPrecioReserva();
+			System.out.println("Su reserva tuvo un costo de: $" + precioReserva);
+			System.out.println("Sus servicios consumidos fueron:");
+			for (Entry<Servicio, Integer>  entry : grupo.getListaServicios().entrySet()) {
+				String nombre = entry.getKey().getNombre();
+				int precioTotal = (int)entry.getKey().getPrecio();
+				pagoTotal += precioTotal;
+				int cantidad = entry.getValue();
+				System.out.println("Servicio: " + nombre + ", precio: $" + precioTotal + ", cantidad: " + cantidad);
+			}
+			int saldo = (int)grupo.getSaldoPagado();
+			pagoTotal -= saldo;
+			System.out.println("Su saldo pagado fue: $" + saldo);
+			System.out.println("Saldo pendiente: $" + pagoTotal);
+			
 		} else {
 			System.out.println("Tienen que estar todos para el Check Out");
 		}
+		
+		
 	}
 	
 	
@@ -931,6 +958,12 @@ public class Aplicacion {
 	public String formatoFecha(Date fecha) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	    String fechaString = sdf.format(fecha);
+		return fechaString;
+	}
+	
+	public String formatoHora(Date hora) {
+		SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
+	    String fechaString = sdf.format(hora);
 		return fechaString;
 	}
 	
@@ -1006,8 +1039,8 @@ public class Aplicacion {
 		boolean right;
 		Date hora = null;
 		do{
-			String horaString = input(mensaje + " (hh:mm)");
-			DateFormat DFormat = new SimpleDateFormat("hh:mm");
+			String horaString = input(mensaje + " (h:mm am/pm)");
+			DateFormat DFormat = new SimpleDateFormat("h:mm");
 
 			try {
 				hora = DFormat.parse(horaString);
@@ -1030,7 +1063,7 @@ public class Aplicacion {
 			right = false;
 			
 			System.out.println(mensaje);
-			System.out.println("Ingrese Una de las opciones");
+			System.out.println("Ingrese una de las opciones");
 			System.out.println("1. Estandar");
 			System.out.println("2. Suite");
 			System.out.println("3. Suite Double");
@@ -1097,6 +1130,7 @@ public class Aplicacion {
 			
 		} catch (Exception e) {
 			app.hotel.guardarInformacion();
+			e.printStackTrace();
 		}
 		
 

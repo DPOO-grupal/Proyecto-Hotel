@@ -36,8 +36,17 @@ public class Empleado extends Usuario  {
 	}
 	
 
-	public boolean completarReserva(int idHabitacion, double precioHabitacion) {
-		return hotel.completarReserva(idHabitacion, precioHabitacion);
+	public boolean completarReserva(int idHabitacion) {
+		return hotel.completarReserva(idHabitacion);
+	}
+	
+	public boolean hayReserva() {
+		Grupo grupo = hotel.getGrupoEnCurso();
+		if (grupo==null) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 	
 	public ArrayList<Habitacion> DiponiblesParaGrupoEnCurso(TipoHabitacion tipo) {
@@ -57,8 +66,12 @@ public class Empleado extends Usuario  {
 		return hotel.getServiciosHotel();
 	}
 
-	public void añadirServicioHotelHabitacion(int idHabitacion, int idServicio) {
-		hotel.añadirServicioHotelHabitacion(idHabitacion, idServicio);
+	public Servicio añadirServicioHotelHabitacion(int idHabitacion, int idServicio, int cantidad, boolean pagarEnSitio) {
+		return hotel.añadirServicioHotelHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);
+	}
+	
+	public Servicio añadirProductoMenuHabitacion(int idHabitacion, int idServicio, int cantidad, boolean pagarEnSitio) {
+		return hotel.añadirProductoMenuHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);
 	}
 	
 //FIN SERVICIOS HOTEL -----------------------------------------------------------
@@ -73,7 +86,7 @@ public class Empleado extends Usuario  {
 	
 //INICIO PRODUCTO MENU -----------------------------------------------------------
 
-	public ArrayList<ProductoMenu> getMenu() {
+	public HashMap<Integer, ProductoMenu> getMenu() {
 		return hotel.getMenu();
 	}
 	
@@ -87,4 +100,7 @@ public class Empleado extends Usuario  {
         return hotel.pasarAnno(start);
     }
 
+	public Grupo checkOut(int idGrupo) {
+		return hotel.checkOut(idGrupo);
+	}
 }

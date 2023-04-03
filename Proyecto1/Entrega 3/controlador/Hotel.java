@@ -214,11 +214,20 @@ public class Hotel implements Serializable{
 		habitaciones.put(id, habitacion);
 	}
 	
-	public void añadirServicioHotelHabitacion(int idHabitacion, int idServicio) {
-		Habitacion habitacion =	habitaciones.get(idHabitacion);
+	public Servicio añadirServicioHotelHabitacion(int idHabitacion, int idServicio, int cantidad, boolean pagarEnSitio) {
+		int idGrupo = ocupados.get(hoy).get(idHabitacion);
 		Servicio servicio = serviciosHotel.get(idServicio);
-		habitacion.añadirServicioHabitacion(servicio);
-		habitaciones.put(idHabitacion, habitacion);
+		Grupo grupo = grupos.get(idGrupo);
+		grupo.añadirServicio(servicio, cantidad, pagarEnSitio);
+		return servicio;
+	}
+	
+	public Servicio añadirProductoMenuHabitacion(int idHabitacion, int idServicio, int cantidad, boolean pagarEnSitio) {
+		int idGrupo = ocupados.get(hoy).get(idHabitacion);
+		Servicio servicio = restaurante.getProducto(idServicio);
+		Grupo grupo = grupos.get(idGrupo);
+		grupo.añadirServicio(servicio, cantidad, pagarEnSitio);
+		return servicio;
 	}
 	
 	
@@ -244,11 +253,12 @@ public class Hotel implements Serializable{
 		SortedMap<Date, HashMap<Integer, Integer>> rangoTarifas = ocupados.subMap(fechaI, fechaF);
 		
 		for (HashMap<Integer, Integer> mapa : rangoTarifas.values()) {
+			System.out.println(mapa.values().size());
 			for (int idGrupo : mapa.values()) {
 				grupo = grupos.get(idGrupo);
 				reserva = grupo.getReserva();
 				if (reserva.getFechaI().after(fechaI) || reserva.getFechaI().equals(fechaI)) {
-					if(reserva.getFechaF().before(fechaI) || reserva.getFechaF().equals(fechaI)) {
+					if(reserva.getFechaF().before(fechaF) || reserva.getFechaF().equals(fechaF)) {
 						resultado.put(idGrupo, grupo);
 					}
 				}
@@ -306,7 +316,7 @@ public class Hotel implements Serializable{
 		SortedMap<Date, HashMap<Integer, Integer>> filtrado =  ocupados.subMap(FechaI, FechaF);
 		
 		for (Entry<Integer, Habitacion> kv : habitaciones.entrySet()) {
-			boolean aniadir = false;
+			boolean aniadir = true;
 			int id = kv.getKey();
 			
 			for (HashMap<Integer, Integer> ocupa2 : filtrado.values()) {
@@ -330,10 +340,11 @@ public class Hotel implements Serializable{
 		
 	}
 
-	public boolean completarReserva(int idHabitacion, double precioHabitacion) {
+	public boolean completarReserva(int idHabitacion) {
 		boolean resultado = false;
 		llenarOcupados(idHabitacion);
 		Habitacion habi = habitaciones.get(idHabitacion);
+		int precioHabitacion = (int)getPrecioHabitacionReserva(habi);
 		grupoEnCurso.añadirHabitacion(idHabitacion, habi.getCapacidad(), precioHabitacion);
 		
 		resultado =(grupoEnCurso.getvRelativo() <= grupoEnCurso.getCapacidadCamas());
@@ -343,7 +354,7 @@ public class Hotel implements Serializable{
 			grupoEnCurso = null;
 		}
 		
-		return resultado;
+		return !resultado;
 	}
 		
 	
@@ -377,6 +388,25 @@ public class Hotel implements Serializable{
 		}
 	}
 	
+	public Grupo checkOut(int idGrupo) {
+		Grupo grupo = grupos.get(idGrupo);
+		grupos.remove(idGrupo);
+		
+		ArrayList<Integer> idsHabitaciones = grupo.getListaHabitaciones();
+		Reserva reserva = grupo.getReserva();
+		Date fechaI = reserva.getFechaI();
+		Date fechaF = reserva.getFechaF();
+		for (Date date : getDateRange(fechaI, fechaF)) {
+			HashMap<Integer, Integer> mapa = ocupados.get(date);
+			for (Integer id : idsHabitaciones) {
+				mapa.remove(id);
+			}
+			ocupados.put(date, mapa);
+		}
+		return grupo;	
+	}
+
+	
 	public void crearProductoMenu(Date horaI, Date horaF, boolean llevable,String nombre, double precio) {
 		ProductoMenu productoMenu = new ProductoMenu(horaI, horaF, llevable, nombre, precio);
 		restaurante.añadirProducto(productoMenu);
@@ -386,7 +416,7 @@ public class Hotel implements Serializable{
 		restaurante.añadirProducto(productoMenu);
 	}
 	
-	public ArrayList<ProductoMenu> getMenu() {
+	public HashMap<Integer, ProductoMenu> getMenu() {
 		return restaurante.getMenu();
 	}
 	
@@ -563,6 +593,10 @@ public class Hotel implements Serializable{
 	public void setServiciosHotel(HashMap<Integer, Servicio> serviciosHotel) {
 		this.serviciosHotel = serviciosHotel;
 	}
+
+
+
+
 
 
 
