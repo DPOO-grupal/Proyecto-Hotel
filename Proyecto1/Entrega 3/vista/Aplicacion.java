@@ -119,8 +119,8 @@ public class Aplicacion {
 		System.out.println("3. Habitaciones");
 		System.out.println("4. Producto menú");
 		System.out.println("5. Reservas");
-		System.out.println("6. ");
-		System.out.println("7. ");
+		System.out.println("7. Check in");
+		System.out.println("8. Check out");
 
 		int opcionSeleccionada;
 
@@ -175,8 +175,8 @@ public class Aplicacion {
 		System.out.println("4. Crear habitación");
 		System.out.println("5. Crear producto menú");
 		System.out.println("6. Reservas");
-		System.out.println("7. ");
-		System.out.println("8. ");
+		System.out.println("7. Check in");
+		System.out.println("8. Check out");
 
 		
 		int opcionSeleccionada;
@@ -218,6 +218,12 @@ public class Aplicacion {
 			break;
 		case 6:
 			menuReservas(admin);
+			break;
+		case 7:
+			checkIn(admin);
+			break;
+		case 8:
+			checkOut(admin);
 			break;
 		default:
 			input("Debe seleccionar una de las opciones del menú");
@@ -838,13 +844,15 @@ public class Aplicacion {
 				int precio = (int)listaProductosMenu.get(i).getPrecio();
 				boolean llevable = listaProductosMenu.get(i).getLlevable();
 				int id = listaProductosMenu.get(i).getId();
+				Date horaI = listaProductosMenu.get(i).getHorarioI();
+				Date horaF = listaProductosMenu.get(i).getHorarioF();
 				String esLlevable;
 				if (llevable) {
 					esLlevable = "(Llevable)";
 				} else {
 					esLlevable = "(No llevable)";
 				}
-				System.out.println(nombre + "(" + id + ")" + ": " + precio +" "+ esLlevable);
+				System.out.println(nombre + "(" + id + ")" + ": " + precio +" "+ esLlevable +" "+ horaI.toString() + "-" + horaF.toString());
 			}
 		} else {
 			System.out.println("\nNo hay productos en el menú");
@@ -856,11 +864,12 @@ public class Aplicacion {
 		System.out.println("\nCreando producto menú...");
 		boolean centinela = true;
 		while (centinela) {
-			//Date date = getDate("Hora admitida");
+			Date horaI = getHora("Hora disponibilidad inicial");
+			Date horaF = getHora("Hora disponibilidad final");
 			boolean llevable = getboolean("\n¿Es llevable?");
 			String nombre = input("Nombre producto menú");
 			double precio = getDouble("Precio");
-			admin.crearProductoMenu(null, llevable, nombre, precio);
+			admin.crearProductoMenu(horaI, horaF, llevable, nombre, precio);
 			centinela=getboolean("\n¿Desea añadir otro producto?");
 		}
 	}
@@ -883,6 +892,36 @@ public class Aplicacion {
 	}
 	
 //FIN PRODUCTO MENU ----------------------------------------------------------------	
+
+//INICIO CHECK IN/CHECK OUT  --------------------------------------------------------
+
+	public void checkIn(Empleado empleado) {
+		System.out.println("\n-------- CHECK IN --------");
+		Date fechaF = getDate("Fecha final de la reserva");
+		int idGrupo = num("ID grupo");
+		HashMap<Integer, Grupo> listaGrupos = empleado.mostrarReservas(empleado.getHoy(), fechaF);
+		
+		if (listaGrupos.containsKey(idGrupo)) {
+			System.out.println("Check In completado");
+		} else {
+			System.out.println("No existe la reserva del grupo");
+		}
+	}
+	
+	
+	public void checkOut(Empleado empleado) {
+		System.out.println("\n-------- CHECK OUT --------");
+		int idGrupo = num("ID grupo");
+		boolean todos = getboolean("\n¿Todos los del grupo estan?");
+		if (todos) {
+		} else {
+			System.out.println("Tienen que estar todos para el Check Out");
+		}
+	}
+	
+	
+	
+//INICIO CHECK IN/CHECK OUT  --------------------------------------------------------
 	
 	public String formatoFecha(Date fecha) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -958,6 +997,25 @@ public class Aplicacion {
 		return dia;
 	}
 	
+	public Date getHora(String mensaje) {
+		boolean right;
+		Date hora = null;
+		do{
+			String horaString = input(mensaje + " (hh:mm)");
+			DateFormat DFormat = new SimpleDateFormat("hh:mm");
+
+			try {
+				hora = DFormat.parse(horaString);
+				right = false;
+			} catch (ParseException e) {
+				System.out.println("Formato Incorrecto");
+				right = true;
+			}
+			
+		} while (right);
+		
+		return hora;
+	}
 	
 	public TipoHabitacion getTipoHabitacion(String mensaje) {
 		TipoHabitacion tipo = null;

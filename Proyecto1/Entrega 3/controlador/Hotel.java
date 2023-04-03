@@ -377,8 +377,8 @@ public class Hotel implements Serializable{
 		}
 	}
 	
-	public void crearProductoMenu(Date horario, boolean llevable,String nombre, double precio) {
-		ProductoMenu productoMenu = new ProductoMenu(horario, llevable, nombre, precio);
+	public void crearProductoMenu(Date horaI, Date horaF, boolean llevable,String nombre, double precio) {
+		ProductoMenu productoMenu = new ProductoMenu(horaI, horaF, llevable, nombre, precio);
 		restaurante.añadirProducto(productoMenu);
 	}
 	
@@ -417,7 +417,7 @@ public class Hotel implements Serializable{
         return cal.getTime();
 	}
 	
-    private Date pasarAnno(Date start) {
+    public Date pasarAnno(Date start) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(start);
         cal.add(Calendar.YEAR, 1);

@@ -1,6 +1,7 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -77,4 +78,13 @@ public class Empleado extends Usuario  {
 	}
 	
 //FIN PRODUCTO MENU -----------------------------------------------------------
+
+	public Date getHoy() {
+		return hotel.getHoy();
+	}
+	
+	private Date pasarAnno(Date start) {
+        return hotel.pasarAnno(start);
+    }
+
 }
