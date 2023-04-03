@@ -171,9 +171,9 @@ public class Aplicacion {
 		System.out.println("0. Cerrar Sesion");
 		System.out.println("1. Añadir Usuario");
 		System.out.println("2. Tarifas");
-		System.out.println("3. Crear servicio hotel");
-		System.out.println("4. Crear habitación");
-		System.out.println("5. Crear producto menú");
+		System.out.println("3. Servicios hotel");
+		System.out.println("4. Habitaciones");
+		System.out.println("5. Producto menú");
 		System.out.println("6. Reservas");
 		System.out.println("7. ");
 		System.out.println("8. ");
@@ -458,9 +458,14 @@ public class Aplicacion {
 				
 				for (int i = 0; i < habitacionesConsulta.size(); i++) {
 					habitacion = habitacionesConsulta.get(i);
-					System.out.println("Número " + habitacion.getId() + " precio " + empleado.getPrecioHabitacionReserva(habitacion));
-					int pos = num("Seleccione una Habitación");
-					repetir = empleado.completarReserva(pos);	
+					double precioHabitacion = empleado.getPrecioHabitacionReserva(habitacion);
+					
+					
+					System.out.println("Número " + habitacion.getId() + " precio " + precioHabitacion);
+					int id = num("Seleccione una Habitación");
+					
+					
+					repetir = empleado.completarReserva(id, precioHabitacion);	
 				}
 			} else {
 				System.out.println("No hay habitaciones Disponibles para este día");
@@ -1029,7 +1034,13 @@ public class Aplicacion {
 
 	public static void main(String[] args) {
 		Aplicacion app = new Aplicacion();
-		app.ejecutarAplicacion();
+		try {
+			app.ejecutarAplicacion();
+			
+		} catch (Exception e) {
+			app.hotel.guardarInformacion();
+		}
+		
 
 	}
 

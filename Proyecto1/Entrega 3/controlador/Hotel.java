@@ -330,11 +330,11 @@ public class Hotel implements Serializable{
 		
 	}
 
-	public boolean completarReserva(int idHabitacion) {
+	public boolean completarReserva(int idHabitacion, double precioHabitacion) {
 		boolean resultado = false;
 		llenarOcupados(idHabitacion);
 		Habitacion habi = habitaciones.get(idHabitacion);
-		grupoEnCurso.añadirHabitacion(idHabitacion, habi.getCapacidad());
+		grupoEnCurso.añadirHabitacion(idHabitacion, habi.getCapacidad(), precioHabitacion);
 		
 		resultado =(grupoEnCurso.getvRelativo() <= grupoEnCurso.getCapacidadCamas());
 		
@@ -427,6 +427,10 @@ public class Hotel implements Serializable{
 
 	public void cargarInformacion() {
 		datos = new Persistencia();
+		int[] nums = datos.leerStaticData();
+		
+		Servicio.setNumServicios(nums[0]);
+		Grupo.setNumGrupo(nums[1]);
 		
 		Hotel hotelDatos = null;
 		try {
@@ -444,13 +448,11 @@ public class Hotel implements Serializable{
 			añadirUsuario("root", "Cookie", 1);
 		}
 		
-		int sizeGrupo = grupos.size();
-		Grupo.setNumGrupo(sizeGrupo);
-		// TODO Aumentar el contador de servicios, sumar los productos menu y servicios
 		Usuario.setHotel(this);
 		
 	}
 	public void data (Hotel hotelDatos) {
+		
 		setOcupados(hotelDatos.getOcupados());
 		
 		setGrupoEnCurso(hotelDatos.getGrupoEnCurso());
@@ -464,6 +466,8 @@ public class Hotel implements Serializable{
 		setHabitaciones(hotelDatos.getHabitaciones());
 		
 		setRestaurante(hotelDatos.getRestaurante());
+		
+		setServiciosHotel(hotelDatos.getServiciosHotel());
 	}
 	
 	public void guardarInformacion() {
@@ -474,6 +478,7 @@ public class Hotel implements Serializable{
 			datos.abrirOutput();
 			datos.escribir(hotel);
 			datos.cerrarOutput();
+			datos.guardarStaticData(Servicio.getNumServicios(), Grupo.getNumGrupo());
 			
 			
 		} catch (IOException e) {
@@ -523,7 +528,7 @@ public class Hotel implements Serializable{
 	}
 
 	public void setTarifas(TreeMap<Date, Tarifa> tarifas) {
-		this.tarifas = tarifas;
+		this.tarifas.putAll(tarifas.subMap(hoy, true, pasarAnno(hoy), true));
 		inicializarTarifas();
 	}
 
@@ -551,9 +556,12 @@ public class Hotel implements Serializable{
 		return hoy;
 	}
 	
-	
 	public void setHoy(Date hoy) {
 		this.hoy = hoy;
+	}
+
+	public void setServiciosHotel(HashMap<Integer, Servicio> serviciosHotel) {
+		this.serviciosHotel = serviciosHotel;
 	}
 
 

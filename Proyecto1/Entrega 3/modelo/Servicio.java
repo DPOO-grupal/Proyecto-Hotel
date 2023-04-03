@@ -23,6 +23,10 @@ public class Servicio implements Serializable{
 		Servicio.numServicios = numServicios;
 	}
 	
+	public static int getNumServicios() {
+		return numServicios;
+	}
+
 	public String getNombre() {
 		return this.nombre;
 	}

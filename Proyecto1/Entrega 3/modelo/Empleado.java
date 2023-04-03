@@ -35,8 +35,8 @@ public class Empleado extends Usuario  {
 	}
 	
 
-	public boolean completarReserva(int idHabitacion) {
-		return hotel.completarReserva(idHabitacion);
+	public boolean completarReserva(int idHabitacion, double precioHabitacion) {
+		return hotel.completarReserva(idHabitacion, precioHabitacion);
 	}
 	
 	public ArrayList<Habitacion> DiponiblesParaGrupoEnCurso(TipoHabitacion tipo) {
