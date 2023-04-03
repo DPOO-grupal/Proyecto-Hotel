@@ -59,7 +59,7 @@ public class Aplicacion {
 						menuAdmin(admin);
 					}
 				}
-
+				usuarioActual = null;
 				continuar = true;
 				break;
 
@@ -150,7 +150,7 @@ public class Aplicacion {
 			menuProductoMenuEmpleado(empleado);
 			break;
 		case 5:
-			menuReservasEmpleado(empleado);
+			menuReservas(empleado);
 			break;	
 		default:
 			input("Debe seleccionar una de las opciones del menú");
@@ -403,6 +403,7 @@ public class Aplicacion {
 			System.out.println("2. Crear Reserva");
 			System.out.println("3. Cancelar Reserva");
 			System.out.println("4. Salir");
+			
 			opcionSeleccionada = num("Seleccione una opción");
 			switch (opcionSeleccionada) {
 			case 1:
@@ -523,12 +524,6 @@ public class Aplicacion {
 	
 	
 // FIN RESERVAS ---------------------------------------------
-	
-	public String formatoFecha(Date fecha) {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-	    String fechaString = sdf.format(fecha);
-		return fechaString;
-	}
 	
 // INICIO SERVICIO HOTEL -----------------------------------------------------
 	
@@ -889,7 +884,12 @@ public class Aplicacion {
 	
 //FIN PRODUCTO MENU ----------------------------------------------------------------	
 	
-
+	public String formatoFecha(Date fecha) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	    String fechaString = sdf.format(fecha);
+		return fechaString;
+	}
+	
 	public String input(String mensaje){
 		try
 		{
