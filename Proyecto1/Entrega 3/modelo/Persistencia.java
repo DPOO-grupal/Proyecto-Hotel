@@ -1,10 +1,12 @@
 package modelo;
 
+import java.io.BufferedReader;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -19,6 +21,7 @@ public class Persistencia implements Serializable{
 	private ObjectInputStream input;
 	private File directorio=new File("./Entrega 3/data/");
 	private File dataFile = new File("./Entrega 3/data/hotel.ser");
+	private File staticDataFile = new File("./Entrega 3/data/static.txt");
 	
 	// constructor
 	
@@ -35,6 +38,12 @@ public class Persistencia implements Serializable{
 				abrirOutput();
 				escribir(null);
 				cerrarOutput();
+			}
+			
+			if(!staticDataFile.exists()) {	
+				
+				dataFile.createNewFile();
+				guardarStaticData(0, 0);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -95,6 +104,39 @@ public class Persistencia implements Serializable{
 		}
 		return hotel;
 			
+	}
+	
+	public int[] leerStaticData() {
+		int[] nums = new int[2];
+		BufferedReader br;
+
+		 try {
+			 br = new BufferedReader(new FileReader(staticDataFile));
+			 String[] linea = br.readLine().split(",");
+			
+			 nums[0] = Integer.parseInt(linea[0]);
+			 nums[1] = Integer.parseInt(linea[1]);
+			 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return nums;
+			
+		
+	}
+	
+	public void guardarStaticData(int servicio, int grupo) {
+		String texto = String.valueOf(servicio) + "," + String.valueOf(grupo);
+		 try {
+			java.io.PrintWriter output = new java.io.PrintWriter(staticDataFile);
+			output.print(texto);
+			output.close();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+			
+		
 	}
 	
 }

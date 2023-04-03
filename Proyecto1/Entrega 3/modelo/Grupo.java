@@ -43,8 +43,10 @@ public class Grupo implements Serializable{
 		Grupo.numGrupo = numGrupo;
 	}
 	
-	public void añadirHabitacion(int id, int capacidad) {
+	public void añadirHabitacion(int id, int capacidad, double precioHabitacion) {
 		listaHabitaciones.add(id);
+		precioHabitacion += reserva.getPrecioReserva();
+		reserva.setPrecioReserva(precioHabitacion);
 		capacidadCamas += capacidad;
 	}
 
