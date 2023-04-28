@@ -1,16 +1,20 @@
 package modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class Grupo {
+public class Grupo implements Serializable{
 	private int id;
 	private static int numGrupo;
 	private ArrayList<Huesped> huespedes;
 	private ArrayList<Integer> listaHabitaciones;
 	private double saldoPagado = 0;
-	private ArrayList<Servicio> listaServicios = new ArrayList<Servicio>();
+	private HashMap<Servicio, Integer> listaServicios = new HashMap<Servicio, Integer>();
 	private int vReal;
 	private int vRelativo;
+	private int capacidadCamas;
+
 	private Reserva reserva;
 	
 	public Grupo(ArrayList<Huesped> huespedes, Reserva reserva) {
@@ -39,6 +43,13 @@ public class Grupo {
 	public static void setNumGrupo(int numGrupo) {
 		Grupo.numGrupo = numGrupo;
 	}
+	
+	public void añadirHabitacion(int id, int capacidad, double precioHabitacion) {
+		listaHabitaciones.add(id);
+		precioHabitacion += reserva.getPrecioReserva();
+		reserva.setPrecioReserva(precioHabitacion);
+		capacidadCamas += capacidad;
+	}
 
 	public int getId() {
 		return id;
@@ -56,7 +67,7 @@ public class Grupo {
 		return saldoPagado;
 	}
 
-	public ArrayList<Servicio> getListaServicios() {
+	public HashMap<Servicio, Integer> getListaServicios() {
 		return listaServicios;
 	}
 
@@ -76,7 +87,23 @@ public class Grupo {
 		this.saldoPagado = saldoPagado;
 	}
 
-	public void setListaServicios(ArrayList<Servicio> listaServicios) {
+	public void setListaServicios(HashMap<Servicio, Integer> listaServicios) {
 		this.listaServicios = listaServicios;
 	}
+	
+	public int getCapacidadCamas() {
+		return capacidadCamas;
+	}
+	
+	public Huesped getLider() {
+		return huespedes.get(0);
+	}
+	
+	public void añadirServicio(Servicio servicio, int cantidad, boolean pagarEnSitio) {
+		listaServicios.put(servicio, cantidad);
+		if (pagarEnSitio) {
+			saldoPagado+=servicio.getPrecio()*cantidad;
+		}
+	}
+	
 }

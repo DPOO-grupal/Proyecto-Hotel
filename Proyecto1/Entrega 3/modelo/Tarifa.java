@@ -1,13 +1,21 @@
 package modelo;
 
-public class Tarifa {
-	double estandar;
-	double suite;
-	double suiteDouble;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Objects;
+
+public class Tarifa implements Serializable{
+	private double estandar;
+	private double suite;
+	private double suiteDouble;
+	private Date fecha;
 	
-	public Tarifa(TipoHabitacion tipo, double valor) {
-		//TODO revisar creacion
-		setPrecio(tipo, valor);
+	public Tarifa(Date fecha) {
+		this.fecha = fecha;
+		estandar = -1;
+		suite = -1;
+		suiteDouble = -1;
 	}
 	
 	public double getPrecio(TipoHabitacion tipo) {
@@ -78,6 +86,44 @@ public class Tarifa {
 		
 		return right;
 		
+	}
+	
+	public ArrayList<TipoHabitacion> getFaltantes() {
+		ArrayList<TipoHabitacion> faltantes = new ArrayList<TipoHabitacion>();
+		
+		if (estandar < 0) {
+			faltantes.add(TipoHabitacion.ESTANDAR);
+		} 
+		if (suite < 0){
+			faltantes.add(TipoHabitacion.SUITE);
+		} 
+		if (suiteDouble < 0){
+			faltantes.add(TipoHabitacion.SUITEDOUBLE);
+		}
+		
+		return faltantes;
+		
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(fecha);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Tarifa other = (Tarifa) obj;
+		return Objects.equals(fecha, other.fecha);
+	}
+
+	public Date getFecha() {
+		return this.fecha;
 	}
 	
 	

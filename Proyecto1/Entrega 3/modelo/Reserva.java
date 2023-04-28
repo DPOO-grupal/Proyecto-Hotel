@@ -1,8 +1,9 @@
 package modelo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Reserva {
+public class Reserva implements Serializable{
 	
 	private Date fechaI;
 	private Date fechaF;

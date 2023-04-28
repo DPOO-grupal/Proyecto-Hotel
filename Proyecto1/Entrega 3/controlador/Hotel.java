@@ -47,11 +47,17 @@ public class Hotel{
 			setOcupados(hotelDatos.getOcupados());
 			
 			setGrupoEnCurso(hotelDatos.getGrupoEnCurso());
-			setGrupos(hotelDatos.getGrupos());			
-			setTarifas(hotelDatos.getTarifas());			
-			setUsuarios(hotelDatos.getUsuarios());
-			setHabitaciones(hotelDatos.getHabitaciones());			
-			setRestaurante(hotelDatos.getRestaurante());		} else {
+
+			setGrupos(hotelDatos.getGrupos());
+			
+			setTarifas(hotelDatos.getTarifas());
+			
+			setUsuarios(hotelDatos.getUsuarios());
+
+			setHabitaciones(hotelDatos.getHabitaciones());
+			
+			setRestaurante(hotelDatos.getRestaurante());
+		} else {
 			
 			añadirUsuario("root", "Cookie", 1);
 		}
