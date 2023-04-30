@@ -17,10 +17,11 @@ public class BotonRedondeado extends JButton {
     private int x;
     private int y;
 	private int arc;
+    private Color color;
     
-    
-    public BotonRedondeado(String text, int x, int y, int arc) {
+    public BotonRedondeado(String text, int x, int y, int arc, Color color) {
         super(text);
+        this.color = color;
         this.x = x;
         this.y = y;
         this.arc = arc;
@@ -41,7 +42,7 @@ public class BotonRedondeado extends JButton {
             int h = c.getHeight();
             
             RoundRectangle2D rect = new RoundRectangle2D.Float(x, y, w, h, arc, arc);
-            g2.setColor(Color.WHITE);
+            g2.setColor(color);
             g2.fill(rect);
             
             

@@ -7,9 +7,12 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.Insets;
+import java.awt.Panel;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -18,8 +21,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 public class TarifasAdminFrame extends JFrame {
 	private JPanel panelVolver;
@@ -29,6 +37,8 @@ public class TarifasAdminFrame extends JFrame {
 	private JButton volverButton;
 	private JTextField[] datos;
 	private JButton addTarifa;
+	private JTable tablaTarifas;
+    private DefaultTableModel modeloTabla;
 	
 	public TarifasAdminFrame() {
 
@@ -61,7 +71,9 @@ public class TarifasAdminFrame extends JFrame {
 
 		// configuraciones generales
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		//setResizable(false);
 		setExtendedState(MAXIMIZED_BOTH);
+		setVisible(true);
 		setResizable(false);
 		
 
@@ -71,17 +83,89 @@ public class TarifasAdminFrame extends JFrame {
 
 	private void setPanelInfo() {
 		// TODO Auto-generated method stub
-		
+		panelDerecho.setBackground(Color.decode("#B2BBA4"));
+		GridBagLayout gridbag = new GridBagLayout();
+	    GridBagConstraints constraints = new GridBagConstraints();
+	    panelDerecho.setLayout(gridbag);
+	    
+	    JPanel panelBuscar = new JPanel();
+	    
+	    constraints.weighty=1;
+	    constraints.ipady = 250;
+	    constraints.ipadx = 1000;
+	    panelDerecho.add(panelBuscar, constraints);
+	    
+	    // añadir al panel
+
+	    panelBuscar.setLayout(gridbag);
+	    
+	    JTextField fechaITextField = new JTextField("Fecha Incial");
+	    
+	    JTextField fechaFTextField = new JTextField("Fecha Final");
+	    JButton buscarButton = new JButton("Buscar Tarifa");
+	    constraints.gridx = 0;
+	    constraints.gridy = 0;
+	    constraints.weighty=1;
+	    constraints.ipady = 0;
+	    constraints.ipadx = 0;
+	    panelBuscar.add(fechaITextField, constraints);
+	    
+	    constraints.gridx = 0;
+	    constraints.gridy = 1;
+	    panelBuscar.add(fechaFTextField, constraints);
+	    
+	    
+	    
+	    
+	    
+	    
+	    // tabla
+	    String[] columnas = {"Fecha Inicial", "Fecha Final", "Precio", "Tipo"};
+        modeloTabla = new DefaultTableModel(columnas, 0);
+//        String[] fila1 = {"01/01/2022", "31/01/2022", "$100", "Tipo 1"};
+//        String[] fila2 = {"01/02/2022", "28/02/2022", "$150", "Tipo 2"};
+//        modeloTabla.addRow(fila1);
+//        modeloTabla.addRow(fila2);        
+        
+        tablaTarifas = new JTable(modeloTabla);
+        tablaTarifas.getTableHeader().setBackground(Color.decode("#204473"));
+        tablaTarifas.getTableHeader().setForeground(Color.white);
+        tablaTarifas.setBackground(Color.decode("#B2BBA4"));
+        tablaTarifas.setRowHeight(50);
+        tablaTarifas.setEnabled(false);
+        
+        DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
+        modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        
+        for (int i = 0; i< 4; i++) {
+            tablaTarifas.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);
+        }
+  
+       
+        JScrollPane scrollPanel = new JScrollPane(tablaTarifas);
+        scrollPanel.setBackground(Color.decode("#B2BBA4"));
+	    constraints.gridx = 0;
+	    constraints.ipady = 450;
+	    constraints.ipadx = 1000;
+	    
+	    panelDerecho.add(scrollPanel, constraints);
+	}
+	
+	public void addTarifaTabla(String fechaI, String fechaF, String precio, String Tipo) {
+      String[] fila = {fechaI, fechaF, precio, Tipo};
+      modeloTabla.addRow(fila);
+
 	}
 
 	private void setPanelCrear() {
 		   // Configuracion General
 		
-		GridLayout gridLayout = new GridLayout(10, 1);
-		gridLayout.setVgap(15);
-		
-		BoxLayout boxLayout = new BoxLayout(panelCrear, BoxLayout.Y_AXIS);
-		panelCrear.setLayout(gridLayout);
+		GridBagLayout gridbag = new GridBagLayout();
+	    GridBagConstraints constraints = new GridBagConstraints();
+	    
+	    panelCrear.setLayout(gridbag);
+
 		panelCrear.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
 		panelCrear.setBackground(Color.decode("#204473"));
 		
@@ -93,23 +177,35 @@ public class TarifasAdminFrame extends JFrame {
 		
 		for( int i = 0; i < 4; i++) {
 			JTextField campo = new JTextField();
-			campo.setPreferredSize(new Dimension(200, 0));
+			campo.setPreferredSize(new Dimension(200, 30));
 			
 			JLabel titulo = new JLabel(titulos[i]);
 			titulo.setFont(fontLabel);
 			titulo.setForeground(Color.WHITE);
 			
-			panelCrear.add(titulo);
-			panelCrear.add(campo);
+			datos[i] = campo;
+			
+			constraints.gridx = 0;
+			constraints.gridy = (i*2);
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weighty=10;
+			panelCrear.add(titulo, constraints);
+			
+			constraints.gridy = (i*2)+1 ;
+			constraints.weighty=10;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			panelCrear.add(campo, constraints);
 		}
 	    
 		panelCrear.add(new JLabel());
 		
 		Font fontBoton = new Font("Arial", Font.BOLD, 20);
-		addTarifa =  new BotonRedondeado("Volver", 200, 75, 30);
+		addTarifa =  new BotonRedondeado("Crear Tarifa", 200, 75, 30, Color.decode("#ACCAF2"));
 		addTarifa.setFont(fontBoton);
 		
-		panelCrear.add(addTarifa);
+		constraints.gridy = 9 ;
+		constraints.gridy = GridBagConstraints.PAGE_END;
+		panelCrear.add(addTarifa,constraints);
 		
 	    
 	}
@@ -122,7 +218,7 @@ public class TarifasAdminFrame extends JFrame {
 	    // Crear Boton redondeado
 	    Font font = new Font("Arial", Font.BOLD, 20);
 	    
-	    volverButton = new BotonRedondeado("Volver", 200, 75, 30);
+	    volverButton = new BotonRedondeado("Volver", 200, 75, 30, Color.decode("#D0ECF2"));
 	    volverButton.setFont(font);
 	    
 	    // Añadirlo al Panel
