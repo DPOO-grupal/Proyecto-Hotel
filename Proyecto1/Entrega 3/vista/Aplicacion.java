@@ -495,6 +495,7 @@ public class Aplicacion {
 				}
 				
 			} while (repetir);
+			System.out.println("Su numero de grupo es: " + empleado.getIdGrupo() + "(No lo olvide)" );
 		} else {
 			System.out.println("No hay reserva en curso");
 		}

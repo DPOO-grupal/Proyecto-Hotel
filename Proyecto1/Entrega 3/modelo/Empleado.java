@@ -58,6 +58,10 @@ public class Empleado extends Usuario  {
 		return hotel.getPrecioHabitacionReserva(habitacion);
 	}
 	
+	public int getIdGrupo() {
+		return hotel.getGrupoEnCurso().getId();
+	}
+	
 // FIN RESERVAS ---------------------------------------------
 
 //INICIO SERVICIOS HOTEL -----------------------------------------------------
