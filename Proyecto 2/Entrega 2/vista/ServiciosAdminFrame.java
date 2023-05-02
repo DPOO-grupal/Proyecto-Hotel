@@ -25,13 +25,15 @@ public class ServiciosAdminFrame extends JFrame{
 		
 		panelAgregarServicio = new JPanel();
 		ventanaAgregarServicio(panelAgregarServicio);
+		add(panelAgregarServicio, BorderLayout.WEST);
 		
 	}
 	
 	private void ventanaAgregarServicio(JPanel panelAgregarServicio) {
 		panelVolver = new JPanel();
-		panelAgregarServicio.setLayout(new GridLayout(10, 5));
-		panelAgregarServicio.setBackground(Color.BLUE);
+		JPanel panelDatos = new JPanel();
+		panelDatos.setLayout(new GridLayout(4, 1));
+		panelDatos.setBackground(Color.BLUE);
 		
 		JLabel nombre = new JLabel("Nombre");
 		nombre.setForeground(Color.white);
@@ -50,14 +52,15 @@ public class ServiciosAdminFrame extends JFrame{
 		agregarServicio.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		
 		
-		panelAgregarServicio.add(nombre);
-		panelAgregarServicio.add(cajaNombre);
-		panelAgregarServicio.add(precio);
-		panelAgregarServicio.add(cajaPrecio);
+		panelDatos.add(nombre);
+		panelDatos.add(cajaNombre);
+		panelDatos.add(precio);
+		panelDatos.add(cajaPrecio);
+		panelAgregarServicio.setLayout(new GridLayout(3,1));
+		panelAgregarServicio.add(panelDatos);
 		panelAgregarServicio.add(agregarServicio);
 		ventanaVolver(panelVolver);
 		panelAgregarServicio.add(panelVolver);
-		add(panelAgregarServicio, BorderLayout.WEST);
 	}
 	
 	private void ventanaServicios() {
