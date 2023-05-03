@@ -1,54 +1,46 @@
 package vista;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.PageAttributes;
-import java.awt.Panel;
 
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
-import javax.swing.plaf.basic.BasicSplitPaneUI.BasicHorizontalLayoutManager;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
-public class ServiciosAdminFrame extends JFrame{
-	private JPanel panelVolver;
-	private JPanel panelAgregarServicio;
-	private JPanel panelServicios;
+public class ServiciosAdminFrame extends FrameBaseInfo{
 	
+	private DefaultTableModel modeloTabla;
+	private JTable tablaServicios;
+
 	public ServiciosAdminFrame() {
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(getMaximumSize());
-		setLayout(new BorderLayout());
+		super();
 		setTitle("Servicios");
-		
-		panelAgregarServicio = new JPanel();
-		ventanaAgregarServicio();
-		add(panelAgregarServicio,BorderLayout.WEST);
-		
-		panelServicios = new JPanel();
-		ventanaServicios(panelServicios);
-		add(panelServicios, BorderLayout.CENTER);
 		
 	}
 	
-	private void ventanaAgregarServicio() {
-		panelAgregarServicio.setLayout(new GridLayout(5, 1));
-		panelAgregarServicio.setBackground(Color.decode("#204473"));
+	@Override
+	protected void setPanelCrear() {
+		//Edita el aspecto del panel	
+		panelCrear.setLayout(new GridLayout(5, 1));
+		panelCrear.setBackground(Color.decode("#204473"));
+		panelCrear.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
 		
+		//Crea el panel para agregar un servicio
 		JPanel panelInfo = new JPanel();
 		panelInfo.setBackground(Color.decode("#204473"));	
 		panelInfo.setLayout(new GridLayout(4, 1));
 		
+		//Nombre y su caja de texto
 		JLabel nombre = new JLabel("Nombre");
 		nombre.setForeground(Color.white);
 		nombre.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -57,54 +49,80 @@ public class ServiciosAdminFrame extends JFrame{
 		JTextField cajaNombre = new JTextField();
 		cajaNombre.setCaretColor(Color.black);
 		
+		//Precio y su caja de texto
 		JLabel precio = new JLabel("Precio");
 		precio.setForeground(Color.white);
 		precio.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		
 		JTextField cajaPrecio = new JTextField();
 		
-		JButton agregarServicio = new JButton("Agregar servicio");
+		//Boton par agregar un servicio
+		JButton agregarServicio = new BotonRedondeado("Agregar servicio", 200, 75, 30, Color.decode("#ACCAF2"));
 		agregarServicio.setBackground(Color.CYAN);
 		agregarServicio.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		
-		
+		//Se añaden los componentes al panel
 		panelInfo.add(nombre);
 		panelInfo.add(cajaNombre);
 		panelInfo.add(precio);
 		panelInfo.add(cajaPrecio);
-		JPanel estructura = new JPanel(new BorderLayout());
-		estructura.add(panelInfo, BorderLayout.CENTER);
-		estructura.add(new JLabel("    "), BorderLayout.WEST);
-		estructura.add(new JLabel("    "), BorderLayout.EAST);
-		panelAgregarServicio.add(new JLabel( ));
-		panelAgregarServicio.add(panelInfo);
+		panelCrear.add(new JLabel( ));
+		panelCrear.add(panelInfo);
 		
 		JPanel panelAgregar = new JPanel();
 		panelAgregar.add(agregarServicio);
 		panelAgregar.setBackground(Color.decode("#204473"));
-		panelAgregarServicio.add(panelAgregar);
-		panelAgregarServicio.add(new JLabel( ));
+		panelCrear.add(panelAgregar);
+		panelCrear.add(new JLabel( ));
 		
-		panelVolver = new JPanel();
-		ventanaVolver();
-		panelAgregarServicio.add(panelVolver);
-
 	}
-	
-	private void ventanaServicios(JPanel panelServicios) {
-		panelServicios.setLayout(new FlowLayout());
-		panelServicios.setBackground(Color.decode("#b2bba4"));
+
+	@Override
+	protected void setPanelInfo() {
+		//Edita el aspecto del panel	
+		GridBagLayout gridbag = new GridBagLayout();
+        GridBagConstraints constraints = new GridBagConstraints();
+        panelDerecho.setLayout(gridbag);
+		panelDerecho.setBackground(Color.decode("#b2bba4"));
+		panelDerecho.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		
-		JLabel tituloTablaServicios = new JLabel("          Servicios            ");
-		tituloTablaServicios.setOpaque(true);
-		tituloTablaServicios.setBackground(Color.decode("#204473"));
-		tituloTablaServicios.setForeground(Color.BLACK);
-		tituloTablaServicios.setFont(new Font("Times New Roman", Font.PLAIN, 50));
+		//Creacion de la tabla servicios
+		String[] columnas = {"Servicios"}; //Nombre de las columnas
+        modeloTabla = new DefaultTableModel(columnas, 0);
+        
+        //Filas de la tabla
+        String[] fila1 = {"Spa"};
+        String[] fila2 = {"LOL"};
+        modeloTabla.addRow(fila1);
+	    modeloTabla.addRow(fila2);
+	    
+	    //Diseño de la tabla
+        tablaServicios = new JTable(modeloTabla);
+        tablaServicios.getTableHeader().setBackground(Color.decode("#204473"));
+        tablaServicios.getTableHeader().setForeground(Color.white);
+        tablaServicios.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
+        tablaServicios.setRowHeight(70);
+        tablaServicios.setEnabled(false);
+
+        DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
+        modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
+
+
+        tablaServicios.getColumnModel().getColumn(0).setCellRenderer(modelocentrar);
+
+        JScrollPane scrollPanel = new JScrollPane(tablaServicios);
+
+        //Tamaño y ubicacion de la tabla en el panel
+        constraints.gridx = 0;
+        constraints.ipady = 650;
+        constraints.ipadx = 400;
+        constraints.gridheight = 2;
+        constraints.gridwidth = 2;
+        constraints.weightx = 1;
+
+        panelDerecho.add(scrollPanel, constraints);
 		
-		JPanel listaServicios = new JPanel(new GridLayout(6,1));
-		listaServicios.add(tituloTablaServicios);
-		
-		panelServicios.add(listaServicios);
+        //Creacion del recuadro para buscar un servicio
 		JLabel nombre = new JLabel("Nombre");
 		nombre.setForeground(Color.BLACK);
 		nombre.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -117,15 +135,27 @@ public class ServiciosAdminFrame extends JFrame{
 		
 		JTextField cajaPrecio = new JTextField();
 		
+		//Diseño 
 		JPanel buscar = new JPanel(new GridLayout(4,1));
+		buscar.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		buscar.setBackground(Color.decode("#accaf2"));
+		
 		buscar.add(nombre);
 		buscar.add(cajaNombre);
 		buscar.add(precio);
 		buscar.add(cajaPrecio);
 		
-		panelServicios.add(buscar);
+		//Tamaño y ubicacion en el panel
+		constraints.gridx = 3;
+		constraints.gridy = 0;
+		constraints.ipady = 120;
+        constraints.ipadx = 250;
+        constraints.gridheight = 1;
+        constraints.gridwidth = 1;
 		
+		panelDerecho.add(buscar, constraints);
+		
+		//Creacion del recuadro para añadir servicio a la habitacion
 		JLabel numHabitacion = new JLabel("Número de habitacion");
 		numHabitacion.setForeground(Color.BLACK);
 		numHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -138,26 +168,23 @@ public class ServiciosAdminFrame extends JFrame{
 		añadirAHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 		
 		JPanel habitacion = new JPanel(new GridLayout(3,1, 0, 5));
+		habitacion.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		habitacion.setBackground(Color.decode("#accaf2"));
+		
 		habitacion.add(numHabitacion);
 		habitacion.add(cajaNumeroHabitacion);
 		habitacion.add(añadirAHabitacion);
 		
-		panelServicios.add(habitacion);
+		//Tamaño y ubicacion en el panel
+		constraints.gridx = 3;
+		constraints.gridy = 1;
+		constraints.ipady = 50;
+        constraints.ipadx = 100;
+        constraints.gridheight = 1;
+        constraints.gridwidth = 1;
 		
 		
-
-	}
-	
-	private void ventanaVolver() {
-		panelVolver.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 65));
-        panelVolver.setBackground(Color.decode("#7E8C69"));
-        
-		JButton botonVolver = new JButton("Volver");
-		botonVolver.setBackground(Color.decode("#d0ecf2"));
-		botonVolver.setPreferredSize(new Dimension(200, 75));
-		
-		panelVolver.add(botonVolver);
+		panelDerecho.add(habitacion, constraints);
 	}
 }
 

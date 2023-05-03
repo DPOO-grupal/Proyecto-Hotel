@@ -7,5 +7,7 @@ public class app {
 		
 		ServiciosAdminFrame pantallaServicios = new ServiciosAdminFrame();pantallaServicios.setVisible(true);
 
+//		TarifasAdminFrame pantallaTarifas = new TarifasAdminFrame();pantallaTarifas.setVisible(true);
+
 	}
 }
