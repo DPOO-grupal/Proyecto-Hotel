@@ -6,5 +6,6 @@ public class app {
 		//HabitacionesAdminFrame pantallaHabitaciones = new HabitacionesAdminFrame();pantallaHabitaciones.setVisible(true);
 		
 		ServiciosAdminFrame pantallaServicios = new ServiciosAdminFrame();pantallaServicios.setVisible(true);
+
 	}
 }
