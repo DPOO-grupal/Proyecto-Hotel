@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -23,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
 import org.jdesktop.swingx.JXDatePicker;
 
 
-public abstract class FrameBaseInfo extends JFrame{
+public abstract class FrameBaseInfo extends JFrame implements ActionListener{
 	protected JPanel panelVolver;
 	protected JPanel panelCrear;
 	protected JPanel panelDerecho;
@@ -31,10 +32,11 @@ public abstract class FrameBaseInfo extends JFrame{
 	protected JButton volverButton;
 	protected JTextField[] datos;
 	protected JButton addDatos;
+	private JFrame anterior;
     
 	
-	public FrameBaseInfo() {
-
+	public FrameBaseInfo(JFrame anterior) {
+		this.anterior = anterior;
 		
 		//Panel Izquierdo
 		
@@ -66,10 +68,7 @@ public abstract class FrameBaseInfo extends JFrame{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		//setResizable(false);
 		setExtendedState(MAXIMIZED_BOTH);
-		setVisible(true);
 		setResizable(false);
-		
-
 		
 		
 	}
@@ -89,9 +88,13 @@ public abstract class FrameBaseInfo extends JFrame{
 	    
 	    volverButton = new BotonRedondeado("Volver", 200, 75, 30, Color.decode("#D0ECF2"));
 	    volverButton.setFont(font);
-	    
+	    volverButton.addActionListener(this);
 	    // AÃ±adirlo al Panel
 	    panelVolver.add(volverButton);
+	}
+	
+	public void setVisibleAnterior() {
+		anterior.setVisible(true);
 	}
 
 
