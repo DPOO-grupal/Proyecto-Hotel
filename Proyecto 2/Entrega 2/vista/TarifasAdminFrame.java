@@ -1,22 +1,14 @@
 package vista;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.GraphicsConfiguration;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.HeadlessException;
-import java.awt.Insets;
-import java.awt.Panel;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,98 +17,94 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-public class TarifasAdminFrame extends JFrame {
-	private JPanel panelVolver;
-	private JPanel panelCrear;
-	private JPanel panelDerecho;
-	private JPanel panelIzquierdo;
-	private JButton volverButton;
-	private JTextField[] datos;
-	private JButton addTarifa;
+
+
+
+public class TarifasAdminFrame extends FrameBaseInfo {
+
 	private JTable tablaTarifas;
     private DefaultTableModel modeloTabla;
+    
 	
 	public TarifasAdminFrame() {
 
-		
-		//Panel Izquierdo
-		
-        panelIzquierdo = new JPanel();
-        panelCrear = new JPanel();
-        panelVolver = new JPanel();
-
-        panelIzquierdo.setLayout(new BorderLayout());
-
-        panelIzquierdo.add(panelCrear, BorderLayout.CENTER);
-        panelIzquierdo.add(panelVolver, BorderLayout.SOUTH);
-
-
-        panelVolver.setPreferredSize(new Dimension(0, 200));
-        panelIzquierdo.setPreferredSize(new Dimension(450, 0));
-
-		setPanelVolver();
-		setPanelCrear();
-        
-        // Panel Derecho
-        panelDerecho = new JPanel();
-        setPanelInfo();
-        
-        // Agregar los paneles al JFrame
-        add(panelIzquierdo, BorderLayout.WEST);
-        add(panelDerecho, BorderLayout.CENTER);
-
-		// configuraciones generales
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		//setResizable(false);
-		setExtendedState(MAXIMIZED_BOTH);
-		setVisible(true);
-		setResizable(false);
-		
-
-		
+		super();
 		
 	}
 
-	private void setPanelInfo() {
+	protected void setPanelInfo() {
 		// TODO Auto-generated method stub
 		panelDerecho.setBackground(Color.decode("#B2BBA4"));
 		GridBagLayout gridbag = new GridBagLayout();
 	    GridBagConstraints constraints = new GridBagConstraints();
 	    panelDerecho.setLayout(gridbag);
 	    
-	    JPanel panelBuscar = new JPanel();
-	    
-	    constraints.weighty=1;
-	    constraints.ipady = 250;
-	    constraints.ipadx = 1000;
-	    panelDerecho.add(panelBuscar, constraints);
-	    
+	    JPanel panelBuscar = new JPanel();	    
 	    // añadir al panel
-
-	    panelBuscar.setLayout(gridbag);
+	    GridBagLayout gba = new GridBagLayout();
+	    GridBagConstraints c = new GridBagConstraints();
 	    
-	    JTextField fechaITextField = new JTextField("Fecha Incial");
+	    Font fontLabel = new Font("Arial", Font.BOLD, 16);
 	    
-	    JTextField fechaFTextField = new JTextField("Fecha Final");
+	    panelBuscar.setLayout(gba);
+	    
+	    
 	    JButton buscarButton = new JButton("Buscar Tarifa");
-	    constraints.gridx = 0;
-	    constraints.gridy = 0;
-	    constraints.weighty=1;
-	    constraints.ipady = 0;
-	    constraints.ipadx = 0;
-	    panelBuscar.add(fechaITextField, constraints);
 	    
-	    constraints.gridx = 0;
-	    constraints.gridy = 1;
-	    panelBuscar.add(fechaFTextField, constraints);
-	    
-	    
-	    
-	    
+//	    JXDatePicker fechaI = new JXDatePicker(new Date());
+//	    JXDatePicker fechaF = new JXDatePicker(new Date());
+//	    
+//	    c.gridx = 0;
+//	    c.gridy = 0;
+//	    
+//	    c.ipady = 20;
+//	    c.ipadx = 100;
+//	    
+//	    c.weighty = 0.5;
+//	    c.weightx = 1;
+//	    
+//	    
+//	    JLabel temLabel = new JLabel("Fecha Incial");
+//		temLabel.setFont(fontLabel );
+//	    panelBuscar.add(temLabel,c);
+//	    
+//	    c.gridy = 1;
+//	    c.weighty = 0;
+//
+//	    fechaI.setFont(fontLabel);
+//	    panelBuscar.add(fechaI, c);
+//	    
+//	    c.gridy = 3;
+//	    c.weighty = 0.5;
+//	    temLabel = new JLabel("Fecha Final");
+//		temLabel.setFont(fontLabel );
+//	    panelBuscar.add(temLabel,c);
+//	    
+//	    c.gridy = 4;
+//	    c.weighty = 0;
+//	    fechaF.setFont(fontLabel);
+//	    panelBuscar.add(fechaF, c);
+//	    	    
+//	    c.gridx = 2;
+//	    c.gridy = 1;
+//	    
+//	    c.gridheight = 3;
+//	    c.gridwidth = 1;
+//	    
+//	    c.ipadx = 100;
+//	    c.ipady = 40;
+//	    
+//
+//	    panelBuscar.add(buscarButton, c);
+//	    
+//	    
+//	    constraints.weighty=10;
+//	    constraints.ipady = 100;
+//	    constraints.ipadx = 900;
+//	    panelDerecho.add(panelBuscar, constraints);
 	    
 	    
 	    // tabla
@@ -145,6 +133,7 @@ public class TarifasAdminFrame extends JFrame {
        
         JScrollPane scrollPanel = new JScrollPane(tablaTarifas);
         scrollPanel.setBackground(Color.decode("#B2BBA4"));
+
 	    constraints.gridx = 0;
 	    constraints.ipady = 450;
 	    constraints.ipadx = 1000;
@@ -158,7 +147,7 @@ public class TarifasAdminFrame extends JFrame {
 
 	}
 
-	private void setPanelCrear() {
+	protected void setPanelCrear() {
 		   // Configuracion General
 		
 		GridBagLayout gridbag = new GridBagLayout();
@@ -200,12 +189,12 @@ public class TarifasAdminFrame extends JFrame {
 		panelCrear.add(new JLabel());
 		
 		Font fontBoton = new Font("Arial", Font.BOLD, 20);
-		addTarifa =  new BotonRedondeado("Crear Tarifa", 200, 75, 30, Color.decode("#ACCAF2"));
-		addTarifa.setFont(fontBoton);
+		addDatos =  new BotonRedondeado("Crear Tarifa", 200, 75, 30, Color.decode("#ACCAF2"));
+		addDatos.setFont(fontBoton);
 		
 		constraints.gridy = 9 ;
 		constraints.gridy = GridBagConstraints.PAGE_END;
-		panelCrear.add(addTarifa,constraints);
+		panelCrear.add(addDatos,constraints);
 		
 	    
 	}
