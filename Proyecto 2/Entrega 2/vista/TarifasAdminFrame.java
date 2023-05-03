@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -29,9 +30,9 @@ public class TarifasAdminFrame extends FrameBaseInfo {
     private DefaultTableModel modeloTabla;
     
 	
-	public TarifasAdminFrame() {
+	public TarifasAdminFrame(JFrame anterior) {
 
-		super();
+		super(anterior);
 		
 	}
 
@@ -114,20 +115,22 @@ public class TarifasAdminFrame extends FrameBaseInfo {
 //        String[] fila2 = {"01/02/2022", "28/02/2022", "$150", "Tipo 2"};
 //        modeloTabla.addRow(fila1);
 //        modeloTabla.addRow(fila2);        
-        
+        Font fontTabla= new Font("Arial", Font.BOLD, 20);
         tablaTarifas = new JTable(modeloTabla);
         tablaTarifas.getTableHeader().setBackground(Color.decode("#204473"));
         tablaTarifas.getTableHeader().setForeground(Color.white);
+        tablaTarifas.getTableHeader().setFont(fontTabla);
         tablaTarifas.setBackground(Color.decode("#B2BBA4"));
         tablaTarifas.setRowHeight(50);
         tablaTarifas.setEnabled(false);
         
         DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
         modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
-        
+        modelocentrar.setFont(fontTabla);
         
         for (int i = 0; i< 4; i++) {
             tablaTarifas.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);
+            tablaTarifas.getColumnModel().getColumn(i).setCellEditor(null);
         }
   
        
@@ -199,19 +202,14 @@ public class TarifasAdminFrame extends FrameBaseInfo {
 	    
 	}
 
-	private void setPanelVolver() {
-		// Configuracion General
-	    panelVolver.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 65));
-	    panelVolver.setBackground(Color.decode("#7E8C69"));
-
-	    // Crear Boton redondeado
-	    Font font = new Font("Arial", Font.BOLD, 20);
-	    
-	    volverButton = new BotonRedondeado("Volver", 200, 75, 30, Color.decode("#D0ECF2"));
-	    volverButton.setFont(font);
-	    
-	    // Añadirlo al Panel
-	    panelVolver.add(volverButton);
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("Volver")) {
+			setVisible(false);
+			setVisibleAnterior();
+		
+		}
+		
 	}
 
 
