@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
 
@@ -95,6 +96,15 @@ public abstract class FrameBaseInfo extends JFrame implements ActionListener{
 	
 	public void setVisibleAnterior() {
 		anterior.setVisible(true);
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("Volver")) {
+			setVisible(false);
+			setVisibleAnterior();
+		
+		}
 	}
 
 

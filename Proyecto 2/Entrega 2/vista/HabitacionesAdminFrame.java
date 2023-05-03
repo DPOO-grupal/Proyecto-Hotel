@@ -6,37 +6,28 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class HabitacionesAdminFrame extends JFrame{
-	private JPanel panelVolver;
-	private JPanel panelCrearHabitacion;
-	private JPanel panelHabitaciones;
+public class HabitacionesAdminFrame extends FrameBaseInfo{
 	
-	public HabitacionesAdminFrame() {
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setSize(getMaximumSize());
-		setLayout(new BorderLayout());
+	public HabitacionesAdminFrame(JFrame anterior) {
+		super(anterior);
 		setTitle("Habitaciones");
 		
-		panelCrearHabitacion = new JPanel();
-		ventanaAgregarServicio();
-		add(panelCrearHabitacion,BorderLayout.WEST);
-		
-		panelHabitaciones = new JPanel();
-		ventanaServicios(panelHabitaciones);
-		add(panelHabitaciones, BorderLayout.CENTER);
 		
 	}
+	@Override
+	protected void setPanelCrear() {
 	
-	private void ventanaAgregarServicio() {
-		panelCrearHabitacion.setLayout(new BorderLayout());
-		panelCrearHabitacion.setPreferredSize(new Dimension(450, 0));
-		panelCrearHabitacion.setBackground(Color.decode("#204473"));
+		panelCrear.setLayout(new BorderLayout());
+		panelCrear.setPreferredSize(new Dimension(450, 0));
+		panelCrear.setBackground(Color.decode("#204473"));
 		
 		JPanel panelInfo = new JPanel();
 		panelInfo.setBackground(Color.decode("#204473"));	
@@ -61,24 +52,22 @@ public class HabitacionesAdminFrame extends JFrame{
 		panelInfo.add(cajaApto);
 		panelInfo.add(cajaServicio);
 		panelInfo.add(cajaPrecio);
-		panelCrearHabitacion.add(new JLabel( ));
-		panelCrearHabitacion.add(panelInfo);
+		panelCrear.add(new JLabel( ));
+		panelCrear.add(panelInfo);
 		
 		JPanel panelAgregar = new JPanel();
 		panelAgregar.add(crearHabitacion);
 		panelAgregar.setBackground(Color.decode("#204473"));
-		panelCrearHabitacion.add(panelAgregar);
-		panelCrearHabitacion.add(new JLabel( ));
+		panelCrear.add(panelAgregar);
+		panelCrear.add(new JLabel( ));
 		
-		panelVolver = new JPanel();
-		ventanaVolver();
-		panelCrearHabitacion.add(panelVolver);
 
 	}
 	
-	private void ventanaServicios(JPanel panelHabitaciones) {
-		panelHabitaciones.setLayout(new FlowLayout());
-		panelHabitaciones.setBackground(Color.decode("#b2bba4"));
+	@Override
+	protected void setPanelInfo() {
+		panelDerecho.setLayout(new FlowLayout());
+		panelDerecho.setBackground(Color.decode("#b2bba4"));
 		
 		JLabel tituloTablaServicios = new JLabel("          Servicios            ");
 		tituloTablaServicios.setOpaque(true);
@@ -89,7 +78,7 @@ public class HabitacionesAdminFrame extends JFrame{
 		JPanel listaServicios = new JPanel(new GridLayout(6,1));
 		listaServicios.add(tituloTablaServicios);
 		
-		panelHabitaciones.add(listaServicios);
+		panelDerecho.add(listaServicios);
 		JLabel nombre = new JLabel("Nombre");
 		nombre.setForeground(Color.BLACK);
 		nombre.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -109,7 +98,7 @@ public class HabitacionesAdminFrame extends JFrame{
 		buscar.add(precio);
 		buscar.add(cajaPrecio);
 		
-		panelHabitaciones.add(buscar);
+		panelDerecho.add(buscar);
 		
 		JLabel numHabitacion = new JLabel("Número de habitacion");
 		numHabitacion.setForeground(Color.BLACK);
@@ -128,20 +117,11 @@ public class HabitacionesAdminFrame extends JFrame{
 		habitacion.add(cajaNumeroHabitacion);
 		habitacion.add(añadirAHabitacion);
 		
-		panelHabitaciones.add(habitacion);
+		panelDerecho.add(habitacion);
 		
 		
 
 	}
-	
-	private void ventanaVolver() {
-		panelVolver.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 65));
-        panelVolver.setBackground(Color.decode("#7E8C69"));
-        
-		JButton botonVolver = new JButton("Volver");
-		botonVolver.setBackground(Color.decode("#d0ecf2"));
-		botonVolver.setPreferredSize(new Dimension(200, 75));
-		
-		panelVolver.add(botonVolver);
-	}
+
+
 }

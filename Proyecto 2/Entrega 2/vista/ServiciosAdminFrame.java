@@ -5,9 +5,11 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -22,8 +24,8 @@ public class ServiciosAdminFrame extends FrameBaseInfo{
 	private DefaultTableModel modeloTabla;
 	private JTable tablaServicios;
 
-	public ServiciosAdminFrame() {
-		super();
+	public ServiciosAdminFrame(JFrame anterior) {
+		super(anterior);
 		setTitle("Servicios");
 		
 	}
@@ -185,6 +187,16 @@ public class ServiciosAdminFrame extends FrameBaseInfo{
 		
 		
 		panelDerecho.add(habitacion, constraints);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("Volver")) {
+			setVisible(false);
+			setVisibleAnterior();
+		
+		}
+		
 	}
 }
 
