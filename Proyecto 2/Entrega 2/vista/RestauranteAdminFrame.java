@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -208,16 +209,18 @@ public class RestauranteAdminFrame extends FrameBaseInfo{
 		panelAgregarEliminarBotones.setBackground(Color.decode("#204473"));
 		
 		//Boton par agregar un servicio
-		JButton agregarServicio = new BotonRedondeado("Agregar a la orden", 200, 60, 30, Color.decode("#ACCAF2"));
-		agregarServicio.setBackground(Color.decode("#accaf2"));
-		agregarServicio.setFont(new Font("arial", 1, 20));
+		JButton agregarOrden = new BotonRedondeado("Agregar a la orden", 200, 60, 30, Color.decode("#ACCAF2"));
+		agregarOrden.setBackground(Color.decode("#accaf2"));
+		agregarOrden.setFont(new Font("arial", 1, 20));
+		agregarOrden.addActionListener(this);
 
 		//Boton par agregar un servicio
 		JButton eliminarOrden = new BotonRedondeado("Eliminar a la orden", 200, 60, 30, Color.decode("#ACCAF2"));
 		eliminarOrden.setBackground(Color.decode("#accaf2"));
 		eliminarOrden.setFont(new Font("arial", 1, 20));
+		eliminarOrden.addActionListener(this);
 		
-		panelAgregarEliminarBotones.add(agregarServicio);		
+		panelAgregarEliminarBotones.add(agregarOrden);		
 		panelAgregarEliminarBotones.add(eliminarOrden);
 		
 		panelAgregarOrden.add(panelNombre);
@@ -259,17 +262,20 @@ public class RestauranteAdminFrame extends FrameBaseInfo{
   		JPanel botonesHabitacion = new JPanel(new GridLayout(2,0, 0 ,5));
   		botonesHabitacion.setBackground(Color.decode("#accaf2"));
   		
-  		JButton CargarAHabitacion = new BotonRedondeado("Cargar a la habitación​", 200, 60, 30, Color.white);
-  		CargarAHabitacion.setBackground(Color.decode("#204473"));
-  		CargarAHabitacion.setForeground(Color.white);
-  		CargarAHabitacion.setFont(new Font("arial", 1, 20));
+  		JButton cargarAHabitacion = new BotonRedondeado("Cargar a la habitación​", 200, 60, 30, Color.white);
+  		cargarAHabitacion.setBackground(Color.decode("#204473"));
+  		cargarAHabitacion.setForeground(Color.white);
+  		cargarAHabitacion.setFont(new Font("arial", 1, 20));
+  		cargarAHabitacion.addActionListener(this);
+  		
   		
   		JButton pagarAhora = new BotonRedondeado("Pagar ahora​", 200, 60, 30, Color.white);
   		pagarAhora.setBackground(Color.decode("#204473"));
   		pagarAhora.setForeground(Color.white);
   		pagarAhora.setFont(new Font("arial", 1, 20));
+  		pagarAhora.addActionListener(this);
   		
-  		botonesHabitacion.add(CargarAHabitacion);
+  		botonesHabitacion.add(cargarAHabitacion);
   		botonesHabitacion.add(pagarAhora);
   		
   		panelHabitacion.add(panelNumeroHabitacion);
@@ -355,25 +361,45 @@ public class RestauranteAdminFrame extends FrameBaseInfo{
 		panelLlevable.add(llevable);
 		panelLlevable.add(cajaLlevable);
 		
-		//Crea el panel agregar
-		JPanel panelAgregar = new JPanel();
-		panelAgregar.setBackground(Color.decode("#204473"));
+		//Crea el panel agregar servicio
+		JPanel panelAgregarServicio = new JPanel();
+		panelAgregarServicio.setBackground(Color.decode("#204473"));
 		
 		//Boton par agregar un servicio
 		JButton agregarServicio = new BotonRedondeado("Agregar al menú", 200, 60, 30, Color.decode("#ACCAF2"));
 		agregarServicio.setBackground(Color.decode("#accaf2"));
 		agregarServicio.setFont(new Font("arial", 1, 20));
+		agregarServicio.addActionListener(this);
 		
-		panelAgregar.add(agregarServicio);
+		panelAgregarServicio.add(agregarServicio);
 		
 		//Se añaden los componentes al panel
 		panelCrear.add(panelNombre);
 		panelCrear.add(panelPrecio);
 		panelCrear.add(panelHorario);
 		panelCrear.add(panelLlevable);
-		panelCrear.add(panelAgregar);
+		panelCrear.add(panelAgregarServicio);
 				
 		
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		switch (e.getActionCommand()) {
+		case "Agregar orden":
+			break;
+		case "Eliminar orden":
+			break;
+		case "Cargar a habitacion":
+			break;
+		case "Pagar ahora":
+			break;
+		case "Agregar al menú":		
+			break;
+
+		default:
+			break;
+		}
+	}
+	
 }

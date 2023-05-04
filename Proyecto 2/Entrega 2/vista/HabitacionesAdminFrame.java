@@ -140,5 +140,21 @@ public class HabitacionesAdminFrame extends FrameBaseInfo{
 
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		switch (e.getActionCommand()) {
+		case "Crear habitacion":
+			break;
+		
+		case "Añadir cama":
+			break;
+			
+		case "Añadir servicio":
+			break;
+
+		default:
+			break;
+		}
+	}
 
 }

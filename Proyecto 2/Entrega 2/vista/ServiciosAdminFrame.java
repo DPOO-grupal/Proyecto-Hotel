@@ -174,12 +174,14 @@ public class ServiciosAdminFrame extends FrameBaseInfo{
 		habitacion.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		habitacion.setBackground(Color.decode("#accaf2"));
 		
+		//Numero de habitacion y su caja de texto
 		JLabel numHabitacion = new JLabel("Número de habitacion");
 		numHabitacion.setForeground(Color.BLACK);
 		numHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
 		JTextField cajaNumeroHabitacion = new JTextField();
 		
+		//Boton para añadir un servicio
 		JButton añadirAHabitacion = new BotonRedondeado("Añadir habitación", 200, 50, 30, Color.white);
 		añadirAHabitacion.setBackground(Color.decode("#204473"));
 		añadirAHabitacion.setForeground(Color.white);
@@ -201,14 +203,17 @@ public class ServiciosAdminFrame extends FrameBaseInfo{
 		panelDerecho.add(habitacion, constraints);
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("Volver")) {
-			setVisible(false);
-			setVisibleAnterior();
+		switch (e.getActionCommand()) {
+		case "Agregar servicio":
+			break;
 		
+		case "Añadir a la habitacion":
+			break;
+
+		default:
+			break;
 		}
-		
 	}
 }
 
