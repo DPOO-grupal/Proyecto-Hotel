@@ -5,16 +5,28 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.util.Iterator;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 public class HabitacionesAdminFrame extends FrameBaseInfo{
+	
+	private DefaultTableModel modeloTabla;
+	private JTable tablaHabitaciones;
 	
 	public HabitacionesAdminFrame(JFrame anterior) {
 		super(anterior);
@@ -24,101 +36,106 @@ public class HabitacionesAdminFrame extends FrameBaseInfo{
 	}
 	@Override
 	protected void setPanelCrear() {
-	
-		panelCrear.setLayout(new BorderLayout());
-		panelCrear.setPreferredSize(new Dimension(450, 0));
+		//Edita el aspecto del panel	
+		panelCrear.setLayout(new GridLayout(5, 1, 10, 10));
 		panelCrear.setBackground(Color.decode("#204473"));
+		panelCrear.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
 		
-		JPanel panelInfo = new JPanel();
-		panelInfo.setBackground(Color.decode("#204473"));	
-		panelInfo.setLayout(new GridLayout(9, 1));
+		//Panel ID
+		JPanel panelId = new JPanel();
+		panelId.setBackground(Color.decode("#204473"));	
+		panelId.setLayout(new GridLayout(2, 1));
 		
+		//Id y su caja de texto
+		JLabel id = new JLabel("Nombre");
+		id.setForeground(Color.white);
+		id.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		JTextField cajaId = new JTextField("ID");
-		JTextField cajaTipoHabitacion = new JTextField("Tipo Habitación");
-		JTextField cajaCapacidadCama = new JTextField("Capacidad Cama");
-		JTextField cajaApto = new JTextField("Apto Para Niños");
-		JTextField cajaServicio = new JTextField("Servicio");
-		JTextField cajaPrecio = new JTextField("Precio");
-		
-		JButton crearHabitacion = new JButton("Agregar servicio");
-		crearHabitacion.setBackground(Color.CYAN);
-		crearHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		
-		
-		panelInfo.add(cajaId);
-		panelInfo.add(cajaTipoHabitacion);
-		panelInfo.add(cajaCapacidadCama);
-		panelInfo.add(cajaApto);
-		panelInfo.add(cajaServicio);
-		panelInfo.add(cajaPrecio);
-		panelCrear.add(new JLabel( ));
-		panelCrear.add(panelInfo);
-		
-		JPanel panelAgregar = new JPanel();
-		panelAgregar.add(crearHabitacion);
-		panelAgregar.setBackground(Color.decode("#204473"));
-		panelCrear.add(panelAgregar);
-		panelCrear.add(new JLabel( ));
-		
+		JTextField cajaId = new JTextField();
+		cajaId.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 
+		
+		panelId.add(id);
+		panelId.add(cajaId);
+		
+		//Panel tipo habitacion
+		JPanel panelTipoHabitacion = new JPanel();
+		panelTipoHabitacion.setBackground(Color.decode("#204473"));	
+		panelTipoHabitacion.setLayout(new GridLayout(2, 1));
+
+		//Tipo de habitacion y su caja de texto
+		JLabel tipoHabitacion = new JLabel("Tipo habitación");
+		tipoHabitacion.setForeground(Color.white);
+		tipoHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		
+		JTextField cajaTipoHabitacion = new JTextField();
+		cajaTipoHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		
+		panelTipoHabitacion.add(tipoHabitacion);
+		panelTipoHabitacion.add(cajaTipoHabitacion);
+
+		//Panel agregar
+		JPanel panelAgregar = new JPanel();
+		panelAgregar.setBackground(Color.decode("#204473"));
+		
+		//Boton crear habitacion
+		JButton crearHabitacion = new BotonRedondeado("Crear habitación", 200, 60, 30, Color.decode("#ACCAF2"));
+		crearHabitacion.setBackground(Color.CYAN);
+		crearHabitacion.setFont(new Font("arial", 1, 20));
+		
+		panelAgregar.add(crearHabitacion);
+		
+		//Agregacion de componentes
+		panelCrear.add(new JLabel());
+		panelCrear.add(panelId);
+		panelCrear.add(panelTipoHabitacion);
+		panelCrear.add(panelAgregar);
+		
 	}
 	
 	@Override
 	protected void setPanelInfo() {
-		panelDerecho.setLayout(new FlowLayout());
+		GridBagLayout gridbag = new GridBagLayout();
+        GridBagConstraints constraints = new GridBagConstraints();
+        panelDerecho.setLayout(gridbag);
 		panelDerecho.setBackground(Color.decode("#b2bba4"));
+		panelDerecho.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		
-		JLabel tituloTablaServicios = new JLabel("          Servicios            ");
-		tituloTablaServicios.setOpaque(true);
-		tituloTablaServicios.setBackground(Color.decode("#204473"));
-		tituloTablaServicios.setForeground(Color.BLACK);
-		tituloTablaServicios.setFont(new Font("Times New Roman", Font.PLAIN, 50));
-		
-		JPanel listaServicios = new JPanel(new GridLayout(6,1));
-		listaServicios.add(tituloTablaServicios);
-		
-		panelDerecho.add(listaServicios);
-		JLabel nombre = new JLabel("Nombre");
-		nombre.setForeground(Color.BLACK);
-		nombre.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		
-		JTextField cajaNombre = new JTextField();
-		
-		JLabel precio = new JLabel("Precio");
-		precio.setForeground(Color.BLACK);
-		precio.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		
-		JTextField cajaPrecio = new JTextField();
-		
-		JPanel buscar = new JPanel(new GridLayout(4,1));
-		buscar.setBackground(Color.decode("#accaf2"));
-		buscar.add(nombre);
-		buscar.add(cajaNombre);
-		buscar.add(precio);
-		buscar.add(cajaPrecio);
-		
-		panelDerecho.add(buscar);
-		
-		JLabel numHabitacion = new JLabel("Número de habitacion");
-		numHabitacion.setForeground(Color.BLACK);
-		numHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		
-		JTextField cajaNumeroHabitacion = new JTextField();
-		
-		JButton añadirAHabitacion = new JButton("Añadir habitación");
-		añadirAHabitacion.setBackground(Color.decode("#204473"));
-		añadirAHabitacion.setForeground(Color.BLACK);
-		añadirAHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		
-		JPanel habitacion = new JPanel(new GridLayout(3,1, 0, 5));
-		habitacion.setBackground(Color.decode("#accaf2"));
-		habitacion.add(numHabitacion);
-		habitacion.add(cajaNumeroHabitacion);
-		habitacion.add(añadirAHabitacion);
-		
-		panelDerecho.add(habitacion);
-		
+		//Creacion de la tabla servicios
+		String[] columnas = {"ID", "Tipo", "Capacidad", "Apto", "Servicios"}; //Nombre de las columnas
+        modeloTabla = new DefaultTableModel(columnas, 0);
+        
+        //Filas de la tabla
+        String[] fila1 = {"503", "Suite", "4", "Si", ""};
+        String[] fila2 = {"205", "Double Suite", "6", "No", ""};
+        modeloTabla.addRow(fila1);
+	    modeloTabla.addRow(fila2);
+	    
+	    //Diseño de la tabla
+        tablaHabitaciones = new JTable(modeloTabla);
+        tablaHabitaciones.getTableHeader().setBackground(Color.decode("#204473"));
+        tablaHabitaciones.getTableHeader().setForeground(Color.white);
+        tablaHabitaciones.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
+        tablaHabitaciones.setFont(new Font("Times New Roman", 1, 20));
+        tablaHabitaciones.setRowHeight(40);
+        tablaHabitaciones.setEnabled(false);
+
+        DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
+        modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
+
+        for (int i = 0; i < columnas.length; i++) {
+        	tablaHabitaciones.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);	
+		}
+
+        JScrollPane scrollPanel = new JScrollPane(tablaHabitaciones);
+
+        //Tamaño y ubicacion de la tabla en el panel
+        constraints.gridx = 0;
+        constraints.ipady = 0;
+        constraints.ipadx = 400;
+
+        panelDerecho.add(scrollPanel, constraints);
+
 		
 
 	}

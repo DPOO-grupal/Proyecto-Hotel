@@ -33,49 +33,60 @@ public class ServiciosAdminFrame extends FrameBaseInfo{
 	@Override
 	protected void setPanelCrear() {
 		//Edita el aspecto del panel	
-		panelCrear.setLayout(new GridLayout(5, 1));
+		panelCrear.setLayout(new GridLayout(5, 1, 10, 10));
 		panelCrear.setBackground(Color.decode("#204473"));
 		panelCrear.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
 		
 		//Crea el panel para agregar un servicio
-		JPanel panelInfo = new JPanel();
-		panelInfo.setBackground(Color.decode("#204473"));	
-		panelInfo.setLayout(new GridLayout(4, 1));
+		JPanel panelNombre = new JPanel();
+		panelNombre.setBackground(Color.decode("#204473"));	
+		panelNombre.setLayout(new GridLayout(2, 1));
 		
 		//Nombre y su caja de texto
+		
 		JLabel nombre = new JLabel("Nombre");
 		nombre.setForeground(Color.white);
-		nombre.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		nombre.setBounds(30, 40, 300, 50);
+		nombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
 		JTextField cajaNombre = new JTextField();
-		cajaNombre.setCaretColor(Color.black);
+		cajaNombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+
+		
+		panelNombre.add(nombre);
+		panelNombre.add(cajaNombre);
+		
+		//Panel precio
+		JPanel panelPrecio = new JPanel();
+		panelPrecio.setBackground(Color.decode("#204473"));	
+		panelPrecio.setLayout(new GridLayout(2, 1));
 		
 		//Precio y su caja de texto
 		JLabel precio = new JLabel("Precio");
 		precio.setForeground(Color.white);
-		precio.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		precio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
 		JTextField cajaPrecio = new JTextField();
+		cajaPrecio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		//Boton par agregar un servicio
-		JButton agregarServicio = new BotonRedondeado("Agregar servicio", 200, 75, 30, Color.decode("#ACCAF2"));
+		panelPrecio.add(precio);
+		panelPrecio.add(cajaPrecio);
+
+		//Panel agregar
+		JPanel panelAgregar = new JPanel();
+		panelAgregar.setBackground(Color.decode("#204473"));
+		
+		//Boton para agregar un servicio
+		JButton agregarServicio = new BotonRedondeado("Agregar servicio", 200, 60, 30, Color.decode("#ACCAF2"));
 		agregarServicio.setBackground(Color.CYAN);
-		agregarServicio.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		agregarServicio.setFont(new Font("arial", 1, 20));
+		
+		panelAgregar.add(agregarServicio);
 		
 		//Se añaden los componentes al panel
-		panelInfo.add(nombre);
-		panelInfo.add(cajaNombre);
-		panelInfo.add(precio);
-		panelInfo.add(cajaPrecio);
-		panelCrear.add(new JLabel( ));
-		panelCrear.add(panelInfo);
-		
-		JPanel panelAgregar = new JPanel();
-		panelAgregar.add(agregarServicio);
-		panelAgregar.setBackground(Color.decode("#204473"));
+		panelCrear.add(new JLabel());
+		panelCrear.add(panelNombre);
+		panelCrear.add(panelPrecio);		
 		panelCrear.add(panelAgregar);
-		panelCrear.add(new JLabel( ));
 		
 	}
 
@@ -103,6 +114,7 @@ public class ServiciosAdminFrame extends FrameBaseInfo{
         tablaServicios.getTableHeader().setBackground(Color.decode("#204473"));
         tablaServicios.getTableHeader().setForeground(Color.white);
         tablaServicios.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
+        tablaServicios.setFont(new Font("Times New Roman", 1, 20));
         tablaServicios.setRowHeight(70);
         tablaServicios.setEnabled(false);
 
@@ -127,13 +139,13 @@ public class ServiciosAdminFrame extends FrameBaseInfo{
         //Creacion del recuadro para buscar un servicio
 		JLabel nombre = new JLabel("Nombre");
 		nombre.setForeground(Color.BLACK);
-		nombre.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		nombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
 		JTextField cajaNombre = new JTextField();
 		
 		JLabel precio = new JLabel("Precio");
 		precio.setForeground(Color.BLACK);
-		precio.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		precio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
 		JTextField cajaPrecio = new JTextField();
 		
@@ -158,20 +170,20 @@ public class ServiciosAdminFrame extends FrameBaseInfo{
 		panelDerecho.add(buscar, constraints);
 		
 		//Creacion del recuadro para añadir servicio a la habitacion
-		JLabel numHabitacion = new JLabel("Número de habitacion");
-		numHabitacion.setForeground(Color.BLACK);
-		numHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		
-		JTextField cajaNumeroHabitacion = new JTextField();
-		
-		JButton añadirAHabitacion = new JButton("Añadir habitación");
-		añadirAHabitacion.setBackground(Color.decode("#204473"));
-		añadirAHabitacion.setForeground(Color.BLACK);
-		añadirAHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		
 		JPanel habitacion = new JPanel(new GridLayout(3,1, 0, 5));
 		habitacion.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		habitacion.setBackground(Color.decode("#accaf2"));
+		
+		JLabel numHabitacion = new JLabel("Número de habitacion");
+		numHabitacion.setForeground(Color.BLACK);
+		numHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		
+		JTextField cajaNumeroHabitacion = new JTextField();
+		
+		JButton añadirAHabitacion = new BotonRedondeado("Añadir habitación", 200, 50, 30, Color.white);
+		añadirAHabitacion.setBackground(Color.decode("#204473"));
+		añadirAHabitacion.setForeground(Color.white);
+		añadirAHabitacion.setFont(new Font("arial", 1, 20));
 		
 		habitacion.add(numHabitacion);
 		habitacion.add(cajaNumeroHabitacion);
