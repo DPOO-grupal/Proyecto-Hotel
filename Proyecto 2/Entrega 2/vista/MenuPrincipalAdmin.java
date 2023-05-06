@@ -25,7 +25,7 @@ public class MenuPrincipalAdmin extends JFrame implements ActionListener {
 	private JPanel panelDerecho;
 	private JButton[] Opciones;
 	
-	TarifasAdminFrame tarifasAdminFrame;
+	private TarifasAdminFrame tarifasAdminFrame;
 	private ServiciosAdminFrame serviciosAdminFrame;
 	private HabitacionesAdminFrame habitacionesAdminFrame;
 	private RestauranteAdminFrame restauranteAdminFrame;
@@ -129,9 +129,8 @@ public class MenuPrincipalAdmin extends JFrame implements ActionListener {
 			usuariosAdminFrame.setVisible(true);
 			break;
 		case "Tarifas":
-			setVisible(false);
-			tarifasAdminFrame.setVisible(true);
-
+			setContentPane(tarifasAdminFrame.getContentPane());
+			setVisible(true);
 
 			break;
 		case "Servicios":

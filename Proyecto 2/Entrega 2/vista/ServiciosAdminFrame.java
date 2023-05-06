@@ -203,7 +203,7 @@ public class ServiciosAdminFrame extends FrameBaseInfo{
 		panelDerecho.add(habitacion, constraints);
 	}
 
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformedFrame(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "Agregar servicio":
 			break;
