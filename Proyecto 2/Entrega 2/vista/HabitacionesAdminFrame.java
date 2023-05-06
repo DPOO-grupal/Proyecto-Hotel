@@ -141,7 +141,7 @@ public class HabitacionesAdminFrame extends FrameBaseInfo{
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformedFrame(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "Crear habitacion":
 			break;
