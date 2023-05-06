@@ -29,6 +29,7 @@ public class MenuPrincipalAdmin extends JFrame implements ActionListener {
 	private ServiciosAdminFrame serviciosAdminFrame;
 	private HabitacionesAdminFrame habitacionesAdminFrame;
 	private RestauranteAdminFrame restauranteAdminFrame;
+	private UsuariosAdminFrame usuariosAdminFrame;
 
 	public MenuPrincipalAdmin(){
         setLayout(new BorderLayout());
@@ -59,6 +60,7 @@ public class MenuPrincipalAdmin extends JFrame implements ActionListener {
 		serviciosAdminFrame = new ServiciosAdminFrame(this);
 		habitacionesAdminFrame = new HabitacionesAdminFrame(this);
 		restauranteAdminFrame = new RestauranteAdminFrame(this);
+		usuariosAdminFrame = new UsuariosAdminFrame(this);
 	}
 
 	private void setPanelInfo() {
@@ -123,6 +125,8 @@ public class MenuPrincipalAdmin extends JFrame implements ActionListener {
 	
 		switch (e.getActionCommand()) {
 		case "Administrar usuarios":
+			setVisible(false);
+			usuariosAdminFrame.setVisible(true);
 			break;
 		case "Tarifas":
 			setVisible(false);
