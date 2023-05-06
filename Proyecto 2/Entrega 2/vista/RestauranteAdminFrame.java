@@ -384,7 +384,7 @@ public class RestauranteAdminFrame extends FrameBaseInfo{
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformedFrame(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "Agregar orden":
 			break;

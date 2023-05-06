@@ -21,6 +21,8 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import org.jdesktop.swingx.JXDatePicker;
+
 
 
 
@@ -55,57 +57,57 @@ public class TarifasAdminFrame extends FrameBaseInfo {
 	    
 	    JButton buscarButton = new JButton("Buscar Tarifa");
 	    
-//	    JXDatePicker fechaI = new JXDatePicker(new Date());
-//	    JXDatePicker fechaF = new JXDatePicker(new Date());
-//	    
-//	    c.gridx = 0;
-//	    c.gridy = 0;
-//	    
-//	    c.ipady = 20;
-//	    c.ipadx = 100;
-//	    
-//	    c.weighty = 0.5;
-//	    c.weightx = 1;
-//	    
-//	    
-//	    JLabel temLabel = new JLabel("Fecha Incial");
-//		temLabel.setFont(fontLabel );
-//	    panelBuscar.add(temLabel,c);
-//	    
-//	    c.gridy = 1;
-//	    c.weighty = 0;
-//
-//	    fechaI.setFont(fontLabel);
-//	    panelBuscar.add(fechaI, c);
-//	    
-//	    c.gridy = 3;
-//	    c.weighty = 0.5;
-//	    temLabel = new JLabel("Fecha Final");
-//		temLabel.setFont(fontLabel );
-//	    panelBuscar.add(temLabel,c);
-//	    
-//	    c.gridy = 4;
-//	    c.weighty = 0;
-//	    fechaF.setFont(fontLabel);
-//	    panelBuscar.add(fechaF, c);
-//	    	    
-//	    c.gridx = 2;
-//	    c.gridy = 1;
-//	    
-//	    c.gridheight = 3;
-//	    c.gridwidth = 1;
-//	    
-//	    c.ipadx = 100;
-//	    c.ipady = 40;
-//	    
-//
-//	    panelBuscar.add(buscarButton, c);
-//	    
-//	    
-//	    constraints.weighty=10;
-//	    constraints.ipady = 100;
-//	    constraints.ipadx = 900;
-//	    panelDerecho.add(panelBuscar, constraints);
+	    JXDatePicker fechaI = new JXDatePicker(new Date());
+	    JXDatePicker fechaF = new JXDatePicker(new Date());
+	    
+	    c.gridx = 0;
+	    c.gridy = 0;
+	    
+	    c.ipady = 20;
+	    c.ipadx = 100;
+	    
+	    c.weighty = 0.5;
+	    c.weightx = 1;
+	    
+	    
+	    JLabel temLabel = new JLabel("Fecha Incial");
+		temLabel.setFont(fontLabel );
+	    panelBuscar.add(temLabel,c);
+	    
+	    c.gridy = 1;
+	    c.weighty = 0;
+
+	    fechaI.setFont(fontLabel);
+	    panelBuscar.add(fechaI, c);
+	    
+	    c.gridy = 3;
+	    c.weighty = 0.5;
+	    temLabel = new JLabel("Fecha Final");
+		temLabel.setFont(fontLabel );
+	    panelBuscar.add(temLabel,c);
+	    
+	    c.gridy = 4;
+	    c.weighty = 0;
+	    fechaF.setFont(fontLabel);
+	    panelBuscar.add(fechaF, c);
+	    	    
+	    c.gridx = 2;
+	    c.gridy = 1;
+	    
+	    c.gridheight = 3;
+	    c.gridwidth = 1;
+	    
+	    c.ipadx = 100;
+	    c.ipady = 40;
+	    
+
+	    panelBuscar.add(buscarButton, c);
+	    
+	    
+	    constraints.weighty=1;
+	    constraints.ipady = 100;
+	    constraints.ipadx = 1000;
+	    panelDerecho.add(panelBuscar, constraints);
 	    
 	    
 	    // tabla
@@ -136,10 +138,8 @@ public class TarifasAdminFrame extends FrameBaseInfo {
        
         JScrollPane scrollPanel = new JScrollPane(tablaTarifas);
         scrollPanel.setBackground(Color.decode("#B2BBA4"));
-
+        scrollPanel.setPreferredSize(new Dimension(1000, 600));
 	    constraints.gridx = 0;
-	    constraints.ipady = 450;
-	    constraints.ipadx = 1000;
 	    
 	    panelDerecho.add(scrollPanel, constraints);
 	}
@@ -203,7 +203,7 @@ public class TarifasAdminFrame extends FrameBaseInfo {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformedFrame(ActionEvent e) {
 		if (e.getActionCommand().equals("Volver")) {
 			setVisible(false);
 			setVisibleAnterior();

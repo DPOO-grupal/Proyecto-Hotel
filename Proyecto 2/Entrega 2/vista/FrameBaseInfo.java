@@ -88,6 +88,7 @@ public abstract class FrameBaseInfo extends JFrame implements ActionListener{
 	    Font font = new Font("Arial", Font.BOLD, 20);
 	    
 	    volverButton = new BotonRedondeado("Volver", 200, 75, 30, Color.decode("#D0ECF2"));
+	    volverButton.setBackground(Color.decode("#D0ECF2"));
 	    volverButton.setFont(font);
 	    volverButton.addActionListener(this);
 	    // AÃ±adirlo al Panel
@@ -104,8 +105,12 @@ public abstract class FrameBaseInfo extends JFrame implements ActionListener{
 			setVisible(false);
 			setVisibleAnterior();
 		
+		} else {
+			actionPerformedFrame(e);
 		}
 	}
+	
+	protected abstract void actionPerformedFrame(ActionEvent e);
 
 
 }
