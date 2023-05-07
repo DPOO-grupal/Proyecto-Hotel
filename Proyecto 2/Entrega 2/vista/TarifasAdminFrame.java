@@ -59,7 +59,7 @@ public class TarifasAdminFrame extends FrameBaseInfo {
 	    panelBuscar.setLayout(gba);
 	    
 	    
-	    JButton buscarButton = new BotonRedondeado("Buscar Tarifa");
+	    JButton buscarButton = new JButton("Buscar Tarifa");
 	    buscarButton.setBackground(Color.decode("#204473"));
 	    buscarButton.setFont(fontLabel);
 	    buscarButton.setForeground(Color.white);
@@ -212,7 +212,7 @@ public class TarifasAdminFrame extends FrameBaseInfo {
 		panelCrear.add(new JLabel());
 		
 		Font fontBoton = new Font("Arial", Font.BOLD, 20);
-		addDatos =  new BotonRedondeado("Crear Tarifa", 200, 75, 30, Color.decode("#ACCAF2"));
+		addDatos =  new JButton("Crear Tarifa");
 		addDatos.setBackground( Color.decode("#ACCAF2"));
 		addDatos.setFont(fontBoton);
 		

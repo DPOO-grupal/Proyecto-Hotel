@@ -22,6 +22,7 @@ import java.awt.image.ImageProducer;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -114,7 +115,7 @@ public class AutenticacionFrame extends JFrame implements ActionListener{
         consPanel.gridy = 4;
         panel.add(contraJPasswordField,consPanel);
         
-        BotonRedondeado Ingresar = new BotonRedondeado("Iniciar Sesion");
+        JButton Ingresar = new JButton("Iniciar Sesion");
         Ingresar.addActionListener(this);
         Ingresar.setFont(font);
         Ingresar.setBackground(Color.decode("#183356"));
