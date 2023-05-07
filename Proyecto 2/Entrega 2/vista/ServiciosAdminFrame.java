@@ -24,9 +24,9 @@ public class ServiciosAdminFrame extends FrameBaseInfo{
 	private DefaultTableModel modeloTabla;
 	private JTable tablaServicios;
 
-	public ServiciosAdminFrame(JFrame anterior) {
-		super(anterior);
-		setTitle("Servicios");
+	public ServiciosAdminFrame(WindowManager windowManager) {
+		super(windowManager);
+		//setTitle("Servicios");
 		
 	}
 	
