@@ -24,6 +24,8 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import controlador.WindowManager;
+
 
 public abstract class FrameBaseInfo extends JFrame implements ActionListener{
 	protected JPanel panelVolver;

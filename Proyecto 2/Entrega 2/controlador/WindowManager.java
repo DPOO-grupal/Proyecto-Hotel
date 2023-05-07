@@ -1,14 +1,19 @@
-package vista;
+package controlador;
 
 import javax.swing.JFrame;
+
+import vista.AutenticacionFrame;
+import vista.MenuPrincipalAdmin;
 
 public class WindowManager {
 	private JFrame ventandaActual;
 	private JFrame menu;
-	
+	private JFrame autenticacionFrame;
+	private Hotel hotel;
+
 	public WindowManager() {
 		menu = new MenuPrincipalAdmin(this);
-		mostraVentana(menu);
+		
 	}
 	
 	public void mostraVentana(JFrame ventana) {
@@ -29,5 +34,18 @@ public class WindowManager {
 	public void volverMenu() {
 		mostraVentana(menu);
 	}
+	
+
+	public void iniciarAutenticacion() {
+		autenticacionFrame = new AutenticacionFrame(this);
+		mostraVentana(autenticacionFrame);
+		
+	}
+
+	public static void main(String[] args) {
+
+		WindowManager windowManager = new WindowManager();
+		windowManager.iniciarAutenticacion();
+}
 
 }

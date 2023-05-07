@@ -25,6 +25,8 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import controlador.WindowManager;
+
 
 
 

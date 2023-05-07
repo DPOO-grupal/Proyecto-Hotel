@@ -23,6 +23,8 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import controlador.WindowManager;
+
 public class HabitacionesAdminFrame extends FrameBaseInfo{
 	
 	private DefaultTableModel modeloTabla;
