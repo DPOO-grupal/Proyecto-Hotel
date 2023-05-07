@@ -26,6 +26,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
@@ -40,7 +41,7 @@ public class AutenticacionFrame extends JFrame implements ActionListener{
 	
 	private WindowManager windowManager;
 	private JTextField usuJTextField;
-	private JTextField contraJTextField;
+	private JPasswordField contraJPasswordField;
 	private int intentos;
 	
 	public AutenticacionFrame(WindowManager windowManager) {
@@ -68,7 +69,7 @@ public class AutenticacionFrame extends JFrame implements ActionListener{
         
         JLabel imageLabel = new JLabel(scaledImageIcon);
        
-        imageLabel.setPreferredSize(new Dimension(100,100));
+        imageLabel.setPreferredSize(new Dimension(150,100));
         consPanel.gridy = 0;
         consPanel.gridy = 0;
         consPanel.ipadx = 100;
@@ -77,6 +78,7 @@ public class AutenticacionFrame extends JFrame implements ActionListener{
         panel.add(imageLabel,consPanel);
         
         Font font = new Font("Arial", Font.BOLD, 20);
+        Font fontTextfiel = new Font("Arial",0, 15);
         JLabel usuJLabel = new JLabel("Usuario");
         usuJLabel.setFont(font);
         consPanel.insets = new Insets(10, 10, 5, 10);
@@ -87,6 +89,7 @@ public class AutenticacionFrame extends JFrame implements ActionListener{
         panel.add(usuJLabel,consPanel);
         
         usuJTextField = new JTextField();
+        usuJTextField.setFont(fontTextfiel);
         consPanel.insets = new Insets(10, 10, 20, 10);
         consPanel.fill = GridBagConstraints.HORIZONTAL;
         consPanel.ipady = 20;
@@ -102,13 +105,14 @@ public class AutenticacionFrame extends JFrame implements ActionListener{
         consPanel.gridy = 3;
         panel.add(contraJLabel,consPanel);
         
-        contraJTextField = new JTextField();
+        contraJPasswordField =new JPasswordField();
+        contraJPasswordField.setFont(fontTextfiel);
         consPanel.insets = new Insets(10, 10, 20, 10);
         consPanel.fill = GridBagConstraints.HORIZONTAL;
         consPanel.ipady = 20;
 
         consPanel.gridy = 4;
-        panel.add(contraJTextField,consPanel);
+        panel.add(contraJPasswordField,consPanel);
         
         BotonRedondeado Ingresar = new BotonRedondeado("Iniciar Sesion");
         Ingresar.addActionListener(this);
@@ -128,7 +132,7 @@ public class AutenticacionFrame extends JFrame implements ActionListener{
 	
 	public void inciarSecion() {
 		String login = usuJTextField.getText();
-		String passWord = contraJTextField.getText();
+		String passWord = new String(contraJPasswordField.getPassword());
 		
 		try {
 			windowManager.autenticar(login, passWord);

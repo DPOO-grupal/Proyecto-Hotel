@@ -1,6 +1,8 @@
 package controlador;
 
 import java.awt.Frame;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Date;
 
 import javax.swing.JFrame;
@@ -28,6 +30,8 @@ public class WindowManager {
 	public WindowManager() {
 		hotel = new Hotel();
 		setDay();
+		hotel.cargarInformacion();
+
 	}
 	
 	private void setDay() {
@@ -64,6 +68,13 @@ public class WindowManager {
 		ventana.setResizable(false);
 		ventana.setVisible(true);
 		
+		ventandaActual.addWindowListener(new WindowAdapter() {
+	        @Override
+	        public void windowClosing(WindowEvent e) {
+	            hotel.guardarInformacion();
+	        }
+	    });
+		
 	}
 	
 	public void volverMenu() {
@@ -81,10 +92,12 @@ public class WindowManager {
 		if (usuarioActual.getClass() == Empleado.class) {
 			Empleado empleado = (Empleado) usuarioActual;
 			menu = new MenuPrincipalAdmin(this);
+			mostraVentana(menu);
 
 		} else if (usuarioActual.getClass() == Admin.class) {
 			Admin admin = (Admin) usuarioActual;
 			menu = new MenuPrincipalAdmin(this);
+			mostraVentana(menu);
 		}
 	}
 	

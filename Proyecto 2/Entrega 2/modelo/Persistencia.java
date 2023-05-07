@@ -19,9 +19,9 @@ public class Persistencia implements Serializable{
 	private FileInputStream fileInput;
 	private ObjectOutputStream ouput;
 	private ObjectInputStream input;
-	private File directorio=new File("./Entrega 3/data/");
-	private File dataFile = new File("./Entrega 3/data/hotel.ser");
-	private File staticDataFile = new File("./Entrega 3/data/static.txt");
+	private File directorio=new File("./data/");
+	private File dataFile = new File("./data/hotel.ser");
+	private File staticDataFile = new File("./data/static.txt");
 	
 	// constructor
 	
@@ -53,7 +53,7 @@ public class Persistencia implements Serializable{
 	public void abrirOutput () throws IOException {
 		dataFile.delete();
 		dataFile.createNewFile();
-		fileOut = new FileOutputStream("./Entrega 3/data/hotel.ser");
+		fileOut = new FileOutputStream("./data/hotel.ser");
 		
 		ouput = new ObjectOutputStream(fileOut);
 
@@ -62,7 +62,7 @@ public class Persistencia implements Serializable{
 	// abrir archivo leectura
 	public void abrirInput () throws IOException {
 		
-		fileInput = new FileInputStream("./Entrega 3/data/hotel.ser");
+		fileInput = new FileInputStream("./data/hotel.ser");
 		input = new ObjectInputStream(fileInput);
 
 	}
