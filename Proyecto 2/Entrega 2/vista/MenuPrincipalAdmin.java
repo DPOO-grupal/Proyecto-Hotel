@@ -10,6 +10,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -29,10 +30,13 @@ public class MenuPrincipalAdmin extends JFrame implements ActionListener {
 	private ServiciosAdminFrame serviciosAdminFrame;
 	private HabitacionesAdminFrame habitacionesAdminFrame;
 	private RestauranteAdminFrame restauranteAdminFrame;
+	private WindowManager windowManager;
 
-	public MenuPrincipalAdmin(){
+	public MenuPrincipalAdmin(WindowManager windowManager){
         setLayout(new BorderLayout());
 		setTitle("Menu Principal");
+		
+		this.windowManager = windowManager;
 		
 		panelIzquierdo = new JPanel();
 		panelIzquierdo.setPreferredSize(new Dimension(300, 0));
@@ -46,19 +50,13 @@ public class MenuPrincipalAdmin extends JFrame implements ActionListener {
         add(panelIzquierdo, BorderLayout.WEST);
         add(panelDerecho, BorderLayout.CENTER);
 
-		// configuraciones generales
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		//setResizable(false);
-		setExtendedState(MAXIMIZED_BOTH);
-		setVisible(true);
-		setResizable(false);
-		
+
 		// FRAMES
 		
-		tarifasAdminFrame = new TarifasAdminFrame(this);
-		serviciosAdminFrame = new ServiciosAdminFrame(this);
-		habitacionesAdminFrame = new HabitacionesAdminFrame(this);
-		restauranteAdminFrame = new RestauranteAdminFrame(this);
+		tarifasAdminFrame = new TarifasAdminFrame(windowManager);
+		serviciosAdminFrame = new ServiciosAdminFrame(windowManager);
+		habitacionesAdminFrame = new HabitacionesAdminFrame(windowManager);
+		restauranteAdminFrame = new RestauranteAdminFrame(windowManager);
 	}
 
 	private void setPanelInfo() {
@@ -125,21 +123,20 @@ public class MenuPrincipalAdmin extends JFrame implements ActionListener {
 		case "Administrar usuarios":
 			break;
 		case "Tarifas":
-			setContentPane(tarifasAdminFrame.getContentPane());
-			setVisible(true);
+			windowManager.mostraVentana(tarifasAdminFrame);
 
 			break;
 		case "Servicios":
-			setVisible(false);
-			serviciosAdminFrame.setVisible(true);
+
+			windowManager.mostraVentana(serviciosAdminFrame);
 			break;
 		case "Habitaciones":
-			setVisible(false);
-			habitacionesAdminFrame.setVisible(true);
+
+			windowManager.mostraVentana(habitacionesAdminFrame);
 			break;
 		case "Restaurante":
-			setVisible(false);
-			restauranteAdminFrame.setVisible(true);			
+
+			windowManager.mostraVentana(restauranteAdminFrame);
 			break;
 		case "Reservas":
 			

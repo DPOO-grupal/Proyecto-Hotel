@@ -24,9 +24,9 @@ public class RestauranteAdminFrame extends FrameBaseInfo{
 	private DefaultTableModel modeloTabla;
 	private JTable tablaServicios;
 
-	public RestauranteAdminFrame(JFrame anterior) {
-		super(anterior);
-		setTitle("Restaurante");
+	public RestauranteAdminFrame(WindowManager windowManager) {
+		super(windowManager);
+		//setTitle("Restaurante");
 	}
 
 	@Override

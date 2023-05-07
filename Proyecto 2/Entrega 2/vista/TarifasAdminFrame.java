@@ -1,11 +1,13 @@
 package vista;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.util.Date;
 
@@ -32,9 +34,9 @@ public class TarifasAdminFrame extends FrameBaseInfo {
     private DefaultTableModel modeloTabla;
     
 	
-	public TarifasAdminFrame(JFrame anterior) {
+	public TarifasAdminFrame(WindowManager windowManager) {
 
-		super(anterior);
+		super(windowManager);
 		
 	}
 
@@ -55,7 +57,10 @@ public class TarifasAdminFrame extends FrameBaseInfo {
 	    panelBuscar.setLayout(gba);
 	    
 	    
-	    JButton buscarButton = new JButton("Buscar Tarifa");
+	    JButton buscarButton = new BotonRedondeado("Buscar Tarifa");
+	    buscarButton.setBackground(Color.decode("#204473"));
+	    buscarButton.setFont(fontLabel);
+	    buscarButton.setForeground(Color.white);
 	    
 	    JXDatePicker fechaI = new JXDatePicker(new Date());
 	    JXDatePicker fechaF = new JXDatePicker(new Date());
@@ -66,28 +71,33 @@ public class TarifasAdminFrame extends FrameBaseInfo {
 	    c.ipady = 20;
 	    c.ipadx = 100;
 	    
-	    c.weighty = 0.5;
-	    c.weightx = 1;
-	    
+	    c.insets = new Insets(0, 0, 0, 0);
 	    
 	    JLabel temLabel = new JLabel("Fecha Incial");
-		temLabel.setFont(fontLabel );
+		temLabel.setFont(fontLabel);
 	    panelBuscar.add(temLabel,c);
 	    
 	    c.gridy = 1;
-	    c.weighty = 0;
-
+	    c.gridx = 0;
+	    c.insets = new Insets(0, 0, 25, 0);
+	    
 	    fechaI.setFont(fontLabel);
 	    panelBuscar.add(fechaI, c);
 	    
 	    c.gridy = 3;
-	    c.weighty = 0.5;
+	    c.gridx = 0;
+	    
+	    c.insets = new Insets(0, 0, 0, 0);
+	    
 	    temLabel = new JLabel("Fecha Final");
 		temLabel.setFont(fontLabel );
 	    panelBuscar.add(temLabel,c);
 	    
 	    c.gridy = 4;
-	    c.weighty = 0;
+	    c.gridx = 0;
+	    
+	    c.insets = new Insets(0, 0, 0, 0);
+	    
 	    fechaF.setFont(fontLabel);
 	    panelBuscar.add(fechaF, c);
 	    	    
@@ -100,13 +110,19 @@ public class TarifasAdminFrame extends FrameBaseInfo {
 	    c.ipadx = 100;
 	    c.ipady = 40;
 	    
+	    c.insets = new Insets(0, 100, 0, 0);
+
+	    
 
 	    panelBuscar.add(buscarButton, c);
+	    panelBuscar.setBackground(Color.decode("#accaf2"));
+	    constraints.ipadx = 500;
+	    constraints.ipady = 50;
+	    constraints.gridx = 0;
+	    constraints.gridy = 0;
+	    constraints.weighty = 1;
 	    
 	    
-	    constraints.weighty=1;
-	    constraints.ipady = 100;
-	    constraints.ipadx = 1000;
 	    panelDerecho.add(panelBuscar, constraints);
 	    
 	    
@@ -138,8 +154,10 @@ public class TarifasAdminFrame extends FrameBaseInfo {
        
         JScrollPane scrollPanel = new JScrollPane(tablaTarifas);
         scrollPanel.setBackground(Color.decode("#B2BBA4"));
-        scrollPanel.setPreferredSize(new Dimension(1000, 600));
-	    constraints.gridx = 0;
+        constraints.gridx = 0;
+	    constraints.gridy = 1;
+	    constraints.ipadx = 1000;
+	    constraints.ipady = 500;
 	    
 	    panelDerecho.add(scrollPanel, constraints);
 	}
@@ -193,6 +211,7 @@ public class TarifasAdminFrame extends FrameBaseInfo {
 		
 		Font fontBoton = new Font("Arial", Font.BOLD, 20);
 		addDatos =  new BotonRedondeado("Crear Tarifa", 200, 75, 30, Color.decode("#ACCAF2"));
+		addDatos.setBackground( Color.decode("#ACCAF2"));
 		addDatos.setFont(fontBoton);
 		
 		constraints.gridy = 9 ;
@@ -204,11 +223,7 @@ public class TarifasAdminFrame extends FrameBaseInfo {
 
 	@Override
 	public void actionPerformedFrame(ActionEvent e) {
-		if (e.getActionCommand().equals("Volver")) {
-			setVisible(false);
-			setVisibleAnterior();
-		
-		}
+
 		
 	}
 

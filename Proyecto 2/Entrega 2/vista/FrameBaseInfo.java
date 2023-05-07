@@ -33,11 +33,11 @@ public abstract class FrameBaseInfo extends JFrame implements ActionListener{
 	protected JButton volverButton;
 	protected JTextField[] datos;
 	protected JButton addDatos;
-	private JFrame anterior;
+	private WindowManager windowManager;
     
 	
-	public FrameBaseInfo(JFrame anterior) {
-		this.anterior = anterior;
+	public FrameBaseInfo(WindowManager windowManager) {
+		this.windowManager = windowManager;
 		
 		//Panel Izquierdo
 		
@@ -95,15 +95,15 @@ public abstract class FrameBaseInfo extends JFrame implements ActionListener{
 	    panelVolver.add(volverButton);
 	}
 	
-	public void setVisibleAnterior() {
-		anterior.setVisible(true);
+	public void volverMenu() {
+		windowManager.volverMenu();
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Volver")) {
 			setVisible(false);
-			setVisibleAnterior();
+			volverMenu();
 		
 		} else {
 			actionPerformedFrame(e);
