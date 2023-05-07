@@ -10,11 +10,8 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.HeadlessException;
-<<<<<<< HEAD
 import java.awt.Insets;
-=======
 import java.awt.Window;
->>>>>>> master
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -47,11 +44,8 @@ public class MenuPrincipalAdmin extends JFrame implements ActionListener {
 	private ServiciosAdminFrame serviciosAdminFrame;
 	private HabitacionesAdminFrame habitacionesAdminFrame;
 	private RestauranteAdminFrame restauranteAdminFrame;
-<<<<<<< HEAD
 	private UsuariosAdminFrame usuariosAdminFrame;
-=======
 	private WindowManager windowManager;
->>>>>>> master
 
 	public MenuPrincipalAdmin(WindowManager windowManager){
         setLayout(new BorderLayout());
@@ -74,18 +68,12 @@ public class MenuPrincipalAdmin extends JFrame implements ActionListener {
 
 		// FRAMES
 		
-<<<<<<< HEAD
-		tarifasAdminFrame = new TarifasAdminFrame(this);
-		serviciosAdminFrame = new ServiciosAdminFrame(this);
-		habitacionesAdminFrame = new HabitacionesAdminFrame(this);
-		restauranteAdminFrame = new RestauranteAdminFrame(this);
-		usuariosAdminFrame = new UsuariosAdminFrame(this);
-=======
+
+		usuariosAdminFrame = new UsuariosAdminFrame(windowManager);
 		tarifasAdminFrame = new TarifasAdminFrame(windowManager);
 		serviciosAdminFrame = new ServiciosAdminFrame(windowManager);
 		habitacionesAdminFrame = new HabitacionesAdminFrame(windowManager);
 		restauranteAdminFrame = new RestauranteAdminFrame(windowManager);
->>>>>>> master
 	}
 
 	private void setPanelInfo() {
@@ -275,8 +263,7 @@ public class MenuPrincipalAdmin extends JFrame implements ActionListener {
 	
 		switch (e.getActionCommand()) {
 		case "Administrar usuarios":
-			setVisible(false);
-			usuariosAdminFrame.setVisible(true);
+			windowManager.mostraVentana(usuariosAdminFrame);
 			break;
 		case "Tarifas":
 			windowManager.mostraVentana(tarifasAdminFrame);
