@@ -19,6 +19,8 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import controlador.WindowManager;
+
 public class RestauranteAdminFrame extends FrameBaseInfo{
 
 	private DefaultTableModel modeloTabla;
@@ -209,13 +211,13 @@ public class RestauranteAdminFrame extends FrameBaseInfo{
 		panelAgregarEliminarBotones.setBackground(Color.decode("#204473"));
 		
 		//Boton par agregar un servicio
-		JButton agregarOrden = new BotonRedondeado("Agregar a la orden", 200, 60, 30, Color.decode("#ACCAF2"));
+		JButton agregarOrden = new JButton("Agregar a la orden");
 		agregarOrden.setBackground(Color.decode("#accaf2"));
 		agregarOrden.setFont(new Font("arial", 1, 20));
 		agregarOrden.addActionListener(this);
 
 		//Boton par agregar un servicio
-		JButton eliminarOrden = new BotonRedondeado("Eliminar a la orden", 200, 60, 30, Color.decode("#ACCAF2"));
+		JButton eliminarOrden = new JButton("Eliminar a la orden");
 		eliminarOrden.setBackground(Color.decode("#accaf2"));
 		eliminarOrden.setFont(new Font("arial", 1, 20));
 		eliminarOrden.addActionListener(this);
@@ -262,14 +264,14 @@ public class RestauranteAdminFrame extends FrameBaseInfo{
   		JPanel botonesHabitacion = new JPanel(new GridLayout(2,0, 0 ,5));
   		botonesHabitacion.setBackground(Color.decode("#accaf2"));
   		
-  		JButton cargarAHabitacion = new BotonRedondeado("Cargar a la habitación​", 200, 60, 30, Color.white);
+  		JButton cargarAHabitacion = new JButton("Cargar a la habitación​");
   		cargarAHabitacion.setBackground(Color.decode("#204473"));
   		cargarAHabitacion.setForeground(Color.white);
   		cargarAHabitacion.setFont(new Font("arial", 1, 20));
   		cargarAHabitacion.addActionListener(this);
   		
   		
-  		JButton pagarAhora = new BotonRedondeado("Pagar ahora​", 200, 60, 30, Color.white);
+  		JButton pagarAhora = new JButton("Pagar ahora​");
   		pagarAhora.setBackground(Color.decode("#204473"));
   		pagarAhora.setForeground(Color.white);
   		pagarAhora.setFont(new Font("arial", 1, 20));
@@ -366,7 +368,7 @@ public class RestauranteAdminFrame extends FrameBaseInfo{
 		panelAgregarServicio.setBackground(Color.decode("#204473"));
 		
 		//Boton par agregar un servicio
-		JButton agregarServicio = new BotonRedondeado("Agregar al menú", 200, 60, 30, Color.decode("#ACCAF2"));
+		JButton agregarServicio = new JButton("Agregar al menú");
 		agregarServicio.setBackground(Color.decode("#accaf2"));
 		agregarServicio.setFont(new Font("arial", 1, 20));
 		agregarServicio.addActionListener(this);

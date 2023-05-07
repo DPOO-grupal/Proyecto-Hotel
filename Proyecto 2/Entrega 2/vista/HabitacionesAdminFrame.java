@@ -23,6 +23,8 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import controlador.WindowManager;
+
 public class HabitacionesAdminFrame extends FrameBaseInfo{
 	
 	private DefaultTableModel modeloTabla;
@@ -79,7 +81,9 @@ public class HabitacionesAdminFrame extends FrameBaseInfo{
 		panelAgregar.setBackground(Color.decode("#204473"));
 		
 		//Boton crear habitacion
-		JButton crearHabitacion = new BotonRedondeado("Crear habitación", 200, 60, 30, Color.decode("#ACCAF2"));
+		JButton crearHabitacion = new JButton("Crear habitación");
+		crearHabitacion.setBackground(Color.decode("#ACCAF2"));
+		crearHabitacion.setPreferredSize(new Dimension( 200, 60));
 		crearHabitacion.setBackground(Color.CYAN);
 		crearHabitacion.setFont(new Font("arial", 1, 20));
 		

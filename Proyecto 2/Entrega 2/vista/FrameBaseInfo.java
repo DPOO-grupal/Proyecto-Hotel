@@ -24,6 +24,8 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import controlador.WindowManager;
+
 
 public abstract class FrameBaseInfo extends JFrame implements ActionListener{
 	protected JPanel panelVolver;
@@ -87,7 +89,8 @@ public abstract class FrameBaseInfo extends JFrame implements ActionListener{
 	    // Crear Boton redondeado
 	    Font font = new Font("Arial", Font.BOLD, 20);
 	    
-	    volverButton = new BotonRedondeado("Volver", 200, 75, 30, Color.decode("#D0ECF2"));
+	    volverButton = new JButton("Volver");
+	    volverButton.setPreferredSize(new Dimension(200, 60));
 	    volverButton.setBackground(Color.decode("#D0ECF2"));
 	    volverButton.setFont(font);
 	    volverButton.addActionListener(this);

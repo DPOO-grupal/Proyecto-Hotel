@@ -30,6 +30,8 @@ import javax.swing.plaf.basic.BasicTreeUI.TreeCancelEditingAction;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import controlador.WindowManager;
+
 public class MenuPrincipalAdmin extends JFrame implements ActionListener {
 
 	private JPanel panelIzquierdo;
@@ -95,12 +97,12 @@ public class MenuPrincipalAdmin extends JFrame implements ActionListener {
 		check.setLayout(new FlowLayout(FlowLayout.CENTER, 300, 80));
 	    Font fontButton = new Font("Arial", Font.BOLD, 16);
 
-		JButton checkIn = new BotonRedondeado("Check-In");
+		JButton checkIn = new JButton("Check-In");
 		checkIn.setPreferredSize(new Dimension(200,50));
 		checkIn.setFont(fontButton);
 		checkIn.setBackground(Color.decode("#D0ECF2"));
 		
-		JButton checkOut = new BotonRedondeado("Check-Out");
+		JButton checkOut = new JButton("Check-Out");
 		checkOut.setPreferredSize(new Dimension(200,50));
 		checkOut.setFont(fontButton);
 		checkOut.setBackground(Color.decode("#D0ECF2"));
@@ -256,7 +258,7 @@ public class MenuPrincipalAdmin extends JFrame implements ActionListener {
 	    panelIzquierdo.setBorder(BorderFactory.createEmptyBorder(100, 20, 100, 20));
 
 	    for (int i = 0; i<6; i++) {
-	    	opciones[i] = new BotonRedondeado(nombres[i]);
+	    	opciones[i] = new JButton(nombres[i]);
 	    	opciones[i].setBackground(Color.decode("#ACCAF2"));
 	    	opciones[i].addActionListener(this);
 	    	opciones[i].setPreferredSize(new Dimension(200, 50));
