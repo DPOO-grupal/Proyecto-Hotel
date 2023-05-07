@@ -122,7 +122,7 @@ public class UsuariosAdminFrame extends FrameBaseInfo {
 	  		cajaTipo.setEnabled(false);
 	  		
 	  		//Boton para añadir un servicio
-	  		JButton quitarUsuario = new BotonRedondeado("Quitar usuario", 200, 50, 30, Color.white);
+	  		JButton quitarUsuario = new JButton("Quitar usuario");
 	  		quitarUsuario.setBackground(Color.decode("#204473"));
 	  		quitarUsuario.setForeground(Color.white);
 	  		quitarUsuario.setFont(new Font("arial", 1, 20));
@@ -201,7 +201,9 @@ public class UsuariosAdminFrame extends FrameBaseInfo {
 		panelCrear.add(new JLabel());
 		
 		Font fontBoton = new Font("Arial", Font.BOLD, 20);
-		addDatos =  new BotonRedondeado("Agregar usuario", 200, 75, 30, Color.decode("#ACCAF2"));
+		addDatos =  new JButton("Agregar usuario");
+		addDatos.setPreferredSize(new Dimension(200, 75));
+		addDatos.setBackground(Color.decode("#ACCAF2"));
 		addDatos.setFont(fontBoton);
 		
 		constraints.gridy = 9 ;
