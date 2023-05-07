@@ -13,6 +13,8 @@ import javax.swing.plaf.basic.BasicTreeUI.TreeCancelEditingAction;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import com.formdev.flatlaf.FlatLightLaf;
+
 import modelo.Admin;
 import modelo.Empleado;
 import modelo.Usuario;
@@ -110,8 +112,10 @@ public class WindowManager {
 	
 	public static void main(String[] args) {
 		
+		FlatLightLaf.install();
 		WindowManager windowManager = new WindowManager();
 		windowManager.iniciarAutenticacion();
+		
 }
 
 }
