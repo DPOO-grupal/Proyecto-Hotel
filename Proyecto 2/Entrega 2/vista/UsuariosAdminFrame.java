@@ -101,6 +101,7 @@ public class UsuariosAdminFrame extends FrameBaseInfo {
 	  		labelNombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 	  		
 	  		JTextField cajaNombre = new JTextField();
+	  		cajaNombre.setEnabled(false);
 	  		
 	  		//Area de usuario y su caja de texto
 	  		JLabel labelArea = new JLabel("Area");
@@ -108,6 +109,7 @@ public class UsuariosAdminFrame extends FrameBaseInfo {
 	  		labelArea.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 	  		
 	  		JTextField cajaArea = new JTextField();
+	  		cajaArea.setEnabled(false);
 	  		
 	  		//Tipo de usuario y su caja de texto
 	  		JLabel labelTipo = new JLabel("Tipo");
@@ -115,6 +117,7 @@ public class UsuariosAdminFrame extends FrameBaseInfo {
 	  		labelTipo.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 	  		
 	  		JTextField cajaTipo = new JTextField();
+	  		cajaTipo.setEnabled(false);
 	  		
 	  		//Boton para añadir un servicio
 	  		JButton quitarUsuario = new BotonRedondeado("Quitar usuario", 200, 50, 30, Color.white);
