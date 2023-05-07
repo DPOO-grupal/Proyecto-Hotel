@@ -78,7 +78,8 @@ public class ServiciosAdminFrame extends FrameBaseInfo{
 		panelAgregar.setBackground(Color.decode("#204473"));
 		
 		//Boton para agregar un servicio
-		JButton agregarServicio = new BotonRedondeado("Agregar servicio", 200, 60, 30, Color.decode("#ACCAF2"));
+		JButton agregarServicio = new JButton("Agregar servicio");
+		agregarServicio.setBackground(Color.decode("#ACCAF2"));
 		agregarServicio.setBackground(Color.CYAN);
 		agregarServicio.setFont(new Font("arial", 1, 20));
 		
@@ -184,7 +185,7 @@ public class ServiciosAdminFrame extends FrameBaseInfo{
 		JTextField cajaNumeroHabitacion = new JTextField();
 		
 		//Boton para añadir un servicio
-		JButton añadirAHabitacion = new BotonRedondeado("Añadir habitación", 200, 50, 30, Color.white);
+		JButton añadirAHabitacion = new JButton("Añadir habitación");
 		añadirAHabitacion.setBackground(Color.decode("#204473"));
 		añadirAHabitacion.setForeground(Color.white);
 		añadirAHabitacion.setFont(new Font("arial", 1, 20));
