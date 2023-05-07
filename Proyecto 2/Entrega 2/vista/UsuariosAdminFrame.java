@@ -24,13 +24,15 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import controlador.WindowManager;
+
 public class UsuariosAdminFrame extends FrameBaseInfo {
 	
 	private JTable tablaUsuarios;
     private DefaultTableModel modeloTabla;
 	
-	public UsuariosAdminFrame(JFrame anterior) {
-		super(anterior);
+	public UsuariosAdminFrame(WindowManager windowManager) {
+		super(windowManager);
 	}
 
 	@Override
