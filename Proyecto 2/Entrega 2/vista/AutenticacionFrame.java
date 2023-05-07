@@ -24,6 +24,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
@@ -36,10 +37,16 @@ import org.jdesktop.swingx.JXImagePanel;
 import controlador.WindowManager;
 
 public class AutenticacionFrame extends JFrame implements ActionListener{
+	
 	private WindowManager windowManager;
+	private JTextField usuJTextField;
+	private JTextField contraJTextField;
+	private int intentos;
+	
 	public AutenticacionFrame(WindowManager windowManager) {
 		
 		this.windowManager = windowManager;
+		intentos = 0;
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		
 		
@@ -72,26 +79,44 @@ public class AutenticacionFrame extends JFrame implements ActionListener{
         Font font = new Font("Arial", Font.BOLD, 20);
         JLabel usuJLabel = new JLabel("Usuario");
         usuJLabel.setFont(font);
+        consPanel.insets = new Insets(10, 10, 5, 10);
         consPanel.ipadx = 0;
         consPanel.ipady = 0;
         consPanel.gridy = 1;
         consPanel.anchor = GridBagConstraints.WEST;
         panel.add(usuJLabel,consPanel);
         
-        JTextField usuJTextField = new JTextField();
+        usuJTextField = new JTextField();
+        consPanel.insets = new Insets(10, 10, 20, 10);
+        consPanel.fill = GridBagConstraints.HORIZONTAL;
+        consPanel.ipady = 20;
         consPanel.gridy = 2;
         panel.add(usuJTextField,consPanel);
         
         JLabel contraJLabel = new JLabel("Contraseña");
+        contraJLabel.setFont(font);
+        consPanel.insets = new Insets(10, 10, 5, 10);
+        
+        consPanel.ipadx = 0;
+        consPanel.ipady = 0;
         consPanel.gridy = 3;
         panel.add(contraJLabel,consPanel);
         
-        JTextField contraJTextField = new JTextField();
+        contraJTextField = new JTextField();
+        consPanel.insets = new Insets(10, 10, 20, 10);
+        consPanel.fill = GridBagConstraints.HORIZONTAL;
+        consPanel.ipady = 20;
+
         consPanel.gridy = 4;
         panel.add(contraJTextField,consPanel);
         
         BotonRedondeado Ingresar = new BotonRedondeado("Iniciar Sesion");
         Ingresar.addActionListener(this);
+        Ingresar.setFont(font);
+        Ingresar.setBackground(Color.decode("#183356"));
+        Ingresar.setForeground(Color.white);
+        consPanel.anchor = GridBagConstraints.CENTER;
+        consPanel.ipady = 10;
         consPanel.gridy = 5;
         panel.add(Ingresar,consPanel);
         
@@ -100,10 +125,29 @@ public class AutenticacionFrame extends JFrame implements ActionListener{
         gBC.ipady = 600;
         add(panel,gBC);
 	}
+	
+	public void inciarSecion() {
+		String login = usuJTextField.getText();
+		String passWord = contraJTextField.getText();
+		
+		try {
+			windowManager.autenticar(login, passWord);
+			intentos ++;
+		} catch (Exception e) {
+			if (intentos < 3) {
+				JOptionPane.showMessageDialog(null, "Opss, " + e.getMessage());
+			}else {
+				JOptionPane.showMessageDialog(null, "Demaciados intentos, intente mas tarde");
 
+			}
+			intentos ++;
+		}
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		windowManager.volverMenu();
+		if (e.getActionCommand().equals("Iniciar Sesion")) {
+			inciarSecion();
+		}
 		
 	}
 

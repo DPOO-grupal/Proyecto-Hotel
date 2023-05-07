@@ -61,22 +61,24 @@ public class Hotel implements Serializable{
 		return exist;
 	}
 	
-	public boolean autenticar(String login, String password) {
+	public void autenticar(String login, String password) throws Exception {
 		
-		boolean autent = false;
 		Usuario usuarioActual = null;
-		
+		Exception e = new Exception("Usuario o Contraseña incorrectos");
+
 		usuarioActual = usuarios.get(login);
 		
 		if (usuarioActual != null) {
-	
 			if (usuarioActual.iniciarSesion(password)) {
-				autent = true;
 				this.usuarioActual = usuarioActual;
+			}else {
+				throw e;
 			}
-		} 
-		
-		return autent;
+			
+		} else {
+			throw e;
+		}
+
 	}
 	/**
 	 * Crea un Usuario dependiento su tipo y lo añade al HashMap Usuarios
