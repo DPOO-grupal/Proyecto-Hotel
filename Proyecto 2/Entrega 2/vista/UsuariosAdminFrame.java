@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.util.Date;
 
@@ -35,6 +37,7 @@ public class UsuariosAdminFrame extends FrameBaseInfo {
 	protected void setPanelInfo() {
 		// TODO Auto-generated method stub
 		panelDerecho.setBackground(Color.decode("#B2BBA4"));
+		panelDerecho.setBorder(BorderFactory.createEmptyBorder(30, 50, 50, 50));
 		GridBagLayout gridbag = new GridBagLayout();
 	    GridBagConstraints constraints = new GridBagConstraints();
 	    panelDerecho.setLayout(gridbag);
@@ -49,7 +52,7 @@ public class UsuariosAdminFrame extends FrameBaseInfo {
 	    panelBuscar.setLayout(gba);
 	    
 	  //Creacion de la tabla servicios
-	  		String[] columnas = {"Servicios"}; //Nombre de las columnas
+	  		String[] columnas = {"Usuarios"}; //Nombre de las columnas
 	          modeloTabla = new DefaultTableModel(columnas, 0);
 	          
 	          //Filas de la tabla
@@ -74,16 +77,82 @@ public class UsuariosAdminFrame extends FrameBaseInfo {
 	          tablaUsuarios.getColumnModel().getColumn(0).setCellRenderer(modelocentrar);
 
 	          JScrollPane scrollPanel = new JScrollPane(tablaUsuarios);
-
+	          scrollPanel.setPreferredSize(new Dimension(400, 650));
 	          //Tamaño y ubicacion de la tabla en el panel
 	          constraints.gridx = 0;
-	          constraints.ipady = 650;
-	          constraints.ipadx = 400;
-	          constraints.gridheight = 2;
+	          constraints.gridy = 0;
+	          //constraints.ipady = 650;
+	          //constraints.ipadx = 400;
+	          constraints.gridheight = 10;
 	          constraints.gridwidth = 2;
 	          constraints.weightx = 1;
+	          //constraints.weighty = 0.1;
 
 	          panelDerecho.add(scrollPanel, constraints);
+	          
+	        //Creacion del recuadro para consultar la información de un usuario
+	  		JPanel Pusuario = new JPanel(new GridLayout(6,1, 0, 5));
+	  		Pusuario.setBorder(BorderFactory.createEmptyBorder(20, 50, 50, 50));
+	  		Pusuario.setBackground(Color.decode("#accaf2"));
+	  		
+	  		//Nombre de usuario y su caja de texto
+	  		JLabel labelNombre = new JLabel("Nombre");
+	  		labelNombre.setForeground(Color.BLACK);
+	  		labelNombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+	  		
+	  		JTextField cajaNombre = new JTextField();
+	  		
+	  		//Area de usuario y su caja de texto
+	  		JLabel labelArea = new JLabel("Area");
+	  		labelArea.setForeground(Color.BLACK);
+	  		labelArea.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+	  		
+	  		JTextField cajaArea = new JTextField();
+	  		
+	  		//Tipo de usuario y su caja de texto
+	  		JLabel labelTipo = new JLabel("Tipo");
+	  		labelTipo.setForeground(Color.BLACK);
+	  		labelTipo.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+	  		
+	  		JTextField cajaTipo = new JTextField();
+	  		
+	  		//Boton para añadir un servicio
+	  		JButton quitarUsuario = new BotonRedondeado("Quitar usuario", 200, 50, 30, Color.white);
+	  		quitarUsuario.setBackground(Color.decode("#204473"));
+	  		quitarUsuario.setForeground(Color.white);
+	  		quitarUsuario.setFont(new Font("arial", 1, 20));
+	  		
+	  		Pusuario.add(labelNombre);
+	  		Pusuario.add(cajaNombre);
+	  		Pusuario.add(labelArea);
+	  		Pusuario.add(cajaArea);
+	  		Pusuario.add(labelTipo);
+	  		Pusuario.add(cajaTipo);
+	  		
+	  		Pusuario.setPreferredSize(new Dimension(250, 300));
+	  		
+	  		//Tamaño y ubicacion en el panel
+	  		constraints.gridx = 2;
+	  		constraints.insets = new Insets(100, 0, 1, 0);
+	  		constraints.gridy = 2;
+	  		//constraints.ipady = 1;
+	        //constraints.ipadx = 100;
+	        constraints.gridheight = 5;
+	        constraints.gridwidth = 1;
+	        //constraints.weighty = 0.1;
+	        
+	        quitarUsuario.setPreferredSize(new Dimension(175, 50));
+	        
+	  		panelDerecho.add(Pusuario, constraints);
+	  		constraints.insets = new Insets(50, 0, 1, 0);
+	  		constraints.gridx = 2;
+	  		constraints.gridy = 7;
+	  		//constraints.ipady = 50;
+	        //constraints.ipadx = 100;
+	        constraints.gridheight = 2;
+	        constraints.gridwidth = 1;
+	        //constraints.weighty = 0.1;
+	  		panelDerecho.add(quitarUsuario, constraints);
 	}
 
 	@Override
@@ -133,6 +202,12 @@ public class UsuariosAdminFrame extends FrameBaseInfo {
 		constraints.gridy = 9 ;
 		constraints.gridy = GridBagConstraints.PAGE_END;
 		panelCrear.add(addDatos,constraints);
+		
+	}
+
+	@Override
+	protected void actionPerformedFrame(ActionEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 
