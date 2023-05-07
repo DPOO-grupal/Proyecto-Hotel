@@ -20,6 +20,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.plaf.basic.BasicTreeUI.TreeCancelEditingAction;
 
+import controlador.WindowManager;
+
 public class MenuPrincipalAdmin extends JFrame implements ActionListener {
 
 	private JPanel panelIzquierdo;
