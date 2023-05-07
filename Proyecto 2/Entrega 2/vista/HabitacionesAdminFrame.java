@@ -28,9 +28,9 @@ public class HabitacionesAdminFrame extends FrameBaseInfo{
 	private DefaultTableModel modeloTabla;
 	private JTable tablaHabitaciones;
 	
-	public HabitacionesAdminFrame(JFrame anterior) {
-		super(anterior);
-		setTitle("Habitaciones");
+	public HabitacionesAdminFrame(WindowManager windowManager) {
+		super(windowManager);
+		//setTitle("Habitaciones");
 		
 		
 	}
