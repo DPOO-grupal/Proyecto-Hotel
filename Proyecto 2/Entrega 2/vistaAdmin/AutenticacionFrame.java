@@ -1,4 +1,4 @@
-package vista;
+package vistaAdmin;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -29,12 +29,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicBorders;
 import javax.swing.plaf.basic.BasicTreeUI.TreeCancelEditingAction;
 
 import org.jdesktop.swingx.JXImagePanel;
+
+import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.ui.FlatRoundBorder;
 
 import controlador.WindowManager;
 
@@ -116,6 +120,7 @@ public class AutenticacionFrame extends JFrame implements ActionListener{
         panel.add(contraJPasswordField,consPanel);
         
         JButton Ingresar = new JButton("Iniciar Sesion");
+//        Ingresar.putClientProperty( "JButton.buttonType", "roundRect" );
         Ingresar.addActionListener(this);
         Ingresar.setFont(font);
         Ingresar.setBackground(Color.decode("#183356"));

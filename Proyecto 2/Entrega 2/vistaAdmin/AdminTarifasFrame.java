@@ -1,4 +1,4 @@
-package vista;
+package vistaAdmin;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -30,13 +30,13 @@ import controlador.WindowManager;
 
 
 
-public class TarifasAdminFrame extends FrameBaseInfo {
+public class AdminTarifasFrame extends FrameBaseInfo {
 
 	private JTable tablaTarifas;
     private DefaultTableModel modeloTabla;
     
 	
-	public TarifasAdminFrame(WindowManager windowManager) {
+	public AdminTarifasFrame(WindowManager windowManager) {
 
 		super(windowManager);
 		
@@ -169,7 +169,8 @@ public class TarifasAdminFrame extends FrameBaseInfo {
       modeloTabla.addRow(fila);
 
 	}
-
+	
+	@Override
 	protected void setPanelCrear() {
 		   // Configuracion General
 		

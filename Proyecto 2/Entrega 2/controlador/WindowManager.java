@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicTreeUI.TreeCancelEditingAction;
 
 import org.jdesktop.swingx.JXDatePicker;
@@ -18,8 +19,10 @@ import com.formdev.flatlaf.FlatLightLaf;
 import modelo.Admin;
 import modelo.Empleado;
 import modelo.Usuario;
-import vista.AutenticacionFrame;
-import vista.MenuPrincipalAdmin;
+import vistaAdmin.AutenticacionFrame;
+import vistaAdmin.AdminMenuPrincipal;
+import vistaEmpleado.EmpleadoMenuPrincipal;
+import vistaEmpleado.EmpleadoTarifasFrame;
 
 public class WindowManager {
 	private JFrame ventandaActual;
@@ -27,6 +30,7 @@ public class WindowManager {
 	private JFrame autenticacionFrame;
 	private Hotel hotel;
 	private Usuario usuarioActual;
+	private JFrame pruebas;
 		
 	
 	public WindowManager() {
@@ -36,7 +40,7 @@ public class WindowManager {
 
 	}
 	
-	private void setDay() {
+	public void setDay() {
 		
 	    JFrame setDayFrame = new JFrame();
 
@@ -93,12 +97,12 @@ public class WindowManager {
 	public void inciarSecion() {
 		if (usuarioActual.getClass() == Empleado.class) {
 			Empleado empleado = (Empleado) usuarioActual;
-			menu = new MenuPrincipalAdmin(this);
+			menu = new EmpleadoMenuPrincipal(this);
 			mostraVentana(menu);
 
 		} else if (usuarioActual.getClass() == Admin.class) {
 			Admin admin = (Admin) usuarioActual;
-			menu = new MenuPrincipalAdmin(this);
+			menu = new AdminMenuPrincipal(this);
 			mostraVentana(menu);
 		}
 	}
@@ -110,12 +114,51 @@ public class WindowManager {
 
 	}
 	
+	public void cerrarSesion() {
+		if (usuarioActual != null) {
+			usuarioActual.cerrarSesion();
+		}
+		
+		iniciarAutenticacion();
+		
+	}
+	
+	public void setPruebas(JFrame pruebas, JFrame menu) {
+		this.pruebas = pruebas;
+		this.menu = menu;
+		mostraVentana(pruebas);
+		
+	}
+	
 	public static void main(String[] args) {
 		
 		FlatLightLaf.install();
+		
+		UIManager.put( "Button.arc", 500 );
+		UIManager.put( "Component.arrowType", "chevron" );
+		UIManager.put( "TextComponent.arc", 5 );
+		
 		WindowManager windowManager = new WindowManager();
-		windowManager.iniciarAutenticacion();
+		
+	
+		
+       int opcion = JOptionPane.showConfirmDialog(null, "¿Deseas hacer pruebas?", "Panel de Opciones", JOptionPane.YES_NO_OPTION);
+
+        if (opcion == JOptionPane.YES_OPTION) {
+        	
+        	// JFrame para probar
+    		JFrame pruebas = new AdminMenuPrincipal(windowManager);
+    		// Menú de ese Frame
+    		JFrame menu = new EmpleadoMenuPrincipal(windowManager);
+    		
+    		windowManager.setPruebas(pruebas, menu);
+        } else {
+        	windowManager.iniciarAutenticacion();
+        }
+		
 		
 }
+
+
 
 }

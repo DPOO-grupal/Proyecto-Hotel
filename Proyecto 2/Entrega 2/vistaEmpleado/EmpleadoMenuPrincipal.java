@@ -1,4 +1,4 @@
-package vista;
+package vistaEmpleado;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -28,26 +28,28 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import controlador.WindowManager;
+import vistaAdmin.AdminHabitacionesFrame;
+import vistaAdmin.AdminRestauranteFrame;
+import vistaAdmin.AdminServiciosFrame;
+import vistaAdmin.AdminTarifasFrame;
 
-public class MenuPrincipalAdmin extends JFrame implements ActionListener {
+public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 
-	private JPanel panelIzquierdo;
+	protected JPanel panelIzquierdo;
 	private JPanel panelDerecho;
-	private JButton[] Opciones;
 	
 	private JTable tablaHoy;
     private DefaultTableModel modeloTablaHoy;
     private JTable tablaAnual;
     private DefaultTableModel modeloTablaAnual;
 	
-	private TarifasAdminFrame tarifasAdminFrame;
-	private ServiciosAdminFrame serviciosAdminFrame;
-	private HabitacionesAdminFrame habitacionesAdminFrame;
-	private RestauranteAdminFrame restauranteAdminFrame;
-	private UsuariosAdminFrame usuariosAdminFrame;
-	private WindowManager windowManager;
+	protected JFrame tarifasFrame;
+	protected JFrame serviciosFrame;
+	protected JFrame habitacionesFrame;
+	protected JFrame restauranteFrame;
+	protected WindowManager windowManager;
 
-	public MenuPrincipalAdmin(WindowManager windowManager){
+	public EmpleadoMenuPrincipal(WindowManager windowManager){
         setLayout(new BorderLayout());
 		setTitle("Menu Principal");
 		
@@ -69,11 +71,10 @@ public class MenuPrincipalAdmin extends JFrame implements ActionListener {
 		// FRAMES
 		
 
-		usuariosAdminFrame = new UsuariosAdminFrame(windowManager);
-		tarifasAdminFrame = new TarifasAdminFrame(windowManager);
-		serviciosAdminFrame = new ServiciosAdminFrame(windowManager);
-		habitacionesAdminFrame = new HabitacionesAdminFrame(windowManager);
-		restauranteAdminFrame = new RestauranteAdminFrame(windowManager);
+		tarifasFrame = new EmpleadoTarifasFrame(windowManager);
+		serviciosFrame = new AdminServiciosFrame(windowManager);
+		habitacionesFrame = new AdminHabitacionesFrame(windowManager);
+		restauranteFrame = new AdminRestauranteFrame(windowManager);
 	}
 
 	private void setPanelInfo() {
@@ -227,7 +228,7 @@ public class MenuPrincipalAdmin extends JFrame implements ActionListener {
 		panelDerecho.add(PanelOcupacion, BorderLayout.CENTER);
 	}
 
-	private void setBotones() {
+	protected void setBotones() {
 		// Configuracion General
 		GridBagLayout gridbag = new GridBagLayout();
 	    GridBagConstraints constraints = new GridBagConstraints();
@@ -235,12 +236,12 @@ public class MenuPrincipalAdmin extends JFrame implements ActionListener {
 	    panelIzquierdo.setBackground(Color.decode("#204473"));
 	    
 	    JButton[] opciones = new JButton[6];
-	    String[] nombres = {"Administrar usuarios" , 
-	    					"Tarifas", 
+	    String[] nombres = {"Tarifas", 
 	    					"Servicios", 
 	    					"Habitaciones", 
 	    					"Restaurante", 
-	    					"Reservas"};
+	    					"Reservas",
+	    					"Cerrar sesion"};
 	    
 	    Font fontButton = new Font("Arial", Font.BOLD, 16);
 	    panelIzquierdo.setBorder(BorderFactory.createEmptyBorder(100, 20, 100, 20));
@@ -262,27 +263,28 @@ public class MenuPrincipalAdmin extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 	
 		switch (e.getActionCommand()) {
-		case "Administrar usuarios":
-			windowManager.mostraVentana(usuariosAdminFrame);
-			break;
 		case "Tarifas":
-			windowManager.mostraVentana(tarifasAdminFrame);
+			windowManager.mostraVentana(tarifasFrame);
 
 			break;
 		case "Servicios":
 
-			windowManager.mostraVentana(serviciosAdminFrame);
+			windowManager.mostraVentana(serviciosFrame);
 			break;
 		case "Habitaciones":
 
-			windowManager.mostraVentana(habitacionesAdminFrame);
+			windowManager.mostraVentana(habitacionesFrame);
 			break;
 		case "Restaurante":
 
-			windowManager.mostraVentana(restauranteAdminFrame);
+			windowManager.mostraVentana(restauranteFrame);
 			break;
 		case "Reservas":
 			
+			break;
+		case "Cerrar sesion":
+			windowManager.cerrarSesion();;
+
 			break;
 
 		default:

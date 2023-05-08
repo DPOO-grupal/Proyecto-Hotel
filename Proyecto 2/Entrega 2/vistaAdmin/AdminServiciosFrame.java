@@ -1,4 +1,4 @@
-package vista;
+package vistaAdmin;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -21,12 +21,12 @@ import javax.swing.table.DefaultTableModel;
 
 import controlador.WindowManager;
 
-public class ServiciosAdminFrame extends FrameBaseInfo{
+public class AdminServiciosFrame extends FrameBaseInfo{
 	
 	private DefaultTableModel modeloTabla;
 	private JTable tablaServicios;
 
-	public ServiciosAdminFrame(WindowManager windowManager) {
+	public AdminServiciosFrame(WindowManager windowManager) {
 		super(windowManager);
 		//setTitle("Servicios");
 		

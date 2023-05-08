@@ -1,4 +1,4 @@
-package vista;
+package vistaAdmin;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -25,12 +25,12 @@ import javax.swing.table.DefaultTableModel;
 
 import controlador.WindowManager;
 
-public class HabitacionesAdminFrame extends FrameBaseInfo{
+public class AdminHabitacionesFrame extends FrameBaseInfo{
 	
 	private DefaultTableModel modeloTabla;
 	private JTable tablaHabitaciones;
 	
-	public HabitacionesAdminFrame(WindowManager windowManager) {
+	public AdminHabitacionesFrame(WindowManager windowManager) {
 		super(windowManager);
 		//setTitle("Habitaciones");
 		

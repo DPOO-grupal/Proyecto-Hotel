@@ -1,4 +1,4 @@
-package vista;
+package vistaAdmin;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;

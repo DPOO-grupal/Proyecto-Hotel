@@ -580,6 +580,7 @@ public class Hotel implements Serializable{
 	}
 
 	public void setUsuarioActual(Usuario usuarioActual) {
+		
 		this.usuarioActual = usuarioActual;
 	}
 

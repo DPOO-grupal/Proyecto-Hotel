@@ -1,4 +1,4 @@
-package vista;
+package vistaAdmin;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -26,12 +26,12 @@ import javax.swing.table.DefaultTableModel;
 
 import controlador.WindowManager;
 
-public class UsuariosAdminFrame extends FrameBaseInfo {
+public class AdminUsuariosFrame extends FrameBaseInfo {
 	
 	private JTable tablaUsuarios;
     private DefaultTableModel modeloTabla;
 	
-	public UsuariosAdminFrame(WindowManager windowManager) {
+	public AdminUsuariosFrame(WindowManager windowManager) {
 		super(windowManager);
 	}
 
