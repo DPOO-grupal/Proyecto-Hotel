@@ -46,7 +46,7 @@ public class Hotel implements Serializable{
 		habitaciones = new HashMap<Integer, Habitacion>();
 		serviciosHotel = new HashMap<Integer, Servicio>();
 		restaurante= new Restaurante();
-		ocupados = new TreeMap<Date, HashMap<Integer, Integer>>();
+		ocupados = new TreeMap<Date, HashMap<Integer, Integer>>(); // <Date, <ID habitacion, ID grupo>
 	}
 	
 	

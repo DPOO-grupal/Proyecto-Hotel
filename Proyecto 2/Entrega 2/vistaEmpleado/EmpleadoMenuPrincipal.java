@@ -138,6 +138,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
           tablaHoy.getTableHeader().setBackground(Color.decode("#204473"));
           tablaHoy.getTableHeader().setForeground(Color.white);
           tablaHoy.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
+          tablaHoy.getTableHeader().setReorderingAllowed(false);
           tablaHoy.setFont(new Font("Times New Roman", 1, 20));
           tablaHoy.setRowHeight(70);
           tablaHoy.setEnabled(false);

@@ -93,12 +93,14 @@ public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
 	        		   cajaNombre.setText(nombre);
 	        		   cajaArea.setText(area);
 	        		   cajaTipo.setText(tipo);
-	        		   JOptionPane.showMessageDialog(null, "Seleccionó a: "+tablaUsuarios.getValueAt(row, column));
+	        		   //JOptionPane.showMessageDialog(null, "Seleccionó a: "+tablaUsuarios.getValueAt(row, column));
 	        		  }
 	        		 }
 	        		});
+	          tablaUsuarios.setDefaultEditor(Object.class, null);
 	          tablaUsuarios.getTableHeader().setBackground(Color.decode("#204473"));
 	          tablaUsuarios.getTableHeader().setForeground(Color.white);
+	          tablaUsuarios.getTableHeader().setReorderingAllowed(false);
 	          tablaUsuarios.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
 	          tablaUsuarios.setFont(new Font("Times New Roman", 1, 20));
 	          tablaUsuarios.setRowHeight(70);
@@ -323,9 +325,6 @@ public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
 		
 		case "Quitar usuario":
 			quitarUsuario();
-			break;
-			
-		case "Añadir servicio":
 			break;
 
 		default:
