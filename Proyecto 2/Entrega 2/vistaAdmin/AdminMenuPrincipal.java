@@ -13,6 +13,8 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import controlador.WindowManager;
 import vistaEmpleado.EmpleadoMenuPrincipal;
@@ -94,6 +96,15 @@ public class AdminMenuPrincipal extends EmpleadoMenuPrincipal implements ActionL
 		case "Cerrar sesion":
 			windowManager.cerrarSesion();
 			break;
+			
+		case "Check-In":
+			checkIn();
+			break;
+			
+		case "Check-Out":
+			checkOut();
+			break;
+			
 		default:
 			break;
 		}

@@ -7,12 +7,12 @@ import java.util.HashMap;
 
 public class Admin extends Empleado {
 	
-	public Admin(String login, String password) {
-		super(login, password);
+	public Admin(String login, String password, String area) {
+		super(login, password, area);
 	}
 	
-	public void añadirUsuario(String login, String password, int tipo) {
-		hotel.añadirUsuario(login, password, tipo);
+	public void añadirUsuario(String login, String password, String area, int tipo) {
+		hotel.añadirUsuario(login, password, area, tipo);
 	}
 
 // INICIO TARIFAS ---------------------------------------------
@@ -72,5 +72,16 @@ public class Admin extends Empleado {
 		return lista;
 	}
 	
+	public String getTipo(String login) {
+		return hotel.getTipo(login);
+	}
+	
+	public String getArea(String login) {
+		return hotel.getArea(login);
+	}
+	
+	public void quitarUsuario(String nombre) {
+		hotel.quitarUsuario(nombre);
+	}
 //FIN DAR DATOS ---------------------------------------------------------------
 }

@@ -19,10 +19,12 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicTreeUI.TreeCancelEditingAction;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -48,6 +50,8 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	protected JFrame habitacionesFrame;
 	protected JFrame restauranteFrame;
 	protected WindowManager windowManager;
+	protected JButton checkIn;
+	protected JButton checkOut;
 
 	public EmpleadoMenuPrincipal(WindowManager windowManager){
         setLayout(new BorderLayout());
@@ -86,15 +90,17 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		check.setLayout(new FlowLayout(FlowLayout.CENTER, 300, 80));
 	    Font fontButton = new Font("Arial", Font.BOLD, 16);
 
-		JButton checkIn = new JButton("Check-In");
+		checkIn = new JButton("Check-In");
 		checkIn.setPreferredSize(new Dimension(200,50));
 		checkIn.setFont(fontButton);
 		checkIn.setBackground(Color.decode("#D0ECF2"));
+		checkIn.addActionListener(this);
 		
-		JButton checkOut = new JButton("Check-Out");
+		checkOut = new JButton("Check-Out");
 		checkOut.setPreferredSize(new Dimension(200,50));
 		checkOut.setFont(fontButton);
 		checkOut.setBackground(Color.decode("#D0ECF2"));
+		checkOut.addActionListener(this);
 
 		
 		check.add(checkIn);
@@ -258,6 +264,16 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	    }
 		
 	}
+	
+	public void checkIn() {
+		UIManager.put("OptionPane.minimumSize",new Dimension(400,200));
+		JOptionPane.showInputDialog(null, "Ingrese el número de su grupo para el check-in", "Check-in", JOptionPane.PLAIN_MESSAGE);
+	}
+	
+	public void checkOut() {
+		UIManager.put("OptionPane.minimumSize",new Dimension(400,200));
+		JOptionPane.showInputDialog(null, "Ingrese el número de su grupo para el check-out", "Check-out", JOptionPane.PLAIN_MESSAGE);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -285,6 +301,14 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		case "Cerrar sesion":
 			windowManager.cerrarSesion();;
 
+			break;
+			
+		case "Check-In":
+			checkIn();
+			break;
+			
+		case "Check-Out":
+			checkOut();
 			break;
 
 		default:

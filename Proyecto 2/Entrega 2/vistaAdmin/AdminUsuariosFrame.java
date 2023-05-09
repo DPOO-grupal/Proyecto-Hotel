@@ -19,6 +19,7 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -39,6 +40,7 @@ public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
     private JTextField cajaNombre;
     private JTextField cajaArea;
     private JTextField cajaTipo;
+    private JComboBox<String> comboTipo;
 	
 	public AdminUsuariosFrame(WindowManager windowManager) {
 		super(windowManager);
@@ -46,6 +48,8 @@ public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
 	}
 	
 	public void cargarDatos() {
+		modeloTabla.getDataVector().removeAllElements();
+		modeloTabla.fireTableDataChanged(); 
 		String[] listaUsuarios = windowManager.darUsuarios();		
 		for (int i = 0; i < listaUsuarios.length; i++) {
 	        String nombre = listaUsuarios[i];
@@ -83,6 +87,12 @@ public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
 	        		   JTable target = (JTable)e.getSource();
 	        		   int row = target.getSelectedRow();
 	        		   int column = target.getSelectedColumn();
+	        		   String nombre = tablaUsuarios.getValueAt(row, column).toString();
+	        		   String area = windowManager.getArea(nombre);
+	        		   String tipo = windowManager.getTipo(nombre);
+	        		   cajaNombre.setText(nombre);
+	        		   cajaArea.setText(area);
+	        		   cajaTipo.setText(tipo);
 	        		   JOptionPane.showMessageDialog(null, "Seleccionó a: "+tablaUsuarios.getValueAt(row, column));
 	        		  }
 	        		 }
@@ -127,7 +137,8 @@ public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
 	  		labelNombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 	  		
 	  		cajaNombre = new JTextField();
-	  		cajaNombre.setEnabled(false);
+	  		cajaNombre.setForeground(Color.BLACK);
+	  		cajaNombre.setEditable(false);
 	  		
 	  		//Area de usuario y su caja de texto
 	  		JLabel labelArea = new JLabel("Area");
@@ -135,7 +146,8 @@ public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
 	  		labelArea.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 	  		
 	  		cajaArea = new JTextField();
-	  		cajaArea.setEnabled(false);
+	  		cajaArea.setEditable(false);
+	  		cajaArea.setForeground(Color.BLACK);
 	  		
 	  		//Tipo de usuario y su caja de texto
 	  		JLabel labelTipo = new JLabel("Tipo");
@@ -143,10 +155,12 @@ public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
 	  		labelTipo.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 	  		
 	  		cajaTipo = new JTextField();
-	  		cajaTipo.setEnabled(false);
+	  		cajaTipo.setEditable(false);
+	  		cajaTipo.setForeground(Color.BLACK);
 	  		
 	  		//Boton para añadir un servicio
 	  		JButton quitarUsuario = new JButton("Quitar usuario");
+	  		quitarUsuario.addActionListener(this);
 	  		quitarUsuario.setBackground(Color.decode("#204473"));
 	  		quitarUsuario.setForeground(Color.white);
 	  		quitarUsuario.setFont(new Font("arial", 1, 20));
@@ -200,7 +214,7 @@ public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
 		Font fontLabel = new Font("Arial", Font.BOLD, 20);
 
 		
-		for( int i = 0; i < 4; i++) {
+		for( int i = 0; i < 3; i++) {
 			JTextField campo = new JTextField();
 			campo.setPreferredSize(new Dimension(200, 30));
 			
@@ -221,37 +235,83 @@ public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			panelCrear.add(campo, constraints);
 		}
-		JLabel text = new JLabel();
-		text.setText("Digite '1' para Admin o '2' para empleado.");
-		text.setFont(new Font("Arial", Font.BOLD, 13));
-		text.setForeground(Color.WHITE);
+		JLabel tipo = new JLabel();
+		tipo.setText("Tipo");
+		tipo.setFont(fontLabel);
+		tipo.setForeground(Color.WHITE);
 		constraints.gridx = 0;
 		constraints.gridy = (8);
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.weighty=10;
-	    panelCrear.add(text, constraints);
-		panelCrear.add(new JLabel());
+	    panelCrear.add(tipo, constraints);
+		
+		comboTipo = new JComboBox<>();
+		String[] opciones = {"", "Admin", "Empleado"};
+		comboTipo.setPreferredSize(new Dimension(200, 30));
+		comboTipo = new JComboBox<>(opciones);
+		constraints.gridx = 0;
+		constraints.gridy = (9);
+		constraints.ipady = (7);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weighty=10;
+		panelCrear.add(comboTipo, constraints);
 		
 		Font fontBoton = new Font("Arial", Font.BOLD, 20);
 		addDatos =  new JButton("Agregar usuario");
-		addDatos.setPreferredSize(new Dimension(200, 75));
+		addDatos.setPreferredSize(new Dimension(200, 50));
 		addDatos.setBackground(Color.decode("#ACCAF2"));
 		addDatos.setFont(fontBoton);
 		addDatos.addActionListener(this);
 		
 		constraints.gridy = 9 ;
+		constraints.ipady = (1);
 		constraints.gridy = GridBagConstraints.PAGE_END;
 		panelCrear.add(addDatos,constraints);
 		
 	}
 	
 	public void agregarUsuario() {
-		JOptionPane.showMessageDialog(null, datos[0].getText() + datos[1].getText() + datos[2].getText() + datos[3].getText());
 		String login = datos[0].getText();
 		String password = datos[1].getText();
-		int tipo = Integer.parseInt(datos[3].getText());
-		windowManager.agregarUsuario(login, password, tipo);
-		modeloTabla.addRow(new Object[]{login, "ICON", "ICON"});
+		String area = datos[2].getText();
+		int tipo = comboTipo.getSelectedIndex();
+		windowManager.agregarUsuario(login, password, area, tipo);
+		cargarDatos();
+		datos[0].setText("");
+		datos[1].setText("");
+		datos[2].setText("");
+		comboTipo.setSelectedIndex(0);
+	}
+	
+	public void quitarUsuario() {
+		
+		String nombre = cajaNombre.getText();
+		int opcion = JOptionPane.YES_OPTION;
+		if (!nombre.equals("") && nombre != null) {
+			opcion = JOptionPane.showConfirmDialog(null, "¿Desea eliminar el usuario: " + nombre + "?", "Panel de Opciones", JOptionPane.YES_NO_OPTION);
+		}
+		
+        if (opcion == JOptionPane.YES_OPTION && !nombre.equals("") && nombre != null) {
+        	boolean self = windowManager.checkUsuario(nombre);
+        	if (!self) {
+        		windowManager.quitarUsuario(nombre);
+        		cajaArea.setText("");
+        		cajaNombre.setText("");
+        		cajaTipo.setText("");
+        		cargarDatos();
+        		JOptionPane.showMessageDialog(null, "El usuario '" + nombre + "' se eliminó correctamente.");
+        	}
+        	else {
+        		JOptionPane.showMessageDialog(null, "No puede eliminarse a usted mismo.");
+        	}
+        } 
+        
+        else if (opcion == JOptionPane.YES_OPTION && nombre.equals("") || nombre == null) {
+        	JOptionPane.showMessageDialog(null, "Seleccione un usuario primero.");
+        }
+        else {
+        	JOptionPane.showMessageDialog(null, "Acción cancelada.");
+        }
 	}
 	
 	@Override
@@ -261,7 +321,8 @@ public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
 			agregarUsuario();
 			break;
 		
-		case "Añadir cama":
+		case "Quitar usuario":
+			quitarUsuario();
 			break;
 			
 		case "Añadir servicio":

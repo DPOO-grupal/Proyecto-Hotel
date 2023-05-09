@@ -85,15 +85,15 @@ public class Hotel implements Serializable{
 	 * Crea un Usuario dependiento su tipo y lo añade al HashMap Usuarios
 	 * @param tipo 1 para Admin, 2 para Empleado
 	 */
-	public void añadirUsuario(String login, String password, int tipo) {
+	public void añadirUsuario(String login, String password, String area, int tipo) {
 		switch (tipo) {
 		case 1:
-			Admin admin = new Admin(login, password);
+			Admin admin = new Admin(login, password, area);
 			usuarios.put(login, admin);
 			break;
 		
 		case 2:
-			Empleado empleado = new Empleado(login, password);
+			Empleado empleado = new Empleado(login, password, area);
 			usuarios.put(login, empleado);
 			break;
 			
@@ -101,6 +101,10 @@ public class Hotel implements Serializable{
 			break;
 		}
 		
+	}
+	
+	public void quitarUsuario(String nombre) {
+		usuarios.remove(nombre);
 	}
 	
 
@@ -478,7 +482,7 @@ public class Hotel implements Serializable{
 			data(hotelDatos);
 		} else {
 			inicializarTarifas();
-			añadirUsuario("root", "Cookie", 1);
+			añadirUsuario("root", "Cookie", "Lobby", 1);
 		}
 				
 	}
@@ -536,6 +540,23 @@ public class Hotel implements Serializable{
 
 	public HashMap<String, Usuario> getUsuarios() {
 		return usuarios;
+	}
+	
+	public String getTipo(String login) {
+		Usuario usuario = usuarios.get(login);
+		String tipo = "Usuario";
+		if (usuario.getClass() == Admin.class) {
+			tipo = "Admin";
+		}
+		else if (usuario.getClass() == Empleado.class) {
+			tipo = "Empleado";
+		}
+		return tipo;
+	}
+	
+	public String getArea(String login) {
+		Usuario usuario = usuarios.get(login);
+		return usuario.getArea();
 	}
 
 	public HashMap<Integer, Habitacion> getHabitaciones() {
@@ -603,4 +624,8 @@ public class Hotel implements Serializable{
 		return lista;
 	}
 	
+	public boolean checkUsuario(String nombre) {
+		Usuario usuario = usuarios.get(nombre);
+		return usuarioActual.equals(usuario);
+	}
 }
