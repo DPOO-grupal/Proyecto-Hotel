@@ -140,11 +140,43 @@ public class WindowManager {
 		return lista;
 	}
 	
-	public void agregarUsuario(String login, String password, int tipo) {
+	public void agregarUsuario(String login, String password, String area, int tipo) {
 		if (usuarioActual.getClass() == Admin.class) {
 			Admin admin = (Admin) usuarioActual;
-			admin.añadirUsuario(login, password, tipo); 
+			admin.añadirUsuario(login, password, area, tipo); 
 		}
+	}
+	
+	public void quitarUsuario(String nombre) {
+		if (usuarioActual.getClass() == Admin.class) {
+			Admin admin = (Admin) usuarioActual;
+			admin.quitarUsuario(nombre);
+		}
+	}
+	
+	public String getTipo(String login) {
+		String tipo = "Usuario";
+		if (usuarioActual.getClass() == Admin.class) {
+			Admin admin = (Admin) usuarioActual;
+			tipo = admin.getTipo(login);
+		}
+		return tipo;
+	}
+	
+	public String getArea(String login) {
+		String area = "Default";
+		if (usuarioActual.getClass() == Admin.class) {
+			Admin admin = (Admin) usuarioActual;
+			area = admin.getArea(login);
+		}
+		return area;
+	}
+	
+	public boolean checkUsuario(String nombre) {
+		boolean self = false;
+		Empleado empleado = (Empleado) usuarioActual;
+		self = empleado.checkUsuario(nombre);
+		return self;
 	}
 	
 	public static void main(String[] args) {

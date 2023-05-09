@@ -8,8 +8,8 @@ import java.util.HashMap;
 
 public class Empleado extends Usuario  {
 	
-	public Empleado (String login, String password) {
-		super(login, password);
+	public Empleado (String login, String password, String area) {
+		super(login, password, area);
 	}
 	
 // INICIO TARIFAS ---------------------------------------------
@@ -107,4 +107,9 @@ public class Empleado extends Usuario  {
 	public Grupo checkOut(int idGrupo) {
 		return hotel.checkOut(idGrupo);
 	}
+	// a
+	public boolean checkUsuario(String nombre) {
+		return hotel.checkUsuario(nombre);
+	}
+	// a
 }
