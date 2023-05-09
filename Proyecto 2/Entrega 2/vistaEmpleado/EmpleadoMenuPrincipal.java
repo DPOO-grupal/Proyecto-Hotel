@@ -76,9 +76,9 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		
 
 		tarifasFrame = new EmpleadoTarifasFrame(windowManager);
-		serviciosFrame = new AdminServiciosFrame(windowManager);
-		habitacionesFrame = new AdminHabitacionesFrame(windowManager);
-		restauranteFrame = new AdminRestauranteFrame(windowManager);
+		serviciosFrame = new EmpleadoServiciosFrame(windowManager);
+		habitacionesFrame = new EmpleadoHabitacionesFrame(windowManager);
+		restauranteFrame = new EmpleadoRestauranteFrame(windowManager);
 	}
 
 	private void setPanelInfo() {
