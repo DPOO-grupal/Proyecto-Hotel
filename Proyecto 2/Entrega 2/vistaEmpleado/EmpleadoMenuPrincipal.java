@@ -19,10 +19,12 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicTreeUI.TreeCancelEditingAction;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -262,6 +264,16 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	    }
 		
 	}
+	
+	public void checkIn() {
+		UIManager.put("OptionPane.minimumSize",new Dimension(400,200));
+		JOptionPane.showInputDialog(null, "Ingrese el número de su grupo para el check-in", "Check-in", JOptionPane.PLAIN_MESSAGE);
+	}
+	
+	public void checkOut() {
+		UIManager.put("OptionPane.minimumSize",new Dimension(400,200));
+		JOptionPane.showInputDialog(null, "Ingrese el número de su grupo para el check-out", "Check-out", JOptionPane.PLAIN_MESSAGE);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -289,6 +301,14 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		case "Cerrar sesion":
 			windowManager.cerrarSesion();;
 
+			break;
+			
+		case "Check-In":
+			checkIn();
+			break;
+			
+		case "Check-Out":
+			checkOut();
 			break;
 
 		default:

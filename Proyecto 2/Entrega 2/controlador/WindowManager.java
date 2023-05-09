@@ -201,9 +201,9 @@ public class WindowManager {
     			e.printStackTrace();
     		}
         	// JFrame para probar
-    		JFrame pruebas = new AdminUsuariosFrame(windowManager);
+    		JFrame pruebas = new EmpleadoMenuPrincipal(windowManager);
     		// Menú de ese Frame
-    		JFrame menu = new AdminMenuPrincipal(windowManager);
+    		JFrame menu = new EmpleadoMenuPrincipal(windowManager);
     		
     		windowManager.setPruebas(pruebas, menu);
     		

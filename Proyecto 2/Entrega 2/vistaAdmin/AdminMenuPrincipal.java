@@ -66,16 +66,6 @@ public class AdminMenuPrincipal extends EmpleadoMenuPrincipal implements ActionL
 	    }
 		
 	}
-	
-	public void checkIn() {
-		UIManager.put("OptionPane.minimumSize",new Dimension(400,200));
-		JOptionPane.showInputDialog(null, "Ingrese el número de su grupo para el check-in", "Check-in", JOptionPane.PLAIN_MESSAGE);
-	}
-	
-	public void checkOut() {
-		UIManager.put("OptionPane.minimumSize",new Dimension(400,200));
-		JOptionPane.showInputDialog(null, "Ingrese el número de su grupo para el check-out", "Check-out", JOptionPane.PLAIN_MESSAGE);
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
