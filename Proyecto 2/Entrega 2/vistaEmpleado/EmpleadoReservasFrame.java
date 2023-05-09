@@ -264,6 +264,7 @@ public class EmpleadoReservasFrame extends FrameBaseInfo {
 		switch (e.getActionCommand()) {
 		case "Crear Reserva":
 			
+			windowManager.mostraVentana(new EmpleadoCrearReservasFrame(windowManager));
 			break;
 		case "Cancelar Reserva":
 			
