@@ -79,11 +79,11 @@ public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
 	          tablaUsuarios = new JTable(modeloTabla);
 	          tablaUsuarios.addMouseListener(new MouseAdapter() {
 	        	  public void mouseClicked(MouseEvent e) {
-	        		  if (e.getClickCount() == 2) {
+	        		  if (e.getClickCount() == 1) {
 	        		   JTable target = (JTable)e.getSource();
 	        		   int row = target.getSelectedRow();
 	        		   int column = target.getSelectedColumn();
-	        		   JOptionPane.showMessageDialog(null, tablaUsuarios.getValueAt(row, column));
+	        		   JOptionPane.showMessageDialog(null, "Seleccionó a: "+tablaUsuarios.getValueAt(row, column));
 	        		  }
 	        		 }
 	        		});
@@ -92,9 +92,9 @@ public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
 	          tablaUsuarios.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
 	          tablaUsuarios.setFont(new Font("Times New Roman", 1, 20));
 	          tablaUsuarios.setRowHeight(70);
-	          tablaUsuarios.setRowSelectionAllowed(true);
-	          tablaUsuarios.setCellSelectionEnabled(false);
-	          //tablaUsuarios.setEnabled(false);
+	          //tablaUsuarios.setRowSelectionAllowed(true);
+	          //tablaUsuarios.setCellSelectionEnabled(false);
+	          tablaUsuarios.setEnabled(true);
 
 	          DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
 	          modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
