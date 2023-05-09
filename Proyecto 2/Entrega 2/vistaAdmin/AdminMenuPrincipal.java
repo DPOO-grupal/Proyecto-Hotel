@@ -13,6 +13,8 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import controlador.WindowManager;
 import vistaEmpleado.EmpleadoMenuPrincipal;
@@ -64,6 +66,16 @@ public class AdminMenuPrincipal extends EmpleadoMenuPrincipal implements ActionL
 	    }
 		
 	}
+	
+	public void checkIn() {
+		UIManager.put("OptionPane.minimumSize",new Dimension(400,200));
+		JOptionPane.showInputDialog(null, "Ingrese el número de su grupo para el check-in", "Check-in", JOptionPane.PLAIN_MESSAGE);
+	}
+	
+	public void checkOut() {
+		UIManager.put("OptionPane.minimumSize",new Dimension(400,200));
+		JOptionPane.showInputDialog(null, "Ingrese el número de su grupo para el check-out", "Check-out", JOptionPane.PLAIN_MESSAGE);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -94,6 +106,15 @@ public class AdminMenuPrincipal extends EmpleadoMenuPrincipal implements ActionL
 		case "Cerrar sesion":
 			windowManager.cerrarSesion();
 			break;
+			
+		case "Check-In":
+			checkIn();
+			break;
+			
+		case "Check-Out":
+			checkOut();
+			break;
+			
 		default:
 			break;
 		}

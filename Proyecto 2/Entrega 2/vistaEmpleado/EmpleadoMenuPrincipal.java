@@ -48,6 +48,8 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	protected JFrame habitacionesFrame;
 	protected JFrame restauranteFrame;
 	protected WindowManager windowManager;
+	protected JButton checkIn;
+	protected JButton checkOut;
 
 	public EmpleadoMenuPrincipal(WindowManager windowManager){
         setLayout(new BorderLayout());
@@ -86,15 +88,17 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		check.setLayout(new FlowLayout(FlowLayout.CENTER, 300, 80));
 	    Font fontButton = new Font("Arial", Font.BOLD, 16);
 
-		JButton checkIn = new JButton("Check-In");
+		checkIn = new JButton("Check-In");
 		checkIn.setPreferredSize(new Dimension(200,50));
 		checkIn.setFont(fontButton);
 		checkIn.setBackground(Color.decode("#D0ECF2"));
+		checkIn.addActionListener(this);
 		
-		JButton checkOut = new JButton("Check-Out");
+		checkOut = new JButton("Check-Out");
 		checkOut.setPreferredSize(new Dimension(200,50));
 		checkOut.setFont(fontButton);
 		checkOut.setBackground(Color.decode("#D0ECF2"));
+		checkOut.addActionListener(this);
 
 		
 		check.add(checkIn);
