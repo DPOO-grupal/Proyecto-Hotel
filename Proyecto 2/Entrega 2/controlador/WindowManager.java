@@ -23,21 +23,21 @@ import vistaAdmin.AutenticacionFrame;
 import vistaAdmin.AdminMenuPrincipal;
 import vistaAdmin.AdminUsuariosFrame;
 import vistaEmpleado.EmpleadoMenuPrincipal;
+import vistaEmpleado.EmpleadoReservasFrame;
 import vistaEmpleado.EmpleadoTarifasFrame;
 
 public class WindowManager {
 	private JFrame ventandaActual;
 	private JFrame menu;
 	private JFrame autenticacionFrame;
-	private Hotel hotel;
 	private Usuario usuarioActual;
 	private JFrame pruebas;
 		
 	
 	public WindowManager() {
-		hotel = new Hotel();
+		Usuario.setHotel();
 		setDay();
-		hotel.cargarInformacion();
+		Usuario.cargarInformacion();
 
 	}
 	
@@ -55,7 +55,7 @@ public class WindowManager {
 	    JOptionPane.showOptionDialog(setDayFrame, panel, "Establecer fecha del Hotel", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
 
 	    Date fecha = datePicker.getDate();
-		hotel.setHoy(fecha);
+		Usuario.setHoy(fecha);
 	
 
 	
@@ -78,7 +78,7 @@ public class WindowManager {
 		ventandaActual.addWindowListener(new WindowAdapter() {
 	        @Override
 	        public void windowClosing(WindowEvent e) {
-	            hotel.guardarInformacion();
+	            Usuario.guardarInformacion();
 	        }
 	    });
 		
@@ -109,8 +109,8 @@ public class WindowManager {
 	}
 	
 	public void autenticar(String login, String password) throws Exception {
-		hotel.autenticar(login, password);
-		usuarioActual = hotel.getUsuarioActual();
+		Usuario.autenticar(login, password);
+		usuarioActual = Usuario.getUsuarioActual();
 		inciarSecion();
 
 	}
@@ -169,7 +169,7 @@ public class WindowManager {
     			e.printStackTrace();
     		}
         	// JFrame para probar
-    		JFrame pruebas = new AdminUsuariosFrame(windowManager);
+    		JFrame pruebas = new EmpleadoReservasFrame(windowManager);
     		// Menú de ese Frame
     		JFrame menu = new AdminMenuPrincipal(windowManager);
     		

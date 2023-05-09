@@ -480,9 +480,7 @@ public class Hotel implements Serializable{
 			inicializarTarifas();
 			añadirUsuario("root", "Cookie", 1);
 		}
-		
-		Usuario.setHotel(this);
-		
+				
 	}
 	public void data (Hotel hotelDatos) {
 		

@@ -1,6 +1,7 @@
 package modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import controlador.Hotel;
 
@@ -30,8 +31,30 @@ public class Usuario implements Serializable{
 		
 	}
 	
-	public static void setHotel(Hotel hotel) {
-		Usuario.hotel = hotel;
+	public static void setHotel() {
+		Usuario.hotel = new Hotel();
+	}
+	public static void cargarInformacion() {
+		hotel.cargarInformacion();
+
+	}
+	public static void setHoy(Date fecha) {
+		hotel.setHoy(fecha);
+		
+	}
+
+	public static void guardarInformacion() {
+		hotel.guardarInformacion();
+		
+	}
+
+	public static void autenticar(String login, String password) throws Exception {
+		hotel.autenticar(login, password);
+		
+	}
+
+	public static Usuario getUsuarioActual() {
+		return hotel.getUsuarioActual();
 	}
 	
 	
