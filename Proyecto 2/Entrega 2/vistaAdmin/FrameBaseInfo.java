@@ -35,7 +35,7 @@ public abstract class FrameBaseInfo extends JFrame implements ActionListener{
 	protected JButton volverButton;
 	protected JTextField[] datos;
 	protected JButton addDatos;
-	private WindowManager windowManager;
+	protected WindowManager windowManager;
     
 	
 	public FrameBaseInfo(WindowManager windowManager) {

@@ -10,12 +10,18 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Date;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -26,18 +32,29 @@ import javax.swing.table.DefaultTableModel;
 
 import controlador.WindowManager;
 
-public class AdminUsuariosFrame extends FrameBaseInfo {
+public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
 	
 	private JTable tablaUsuarios;
     private DefaultTableModel modeloTabla;
+    private JTextField cajaNombre;
+    private JTextField cajaArea;
+    private JTextField cajaTipo;
 	
 	public AdminUsuariosFrame(WindowManager windowManager) {
 		super(windowManager);
+		cargarDatos();
+	}
+	
+	public void cargarDatos() {
+		String[] listaUsuarios = windowManager.darUsuarios();		
+		for (int i = 0; i < listaUsuarios.length; i++) {
+	        String nombre = listaUsuarios[i];
+	        modeloTabla.addRow(new Object[]{nombre, "ICON", "ICON"});
+	    }
 	}
 
 	@Override
 	protected void setPanelInfo() {
-		// TODO Auto-generated method stub
 		panelDerecho.setBackground(Color.decode("#B2BBA4"));
 		panelDerecho.setBorder(BorderFactory.createEmptyBorder(30, 50, 50, 50));
 		GridBagLayout gridbag = new GridBagLayout();
@@ -56,21 +73,28 @@ public class AdminUsuariosFrame extends FrameBaseInfo {
 	  //Creacion de la tabla servicios
 	  		String[] columnas = {"Usuarios"}; //Nombre de las columnas
 	          modeloTabla = new DefaultTableModel(columnas, 0);
-	          
-	          //Filas de la tabla
-	          String[] fila1 = {"Spa"};
-	          String[] fila2 = {"LOL"};
-	          modeloTabla.addRow(fila1);
-	  	    modeloTabla.addRow(fila2);
+	          modeloTabla.addTableModelListener(tablaUsuarios);
 	  	    
 	  	    //Diseño de la tabla
 	          tablaUsuarios = new JTable(modeloTabla);
+	          tablaUsuarios.addMouseListener(new MouseAdapter() {
+	        	  public void mouseClicked(MouseEvent e) {
+	        		  if (e.getClickCount() == 2) {
+	        		   JTable target = (JTable)e.getSource();
+	        		   int row = target.getSelectedRow();
+	        		   int column = target.getSelectedColumn();
+	        		   JOptionPane.showMessageDialog(null, tablaUsuarios.getValueAt(row, column));
+	        		  }
+	        		 }
+	        		});
 	          tablaUsuarios.getTableHeader().setBackground(Color.decode("#204473"));
 	          tablaUsuarios.getTableHeader().setForeground(Color.white);
 	          tablaUsuarios.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
 	          tablaUsuarios.setFont(new Font("Times New Roman", 1, 20));
 	          tablaUsuarios.setRowHeight(70);
-	          tablaUsuarios.setEnabled(false);
+	          tablaUsuarios.setRowSelectionAllowed(true);
+	          tablaUsuarios.setCellSelectionEnabled(false);
+	          //tablaUsuarios.setEnabled(false);
 
 	          DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
 	          modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
@@ -102,7 +126,7 @@ public class AdminUsuariosFrame extends FrameBaseInfo {
 	  		labelNombre.setForeground(Color.BLACK);
 	  		labelNombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 	  		
-	  		JTextField cajaNombre = new JTextField();
+	  		cajaNombre = new JTextField();
 	  		cajaNombre.setEnabled(false);
 	  		
 	  		//Area de usuario y su caja de texto
@@ -110,7 +134,7 @@ public class AdminUsuariosFrame extends FrameBaseInfo {
 	  		labelArea.setForeground(Color.BLACK);
 	  		labelArea.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 	  		
-	  		JTextField cajaArea = new JTextField();
+	  		cajaArea = new JTextField();
 	  		cajaArea.setEnabled(false);
 	  		
 	  		//Tipo de usuario y su caja de texto
@@ -118,7 +142,7 @@ public class AdminUsuariosFrame extends FrameBaseInfo {
 	  		labelTipo.setForeground(Color.BLACK);
 	  		labelTipo.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 	  		
-	  		JTextField cajaTipo = new JTextField();
+	  		cajaTipo = new JTextField();
 	  		cajaTipo.setEnabled(false);
 	  		
 	  		//Boton para añadir un servicio
@@ -197,7 +221,15 @@ public class AdminUsuariosFrame extends FrameBaseInfo {
 			constraints.fill = GridBagConstraints.HORIZONTAL;
 			panelCrear.add(campo, constraints);
 		}
-	    
+		JLabel text = new JLabel();
+		text.setText("Digite '1' para Admin o '2' para empleado.");
+		text.setFont(new Font("Arial", Font.BOLD, 13));
+		text.setForeground(Color.WHITE);
+		constraints.gridx = 0;
+		constraints.gridy = (8);
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.weighty=10;
+	    panelCrear.add(text, constraints);
 		panelCrear.add(new JLabel());
 		
 		Font fontBoton = new Font("Arial", Font.BOLD, 20);
@@ -205,17 +237,39 @@ public class AdminUsuariosFrame extends FrameBaseInfo {
 		addDatos.setPreferredSize(new Dimension(200, 75));
 		addDatos.setBackground(Color.decode("#ACCAF2"));
 		addDatos.setFont(fontBoton);
+		addDatos.addActionListener(this);
 		
 		constraints.gridy = 9 ;
 		constraints.gridy = GridBagConstraints.PAGE_END;
 		panelCrear.add(addDatos,constraints);
 		
 	}
-
+	
+	public void agregarUsuario() {
+		JOptionPane.showMessageDialog(null, datos[0].getText() + datos[1].getText() + datos[2].getText() + datos[3].getText());
+		String login = datos[0].getText();
+		String password = datos[1].getText();
+		int tipo = Integer.parseInt(datos[3].getText());
+		windowManager.agregarUsuario(login, password, tipo);
+		modeloTabla.addRow(new Object[]{login, "ICON", "ICON"});
+	}
+	
 	@Override
 	protected void actionPerformedFrame(ActionEvent e) {
-		// TODO Auto-generated method stub
+		switch (e.getActionCommand()) {
+		case "Agregar usuario":
+			agregarUsuario();
+			break;
 		
+		case "Añadir cama":
+			break;
+			
+		case "Añadir servicio":
+			break;
+
+		default:
+			break;
+		}
 	}
 
 }

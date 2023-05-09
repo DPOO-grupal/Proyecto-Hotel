@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -597,21 +598,11 @@ public class Hotel implements Serializable{
 		this.serviciosHotel = serviciosHotel;
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	public String[] darUsuarios() {
+		HashMap<String, Usuario> mapa = getUsuarios();
+		Set<String> set = mapa.keySet();
+		String[] lista = set.toArray(String[]::new);
+		return lista;
+	}
+	
 }

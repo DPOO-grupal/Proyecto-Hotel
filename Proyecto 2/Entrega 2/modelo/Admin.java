@@ -64,4 +64,13 @@ public class Admin extends Empleado {
 		hotel.crearProductoMenu(horaI, horaF, llevable, nombre, precio);
 	}
 //FIN PRODUCTO MENU -----------------------------------------------------------
+	
+//INICIO DAR DATOS ------------------------------------------------------------
+	
+	public String[] darUsuarios() {
+		String[] lista = hotel.darUsuarios();
+		return lista;
+	}
+	
+//FIN DAR DATOS ---------------------------------------------------------------
 }

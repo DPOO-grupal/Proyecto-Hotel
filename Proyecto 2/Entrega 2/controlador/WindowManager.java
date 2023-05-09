@@ -21,6 +21,7 @@ import modelo.Empleado;
 import modelo.Usuario;
 import vistaAdmin.AutenticacionFrame;
 import vistaAdmin.AdminMenuPrincipal;
+import vistaAdmin.AdminUsuariosFrame;
 import vistaEmpleado.EmpleadoMenuPrincipal;
 import vistaEmpleado.EmpleadoTarifasFrame;
 
@@ -130,6 +131,22 @@ public class WindowManager {
 		
 	}
 	
+	public String[] darUsuarios() {
+		String[] lista = {"Oops"};
+		if (usuarioActual.getClass() == Admin.class) {
+			Admin admin = (Admin) usuarioActual;
+			lista = admin.darUsuarios();
+		}
+		return lista;
+	}
+	
+	public void agregarUsuario(String login, String password, int tipo) {
+		if (usuarioActual.getClass() == Admin.class) {
+			Admin admin = (Admin) usuarioActual;
+			admin.añadirUsuario(login, password, tipo); 
+		}
+	}
+	
 	public static void main(String[] args) {
 		
 		FlatLightLaf.install();
@@ -145,13 +162,19 @@ public class WindowManager {
        int opcion = JOptionPane.showConfirmDialog(null, "¿Deseas hacer pruebas?", "Panel de Opciones", JOptionPane.YES_NO_OPTION);
 
         if (opcion == JOptionPane.YES_OPTION) {
-        	
+        	try {
+    			windowManager.autenticar("root", "Cookie");
+    		} catch (Exception e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
         	// JFrame para probar
-    		JFrame pruebas = new AdminMenuPrincipal(windowManager);
+    		JFrame pruebas = new AdminUsuariosFrame(windowManager);
     		// Menú de ese Frame
-    		JFrame menu = new EmpleadoMenuPrincipal(windowManager);
+    		JFrame menu = new AdminMenuPrincipal(windowManager);
     		
     		windowManager.setPruebas(pruebas, menu);
+    		
         } else {
         	windowManager.iniciarAutenticacion();
         }
