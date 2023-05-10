@@ -3,7 +3,9 @@ package controlador;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,6 +20,9 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import modelo.Admin;
 import modelo.Empleado;
+import modelo.Habitacion;
+import modelo.Huesped;
+import modelo.TipoHabitacion;
 import modelo.Usuario;
 import vistaAdmin.AutenticacionFrame;
 import vistaAdmin.AdminMenuPrincipal;
@@ -88,6 +93,12 @@ public class WindowManager {
 	public void volverMenu() {
 		mostraVentana(menu);
 	}
+	
+
+	public void volverReserva() {
+		((EmpleadoMenuPrincipal) this.menu).volverReserva();;
+	}
+	
 	
 
 	public void iniciarAutenticacion() {
@@ -180,6 +191,57 @@ public class WindowManager {
 		return self;
 	}
 	
+	// Reservas
+		
+	
+	public ArrayList<Habitacion> DiponiblesParaGrupoEnCurso(TipoHabitacion tipo) throws Exception {
+		Empleado empleado = (Empleado) usuarioActual;
+		return empleado.DiponiblesParaGrupoEnCurso(tipo);
+	}
+	
+	public void llenarHabitaciones(int idHabitacion) {
+		Empleado empleado = (Empleado) usuarioActual;
+		empleado.añadirHabitacion(idHabitacion);
+	}
+
+	public void llenarHuespeds(String documento, String nombre, String email, String telefono, int edad) throws Exception {
+		Empleado empleado = (Empleado) usuarioActual;
+		empleado.añadirHuesped(documento, nombre, email, telefono, edad);;
+	}
+	
+	public int getPrecioHabitacionReserva(Habitacion habitacion) {
+		Empleado empleado = (Empleado) usuarioActual;
+		return (int)empleado.getPrecioHabitacionReserva(habitacion);
+	}
+	
+	public void crearReserva(Date fechaI, Date fechaF) throws Exception {
+		Empleado empleado = (Empleado) usuarioActual;
+		empleado.crearReserva(fechaI, fechaF);
+	}
+	
+	public void cambiarFechaReserva(Date fechaI, Date fechaF) throws Exception {
+		Empleado empleado = (Empleado) usuarioActual;
+		empleado.cambiarFechaReserva(fechaI, fechaF);
+	}
+	public void completarReserva() throws Exception {
+		Empleado empleado = (Empleado) usuarioActual;
+		empleado.completarReserva();
+	}
+	
+	
+	public ArrayList<Integer> getListaHabitacionesGrupo() {
+		Empleado empleado = (Empleado) usuarioActual;
+
+		return empleado.getListaHabitacionesGrupo();
+	}	
+	public ArrayList<Huesped> getHuespedesGrupoEnCurso() {
+		Empleado empleado = (Empleado) usuarioActual;
+
+		return empleado.getHuespedesGrupoEnCurso();
+	}
+	
+	// fin reservas
+	
 	public static void main(String[] args) {
 		
 		FlatLightLaf.install();
@@ -212,8 +274,13 @@ public class WindowManager {
         	windowManager.iniciarAutenticacion();
         }
 		
-		
+
 }
+
+
+
+
+
 
 
 

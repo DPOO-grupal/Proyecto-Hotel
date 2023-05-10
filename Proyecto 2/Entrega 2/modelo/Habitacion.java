@@ -5,7 +5,12 @@ import java.util.*;
 
 public class Habitacion implements Serializable{
 
-//Atributos 
+@Override
+	public String toString() {
+		return "Capacidad:" + capacidad + ", Caracteristicas:" + caracteristicas;
+	}
+
+	//Atributos 
 	private int id;
 	private int capacidad;
 	private ArrayList<Servicio> listaServicios;

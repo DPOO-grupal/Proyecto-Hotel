@@ -52,6 +52,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	protected WindowManager windowManager;
 	protected JButton checkIn;
 	protected JButton checkOut;
+	protected JFrame reservasFrame;
 
 	public EmpleadoMenuPrincipal(WindowManager windowManager){
         setLayout(new BorderLayout());
@@ -79,6 +80,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		serviciosFrame = new AdminServiciosFrame(windowManager);
 		habitacionesFrame = new AdminHabitacionesFrame(windowManager);
 		restauranteFrame = new AdminRestauranteFrame(windowManager);
+		reservasFrame = new EmpleadoReservasFrame(windowManager);
 	}
 
 	private void setPanelInfo() {
@@ -274,6 +276,10 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		UIManager.put("OptionPane.minimumSize",new Dimension(400,200));
 		JOptionPane.showInputDialog(null, "Ingrese el número de su grupo para el check-out", "Check-out", JOptionPane.PLAIN_MESSAGE);
 	}
+	
+	public void volverReserva() {
+		windowManager.mostraVentana(reservasFrame);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -296,7 +302,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 			windowManager.mostraVentana(restauranteFrame);
 			break;
 		case "Reservas":
-			
+			windowManager.mostraVentana(reservasFrame);
 			break;
 		case "Cerrar sesion":
 			windowManager.cerrarSesion();;
