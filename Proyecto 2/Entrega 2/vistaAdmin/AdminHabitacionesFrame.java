@@ -44,7 +44,7 @@ public class AdminHabitacionesFrame extends EmpleadoHabitacionesFrame{
 	private JTextField cajaCapacidad;
 	private JTextField cajaTipoHabitacion;
 	private JTextField cajaPiso;
-	private static ArrayList<Integer> pisoIds; 
+	
 	
 	public AdminHabitacionesFrame(WindowManager windowManager) {
 		super(windowManager);
@@ -251,14 +251,11 @@ public class AdminHabitacionesFrame extends EmpleadoHabitacionesFrame{
 	    }
 	}
 	
-	public static int getMaxHabitacion(int piso) {
-		return pisoIds.get(piso - 1);
-	}
 	
 	private void crearHabitacion() {
 		TipoHabitacion tipoHabitacion = windowManager.getTipoHabitacion(cajaTipoHabitacion.getText());
-		int id = getMaxHabitacion(Integer.parseInt(cajaPiso.getText()));
-		pisoIds.set(id/100, id++);
+		int piso = Integer.parseInt(cajaPiso.getText());
+		int id = Habitacion.getMaxHabitacion(piso);
 		int capacidad = Integer.parseInt(cajaCapacidad.getText());
 		boolean apto = getApto(cajaApto.getText());
 		windowManager.crearHabitacion(tipoHabitacion, id, capacidad, apto);
