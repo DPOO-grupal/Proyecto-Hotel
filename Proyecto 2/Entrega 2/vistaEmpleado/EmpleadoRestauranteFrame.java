@@ -8,13 +8,14 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -24,7 +25,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import controlador.WindowManager;
-import modelo.Habitacion;
 import modelo.ProductoMenu;
 import modelo.Servicio;
 import vistaAdmin.FrameBaseInfo;
@@ -33,19 +33,18 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 
 	private DefaultTableModel modeloTabla;
 	private JTable tablaMenu;
-	private JTextField cajaNombre;
-	private JTextField cajaPrecio;
-	private JTextField cajaLlevable;
-	private JButton agregarOrden;
-	private JButton eliminarOrden;
 	private JTextField cajaNumeroHabitacion;
 	private JButton cargarAHabitacion;
-	private JTextField cajaHorarioI;
-	private JTextField cajaHorarioF;
+	private JTextField cajaNombreOrden;
+	private JTextField cajaPrecioOrden;
+	private JTextField cajaHorarioIOrden;
+	private JTextField cajaHorarioFOrden;
+	private JTextField cajaLlevableOrden;
+	private JTextField cajaCantidadPersonas;
 
 	public EmpleadoRestauranteFrame(WindowManager windowManager) {
 		super(windowManager);
-		//cargarDatos();
+		cargarDatos();
 	}
 
 	@Override
@@ -94,115 +93,95 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
         panelDerecho.add(scrollPanelMenu, constraints);
 		
       //Creacion del recuadro para añadir producto menu a la habitacion
-  		JPanel panelAgregarOrden = new JPanel(new GridLayout(6,0, 0, 10));
+  		JPanel panelAgregarOrden = new JPanel(new GridLayout(5,0, 0, 10));
   		panelAgregarOrden.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
   		panelAgregarOrden.setBackground(Color.decode("#204473"));
   		
   		//Crea el panel nombre
-		JPanel panelNombre = new JPanel();
-		panelNombre.setBackground(Color.decode("#204473"));	
-		panelNombre.setLayout(new GridLayout(2, 1));
+		JPanel panelNombreOrden = new JPanel();
+		panelNombreOrden.setBackground(Color.decode("#204473"));	
+		panelNombreOrden.setLayout(new GridLayout(2, 1));
 		
 		//Nombre y su caja de texto		
-		JLabel nombre = new JLabel("Nombre");
-		nombre.setForeground(Color.white);
-		nombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		JLabel nombreOrden = new JLabel("Nombre");
+		nombreOrden.setForeground(Color.white);
+		nombreOrden.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		cajaNombre = new JTextField();
-		cajaNombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		cajaNombreOrden = new JTextField();
+		cajaNombreOrden.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		panelNombre.add(nombre);
-		panelNombre.add(cajaNombre);
+		panelNombreOrden.add(nombreOrden);
+		panelNombreOrden.add(cajaNombreOrden);
 		
 		//Crea el panel precio
-		JPanel panelPrecio = new JPanel();
-		panelPrecio.setBackground(Color.decode("#204473"));	
-		panelPrecio.setLayout(new GridLayout(2, 1));
+		JPanel panelPrecioOrden = new JPanel();
+		panelPrecioOrden.setBackground(Color.decode("#204473"));	
+		panelPrecioOrden.setLayout(new GridLayout(2, 1));
 		
 		//Precio y su caja de texto
-		JLabel precio = new JLabel("Precio");
-		precio.setForeground(Color.white);
-		precio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		JLabel precioOrden = new JLabel("Precio");
+		precioOrden.setForeground(Color.white);
+		precioOrden.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		cajaPrecio = new JTextField();
-		cajaPrecio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		cajaPrecioOrden = new JTextField();
+		cajaPrecioOrden.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 
-		panelPrecio.add(precio);
-		panelPrecio.add(cajaPrecio);
+		panelPrecioOrden.add(precioOrden);
+		panelPrecioOrden.add(cajaPrecioOrden);
 		
 		//Crea el panel horario
-		JPanel panelHorarioI = new JPanel();
-		panelHorarioI.setBackground(Color.decode("#204473"));	
-		panelHorarioI.setLayout(new GridLayout(2, 1));
+		JPanel panelHorarioIOrden = new JPanel();
+		panelHorarioIOrden.setBackground(Color.decode("#204473"));	
+		panelHorarioIOrden.setLayout(new GridLayout(2, 1));
 		
 		//Precio y su caja de texto
-		JLabel horarioI = new JLabel("Horario");
-		horarioI.setForeground(Color.white);
-		horarioI.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		JLabel horarioIOrden = new JLabel("Hora Inicial");
+		horarioIOrden.setForeground(Color.white);
+		horarioIOrden.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		cajaHorarioI = new JTextField();
-		cajaHorarioI.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		cajaHorarioIOrden = new JTextField();
+		cajaHorarioIOrden.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 
-		panelHorarioI.add(horarioI);
-		panelHorarioI.add(cajaHorarioI);
+		panelHorarioIOrden.add(horarioIOrden);
+		panelHorarioIOrden.add(cajaHorarioIOrden);
 		
 		//Crea el panel horario
-		JPanel panelHorarioF = new JPanel();
-		panelHorarioF.setBackground(Color.decode("#204473"));	
-		panelHorarioF.setLayout(new GridLayout(2, 1));
+		JPanel panelHorarioFOrden = new JPanel();
+		panelHorarioFOrden.setBackground(Color.decode("#204473"));	
+		panelHorarioFOrden.setLayout(new GridLayout(2, 1));
 		
 		//Precio y su caja de texto
-		JLabel horarioF = new JLabel("Horario");
-		horarioF.setForeground(Color.white);
-		horarioF.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		JLabel horarioFOrden = new JLabel("Hora final");
+		horarioFOrden.setForeground(Color.white);
+		horarioFOrden.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		cajaHorarioF = new JTextField();
-		cajaHorarioF.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		cajaHorarioFOrden = new JTextField();
+		cajaHorarioFOrden.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 
-		panelHorarioF.add(horarioF);
-		panelHorarioF.add(cajaHorarioF);
+		panelHorarioFOrden.add(horarioFOrden);
+		panelHorarioFOrden.add(cajaHorarioFOrden);
 		
 		//Crea el panel llevable
-		JPanel panelLlevable = new JPanel();
-		panelLlevable.setBackground(Color.decode("#204473"));	
-		panelLlevable.setLayout(new GridLayout(2, 1));
+		JPanel panelLlevableOrden = new JPanel();
+		panelLlevableOrden.setBackground(Color.decode("#204473"));	
+		panelLlevableOrden.setLayout(new GridLayout(2, 1));
 		
 		//Precio y su caja de texto
-		JLabel llevable = new JLabel("Llevable");
-		llevable.setForeground(Color.white);
-		llevable.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		JLabel llevableOrden = new JLabel("Llevable");
+		llevableOrden.setForeground(Color.white);
+		llevableOrden.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		cajaLlevable = new JTextField();
-		cajaLlevable.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		cajaLlevableOrden = new JTextField();
+		cajaLlevableOrden.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 
-		panelLlevable.add(llevable);
-		panelLlevable.add(cajaLlevable);
+		panelLlevableOrden.add(llevableOrden);
+		panelLlevableOrden.add(cajaLlevableOrden);
 		
-		//Crea el panel agregar orden
-		JPanel panelAgregarEliminarBotones = new JPanel(new GridLayout(2,0, 0 ,5));
-		panelAgregarEliminarBotones.setBackground(Color.decode("#204473"));
-		
-		//Boton par agregar un servicio
-		agregarOrden = new JButton("Agregar a la orden");
-		agregarOrden.setBackground(Color.decode("#accaf2"));
-		agregarOrden.setFont(new Font("arial", 1, 20));
-		agregarOrden.addActionListener(this);
-
-		//Boton par agregar un servicio
-		eliminarOrden = new JButton("Eliminar a la orden");
-		eliminarOrden.setBackground(Color.decode("#accaf2"));
-		eliminarOrden.setFont(new Font("arial", 1, 20));
-		eliminarOrden.addActionListener(this);
-		
-		panelAgregarEliminarBotones.add(agregarOrden);		
-		panelAgregarEliminarBotones.add(eliminarOrden);
-		
-		panelAgregarOrden.add(panelNombre);
-		panelAgregarOrden.add(panelPrecio);
-		panelAgregarOrden.add(panelHorarioI);
-		panelAgregarOrden.add(panelHorarioF);
-		panelAgregarOrden.add(panelLlevable);
-		panelAgregarOrden.add(panelAgregarEliminarBotones);
+		panelAgregarOrden.add(panelNombreOrden);
+		panelAgregarOrden.add(panelPrecioOrden);
+		panelAgregarOrden.add(panelHorarioIOrden);
+		panelAgregarOrden.add(panelHorarioFOrden);
+		panelAgregarOrden.add(panelLlevableOrden);
   		
   		//Tamaño y ubicacion en el panel
   		constraints.gridx = 1;
@@ -218,7 +197,7 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
   		panelDerecho.add(panelAgregarOrden, constraints);
         
         //Creacion del recuadro para añadir producto menu a la habitacion
-  		JPanel panelHabitacion = new JPanel(new GridLayout(2,0, 0, 10));
+  		JPanel panelHabitacion = new JPanel(new GridLayout(3,0, 0, 10));
   		panelHabitacion.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
   		panelHabitacion.setBackground(Color.decode("#accaf2"));
   		
@@ -234,7 +213,19 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
   		panelNumeroHabitacion.add(numHabitacion);
   		panelNumeroHabitacion.add(cajaNumeroHabitacion);
   		
-  		JPanel botonesHabitacion = new JPanel(new GridLayout(2,0, 0 ,5));
+  		JPanel panelCantidad = new JPanel(new GridLayout(2,0));
+  		panelCantidad.setBackground(Color.decode("#accaf2"));
+  		
+  		JLabel cantidadPersonas = new JLabel("#Personas");
+  		cantidadPersonas.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+  		
+  		cajaCantidadPersonas = new JTextField();
+  		cajaCantidadPersonas.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+  		
+  		panelCantidad.add(cantidadPersonas);
+  		panelCantidad.add(cajaCantidadPersonas);
+  		
+  		JPanel botonesHabitacion = new JPanel(new GridLayout(1,0, 0 ,5));
   		botonesHabitacion.setBackground(Color.decode("#accaf2"));
   		
   		cargarAHabitacion = new JButton("Cargar a la habitación​");
@@ -243,10 +234,10 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
   		cargarAHabitacion.setFont(new Font("arial", 1, 20));
   		cargarAHabitacion.addActionListener(this);
   		
-  		
   		botonesHabitacion.add(cargarAHabitacion);
   		
   		panelHabitacion.add(panelNumeroHabitacion);
+  		panelHabitacion.add(panelCantidad);
   		panelHabitacion.add(botonesHabitacion);
   		
   		//Tamaño y ubicacion en el panel
@@ -277,24 +268,111 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 		}
 	}
 	
+	private String getPrecio(String nombre) {
+		Collection<ProductoMenu> menu = windowManager.getMenu().values();
+		String nombreServicio = null;
+		for(Servicio servicio : menu)
+			if (servicio.getNombre().equals(nombre)) {
+				nombreServicio = String.valueOf(servicio.getPrecio());
+			}
+		return nombreServicio;
+		}
+	
+	private int getId(String nombre) {
+		Collection<ProductoMenu> listaServicios = windowManager.getMenu().values();
+		int precioServicio = 0;
+		for(Servicio servicio : listaServicios)
+			if (servicio.getNombre().equals(nombre)) {
+				precioServicio = servicio.getId();
+			}
+		return precioServicio;
+		}
+	
+	private Date getHoraI(String nombre) {
+		Collection<ProductoMenu> menu = windowManager.getMenu().values();
+		Date precioServicio = null;
+		for(ProductoMenu servicio : menu)
+			if (servicio.getNombre().equals(nombre)) {
+				precioServicio = servicio.getHorarioI();
+			}
+		return precioServicio;
+		}
+	
+	private Date getHoraF(String nombre) {
+		Collection<ProductoMenu> menu = windowManager.getMenu().values();
+		Date precioServicio = null;
+		for(ProductoMenu servicio : menu)
+			if (servicio.getNombre().equals(nombre)) {
+				precioServicio = servicio.getHorarioF();
+			}
+		return precioServicio;
+		}
+	
+	private boolean getLlevable(String nombre) {
+		Collection<ProductoMenu> menu = windowManager.getMenu().values();
+		boolean precioServicio = false;
+		for(ProductoMenu servicio : menu)
+			if (servicio.getNombre().equals(nombre)) {
+				precioServicio = servicio.getLlevable();
+			}
+		return precioServicio;
+		}
+	
+	private void añadirServicioHotelHabitacion() {
+		int idServicio = getId(cajaNombreOrden.getText());
+		int idHabitacion = Integer.parseInt(cajaNumeroHabitacion.getText());
+		int cantidad = Integer.parseInt(cajaCantidadPersonas.getText());
+		boolean pagarEnSitio = false;
+		int option = JOptionPane.showConfirmDialog(null, "¿Desea pagar ahora?", "Pagar", JOptionPane.YES_NO_OPTION);
+		cajaNombreOrden.setText("");
+		cajaPrecioOrden.setText("");
+		cajaHorarioIOrden.setText("");
+		cajaHorarioFOrden.setText("");
+		cajaLlevableOrden.setText("");
+		cajaNumeroHabitacion.setText("");
+		cajaCantidadPersonas.setText("");
+		if (option==JOptionPane.YES_OPTION) {
+			pagarEnSitio=true;
+		}
+		windowManager.añadirProductoMenuHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);
+	}
+	
+	public String formatoHora(Date hora) {
+		SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
+	    String fechaString = sdf.format(hora);
+		return fechaString;
+	}
+
 	@Override
 	public void actionPerformedFrame(ActionEvent e) {
 		switch (e.getActionCommand()) {
-		case "Agregar orden":
-			break;
-		case "Eliminar orden":
-			break;
-		case "Cargar a habitacion":
+		case "Cargar a la habitación":
+			añadirServicioHotelHabitacion();
 			break;
 
 		default:
 			break;
 		}
 	}
-
-	@Override
+	
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		if (e.getClickCount() == 1) {
+			int row = tablaMenu.getSelectedRow();
+			int column = tablaMenu.getSelectedColumn();
+			String nombre = tablaMenu.getValueAt(row, column).toString();
+			String precio = getPrecio(nombre);
+			Date horaI = getHoraI(nombre);
+			Date horaF = getHoraF(nombre);
+			String llevable = "No";
+			if (getLlevable(nombre)) {
+				llevable="Si";
+			}
+			cajaNombreOrden.setText(nombre);
+			cajaPrecioOrden.setText(precio);
+			cajaHorarioIOrden.setText(formatoHora(horaI));
+			cajaHorarioFOrden.setText(formatoHora(horaF));
+			cajaLlevableOrden.setText(llevable);
+		 }
 		
 	}
 
@@ -321,6 +399,5 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 		// TODO Auto-generated method stub
 		
 	}
-	
 }
 
