@@ -73,7 +73,6 @@ public class AdminHabitacionesFrame extends EmpleadoHabitacionesFrame{
 
 		cajaPiso = new JSpinner(model);
   		cajaPiso.setFont(new Font("Times New Roman", Font.PLAIN, 30));
- 
 		
 		panelPiso.add(piso);
 		panelPiso.add(cajaPiso);
