@@ -228,6 +228,11 @@ public class WindowManager {
 		Empleado empleado = (Empleado) usuarioActual;
 		return empleado.pasarDia(dia);
 	}
+	
+	public Date pasarMes(Date dia, int i) {
+		Empleado empleado = (Empleado) usuarioActual;
+		return empleado.pasarMes(dia, i);
+	}
 
 	public HashMap<Integer,Servicio> darServicio() {
 		HashMap<Integer, Servicio> listaServicios = null;

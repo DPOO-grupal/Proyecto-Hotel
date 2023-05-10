@@ -154,6 +154,10 @@ public class Empleado extends Usuario  {
 	public Date pasarDia(Date dia) {
 		return hotel.pasarDia(dia);
 	}
+	
+	public Date pasarMes(Date dia, int i) {
+		return hotel.pasarMes(dia, i);
+	}
 	// a
 
 
