@@ -29,11 +29,13 @@ import modelo.Empleado;
 import modelo.Habitacion;
 import modelo.Servicio;
 import modelo.Huesped;
+import modelo.ProductoMenu;
 import modelo.TipoHabitacion;
 import modelo.Usuario;
 import vistaAdmin.AutenticacionFrame;
 import vistaAdmin.AdminHabitacionesFrame;
 import vistaAdmin.AdminMenuPrincipal;
+import vistaAdmin.AdminRestauranteFrame;
 import vistaAdmin.AdminServiciosFrame;
 import vistaAdmin.AdminUsuariosFrame;
 import vistaEmpleado.EmpleadoCrearReservasFrame;
@@ -312,6 +314,11 @@ public class WindowManager {
 	
 	// Reservas
 		
+	public HashMap<Integer, ProductoMenu> getMenu() {
+		Empleado empleado = (Empleado)usuarioActual;
+		return empleado.getMenu();
+	}
+	
 	
 	public ArrayList<Habitacion> DiponiblesParaGrupoEnCurso(TipoHabitacion tipo) throws Exception {
 		Empleado empleado = (Empleado) usuarioActual;
@@ -405,9 +412,10 @@ public class WindowManager {
     			e.printStackTrace();
     		}
         	// JFrame para probar
-    		JFrame pruebas = new AdminHabitacionesFrame(windowManager);
+
+    		JFrame pruebas = new AdminRestauranteFrame(windowManager);
     		// Menú de ese Frame
-    		JFrame menu = new AdminMenuPrincipal(windowManager);
+    		JFrame menu = new EmpleadoMenuPrincipal(windowManager);
     		
     		windowManager.setPruebas(pruebas, menu);
     		

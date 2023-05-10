@@ -6,6 +6,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -20,16 +24,28 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import controlador.WindowManager;
+import modelo.Habitacion;
+import modelo.ProductoMenu;
+import modelo.Servicio;
 import vistaAdmin.FrameBaseInfo;
 
-public class EmpleadoRestauranteFrame extends FrameBaseInfo{
+public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseListener{
 
 	private DefaultTableModel modeloTabla;
-	private JTable tablaServicios;
+	private JTable tablaMenu;
+	private JTextField cajaNombre;
+	private JTextField cajaPrecio;
+	private JTextField cajaLlevable;
+	private JButton agregarOrden;
+	private JButton eliminarOrden;
+	private JTextField cajaNumeroHabitacion;
+	private JButton cargarAHabitacion;
+	private JTextField cajaHorarioI;
+	private JTextField cajaHorarioF;
 
 	public EmpleadoRestauranteFrame(WindowManager windowManager) {
 		super(windowManager);
-		//setTitle("Restaurante");
+		//cargarDatos();
 	}
 
 	@Override
@@ -46,100 +62,39 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo{
         modeloTabla = new DefaultTableModel(columnasMenu, 0);
         
         //Filas de la tabla
-        String[] fila1Menu = {"Pollo gratinado​"};
-        String[] fila2Menu = {"Costillas BBQ​"};
-        String[] fila3Menu = {"Sobrebarriga en salsa​"};
-        String[] fila4Menu = {"Salmón dorado​"};
-        String[] fila5Menu = {"Pollo frito​"};
-        String[] fila6Menu = {"Papas a la francesa​"};
-        String[] fila7Menu = {"Limonada natural​"};
-        modeloTabla.addRow(fila1Menu);
-	    modeloTabla.addRow(fila2Menu);
-	    modeloTabla.addRow(fila3Menu);
-	    modeloTabla.addRow(fila4Menu);
-	    modeloTabla.addRow(fila5Menu);
-	    modeloTabla.addRow(fila6Menu);
-	    modeloTabla.addRow(fila7Menu);
 	    
 	    //Diseño de la tabla
-        tablaServicios = new JTable(modeloTabla);
-        tablaServicios.getTableHeader().setBackground(Color.decode("#204473"));
-        tablaServicios.getTableHeader().setForeground(Color.white);
-        tablaServicios.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
-        tablaServicios.setFont(new Font("Times New Roman", 1, 20));
-        tablaServicios.setRowHeight(60);
-        tablaServicios.setEnabled(false);
+        tablaMenu = new JTable(modeloTabla);
+        tablaMenu.addMouseListener(this);
+        tablaMenu.setDefaultEditor(Object.class, null);
+        tablaMenu.getTableHeader().setBackground(Color.decode("#204473"));
+        tablaMenu.getTableHeader().setForeground(Color.white);
+        tablaMenu.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
+        tablaMenu.setFont(new Font("Times New Roman", 1, 20));
+        tablaMenu.setRowHeight(60);
+        tablaMenu.setEnabled(true);
 
         DefaultTableCellRenderer modelocentrarMenu = new DefaultTableCellRenderer();
         modelocentrarMenu.setHorizontalAlignment(SwingConstants.CENTER);
 
 
-        tablaServicios.getColumnModel().getColumn(0).setCellRenderer(modelocentrarMenu);
+        tablaMenu.getColumnModel().getColumn(0).setCellRenderer(modelocentrarMenu);
 
-        JScrollPane scrollPanelMenu = new JScrollPane(tablaServicios);
+        JScrollPane scrollPanelMenu = new JScrollPane(tablaMenu);
 
         //Tamaño y ubicacion de la tabla en el panel
         constraints.gridx = 0;
-        constraints.ipady = 350;
+        constraints.ipady = 650;
         constraints.ipadx = 400;
-        constraints.gridheight = 2;
+        constraints.gridheight = 4;
         constraints.gridwidth = 1;
         constraints.weighty = 1;
         constraints.weightx = 1;
 
         panelDerecho.add(scrollPanelMenu, constraints);
-        
-        //Creacion de la tabla orden
-  		String[] columnasOrden = {"Orden"}; //Nombre de las columnas
-  		modeloTabla = new DefaultTableModel(columnasOrden, 0);
-          
-  		//Filas de la tabla
-  		String[] fila1Orden = {"Pollo gratinado​"};
-  		String[] fila2Orden = {"Costillas BBQ​"};
-  		String[] fila3Orden = {"Sobrebarriga en salsa​"};
-  		String[] fila4Orden = {"Salmón dorado​"};
-  		String[] fila5Orden = {"Pollo frito​"};
-  		String[] fila6Orden = {"Papas a la francesa​"};
-  		String[] fila7Orden = {"Limonada natural​"};
-  		modeloTabla.addRow(fila1Orden);
-  	    modeloTabla.addRow(fila2Orden);
-  	    modeloTabla.addRow(fila3Orden);
-  	    modeloTabla.addRow(fila4Orden);
-  	    modeloTabla.addRow(fila5Orden);
-  	    modeloTabla.addRow(fila6Orden);
-  	    modeloTabla.addRow(fila7Orden);
-  	    
-  	    //Diseño de la tabla
-        tablaServicios = new JTable(modeloTabla);
-        tablaServicios.getTableHeader().setBackground(Color.decode("#204473"));
-        tablaServicios.getTableHeader().setForeground(Color.white);
-        tablaServicios.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
-        tablaServicios.setFont(new Font("Times New Roman", 1, 20));
-        tablaServicios.setRowHeight(60);
-        tablaServicios.setEnabled(false);
-
-        DefaultTableCellRenderer modelocentrarOrden = new DefaultTableCellRenderer();
-        modelocentrarOrden.setHorizontalAlignment(SwingConstants.CENTER);
-
-
-        tablaServicios.getColumnModel().getColumn(0).setCellRenderer(modelocentrarOrden);
-
-        JScrollPane scrollPanelOrden = new JScrollPane(tablaServicios);
-
-        //Tamaño y ubicacion de la tabla en el panel
-        constraints.gridx = 0;
-        constraints.gridy = 2;
-        constraints.ipady = 150;
-        constraints.ipadx = 400;
-        constraints.gridheight = 2;
-        constraints.gridwidth = 1;
-        constraints.weighty = 2;
-        constraints.weightx = 1;
-
-        panelDerecho.add(scrollPanelOrden, constraints);
 		
       //Creacion del recuadro para añadir producto menu a la habitacion
-  		JPanel panelAgregarOrden = new JPanel(new GridLayout(5,0, 0, 10));
+  		JPanel panelAgregarOrden = new JPanel(new GridLayout(6,0, 0, 10));
   		panelAgregarOrden.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
   		panelAgregarOrden.setBackground(Color.decode("#204473"));
   		
@@ -153,7 +108,7 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo{
 		nombre.setForeground(Color.white);
 		nombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		JTextField cajaNombre = new JTextField();
+		cajaNombre = new JTextField();
 		cajaNombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
 		panelNombre.add(nombre);
@@ -169,27 +124,43 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo{
 		precio.setForeground(Color.white);
 		precio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		JTextField cajaPrecio = new JTextField();
+		cajaPrecio = new JTextField();
 		cajaPrecio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 
 		panelPrecio.add(precio);
 		panelPrecio.add(cajaPrecio);
 		
 		//Crea el panel horario
-		JPanel panelHorario = new JPanel();
-		panelHorario.setBackground(Color.decode("#204473"));	
-		panelHorario.setLayout(new GridLayout(2, 1));
+		JPanel panelHorarioI = new JPanel();
+		panelHorarioI.setBackground(Color.decode("#204473"));	
+		panelHorarioI.setLayout(new GridLayout(2, 1));
 		
 		//Precio y su caja de texto
-		JLabel horario = new JLabel("Horario");
-		horario.setForeground(Color.white);
-		horario.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		JLabel horarioI = new JLabel("Horario");
+		horarioI.setForeground(Color.white);
+		horarioI.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		JTextField cajaHorario = new JTextField();
-		cajaHorario.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		cajaHorarioI = new JTextField();
+		cajaHorarioI.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 
-		panelHorario.add(horario);
-		panelHorario.add(cajaHorario);
+		panelHorarioI.add(horarioI);
+		panelHorarioI.add(cajaHorarioI);
+		
+		//Crea el panel horario
+		JPanel panelHorarioF = new JPanel();
+		panelHorarioF.setBackground(Color.decode("#204473"));	
+		panelHorarioF.setLayout(new GridLayout(2, 1));
+		
+		//Precio y su caja de texto
+		JLabel horarioF = new JLabel("Horario");
+		horarioF.setForeground(Color.white);
+		horarioF.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		
+		cajaHorarioF = new JTextField();
+		cajaHorarioF.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+
+		panelHorarioF.add(horarioF);
+		panelHorarioF.add(cajaHorarioF);
 		
 		//Crea el panel llevable
 		JPanel panelLlevable = new JPanel();
@@ -201,7 +172,7 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo{
 		llevable.setForeground(Color.white);
 		llevable.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		JTextField cajaLlevable = new JTextField();
+		cajaLlevable = new JTextField();
 		cajaLlevable.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 
 		panelLlevable.add(llevable);
@@ -212,13 +183,13 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo{
 		panelAgregarEliminarBotones.setBackground(Color.decode("#204473"));
 		
 		//Boton par agregar un servicio
-		JButton agregarOrden = new JButton("Agregar a la orden");
+		agregarOrden = new JButton("Agregar a la orden");
 		agregarOrden.setBackground(Color.decode("#accaf2"));
 		agregarOrden.setFont(new Font("arial", 1, 20));
 		agregarOrden.addActionListener(this);
 
 		//Boton par agregar un servicio
-		JButton eliminarOrden = new JButton("Eliminar a la orden");
+		eliminarOrden = new JButton("Eliminar a la orden");
 		eliminarOrden.setBackground(Color.decode("#accaf2"));
 		eliminarOrden.setFont(new Font("arial", 1, 20));
 		eliminarOrden.addActionListener(this);
@@ -228,7 +199,8 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo{
 		
 		panelAgregarOrden.add(panelNombre);
 		panelAgregarOrden.add(panelPrecio);
-		panelAgregarOrden.add(panelHorario);
+		panelAgregarOrden.add(panelHorarioI);
+		panelAgregarOrden.add(panelHorarioF);
 		panelAgregarOrden.add(panelLlevable);
 		panelAgregarOrden.add(panelAgregarEliminarBotones);
   		
@@ -256,7 +228,7 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo{
   		JLabel numHabitacion = new JLabel("#Habitación");
   		numHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 30));
   		
-  		JTextField cajaNumeroHabitacion = new JTextField();
+  		cajaNumeroHabitacion = new JTextField();
   		cajaNumeroHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 30));
   		
   		panelNumeroHabitacion.add(numHabitacion);
@@ -265,21 +237,14 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo{
   		JPanel botonesHabitacion = new JPanel(new GridLayout(2,0, 0 ,5));
   		botonesHabitacion.setBackground(Color.decode("#accaf2"));
   		
-  		JButton cargarAHabitacion = new JButton("Cargar a la habitación​");
+  		cargarAHabitacion = new JButton("Cargar a la habitación​");
   		cargarAHabitacion.setBackground(Color.decode("#204473"));
   		cargarAHabitacion.setForeground(Color.white);
   		cargarAHabitacion.setFont(new Font("arial", 1, 20));
   		cargarAHabitacion.addActionListener(this);
   		
   		
-  		JButton pagarAhora = new JButton("Pagar ahora​");
-  		pagarAhora.setBackground(Color.decode("#204473"));
-  		pagarAhora.setForeground(Color.white);
-  		pagarAhora.setFont(new Font("arial", 1, 20));
-  		pagarAhora.addActionListener(this);
-  		
   		botonesHabitacion.add(cargarAHabitacion);
-  		botonesHabitacion.add(pagarAhora);
   		
   		panelHabitacion.add(panelNumeroHabitacion);
   		panelHabitacion.add(botonesHabitacion);
@@ -295,9 +260,23 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo{
 
 	@Override
 	protected void setPanelCrear() {
-			
+		//Edita el aspecto del panel	
+		panelCrear.setLayout(new GridLayout(5, 1, 10, 10));
+		panelCrear.setBackground(Color.decode("#204473"));
+		panelCrear.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
+				
 	}
-
+	
+	public void cargarDatos() {
+		modeloTabla.getDataVector().removeAllElements();
+		modeloTabla.fireTableDataChanged(); 
+		Collection<ProductoMenu> listaProductosMenu = windowManager.getMenu().values();
+		for (ProductoMenu productoMenu : listaProductosMenu) {
+			String nombre = productoMenu.getNombre();
+	        modeloTabla.addRow(new Object[]{nombre, "ICON", "ICON"});
+		}
+	}
+	
 	@Override
 	public void actionPerformedFrame(ActionEvent e) {
 		switch (e.getActionCommand()) {
@@ -307,14 +286,40 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo{
 			break;
 		case "Cargar a habitacion":
 			break;
-		case "Pagar ahora":
-			break;
-		case "Agregar al menú":		
-			break;
 
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

@@ -18,6 +18,7 @@ public class Habitacion implements Serializable{
 	private ArrayList<Cama> listaCamas;
 	private String caracteristicas;
 	private TipoHabitacion tipo;
+	private static ArrayList<Integer> pisoIds = new ArrayList<Integer>();; 
 	
 //Constructor
 	public Habitacion(TipoHabitacion tipo, int id, int capacidad, Boolean apto) {
@@ -71,6 +72,28 @@ public class Habitacion implements Serializable{
 		this.caracteristicas = caracteristicas;
 	}
 	
+	public static int getMaxHabitacion(int piso) {
+		int idHabitacion = 0;
+		int size = pisoIds.size();
+		if (size<=(piso-1)) {
+			for (int i = size; i < piso; i++) {
+				pisoIds.add((i+1)*100);
+			}
+		}
+		idHabitacion = pisoIds.get(piso - 1);
+		idHabitacion++;
+		pisoIds.set(piso - 1, idHabitacion);
+		return idHabitacion;
+	}
+	
+	public static ArrayList<Integer> getPisoIds() {
+		return pisoIds;
+	}
+
+	public static void setPisoIds(ArrayList<Integer> pisoIds) {
+		Habitacion.pisoIds = pisoIds;
+	}
+
 	public double getPrecioServicios() {
 		double precio = 0;
 		for (Servicio servicio : listaServicios) {
