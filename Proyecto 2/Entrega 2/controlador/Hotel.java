@@ -331,6 +331,10 @@ public class Hotel implements Serializable{
 
 
 	public void añadirHuesped(String documento, String nombre, String email, String telefono, int edad) throws Exception {
+		if (grupoEnCurso == null) {
+			Exception e = new Exception("Debe establecer una fecha");
+			throw e;
+		} 
 		Huesped huesped = new Huesped(documento, nombre, email, telefono, edad);
 		grupoEnCurso.añadirHuesped(huesped);
 	}
@@ -348,7 +352,15 @@ public class Hotel implements Serializable{
 			Exception e = new Exception("Debe establecer una fecha");
 			throw e;
 		}
+		
+		if (grupoEnCurso.getLider() == null) {
+			Exception e = new Exception("Debe añadir almenos un huesped");
+			throw e;
+		}
+		;
 		resultado =(grupoEnCurso.getvRelativo() <= grupoEnCurso.getCapacidadCamas());
+		System.out.println(grupoEnCurso.getvRelativo());
+		System.out.print(grupoEnCurso.getCapacidadCamas());
 		
 		if(resultado) {
 			

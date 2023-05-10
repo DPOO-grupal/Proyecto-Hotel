@@ -371,6 +371,11 @@ public class WindowManager {
 
 		return empleado.hayReserva();
 	}
+	public void forzarCancelarReserva() {
+		Empleado empleado = (Empleado) usuarioActual;
+		empleado.forzarCancelarReserva();
+		
+	}
 	
 	// fin reservas
 	
@@ -413,9 +418,9 @@ public class WindowManager {
     		}
         	// JFrame para probar
 
-    		JFrame pruebas = new AdminRestauranteFrame(windowManager);
+    		JFrame pruebas = new AdminMenuPrincipal(windowManager);
     		// Menú de ese Frame
-    		JFrame menu = new EmpleadoMenuPrincipal(windowManager);
+    		JFrame menu = new AdminMenuPrincipal(windowManager);
     		
     		windowManager.setPruebas(pruebas, menu);
     		
@@ -425,6 +430,8 @@ public class WindowManager {
 		
 
 }
+
+
 
 
 

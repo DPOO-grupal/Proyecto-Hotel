@@ -324,11 +324,6 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 		
 	}
 
-	public void addTarifaTabla(String fechaI, String fechaF, String precio, String Tipo) {
-		String[] fila = { fechaI, fechaF, precio, Tipo };
-		modeloTabla.addRow(fila);
-
-	}
 
 	@Override
 	protected void setPanelCrear() {
@@ -439,12 +434,12 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 		    selectHabitacion = new JFrame();
 		    selectHabitacion.setSize(new Dimension(700,500));
 		    selectHabitacion.setLocale(null);
-		    String[] datosHabitaciones = {"Capacidad", "Precio", "Caracteristicas"};
+		    String[] datosHabitaciones = {"Número","Capacidad", "Precio", "Caracteristicas"};
 		    
 		    DefaultTableModel modelodisponibles = new DefaultTableModel(datosHabitaciones, disponibles.size());
 		    
 			Font fontTabla = new Font("Arial", Font.BOLD, 20);
-	
+			
 		    JTable tablaDisponibles = new JTable(modelodisponibles);
 		    tablaDisponibles.setDefaultEditor(Object.class, null);
 		    tablaDisponibles.getTableHeader().setBackground(Color.decode("#204473"));
@@ -465,9 +460,12 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 				tablaDisponibles.getColumnModel().getColumn(i).setCellEditor(null);
 			}
 		    
+			modelodisponibles.getDataVector().removeAllElements();
+			modelodisponibles.fireTableDataChanged();
+			
 		    for (Habitacion habitacion:disponibles) {
 		    	int precioHabitacion = getPrecioHabitacionReserva(habitacion);
-		    	String[] data = {""+habitacion.getCapacidad(), ""+precioHabitacion, habitacion.getCaracteristicas()};
+		    	String[] data = {habitacion.getId()+"",""+habitacion.getCapacidad(), ""+precioHabitacion, habitacion.getCaracteristicas()};
 		    	modelodisponibles.addRow(data);
 		    }
 		    
@@ -479,7 +477,6 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 			if (e.getMessage().equals("No hay grupo")) {
 				JOptionPane.showMessageDialog(null, "Debe establecer la Fecha");
 			}
-				e.printStackTrace();
 
 		}
 	    
@@ -517,7 +514,7 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 			try {
 				windowManager.llenarHuespeds(documento, nombre, email, telefono, edad);
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "El huesped ya está registrado");
+				JOptionPane.showMessageDialog(null, e.getMessage());
 				e.getStackTrace();
 			}
 		} catch (Exception e) {
@@ -551,10 +548,16 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 	private void crearReserva() {
 		try {
 			windowManager.completarReserva();
+			volverMenu();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 
 		}
+		
+	}
+	
+	private void cancelarReserva() {
+		windowManager.forzarCancelarReserva();
 		
 	}
 	
@@ -582,6 +585,10 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 		case "Crear Reserva":
 			crearReserva();
 			break;
+		case "Cancelar Reserva":
+			cancelarReserva();
+			volverMenu();
+			break;
 		default:
 			break;
 		}
@@ -591,12 +598,13 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 
 
 
+
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		JTable table = (JTable) e.getSource();
 		if (table.getName().equals("TablaDisponibles")) {
-			
-			llenarHabitaciones(table.getSelectedRow());
+			llenarHabitaciones(Integer.parseInt((String) table.getValueAt(table.getSelectedRow(), 0)));
 			selectHabitacion.dispose();
 		}
 		
