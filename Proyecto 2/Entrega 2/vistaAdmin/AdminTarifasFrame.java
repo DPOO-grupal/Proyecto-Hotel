@@ -148,6 +148,7 @@ public class AdminTarifasFrame extends FrameBaseInfo {
         modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
         modelocentrar.setFont(fontTabla);
         
+        
         for (int i = 0; i< 4; i++) {
             tablaTarifas.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);
             tablaTarifas.getColumnModel().getColumn(i).setCellEditor(null);

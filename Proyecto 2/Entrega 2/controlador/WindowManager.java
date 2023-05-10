@@ -26,10 +26,12 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import modelo.Admin;
 import modelo.Empleado;
+import modelo.Grupo;
 import modelo.Habitacion;
 import modelo.Servicio;
 import modelo.Huesped;
 import modelo.ProductoMenu;
+import modelo.Reserva;
 import modelo.TipoHabitacion;
 import modelo.Usuario;
 import vistaAdmin.AutenticacionFrame;
@@ -89,10 +91,10 @@ public class WindowManager {
 		ventandaActual = ventana;
 		
 		// configuraciones generales
-		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ventana.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		ventana.setResizable(false);
-		ventana.setVisible(true);
+		ventandaActual.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		ventandaActual.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		ventandaActual.setResizable(false);
+		ventandaActual.setVisible(true);
 		
 		ventandaActual.addWindowListener(new WindowAdapter() {
 	        @Override
@@ -325,7 +327,7 @@ public class WindowManager {
 		return empleado.DiponiblesParaGrupoEnCurso(tipo);
 	}
 	
-	public void llenarHabitaciones(int idHabitacion) {
+	public void llenarHabitaciones(int idHabitacion) throws Exception {
 		Empleado empleado = (Empleado) usuarioActual;
 		empleado.añadirHabitacion(idHabitacion);
 	}
@@ -377,6 +379,33 @@ public class WindowManager {
 		
 	}
 	
+	public void cancelarReserva(int id) throws Exception {
+		Empleado empleado = (Empleado) usuarioActual;
+		empleado.cancelarReserva(id);
+		
+	}	
+	
+	public HashMap<Integer,Grupo> mostrarReservas(Date fechaI, Date fechaF) throws Exception {
+		Empleado empleado = (Empleado) usuarioActual;
+
+		return empleado.mostrarReservas(fechaI, fechaF);
+	}
+	
+	
+	public Grupo getGrupo(int id) {
+		Empleado empleado = (Empleado) usuarioActual;
+		return empleado.getGrupo(id);
+	}
+	
+	public String formatoFecha(Date date) {
+		Empleado empleado = (Empleado) usuarioActual;
+		return empleado.formatoFecha(date);
+	}
+	
+	public Grupo getGrupoEnCurso() {
+		Empleado empleado = (Empleado) usuarioActual;
+		return empleado.getGrupoEnCurso();
+	}
 	// fin reservas
 	
 	public static void main(String[] args) {

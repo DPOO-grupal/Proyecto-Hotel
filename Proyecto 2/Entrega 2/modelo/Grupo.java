@@ -57,7 +57,11 @@ public class Grupo implements Serializable{
 		Grupo.numGrupo = numGrupo;
 	}
 	
-	public void añadirHabitacion(int id, int capacidad, double precioHabitacion) {
+	public void añadirHabitacion(int id, int capacidad, double precioHabitacion) throws Exception {
+		if (listaHabitaciones.contains(id)) {
+			Exception e = new Exception("La habitación ya está añadida");
+			throw e;
+		}
 		listaHabitaciones.add(id);
 		precioHabitacion += reserva.getPrecioReserva();
 		reserva.setPrecioReserva(precioHabitacion);

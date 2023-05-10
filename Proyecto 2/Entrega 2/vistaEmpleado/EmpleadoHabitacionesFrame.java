@@ -69,10 +69,9 @@ public class EmpleadoHabitacionesFrame extends FrameBaseInfo implements MouseLis
 
         DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
         modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
-
         for (int i = 0; i < columnas.length; i++) {
         	tablaHabitaciones.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);	
-		}
+		}	
 
         JScrollPane scrollPanel = new JScrollPane(tablaHabitaciones);
 

@@ -490,8 +490,13 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 	}
 
 	public void llenarHabitaciones(int i) {
-		windowManager.llenarHabitaciones(i);
-		llenarTablaReserva();
+		try {
+			windowManager.llenarHabitaciones(i);
+			llenarTablaReserva();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "La habitación ya fue añadida");
+			
+		}
 	}
 	
 	public void checkGrupoEnCurso() {
@@ -510,9 +515,13 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 			 edad = Integer.parseInt(datos[2].getText());
 			 telefono = datos[3].getText();
 			 documento = datos[4].getText();
-
+			 
 			try {
 				windowManager.llenarHuespeds(documento, nombre, email, telefono, edad);
+				
+				for (int i = 0; i<datos.length;i++) {
+					datos[i].setText("");
+				}
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, e.getMessage());
 				e.getStackTrace();
@@ -547,7 +556,9 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 
 	private void crearReserva() {
 		try {
+			int id = windowManager.getGrupoEnCurso().getId();
 			windowManager.completarReserva();
+			JOptionPane.showMessageDialog(null, "Su numero de Reserva es " + id);
 			volverMenu();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());

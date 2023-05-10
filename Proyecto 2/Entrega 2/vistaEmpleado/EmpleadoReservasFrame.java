@@ -8,9 +8,20 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -19,16 +30,26 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import org.jdesktop.swingx.JXDatePicker;
+
 import controlador.WindowManager;
+import modelo.Grupo;
+import modelo.Habitacion;
+import modelo.Huesped;
+import modelo.Reserva;
+import modelo.Servicio;
+import modelo.TipoHabitacion;
 import vistaAdmin.FrameBaseInfo;
 
-public class EmpleadoReservasFrame extends FrameBaseInfo {
+public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListener {
 
 	private DefaultTableModel modeloTabla;
 	private JTable tablaTarifas;
 	private JButton crearReserva;
 	private JButton cancelarReserva;
 	private JTextField buscarJTextField;
+	private JFrame verReservasFrame;
+	private int numeroReserva;
 
 	public EmpleadoReservasFrame(WindowManager windowManager) {
 		super(windowManager);
@@ -90,6 +111,18 @@ public class EmpleadoReservasFrame extends FrameBaseInfo {
 		
 		panelBuscar.add(buscarButton,constraints);
 		
+		JButton verReservas = new JButton("Ver reservas");
+		verReservas.setPreferredSize(new Dimension(200, 40));
+		verReservas.setBackground(Color.decode("#204473"));
+		verReservas.setFont(font);
+		verReservas.setForeground(Color.white);
+		verReservas.addActionListener(this);
+		
+		constraints.weighty = 1;
+		constraints.gridx = 0;
+		constraints.gridy = 3;
+		
+		panelBuscar.add(verReservas,constraints);
 		
 		constraints.gridx = 0;
 		constraints.gridy = 0;
@@ -259,7 +292,134 @@ public class EmpleadoReservasFrame extends FrameBaseInfo {
 
 
 	}
+	
+	private void verReservas() {
+		
+		JFrame selectFechas = new JFrame();
 
+	    // Crear un JXDatePicker con la fecha actual
+	    
+		JXDatePicker fechaIJX = new JXDatePicker(new Date());
+		JXDatePicker fechaFJX = new JXDatePicker(new Date());
+
+	    JLabel mensaje = new JLabel("Seleccione un rango de fechas para la consulta"); 
+	    JPanel panel = new JPanel();
+	    
+	    panel.add(mensaje);
+	    panel.add(fechaIJX);
+	    panel.add(fechaFJX);
+
+	    JOptionPane.showOptionDialog(selectFechas, panel, "Seleccionar Rango", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+
+	    
+	    HashMap<Integer, Grupo> reservas = null;
+		try {
+			reservas = windowManager.mostrarReservas(fechaIJX.getDate(), fechaFJX.getDate());
+			
+			
+		    verReservasFrame = new JFrame();
+		    verReservasFrame.setSize(new Dimension(700,500));
+		    verReservasFrame.setLocale(null);
+		    String[] datosReserva = {"Identificador de reserva","Nombre lider grupo", "Numero de documento lider Grupo"};
+		    
+		    DefaultTableModel modelodisponibles = new DefaultTableModel(datosReserva, reservas.size());
+		    
+			Font fontTabla = new Font("Arial", Font.BOLD, 20);
+			
+		    JTable tablaDisponibles = new JTable(modelodisponibles);
+		    tablaDisponibles.setDefaultEditor(Object.class, null);
+		    tablaDisponibles.getTableHeader().setBackground(Color.decode("#204473"));
+		    tablaDisponibles.getTableHeader().setForeground(Color.white);
+		    tablaDisponibles.getTableHeader().setFont(fontTabla);
+		    tablaDisponibles.setBackground(Color.decode("#B2BBA4"));
+		    tablaDisponibles.setRowHeight(50);
+		    tablaDisponibles.addMouseListener(this);
+		    tablaDisponibles.setName("TablaReservas");
+		    
+			DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
+			modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
+			modelocentrar.setFont(fontTabla);
+			modelocentrar.setBackground(Color.white);
+			
+			for (int i = 0; i < datosReserva.length; i++) {
+				tablaDisponibles.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);
+				tablaDisponibles.getColumnModel().getColumn(i).setCellEditor(null);
+			}
+		    
+			modelodisponibles.getDataVector().removeAllElements();
+			modelodisponibles.fireTableDataChanged();
+			
+		    for (Grupo grupo :reservas.values()) {
+		    	String[] data = {grupo.getId()+"",""+grupo.getLider().getNombre(), ""+grupo.getLider().getDocumento()};
+		    	modelodisponibles.addRow(data);
+		    }
+		    
+		    JScrollPane scrollPane = new JScrollPane(tablaDisponibles);
+		    verReservasFrame.add(scrollPane);
+		    verReservasFrame.setVisible(true);
+	    
+		} catch (Exception e) {
+			if (e.getMessage().equals("No hay reservas en ese rango")) {
+				JOptionPane.showMessageDialog(null, "No hay reservas en ese rango");
+			}else {
+				e.getStackTrace();
+			}
+
+		}
+		
+	}
+
+	private void cancelarReserva() {
+		//windowManager.cancelarReserva();
+		
+	}
+	
+	
+	private void llenarDatosReserva(int parseInt) {
+		Grupo grupo = windowManager.getGrupo(parseInt);
+		Huesped huesped = grupo.getLider();
+		Reserva reserva = grupo.getReserva();
+		datos[0].setText(huesped.getNombre());
+		datos[1].setText(huesped.getDocumento());
+		datos[2].setText(huesped.getEmail());
+		datos[3].setText(huesped.getTelefono());
+		datos[4].setText(windowManager.formatoFecha(reserva.getFechaI()));
+		datos[5].setText(windowManager.formatoFecha(reserva.getFechaF()));
+		
+		ArrayList<Huesped> huespedes = grupo.getHuespedes();
+		ArrayList<Integer> habitaciones = grupo.getListaHabitaciones();
+		Object[] servicios =  grupo.getListaServicios().values().toArray();
+		
+		int numFilas = huespedes.size();
+		
+		if (numFilas <habitaciones.size()) {
+			numFilas = habitaciones.size();
+		} else if(numFilas <servicios.length) {
+			numFilas = servicios.length;
+		}
+		for (int i = 0; i <numFilas; i++) {
+			String huespedString = "";
+			String habitacion = "";
+			String servicio = "";
+			
+			if (huespedes.size()>i) {
+				huespedString = huespedes.get(i).getNombre();
+			}
+			
+			if (habitaciones.size()>i) {
+				habitacion = habitaciones.get(i)+"";
+			}
+			if (servicios.length>i) {
+				servicio = servicios[i]+"";
+			}
+			
+			String[] fila = {huespedString, habitacion, servicio};
+			modeloTabla.addRow(fila);			
+			
+		}
+		
+		
+	}
 	@Override
 	protected void actionPerformedFrame(ActionEvent e) {
 		switch (e.getActionCommand()) {
@@ -267,12 +427,51 @@ public class EmpleadoReservasFrame extends FrameBaseInfo {
 			windowManager.mostraVentana(new EmpleadoCrearReservasFrame(windowManager));
 			break;
 		case "Cancelar Reserva":
-			
+			cancelarReserva();
+			break;
+		case "Ver reservas":
+			verReservas();
 			break;
 		default:
 			break;
 		}
 
 	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		JTable table = (JTable) e.getSource();
+		if (table.getName().equals("TablaReservas")) {
+			llenarDatosReserva(Integer.parseInt((String) table.getValueAt(table.getSelectedRow(), 0)));
+			verReservasFrame.dispose();
+		}
+	}
+
+
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

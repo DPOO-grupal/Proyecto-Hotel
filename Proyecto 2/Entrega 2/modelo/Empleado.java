@@ -22,8 +22,12 @@ public class Empleado extends Usuario  {
 
 // INICIO RESERVAS ------------------------------------------
 
-	public HashMap<Integer,Grupo> mostrarReservas(Date fechaI, Date fechaF) {
+	public HashMap<Integer,Grupo> mostrarReservas(Date fechaI, Date fechaF) throws Exception {
 		return hotel.mostrarReservas(fechaI, fechaF);
+	}
+	
+	public Grupo getGrupo(int id) {
+		return hotel.getGrupo(id);
 	}
 	
 	public void cancelarReserva(int id) throws Exception {
@@ -44,7 +48,7 @@ public class Empleado extends Usuario  {
 	public void añadirHuesped(String documento, String nombre, String email, String telefono, int edad) throws Exception {
 		hotel.añadirHuesped(documento,nombre, email,telefono,edad);
 	}
-	public void añadirHabitacion(int idHabi) {
+	public void añadirHabitacion(int idHabi) throws Exception {
 		hotel.añadirHabitacionReserva(idHabi);
 	}
 
@@ -81,9 +85,16 @@ public class Empleado extends Usuario  {
 		return hotel.getHuespedesGrupoEnCurso();
 	}
 	
-	public Object forzarCancelarReserva() {
+	public Grupo getGrupoEnCurso() {
+		return hotel.getGrupoEnCurso();
+	}
+	public void forzarCancelarReserva() {
 		hotel.setGrupoEnCurso(null);
-		return null;
+	}
+	
+	public String formatoFecha(Date date) {
+		return hotel.formatoFecha(date);
+		 
 	}
 	
 // FIN RESERVAS ---------------------------------------------
@@ -155,6 +166,8 @@ public class Empleado extends Usuario  {
 		return hotel.pasarDia(dia);
 	}
 	// a
+
+
 
 
 }

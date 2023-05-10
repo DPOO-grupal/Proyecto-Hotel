@@ -2,6 +2,7 @@ package controlador;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -253,7 +254,7 @@ public class Hotel implements Serializable{
 	}
 	
 	
-	public HashMap<Integer,Grupo> mostrarReservas(Date fechaI, Date fechaF) {
+	public HashMap<Integer,Grupo> mostrarReservas(Date fechaI, Date fechaF) throws Exception {
 		HashMap<Integer,Grupo> resultado = new HashMap<Integer,Grupo>();
 		Grupo grupo;
 		Reserva reserva;
@@ -272,6 +273,11 @@ public class Hotel implements Serializable{
 
 			}
 		}
+		if (resultado.isEmpty()) {
+			Exception e = new Exception("No hay reservas en ese rango");
+			throw e;
+		}
+		
 		return resultado;
 	}
 
@@ -304,6 +310,11 @@ public class Hotel implements Serializable{
 		grupoEnCurso.setReserva(reserva);
 		grupoEnCurso.borrarHabitaciones();
 				
+	}
+	
+	public Grupo getGrupo(int id) {
+		Grupo grupo = grupos.get(id);
+		return grupo;
 	}
 	
 	public void cancelarReserva(int id) throws Exception {
@@ -339,7 +350,7 @@ public class Hotel implements Serializable{
 		grupoEnCurso.añadirHuesped(huesped);
 	}
 	
-	public void añadirHabitacionReserva(int idHabitacion) {
+	public void añadirHabitacionReserva(int idHabitacion) throws Exception {
 		Habitacion habi = habitaciones.get(idHabitacion);
 		int precioHabitacion = (int)getPrecioHabitacionReserva(habi);
 		grupoEnCurso.añadirHabitacion(idHabitacion, habi.getCapacidad(), precioHabitacion);
@@ -426,6 +437,11 @@ public class Hotel implements Serializable{
 		
 	}
 		
+	public String formatoFecha(Date fecha) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	    String fechaString = sdf.format(fecha);
+		return fechaString;
+	}
 	
 	
 	public double getPrecioHabitacionReserva(Habitacion habitacion) {
