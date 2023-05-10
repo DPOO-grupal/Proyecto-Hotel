@@ -3,7 +3,12 @@ package controlador;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,6 +23,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import modelo.Admin;
 import modelo.Empleado;
+import modelo.Habitacion;
 import modelo.Usuario;
 import vistaAdmin.AutenticacionFrame;
 import vistaAdmin.AdminMenuPrincipal;
@@ -179,6 +185,41 @@ public class WindowManager {
 		return self;
 	}
 	
+	public Integer[] ocupacionHoy() {
+		return ((Empleado) usuarioActual).ocupacionHoy();
+	}
+	
+	public Integer[] getHabitacionesContenedor() {
+		HashMap<Integer,Habitacion> mapa = ((Empleado) usuarioActual).getHabitaciones();
+		if (mapa == null) {
+			return new Integer[0];	
+		}
+		else {
+			Set<Integer> y = mapa.keySet();
+			Object[] x = y.toArray();
+			int[] r = Arrays.stream(x).mapToInt(o -> (int)o).toArray();
+			Integer[] resultados = Arrays.stream(r).boxed().toArray( Integer[]::new );
+			Arrays.sort(resultados);
+			return resultados;
+		}
+	}
+	
+	public Date getDia() {
+		Empleado empleado = (Empleado) usuarioActual;
+		return empleado.getDia();
+				
+	}
+	
+	public int contarOcupadasDia(Date dia) {
+		Empleado empleado = (Empleado) usuarioActual;
+		return empleado.contarOcupadasDia(dia);
+	}
+	
+	public Date pasarDia(Date dia) {
+		Empleado empleado = (Empleado) usuarioActual;
+		return empleado.pasarDia(dia);
+	}
+	
 	public static void main(String[] args) {
 		
 		FlatLightLaf.install();
@@ -196,7 +237,23 @@ public class WindowManager {
         if (opcion == JOptionPane.YES_OPTION) {
         	try {
     			windowManager.autenticar("root", "Cookie");
-    		} catch (Exception e) {
+    			
+    			//Date pruebaI = new Date();
+    			//Date pruebaF = new Date();
+    			
+    			//Calendar cal = Calendar.getInstance();
+    	        //cal.setTime(pruebaI);
+    	        //cal.add(Calendar.DAY_OF_MONTH, 1);
+    	        //pruebaF = cal.getTime();
+    	        
+    			//String[] nombres = {"Juanes"};
+    			//String[] documentos = {"1000252720"};
+    			//String[] emails = {"Juanes@gmail.com"};
+    			//String[] telefonos = {"3005628702"};
+    			//int[] edades = {19};
+    			//windowManager.cargarReserva(pruebaI, pruebaF, 1, nombres, documentos, emails, telefonos, edades);
+    		
+        	} catch (Exception e) {
     			// TODO Auto-generated catch block
     			e.printStackTrace();
     		}
@@ -214,6 +271,12 @@ public class WindowManager {
 		
 }
 
-
+	public void cargarReserva(Date fechaI, Date fechaF, int tamanioGrupo, String[] nombres, String[] documentos, String[] emails, String[] telefonos, int[] edades) {
+		if (usuarioActual.getClass() == Empleado.class) {
+			Empleado empleado = (Empleado) usuarioActual;
+			empleado.crearReserva(fechaI, fechaF, tamanioGrupo, nombres, documentos, emails, telefonos, edades);
+			empleado.llenarOcupados(104);
+		}
+	}
 
 }

@@ -3,6 +3,7 @@ package controlador;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -439,7 +440,7 @@ public class Hotel implements Serializable{
         return rango;
     }
 	
-    private Date pasarDia(Date start) {
+    public Date pasarDia(Date start) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(start);
         cal.add(Calendar.DAY_OF_MONTH, 1);
@@ -629,5 +630,33 @@ public class Hotel implements Serializable{
 	public boolean checkUsuario(String nombre) {
 		Usuario usuario = usuarios.get(nombre);
 		return usuarioActual.equals(usuario);
+	}
+	
+	public Integer[] ocupacionHoy() {
+		HashMap<Integer, Integer> mapa = ocupados.get(hoy);
+		if (mapa == null) {
+			return new Integer[0];	
+		}
+		else {
+			Set<Integer> setInt = mapa.keySet();
+			Integer[] resultado = (Integer[]) setInt.toArray();
+			Arrays.sort(resultado);
+			return resultado;
+		}
+		//Integer[] r = {104, 105, 202, 203, 206, 308};
+		//return r;
+	}
+	
+	public int contarOcupadasDia(Date diaX) {
+		HashMap<Integer, Integer> mapa = ocupados.get(diaX);
+		if (mapa == null) {
+			return 0;	
+		}
+		else {
+			Set<Integer> setInt = mapa.keySet();
+			Integer[] array = (Integer[]) setInt.toArray();
+			int resultado = array.length;
+			return resultado;
+		}
 	}
 }
