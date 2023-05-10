@@ -111,5 +111,24 @@ public class Empleado extends Usuario  {
 	public boolean checkUsuario(String nombre) {
 		return hotel.checkUsuario(nombre);
 	}
+	public void llenarOcupados(int ID) {
+		hotel.llenarOcupados(ID);
+	}
+	
+	public Integer[] ocupacionHoy() {
+		return hotel.ocupacionHoy();
+	}
+	
+	public Date getDia() {
+		return hotel.getHoy();
+	}
+	
+	public int contarOcupadasDia(Date dia) {
+		return hotel.contarOcupadasDia(dia);
+	}
+	
+	public Date pasarDia(Date dia) {
+		return hotel.pasarDia(dia);
+	}
 	// a
 }

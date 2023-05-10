@@ -105,6 +105,14 @@ public class AdminMenuPrincipal extends EmpleadoMenuPrincipal implements ActionL
 			checkOut();
 			break;
 			
+		case "Refrescar ocupacion diaria":
+			ocupacionHoy();
+			break;
+			
+		case "Refrescar ocupacion anual":
+			ocupacionAnual();
+			break;
+			
 		default:
 			break;
 		}
