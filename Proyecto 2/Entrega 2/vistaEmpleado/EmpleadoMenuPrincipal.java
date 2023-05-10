@@ -398,6 +398,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	public Integer[] getOcupadas() {
 		Integer[] ocupadas = windowManager.ocupacionHoy();
 		return ocupadas;
+	}
 	public void volverReserva() {
 		windowManager.mostraVentana(reservasFrame);
 	}
