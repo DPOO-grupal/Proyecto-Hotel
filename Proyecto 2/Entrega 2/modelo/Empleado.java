@@ -81,6 +81,11 @@ public class Empleado extends Usuario  {
 		return hotel.getHuespedesGrupoEnCurso();
 	}
 	
+	public Object forzarCancelarReserva() {
+		hotel.setGrupoEnCurso(null);
+		return null;
+	}
+	
 // FIN RESERVAS ---------------------------------------------
 
 //INICIO SERVICIOS HOTEL -----------------------------------------------------
@@ -150,4 +155,6 @@ public class Empleado extends Usuario  {
 		return hotel.pasarDia(dia);
 	}
 	// a
+
+
 }

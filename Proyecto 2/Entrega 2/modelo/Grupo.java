@@ -34,6 +34,8 @@ public class Grupo implements Serializable{
 		}else {
 			huespedes.add(huesped);
 			this.vReal = huespedes.size();
+			this.vRelativo = calcularVRelativo(huespedes);
+
 		}
 		
 	}
@@ -107,7 +109,12 @@ public class Grupo implements Serializable{
 	}
 	
 	public Huesped getLider() {
-		return huespedes.get(0);
+		if (huespedes.size()== 0) {
+			return null;
+		}else {
+			return huespedes.get(0);
+			
+		}
 	}
 	
 	public void añadirServicio(Servicio servicio, int cantidad, boolean pagarEnSitio) {

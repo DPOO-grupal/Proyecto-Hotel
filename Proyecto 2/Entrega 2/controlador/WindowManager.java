@@ -241,6 +241,7 @@ public class WindowManager {
 		Empleado empleado = (Empleado) usuarioActual;
 		return empleado.pasarDia(dia);
 	}
+
 	public HashMap<Integer,Servicio> darServicio() {
 		HashMap<Integer, Servicio> listaServicios = null;
 		if (usuarioActual.getClass() == Empleado.class) {
@@ -367,6 +368,17 @@ public class WindowManager {
 		return empleado.getHuespedesGrupoEnCurso();
 	}
 	
+	public boolean hayReserva() {
+		Empleado empleado = (Empleado) usuarioActual;
+
+		return empleado.hayReserva();
+	}
+	public void forzarCancelarReserva() {
+		Empleado empleado = (Empleado) usuarioActual;
+		empleado.forzarCancelarReserva();
+		
+	}
+	
 	// fin reservas
 	
 	public static void main(String[] args) {
@@ -417,5 +429,17 @@ public class WindowManager {
         } else {
         	windowManager.iniciarAutenticacion();
         }
-	}
+		
+
+}
+
+
+
+
+
+
+
+
+
+
 }
