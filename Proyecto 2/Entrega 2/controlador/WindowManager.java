@@ -1,25 +1,20 @@
 package controlador;
 
-import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.lang.reflect.Array;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
-import javax.swing.plaf.basic.BasicTreeUI.TreeCancelEditingAction;
-
 import org.jdesktop.swingx.JXDatePicker;
 
 import com.formdev.flatlaf.FlatLightLaf;
@@ -35,17 +30,9 @@ import modelo.Reserva;
 import modelo.TipoHabitacion;
 import modelo.Usuario;
 import vistaAdmin.AutenticacionFrame;
-import vistaAdmin.AdminHabitacionesFrame;
 import vistaAdmin.AdminMenuPrincipal;
 import vistaAdmin.AdminRestauranteFrame;
-import vistaAdmin.AdminServiciosFrame;
-import vistaAdmin.AdminUsuariosFrame;
-import vistaEmpleado.EmpleadoCrearReservasFrame;
-import vistaEmpleado.EmpleadoHabitacionesFrame;
 import vistaEmpleado.EmpleadoMenuPrincipal;
-import vistaEmpleado.EmpleadoReservasFrame;
-import vistaEmpleado.EmpleadoServiciosFrame;
-import vistaEmpleado.EmpleadoTarifasFrame;
 
 public class WindowManager {
 	private JFrame ventandaActual;
@@ -106,6 +93,8 @@ public class WindowManager {
 	}
 	
 	public void volverMenu() {
+		((EmpleadoMenuPrincipal) this.menu).ocupacionHoy();
+		((EmpleadoMenuPrincipal) this.menu).ocupacionAnual();
 		mostraVentana(menu);
 	}
 	
@@ -241,6 +230,11 @@ public class WindowManager {
 		Empleado empleado = (Empleado) usuarioActual;
 		return empleado.pasarDia(dia);
 	}
+	
+	public Date pasarMes(Date dia, int i) {
+		Empleado empleado = (Empleado) usuarioActual;
+		return empleado.pasarMes(dia, i);
+	}
 
 	public HashMap<Integer,Servicio> darServicio() {
 		HashMap<Integer, Servicio> listaServicios = null;
@@ -321,6 +315,33 @@ public class WindowManager {
 		return empleado.getMenu();
 	}
 	
+	public void crearProductoMenu(Date horaI, Date horaF, boolean llevable,String nombre, double precio){
+		Admin admin = (Admin)usuarioActual;
+		admin.crearProductoMenu(horaI, horaF, llevable, nombre, precio);
+	}
+	
+	public void añadirProductoMenuHabitacion(int idHabitacion, int idServicio, int cantidad, boolean pagarEnSitio){
+		Empleado empleado = (Empleado)usuarioActual;
+		empleado.añadirProductoMenuHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);
+	}
+	
+	public Date getHora(String horaString) {
+		boolean right;
+		Date hora = null;
+		do{
+			DateFormat DFormat = new SimpleDateFormat("h:mm");
+
+			try {
+				hora = DFormat.parse(horaString);
+				right = false;
+			} catch (ParseException e) {
+				right = true;
+			}
+			
+		} while (right);
+		
+		return hora;
+	}
 	
 	public ArrayList<Habitacion> DiponiblesParaGrupoEnCurso(TipoHabitacion tipo) throws Exception {
 		Empleado empleado = (Empleado) usuarioActual;
