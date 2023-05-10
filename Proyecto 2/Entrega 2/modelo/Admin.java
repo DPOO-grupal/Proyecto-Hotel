@@ -63,6 +63,7 @@ public class Admin extends Empleado {
 	public void crearProductoMenu(Date horaI, Date horaF, boolean llevable,String nombre, double precio) {
 		hotel.crearProductoMenu(horaI, horaF, llevable, nombre, precio);
 	}
+	
 //FIN PRODUCTO MENU -----------------------------------------------------------
 	
 //INICIO DAR DATOS ------------------------------------------------------------
