@@ -30,7 +30,6 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements A
 
 	public AdminRestauranteFrame(WindowManager windowManager) {
 		super(windowManager);
-		//setTitle("Restaurante");
 	}
 
 	@Override
@@ -47,20 +46,6 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements A
         modeloTabla = new DefaultTableModel(columnasMenu, 0);
         
         //Filas de la tabla
-        String[] fila1Menu = {"Pollo gratinado​"};
-        String[] fila2Menu = {"Costillas BBQ​"};
-        String[] fila3Menu = {"Sobrebarriga en salsa​"};
-        String[] fila4Menu = {"Salmón dorado​"};
-        String[] fila5Menu = {"Pollo frito​"};
-        String[] fila6Menu = {"Papas a la francesa​"};
-        String[] fila7Menu = {"Limonada natural​"};
-        modeloTabla.addRow(fila1Menu);
-	    modeloTabla.addRow(fila2Menu);
-	    modeloTabla.addRow(fila3Menu);
-	    modeloTabla.addRow(fila4Menu);
-	    modeloTabla.addRow(fila5Menu);
-	    modeloTabla.addRow(fila6Menu);
-	    modeloTabla.addRow(fila7Menu);
 	    
 	    //Diseño de la tabla
         tablaServicios = new JTable(modeloTabla);
@@ -81,63 +66,14 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements A
 
         //Tamaño y ubicacion de la tabla en el panel
         constraints.gridx = 0;
-        constraints.ipady = 350;
+        constraints.ipady = 650;
         constraints.ipadx = 400;
-        constraints.gridheight = 2;
+        constraints.gridheight = 4;
         constraints.gridwidth = 1;
         constraints.weighty = 1;
         constraints.weightx = 1;
 
         panelDerecho.add(scrollPanelMenu, constraints);
-        
-        //Creacion de la tabla orden
-  		String[] columnasOrden = {"Orden"}; //Nombre de las columnas
-  		modeloTabla = new DefaultTableModel(columnasOrden, 0);
-          
-  		//Filas de la tabla
-  		String[] fila1Orden = {"Pollo gratinado​"};
-  		String[] fila2Orden = {"Costillas BBQ​"};
-  		String[] fila3Orden = {"Sobrebarriga en salsa​"};
-  		String[] fila4Orden = {"Salmón dorado​"};
-  		String[] fila5Orden = {"Pollo frito​"};
-  		String[] fila6Orden = {"Papas a la francesa​"};
-  		String[] fila7Orden = {"Limonada natural​"};
-  		modeloTabla.addRow(fila1Orden);
-  	    modeloTabla.addRow(fila2Orden);
-  	    modeloTabla.addRow(fila3Orden);
-  	    modeloTabla.addRow(fila4Orden);
-  	    modeloTabla.addRow(fila5Orden);
-  	    modeloTabla.addRow(fila6Orden);
-  	    modeloTabla.addRow(fila7Orden);
-  	    
-  	    //Diseño de la tabla
-        tablaServicios = new JTable(modeloTabla);
-        tablaServicios.getTableHeader().setBackground(Color.decode("#204473"));
-        tablaServicios.getTableHeader().setForeground(Color.white);
-        tablaServicios.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
-        tablaServicios.setFont(new Font("Times New Roman", 1, 20));
-        tablaServicios.setRowHeight(60);
-        tablaServicios.setEnabled(false);
-
-        DefaultTableCellRenderer modelocentrarOrden = new DefaultTableCellRenderer();
-        modelocentrarOrden.setHorizontalAlignment(SwingConstants.CENTER);
-
-
-        tablaServicios.getColumnModel().getColumn(0).setCellRenderer(modelocentrarOrden);
-
-        JScrollPane scrollPanelOrden = new JScrollPane(tablaServicios);
-
-        //Tamaño y ubicacion de la tabla en el panel
-        constraints.gridx = 0;
-        constraints.gridy = 2;
-        constraints.ipady = 150;
-        constraints.ipadx = 400;
-        constraints.gridheight = 2;
-        constraints.gridwidth = 1;
-        constraints.weighty = 2;
-        constraints.weightx = 1;
-
-        panelDerecho.add(scrollPanelOrden, constraints);
 		
       //Creacion del recuadro para añadir producto menu a la habitacion
   		JPanel panelAgregarOrden = new JPanel(new GridLayout(5,0, 0, 10));

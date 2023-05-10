@@ -211,7 +211,6 @@ public class EmpleadoReservasFrame extends FrameBaseInfo {
        
         JScrollPane scrollPanel = new JScrollPane(tablaTarifas);
         scrollPanel.setPreferredSize(new Dimension(500, 500));
-        System.out.println(panelDerecho.getWidth());
         scrollPanel.setBackground(Color.decode("#B2BBA4"));
         constraints.gridx = 0;
 	    constraints.gridy = 1;

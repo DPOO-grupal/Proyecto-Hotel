@@ -385,7 +385,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		for (int i = 0 ; i < lenArreglo ; i++) {
 			int fila = (habitaciones[i]/100)-1;
 			int col = habitaciones[i]%100;
-			matriz[fila][col] = habitaciones[i];
+			matriz[fila-1][col-1] = habitaciones[i];
 		}
 		return matriz;
 	}
