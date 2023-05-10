@@ -167,6 +167,13 @@ public class Hotel implements Serializable{
 		return rangoTarifas.values();
 	}
 	
+	public Date pasarMes(Date start, int i) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(start);
+        cal.add(Calendar.MONTH, i);
+        return cal.getTime();
+    }
+	
 	public ArrayList<Tarifa> checkTarifas() {
 		Date fechaF = pasarAnno(hoy);
 		boolean completo;
@@ -706,9 +713,13 @@ public class Hotel implements Serializable{
 		}
 		else {
 			Set<Integer> setInt = mapa.keySet();
-			Integer[] resultado = (Integer[]) setInt.toArray();
+			Object[] resultado = (Object[]) setInt.toArray();
 			Arrays.sort(resultado);
-			return resultado;
+			Integer[] integerArray = new Integer[resultado.length];
+	        for (int i = 0; i < resultado.length; i++) {
+	            integerArray[i] = (Integer)resultado[i];
+	        }
+			return integerArray;
 		}
 		//Integer[] r = {104, 105, 202, 203, 206, 308};
 		//return r;
@@ -721,7 +732,7 @@ public class Hotel implements Serializable{
 		}
 		else {
 			Set<Integer> setInt = mapa.keySet();
-			Integer[] array = (Integer[]) setInt.toArray();
+			Object[] array = (Object[]) setInt.toArray();
 			int resultado = array.length;
 			return resultado;
 		}

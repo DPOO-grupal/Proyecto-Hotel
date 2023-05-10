@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.SwingContainer;
 import javax.swing.UIManager;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicTreeUI.TreeCancelEditingAction;
@@ -60,6 +61,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	protected JButton checkIn;
 	protected JButton checkOut;
 	protected JFrame reservasFrame;
+	protected JPanel panelHoy;
 
 	public EmpleadoMenuPrincipal(WindowManager windowManager){
         setLayout(new BorderLayout());
@@ -167,12 +169,14 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
               tablaHoy.getColumnModel().getColumn(i).setCellEditor(null);
           }
           //Tamaño y ubicacion de la tabla en el panel
-          JScrollPane panelHoy = new JScrollPane(tablaHoy);
+          panelHoy = new JPanel();
+          panelHoy.setLayout(gridbag);
+          panelHoy.setPreferredSize(new Dimension(200, 100));
           constraints.gridx = 0;
           constraints.insets = new Insets(0, 0, 30, 0);
           constraints.gridy = 1;
-          constraints.ipady = 300;
-          constraints.ipadx = 1000;
+          constraints.ipady = 200;
+          constraints.ipadx = 800;
           constraints.gridheight = 1;
           constraints.gridwidth = 1;
           //constraints.weightx = 1;
@@ -194,7 +198,13 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
   	    PanelOcupacion.add(OAnual, constraints);
   	    
   	//Creacion de la tabla servicios
-  		String[] columnasAnual = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"}; //Nombre de las columnas
+  		String[] columnasAnual = new String[12]; //Nombre de las columnas
+  		String[] meses = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
+  		Date dia = windowManager.getDia();
+  		for (int i = 0 ; i < 12 ; i++) {
+  			String mes = meses[windowManager.pasarMes(dia, i).getMonth()];
+  			columnasAnual[i] = mes;
+  		}
           modeloTablaAnual = new DefaultTableModel(columnasAnual, 0);
           
           //Filas de la tabla
@@ -286,7 +296,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		Date dia = windowManager.getDia();
 		for (int i = 0 ; i < 12 ; i++) {
 			int ocupacionesMes = 0;
-			ocupacionesMes = contarOcupacionesMes(dia);
+			ocupacionesMes = contarOcupacionesMes(dia, i);
 			System.out.println(ocupacionesMes);
 			Color color = new ColorUIResource(Color.WHITE);
 			if (ocupacionesMes < 50 && ocupacionesMes > 0)
@@ -313,12 +323,13 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		//((DefaultTableModel) tablaAnual.getModel()).fireTableDataChanged();
 	}
 	
-	public int contarOcupacionesMes(Date dia) {
+	public int contarOcupacionesMes(Date dia, int i) {
 		int contadorOcupadas = 0;
-		for (int i = 0 ; i < 31 ; i++) {
-			int incremento = windowManager.contarOcupadasDia(dia);
+		Date diaF = windowManager.pasarMes(dia, i);
+		for (int j = 0 ; j < 31 ; j++) {
+			int incremento = windowManager.contarOcupadasDia(diaF);
 			contadorOcupadas += incremento;
-			dia = windowManager.pasarDia(dia);
+			dia = windowManager.pasarDia(diaF);
 		}
 		return contadorOcupadas;
 	}
@@ -340,17 +351,54 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		tablaHoy.setGridColor(Color.BLACK);
 		
 		for (int i = 0 ; i < matriz.length ; i++) {
-			String[] fila = matriz[i];
-			System.out.println(Arrays.toString(fila));
-			modeloTablaHoy.addRow(fila);
+			for (int j = 0 ; j < matriz[0].length ; j++) {
+				JLabel label = new JLabel(matriz[i][j], SwingConstants.CENTER);
+				label.setAlignmentX(CENTER_ALIGNMENT);
+				label.setAlignmentY(CENTER_ALIGNMENT);
+				label.setOpaque(false);
+				label.setFont(new Font("Times New Roman", 1, 20));
+				GridBagConstraints co = new GridBagConstraints();
+				co.gridy = i;
+				co.gridx = j;
+				co.ipadx = 20;
+				co.ipady = 20;
+				co.weightx = 1;
+				co.weighty = 1;
+				co.insets = new Insets(1, 1, 1, 1);
+				co.fill = GridBagConstraints.BOTH;
+				panelHoy.add(label, co);
+//				int fila = (ocupadas[i]/100)-1;
+//				int col = (ocupadas[i]%100)-1;
+				
+			}
 		}
-		colorearTabla(ocupadas);
+		
+		for (int i = 0 ; i < ocupadas.length ; i++) {
+			int fila = (ocupadas[i]/100)-1;
+			int col = (ocupadas[i]%100)-1;
+			JLabel label = new JLabel(matriz[fila][col], SwingConstants.CENTER);
+			label.setFont(new Font("Times New Roman", 1, 20));
+			Color color = new Color(255, 102, 102);
+			label.setBackground(color);
+			label.setOpaque(true);
+			label.setAlignmentX(CENTER_ALIGNMENT);
+			label.setAlignmentY(CENTER_ALIGNMENT);
+			GridBagConstraints co = new GridBagConstraints();
+			co.gridy = fila;
+			co.gridx = col;
+			co.weightx = 1;
+			co.weighty = 1;
+			co.insets = new Insets(1, 1, 1, 1);
+			co.fill = GridBagConstraints.BOTH;
+			panelHoy.add(label, co);
+		}
+		//colorearTabla(ocupadas);
 	}
 	
 	public void colorearTabla(Integer[] porColorear) {
 		for (int i = 0 ; i < porColorear.length ; i++) {
 			int fila = (porColorear[i]/100)-1;
-			int col = porColorear[i]%100;
+			int col = (porColorear[i]%100)-1;
 			JLabel label = (JLabel) tablaHoy.getValueAt(fila, col);
 			label.setBackground(Color.RED);
 			tablaHoy.setValueAt(label, fila, col);
