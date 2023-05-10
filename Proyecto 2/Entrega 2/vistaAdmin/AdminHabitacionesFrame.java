@@ -304,6 +304,7 @@ public class AdminHabitacionesFrame extends EmpleadoHabitacionesFrame{
 		case "Crear habitación":
 			crearHabitacion();
 			break;
+			
 		default:
 			break;
 		}
