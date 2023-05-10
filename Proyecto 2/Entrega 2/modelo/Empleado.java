@@ -26,18 +26,30 @@ public class Empleado extends Usuario  {
 		return hotel.mostrarReservas(fechaI, fechaF);
 	}
 	
-	public boolean cancelarReserva(int id) {
-		return hotel.cancelarReserva(id);
+	public void cancelarReserva(int id) throws Exception {
+		hotel.cancelarReserva(id);
 		
 	}	
 	
-	public void crearReserva(Date fechaI, Date fechaF, int tamanioGrupo, String[] nombres, String[] documentos, String[] emails, String[] telefonos, int[] edades) {
-		hotel.crearReserva(fechaI, fechaF, tamanioGrupo, nombres, documentos, emails, telefonos, edades);
+	public void crearReserva(Date fechaI, Date fechaF) throws Exception {
+		hotel.crearReserva(fechaI, fechaF);
 	}
 	
+	public void cambiarFechaReserva(Date fechaI, Date fechaF) throws Exception {
+		hotel.cambiarFechaReserva(fechaI, fechaF);
+				
+	}
+	
+	
+	public void añadirHuesped(String documento, String nombre, String email, String telefono, int edad) throws Exception {
+		hotel.añadirHuesped(documento,nombre, email,telefono,edad);
+	}
+	public void añadirHabitacion(int idHabi) {
+		hotel.añadirHabitacionReserva(idHabi);
+	}
 
-	public boolean completarReserva(int idHabitacion) {
-		return hotel.completarReserva(idHabitacion);
+	public void completarReserva() throws Exception {
+		hotel.completarReserva();
 	}
 	
 	public boolean hayReserva() {
@@ -49,7 +61,7 @@ public class Empleado extends Usuario  {
 		}
 	}
 	
-	public ArrayList<Habitacion> DiponiblesParaGrupoEnCurso(TipoHabitacion tipo) {
+	public ArrayList<Habitacion> DiponiblesParaGrupoEnCurso(TipoHabitacion tipo) throws Exception {
 		return hotel.DiponiblesParaGrupoEnCurso(tipo);
 		
 	}
@@ -60,6 +72,13 @@ public class Empleado extends Usuario  {
 	
 	public int getIdGrupo() {
 		return hotel.getGrupoEnCurso().getId();
+	}
+	
+	public ArrayList<Integer> getListaHabitacionesGrupo() {
+		return hotel.getListaHabitacionesGrupo();
+	}	
+	public ArrayList<Huesped> getHuespedesGrupoEnCurso() {
+		return hotel.getHuespedesGrupoEnCurso();
 	}
 	
 // FIN RESERVAS ---------------------------------------------

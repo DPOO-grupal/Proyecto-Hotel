@@ -17,14 +17,25 @@ public class Grupo implements Serializable{
 
 	private Reserva reserva;
 	
-	public Grupo(ArrayList<Huesped> huespedes, Reserva reserva) {
-		this.huespedes = huespedes;
+	public Grupo(Reserva reserva) {
+		this.huespedes = new ArrayList<Huesped>();
 		this.listaHabitaciones = new ArrayList<Integer>();
 		this.vReal = huespedes.size();
 		this.vRelativo = calcularVRelativo(huespedes);
 		this.id = numGrupo++;
 		numGrupo ++;
 		this.reserva = reserva;
+	}
+	
+	public void añadirHuesped(Huesped huesped) throws Exception {
+		if (huespedes.contains(huesped)) {
+			Exception e = new Exception("El huesped ya existe");
+			throw e;
+		}else {
+			huespedes.add(huesped);
+			this.vReal = huespedes.size();
+		}
+		
 	}
 	
 	private int calcularVRelativo(ArrayList<Huesped> huespedes) {
@@ -104,6 +115,16 @@ public class Grupo implements Serializable{
 		if (pagarEnSitio) {
 			saldoPagado+=servicio.getPrecio()*cantidad;
 		}
+	}
+
+	public void setReserva(Reserva reserva) {
+		this.reserva = reserva;
+		
+	}
+
+	public void borrarHabitaciones() {
+		this.listaHabitaciones = new ArrayList<Integer>();
+		
 	}
 	
 }

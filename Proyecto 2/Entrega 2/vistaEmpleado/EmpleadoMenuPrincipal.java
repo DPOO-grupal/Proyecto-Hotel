@@ -61,6 +61,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	protected JButton checkOut;
 	protected JButton refrescarHoy;
 	protected JButton refrescarAnual;
+	protected JFrame reservasFrame;
 
 	public EmpleadoMenuPrincipal(WindowManager windowManager){
         setLayout(new BorderLayout());
@@ -85,12 +86,14 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		
 
 		tarifasFrame = new EmpleadoTarifasFrame(windowManager);
-		serviciosFrame = new AdminServiciosFrame(windowManager);
-		habitacionesFrame = new AdminHabitacionesFrame(windowManager);
-		restauranteFrame = new AdminRestauranteFrame(windowManager);
+		serviciosFrame = new EmpleadoServiciosFrame(windowManager);
+		habitacionesFrame = new EmpleadoHabitacionesFrame(windowManager);
+		restauranteFrame = new EmpleadoRestauranteFrame(windowManager);
+		reservasFrame = new EmpleadoReservasFrame(windowManager);
 		
 		ocupacionHoy();
 		ocupacionAnual();
+
 	}
 
 	private void setPanelInfo() {
@@ -307,7 +310,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 			int ocupacionesMes = 0;
 			ocupacionesMes = contarOcupacionesMes(dia);
 			Color color = new ColorUIResource(Color.WHITE);
-			if (ocupacionesMes < 50 && ocupacionesMes >= 0)
+			if (ocupacionesMes < 50 && ocupacionesMes > 0)
 				color = new Color(102, 255, 102);
 			else if (ocupacionesMes < 100 && ocupacionesMes >= 50)
 				color = new Color(255, 255, 153);
@@ -395,6 +398,8 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	public Integer[] getOcupadas() {
 		Integer[] ocupadas = windowManager.ocupacionHoy();
 		return ocupadas;
+	public void volverReserva() {
+		windowManager.mostraVentana(reservasFrame);
 	}
 
 	@Override
@@ -418,7 +423,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 			windowManager.mostraVentana(restauranteFrame);
 			break;
 		case "Reservas":
-			
+			windowManager.mostraVentana(reservasFrame);
 			break;
 		case "Cerrar sesion":
 			windowManager.cerrarSesion();;

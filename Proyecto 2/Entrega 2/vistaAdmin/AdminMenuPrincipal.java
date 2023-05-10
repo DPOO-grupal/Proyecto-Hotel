@@ -91,11 +91,12 @@ public class AdminMenuPrincipal extends EmpleadoMenuPrincipal implements ActionL
 			windowManager.mostraVentana(restauranteFrame);
 			break;
 		case "Reservas":
-			
+			windowManager.mostraVentana(reservasFrame);
 			break;
 		case "Cerrar sesion":
 			windowManager.cerrarSesion();
 			break;
+		
 			
 		case "Check-In":
 			checkIn();

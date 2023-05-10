@@ -1,4 +1,4 @@
-package vistaAdmin;
+package vistaEmpleado;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -6,12 +6,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Collection;
-import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -28,25 +25,21 @@ import javax.swing.table.DefaultTableModel;
 
 import controlador.WindowManager;
 import modelo.Servicio;
-import vistaEmpleado.EmpleadoServiciosFrame;
+import vistaAdmin.FrameBaseInfo;
 
-public class AdminServiciosFrame extends EmpleadoServiciosFrame implements ActionListener, MouseListener{
+public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListener{
 	
 	private DefaultTableModel modeloTabla;
 	private JTable tablaServicios;
-	private JTextField cajaNombre;
-	private JTextField cajaPrecio;
 	private JTextField cajaNombreInfo;
 	private JTextField cajaPrecioInfo;
 	private JTextField cajaNumeroHabitacion;
 	private JTextField cajaCantidadPersonas;
 	private JButton añadirAHabitacion;
 
-	public AdminServiciosFrame(WindowManager windowManager) {
+	public EmpleadoServiciosFrame(WindowManager windowManager) {
 		super(windowManager);
 		cargarDatos();
-		//setTitle("Servicios");
-		
 	}
 	
 	@Override
@@ -55,60 +48,7 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 		panelCrear.setLayout(new GridLayout(5, 1, 10, 10));
 		panelCrear.setBackground(Color.decode("#204473"));
 		panelCrear.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
-		
-		//Crea el panel para agregar un servicio
-		JPanel panelNombre = new JPanel();
-		panelNombre.setBackground(Color.decode("#204473"));	
-		panelNombre.setLayout(new GridLayout(2, 1));
-		
-		//Nombre y su caja de texto
-		
-		JLabel nombre = new JLabel("Nombre");
-		nombre.setForeground(Color.white);
-		nombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-		
-		cajaNombre = new JTextField();
-		cajaNombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 
-		
-		panelNombre.add(nombre);
-		panelNombre.add(cajaNombre);
-		
-		//Panel precio
-		JPanel panelPrecio = new JPanel();
-		panelPrecio.setBackground(Color.decode("#204473"));	
-		panelPrecio.setLayout(new GridLayout(2, 1));
-		
-		//Precio y su caja de texto
-		JLabel precio = new JLabel("Precio");
-		precio.setForeground(Color.white);
-		precio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-		
-		cajaPrecio = new JTextField();
-		cajaPrecio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-		
-		panelPrecio.add(precio);
-		panelPrecio.add(cajaPrecio);
-
-		//Panel agregar
-		JPanel panelAgregar = new JPanel();
-		panelAgregar.setBackground(Color.decode("#204473"));
-		
-		//Boton para agregar un servicio
-		JButton agregarServicio = new JButton("Agregar servicio");
-		agregarServicio.addActionListener(this);
-		agregarServicio.setBackground(Color.decode("#ACCAF2"));
-		agregarServicio.setBackground(Color.CYAN);
-		agregarServicio.setFont(new Font("arial", 1, 20));
-		
-		panelAgregar.add(agregarServicio);
-		
-		//Se añaden los componentes al panel
-		panelCrear.add(new JLabel());
-		panelCrear.add(panelNombre);
-		panelCrear.add(panelPrecio);		
-		panelCrear.add(panelAgregar);
-		
 	}
 
 	@Override
@@ -245,32 +185,6 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 	    }
 	}
 	
-	private void agregarServicio() {
-		String nombre = cajaNombre.getText();
-		Double precio = Double.parseDouble(cajaPrecio.getText());
-		windowManager.agregarServicioHotel(nombre, precio);
-		cargarDatos();
-		cajaNombre.setText("");
-		cajaPrecio.setText("");
-	}
-	
-	private void añadirServicioHotelHabitacion() {
-		int idServicio = getId(cajaNombreInfo.getText());
-		int idHabitacion = Integer.parseInt(cajaNumeroHabitacion.getText());
-		int cantidad = Integer.parseInt(cajaCantidadPersonas.getText());
-		boolean pagarEnSitio = false;
-		int option = JOptionPane.showConfirmDialog(null, "¿Desea pagar ahora?", "Pagar", JOptionPane.YES_NO_OPTION);
-		cajaNombreInfo.setText("");
-		cajaPrecioInfo.setText("");
-		cajaNumeroHabitacion.setText("");
-		cajaCantidadPersonas.setText("");
-		if (option==JOptionPane.YES_OPTION) {
-			pagarEnSitio=true;
-		}
-		windowManager.añadirServicioHotelHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);
-	}
-	
-	
 	private String getPrecio(String nombre) {
 		Collection<Servicio> listaServicios = windowManager.darServicio().values();
 		String nombreServicio = null;
@@ -280,7 +194,7 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 			}
 		return nombreServicio;
 		}
-	
+
 	private int getId(String nombre) {
 		Collection<Servicio> listaServicios = windowManager.darServicio().values();
 		int precioServicio = 0;
@@ -290,13 +204,25 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 			}
 		return precioServicio;
 		}
-
+	
+	private void añadirServicioHotelHabitacion() {
+		int idServicio = getId(cajaNombreInfo.getText());
+		int idHabitacion = Integer.parseInt(cajaNumeroHabitacion.getText());
+		int cantidad = Integer.parseInt(cajaCantidadPersonas.getText());
+		boolean pagarEnSitio = false;
+		int option = JOptionPane.showConfirmDialog(null, "¿Desea pagar ahora?", "Pagar", JOptionPane.YES_NO_OPTION);
+		if (option==JOptionPane.YES_OPTION) {
+			pagarEnSitio=true;
+		}
+		windowManager.añadirServicioHotelHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);
+		cajaNombreInfo.setText("");
+		cajaPrecioInfo.setText("");
+		cajaNumeroHabitacion.setText("");
+		cajaCantidadPersonas.setText("");
+	}
+	
 	public void actionPerformedFrame(ActionEvent e) {
-		switch (e.getActionCommand()) {
-		case "Agregar servicio":
-			agregarServicio();
-			break;
-		
+		switch (e.getActionCommand()) {		
 		case "Añadir a la habitación":
 			añadirServicioHotelHabitacion();
 			break;
@@ -316,7 +242,6 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 			cajaNombreInfo.setText(nombre);
 			cajaPrecioInfo.setText(precio);
 		 }
-		
 	}
 
 	@Override

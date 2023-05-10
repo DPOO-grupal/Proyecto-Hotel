@@ -1,8 +1,27 @@
 package modelo;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Huesped implements Serializable{
+	@Override
+	public int hashCode() {
+		return Objects.hash(documento, nombre);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Huesped other = (Huesped) obj;
+		return Objects.equals(documento, other.documento) && Objects.equals(nombre, other.nombre);
+	}
+
+
 	private String documento;
 	private String nombre;
 	private String email;

@@ -44,8 +44,8 @@ public class Admin extends Empleado {
 		hotel.crearCama(id, capacidadCama, aptoParaNiño);
 	}
 	
-	public void crearHabitacion(TipoHabitacion tipo,int id) {
-		hotel.crearHabitacion(tipo, id);
+	public void crearHabitacion(TipoHabitacion tipo,int id, int capacidad, boolean apto) {
+		hotel.crearHabitacion(tipo, id, capacidad, apto);
 	}
 	
 	public void setCaracteristicasHabitacion(String habitacion, int id) {

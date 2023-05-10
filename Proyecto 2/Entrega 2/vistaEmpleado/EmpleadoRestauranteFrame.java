@@ -1,4 +1,4 @@
-package vistaAdmin;
+package vistaEmpleado;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -6,7 +6,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -21,14 +20,14 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import controlador.WindowManager;
-import vistaEmpleado.EmpleadoRestauranteFrame;
+import vistaAdmin.FrameBaseInfo;
 
-public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements ActionListener{
+public class EmpleadoRestauranteFrame extends FrameBaseInfo{
 
 	private DefaultTableModel modeloTabla;
 	private JTable tablaServicios;
 
-	public AdminRestauranteFrame(WindowManager windowManager) {
+	public EmpleadoRestauranteFrame(WindowManager windowManager) {
 		super(windowManager);
 		//setTitle("Restaurante");
 	}
@@ -296,99 +295,7 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements A
 
 	@Override
 	protected void setPanelCrear() {
-		//Edita el aspecto del panel	
-		panelCrear.setLayout(new GridLayout(5, 1, 10, 10));
-		panelCrear.setBackground(Color.decode("#204473"));
-		panelCrear.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
-		
-		//Crea el panel nombre
-		JPanel panelNombre = new JPanel();
-		panelNombre.setBackground(Color.decode("#204473"));	
-		panelNombre.setLayout(new GridLayout(2, 1));
-		
-		//Nombre y su caja de texto		
-		JLabel nombre = new JLabel("Nombre");
-		nombre.setForeground(Color.white);
-		nombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-		
-		JTextField cajaNombre = new JTextField();
-		cajaNombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-		
-		panelNombre.add(nombre);
-		panelNombre.add(cajaNombre);
-		
-		//Crea el panel precio
-		JPanel panelPrecio = new JPanel();
-		panelPrecio.setBackground(Color.decode("#204473"));	
-		panelPrecio.setLayout(new GridLayout(2, 1));
-		
-		//Precio y su caja de texto
-		JLabel precio = new JLabel("Precio");
-		precio.setForeground(Color.white);
-		precio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-		
-		JTextField cajaPrecio = new JTextField();
-		cajaPrecio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-
-		panelPrecio.add(precio);
-		panelPrecio.add(cajaPrecio);
-		
-		//Crea el panel horario
-		JPanel panelHorario = new JPanel();
-		panelHorario.setBackground(Color.decode("#204473"));	
-		panelHorario.setLayout(new GridLayout(2, 1));
-		
-		//Precio y su caja de texto
-		JLabel horario = new JLabel("Horario");
-		horario.setForeground(Color.white);
-		horario.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-		
-		JTextField cajaHorario = new JTextField();
-		cajaHorario.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-
-		panelHorario.add(horario);
-		panelHorario.add(cajaHorario);
-		
-		//Crea el panel llevable
-		JPanel panelLlevable = new JPanel();
-		panelLlevable.setBackground(Color.decode("#204473"));	
-		panelLlevable.setLayout(new GridLayout(2, 1));
-		
-		//Precio y su caja de texto
-		JLabel llevable = new JLabel("Llevable");
-		llevable.setForeground(Color.white);
-		llevable.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-		
-		JTextField cajaLlevable = new JTextField();
-		cajaLlevable.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-
-		panelLlevable.add(llevable);
-		panelLlevable.add(cajaLlevable);
-		
-		//Crea el panel agregar servicio
-		JPanel panelAgregarServicio = new JPanel();
-		panelAgregarServicio.setBackground(Color.decode("#204473"));
-		
-		//Boton par agregar un servicio
-		JButton agregarServicio = new JButton("Agregar al menú");
-		agregarServicio.setBackground(Color.decode("#accaf2"));
-		agregarServicio.setFont(new Font("arial", 1, 20));
-		agregarServicio.addActionListener(this);
-		
-		panelAgregarServicio.add(agregarServicio);
-		
-		//Se añaden los componentes al panel
-		panelCrear.add(panelNombre);
-		panelCrear.add(panelPrecio);
-		panelCrear.add(panelHorario);
-		panelCrear.add(panelLlevable);
-		panelCrear.add(panelAgregarServicio);
-				
-		
-	}
-	
-	private void agregarAlMenu() {
-		
+			
 	}
 
 	@Override
@@ -402,8 +309,7 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements A
 			break;
 		case "Pagar ahora":
 			break;
-		case "Agregar al menú":
-			
+		case "Agregar al menú":		
 			break;
 
 		default:
@@ -412,3 +318,4 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements A
 	}
 	
 }
+
