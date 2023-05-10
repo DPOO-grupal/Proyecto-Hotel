@@ -104,6 +104,8 @@ public class WindowManager {
 	}
 	
 	public void volverMenu() {
+		((EmpleadoMenuPrincipal) this.menu).ocupacionHoy();
+		((EmpleadoMenuPrincipal) this.menu).ocupacionAnual();
 		mostraVentana(menu);
 	}
 	
@@ -406,9 +408,9 @@ public class WindowManager {
     		}
         	// JFrame para probar
 
-    		JFrame pruebas = new AdminRestauranteFrame(windowManager);
+    		JFrame pruebas = new AdminMenuPrincipal(windowManager);
     		// Menú de ese Frame
-    		JFrame menu = new EmpleadoMenuPrincipal(windowManager);
+    		JFrame menu = new AdminMenuPrincipal(windowManager);
     		
     		windowManager.setPruebas(pruebas, menu);
     		

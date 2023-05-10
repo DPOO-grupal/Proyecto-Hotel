@@ -59,8 +59,6 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	protected WindowManager windowManager;
 	protected JButton checkIn;
 	protected JButton checkOut;
-	protected JButton refrescarHoy;
-	protected JButton refrescarAnual;
 	protected JFrame reservasFrame;
 
 	public EmpleadoMenuPrincipal(WindowManager windowManager){
@@ -171,9 +169,9 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
           //Tamaño y ubicacion de la tabla en el panel
           JScrollPane panelHoy = new JScrollPane(tablaHoy);
           constraints.gridx = 0;
-          constraints.insets = new Insets(0, 0, 10, 0);
+          constraints.insets = new Insets(0, 0, 30, 0);
           constraints.gridy = 1;
-          constraints.ipady = 200;
+          constraints.ipady = 300;
           constraints.ipadx = 1000;
           constraints.gridheight = 1;
           constraints.gridwidth = 1;
@@ -181,17 +179,6 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
           //constraints.weighty = 0.1;
 
           PanelOcupacion.add(panelHoy, constraints);
-          
-          refrescarHoy = new JButton("Refrescar ocupacion diaria");
-          refrescarHoy.addActionListener(this);
-          constraints.gridx = 0;
-          constraints.insets = new Insets(0, 0, 30, 0);
-          constraints.gridy = 2;
-          constraints.ipady = 20;
-          constraints.ipadx = 70;
-          constraints.gridheight = 1;
-          constraints.gridwidth = 1;
-          PanelOcupacion.add(refrescarHoy, constraints);
           
         JLabel OAnual = new JLabel();
         OAnual.setText("Ocupacion anual: ");
@@ -250,17 +237,6 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
           //constraints.weighty = 0.1;
 
           PanelOcupacion.add(scrollPanelAnual, constraints);
-          
-          refrescarAnual = new JButton("Refrescar ocupacion anual");
-          refrescarAnual.addActionListener(this);
-          constraints.gridx = 0;
-          constraints.insets = new Insets(0, 0, 30, 0);
-          constraints.gridy = 5;
-          constraints.ipady = 20;
-          constraints.ipadx = 70;
-          constraints.gridheight = 1;
-          constraints.gridwidth = 1;
-          PanelOcupacion.add(refrescarAnual, constraints);
 	    
 		panelDerecho.add(PanelOcupacion, BorderLayout.CENTER);
 	}
@@ -311,6 +287,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		for (int i = 0 ; i < 12 ; i++) {
 			int ocupacionesMes = 0;
 			ocupacionesMes = contarOcupacionesMes(dia);
+			System.out.println(ocupacionesMes);
 			Color color = new ColorUIResource(Color.WHITE);
 			if (ocupacionesMes < 50 && ocupacionesMes > 0)
 				color = new Color(102, 255, 102);
@@ -352,6 +329,11 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		Integer[] habitaciones = getHabitaciones();
 		Integer[] ocupadas = getOcupadas();
 		String[][] matriz = cargarHabitaciones(habitaciones.length, habitaciones);
+		modeloTablaHoy.setColumnCount(matriz[0].length);
+		tablaHoy.setTableHeader(null);
+		tablaHoy.setShowGrid(true);
+		tablaHoy.setGridColor(Color.BLACK);
+		
 		for (int i = 0 ; i < matriz.length ; i++) {
 			String[] fila = matriz[i];
 			System.out.println(Arrays.toString(fila));
@@ -392,7 +374,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		
 		for (int i = 0 ; i < lenArreglo ; i++) {
 			int fila = (habitaciones[i]/100)-1;
-			int col = habitaciones[i]%100-1;
+			int col = (habitaciones[i]%100)-1;
 			matriz[fila][col] = habitaciones[i] + "";
 		}
 		System.out.println("Len matriz " + matriz.length);
