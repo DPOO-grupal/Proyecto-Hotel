@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
+
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 import controlador.Hotel;
 
@@ -43,7 +46,7 @@ public class Persistencia implements Serializable{
 			if(!staticDataFile.exists()) {	
 				
 				dataFile.createNewFile();
-				guardarStaticData(0, 0);
+				guardarStaticData(0, 0, new ArrayList<Integer>());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -106,27 +109,32 @@ public class Persistencia implements Serializable{
 			
 	}
 	
-	public int[] leerStaticData() {
-		int[] nums = new int[2];
+	public ArrayList<Integer> leerStaticData() {
+		ArrayList<Integer> arrayList = new ArrayList<Integer>();
 		BufferedReader br;
 
 		 try {
 			 br = new BufferedReader(new FileReader(staticDataFile));
-			 String[] linea = br.readLine().split(",");
+			 String[] linea = br.readLine().split(";");
 			
-			 nums[0] = Integer.parseInt(linea[0]);
-			 nums[1] = Integer.parseInt(linea[1]);
+			 arrayList.add(Integer.parseInt(linea[0]));
+			 arrayList.add(Integer.parseInt(linea[1]));
+			 
+			 String lista = linea[2].replace("[", "").replace("]", "").replace(" ", "");
+			 for (String numero : lista.split(",")) {
+				 if (!numero.equals("")) {
+					 arrayList.add(Integer.parseInt(numero));
+				}
+			}
 			 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return nums;
-			
-		
+		return arrayList;		
 	}
 	
-	public void guardarStaticData(int servicio, int grupo) {
-		String texto = String.valueOf(servicio) + "," + String.valueOf(grupo);
+	public void guardarStaticData(int servicio, int grupo, ArrayList<Integer> arrayList) {
+		String texto = String.valueOf(servicio) + ";" + String.valueOf(grupo) + ";" + arrayList.toString();
 		 try {
 			java.io.PrintWriter output = new java.io.PrintWriter(staticDataFile);
 			output.print(texto);

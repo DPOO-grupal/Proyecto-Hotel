@@ -261,7 +261,6 @@ public class Hotel implements Serializable{
 		SortedMap<Date, HashMap<Integer, Integer>> rangoTarifas = ocupados.subMap(fechaI, fechaF);
 		
 		for (HashMap<Integer, Integer> mapa : rangoTarifas.values()) {
-			System.out.println(mapa.values().size());
 			for (int idGrupo : mapa.values()) {
 				grupo = grupos.get(idGrupo);
 				reserva = grupo.getReserva();
@@ -515,10 +514,18 @@ public class Hotel implements Serializable{
 
 	public void cargarInformacion() {
 		datos = new Persistencia();
-		int[] nums = datos.leerStaticData();
+		ArrayList<Integer> nums = datos.leerStaticData();
+		ArrayList<Integer> pisoIds = new ArrayList<Integer>();
 		
-		Servicio.setNumServicios(nums[0]);
-		Grupo.setNumGrupo(nums[1]);
+		Servicio.setNumServicios(nums.get(0));
+		Grupo.setNumGrupo(nums.get(1));
+		
+		for (int i = 2; i < nums.size(); i++) {
+			pisoIds.add(nums.get(i));
+			
+		}
+		Habitacion.setPisoIds(pisoIds);
+		
 		
 		Hotel hotelDatos = null;
 		try {
@@ -564,7 +571,7 @@ public class Hotel implements Serializable{
 			datos.abrirOutput();
 			datos.escribir(hotel);
 			datos.cerrarOutput();
-			datos.guardarStaticData(Servicio.getNumServicios(), Grupo.getNumGrupo());
+			datos.guardarStaticData(Servicio.getNumServicios(), Grupo.getNumGrupo(), Habitacion.getPisoIds());
 			
 			
 		} catch (IOException e) {

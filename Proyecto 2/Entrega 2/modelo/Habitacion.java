@@ -74,8 +74,9 @@ public class Habitacion implements Serializable{
 	
 	public static int getMaxHabitacion(int piso) {
 		int idHabitacion = 0;
-		if (pisoIds.size()<=(piso-1)) {
-			for (int i = pisoIds.size(); i < piso; i++) {
+		int size = pisoIds.size();
+		if (size<=(piso-1)) {
+			for (int i = size; i < piso; i++) {
 				pisoIds.add((i+1)*100);
 			}
 		}
@@ -85,6 +86,14 @@ public class Habitacion implements Serializable{
 		return idHabitacion;
 	}
 	
+	public static ArrayList<Integer> getPisoIds() {
+		return pisoIds;
+	}
+
+	public static void setPisoIds(ArrayList<Integer> pisoIds) {
+		Habitacion.pisoIds = pisoIds;
+	}
+
 	public double getPrecioServicios() {
 		double precio = 0;
 		for (Servicio servicio : listaServicios) {

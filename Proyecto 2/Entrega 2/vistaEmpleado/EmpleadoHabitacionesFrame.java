@@ -40,8 +40,7 @@ public class EmpleadoHabitacionesFrame extends FrameBaseInfo implements MouseLis
 	
 	public EmpleadoHabitacionesFrame(WindowManager windowManager) {
 		super(windowManager);
-		//setTitle("Habitaciones");
-		
+		cargarDatos();
 		
 	}
 	
