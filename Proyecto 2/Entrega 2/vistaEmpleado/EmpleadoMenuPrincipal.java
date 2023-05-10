@@ -329,7 +329,12 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		Integer[] habitaciones = getHabitaciones();
 		Integer[] ocupadas = getOcupadas();
 		String[][] matriz = cargarHabitaciones(habitaciones.length, habitaciones);
-		modeloTablaHoy.setColumnCount(matriz[0].length);
+		if ((matriz.length) == 0) {
+			modeloTablaHoy.setColumnCount(1);
+		}
+		else {
+			modeloTablaHoy.setColumnCount(matriz[0].length);
+		}
 		tablaHoy.setTableHeader(null);
 		tablaHoy.setShowGrid(true);
 		tablaHoy.setGridColor(Color.BLACK);
