@@ -101,6 +101,8 @@ public class EmpleadoReservasFrame extends FrameBaseInfo {
 		
 		panelDerecho.add(panelBuscar,constraints);
 		
+		
+		
 		// panel datos
 		JPanel panelDatos = new JPanel();
 
@@ -263,7 +265,6 @@ public class EmpleadoReservasFrame extends FrameBaseInfo {
 	protected void actionPerformedFrame(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "Crear Reserva":
-			
 			windowManager.mostraVentana(new EmpleadoCrearReservasFrame(windowManager));
 			break;
 		case "Cancelar Reserva":

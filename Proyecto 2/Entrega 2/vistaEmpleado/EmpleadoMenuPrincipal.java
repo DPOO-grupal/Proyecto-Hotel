@@ -61,6 +61,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	protected JButton checkOut;
 	protected JButton refrescarHoy;
 	protected JButton refrescarAnual;
+	protected JFrame reservasFrame;
 
 	public EmpleadoMenuPrincipal(WindowManager windowManager){
         setLayout(new BorderLayout());
@@ -88,9 +89,11 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		serviciosFrame = new EmpleadoServiciosFrame(windowManager);
 		habitacionesFrame = new EmpleadoHabitacionesFrame(windowManager);
 		restauranteFrame = new EmpleadoRestauranteFrame(windowManager);
+		reservasFrame = new EmpleadoReservasFrame(windowManager);
 		
 		ocupacionHoy();
 		ocupacionAnual();
+
 	}
 
 	private void setPanelInfo() {
@@ -395,6 +398,8 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	public Integer[] getOcupadas() {
 		Integer[] ocupadas = windowManager.ocupacionHoy();
 		return ocupadas;
+	public void volverReserva() {
+		windowManager.mostraVentana(reservasFrame);
 	}
 
 	@Override
@@ -418,7 +423,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 			windowManager.mostraVentana(restauranteFrame);
 			break;
 		case "Reservas":
-			
+			windowManager.mostraVentana(reservasFrame);
 			break;
 		case "Cerrar sesion":
 			windowManager.cerrarSesion();;

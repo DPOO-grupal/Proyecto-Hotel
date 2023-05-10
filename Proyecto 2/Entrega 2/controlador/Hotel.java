@@ -276,17 +276,38 @@ public class Hotel implements Serializable{
 		return resultado;
 	}
 
-	public void crearReserva(Date fechaI, Date fechaF, int tamanioGrupo, String[] nombres, String[] documentos, String[] emails, String[] telefonos, int[] edades) {
+	public void crearReserva(Date fechaI, Date fechaF) throws Exception {
+		
+		if (fechaI == null || fechaF == null) {
+			Exception e = new Exception("Debe ingresar las fechas");
+			throw e;
+		}
 		
 		Reserva reserva = new Reserva(fechaI, fechaF);
-		ArrayList<Huesped> huespedes = crearHuespedes(tamanioGrupo, nombres, documentos, emails, telefonos, edades);
-		Grupo grupo = new Grupo(huespedes, reserva);
-		grupos.put(grupo.getId(), grupo);
-		grupoEnCurso = grupo;
+		if (grupoEnCurso == null) {
+			Grupo grupo = new Grupo(reserva);
+			grupoEnCurso = grupo;
+			
+		} else {
+			cambiarFechaReserva(fechaI, fechaF);
+		}
 				
 	}
 	
-	public boolean cancelarReserva(int id) {
+	public void cambiarFechaReserva(Date fechaI, Date fechaF) throws Exception {
+		
+		if (fechaI == null || fechaF == null) {
+			Exception e = new Exception("Debe ingresar las fechas");
+			throw e;
+		}
+		
+		Reserva reserva = new Reserva(fechaI, fechaF);
+		grupoEnCurso.setReserva(reserva);
+		grupoEnCurso.borrarHabitaciones();
+				
+	}
+	
+	public void cancelarReserva(int id) throws Exception {
 		Grupo grupo = grupos.get(id);
 		Date fechaI = grupo.getReserva().getFechaI();
 		boolean cancelada = false;
@@ -301,21 +322,63 @@ public class Hotel implements Serializable{
 			cancelada = true;
 			
 		}
-		return cancelada;
+		
+		if (!cancelada) {
+			Exception e = new Exception("No es posible cancelar la reserva");
+			throw e;
+		}
 				
 	}
 
 
-
-
-
-	private ArrayList<Huesped> crearHuespedes(int tamanioGrupo, String[] nombres, String[] documentos, String[] emails, String[] telefonos, int[] edades) {
-		ArrayList<Huesped> huespedes = new ArrayList<Huesped>();
-		for(int i=0; i < tamanioGrupo; i++) {
-			Huesped huesped = new Huesped(documentos[i], nombres[i], emails[i], telefonos[i], edades[i]);
-			huespedes.add(huesped);
+	public void añadirHuesped(String documento, String nombre, String email, String telefono, int edad) throws Exception {
+		Huesped huesped = new Huesped(documento, nombre, email, telefono, edad);
+		grupoEnCurso.añadirHuesped(huesped);
+	}
+	
+	public void añadirHabitacionReserva(int idHabitacion) {
+		Habitacion habi = habitaciones.get(idHabitacion);
+		int precioHabitacion = (int)getPrecioHabitacionReserva(habi);
+		grupoEnCurso.añadirHabitacion(idHabitacion, habi.getCapacidad(), precioHabitacion);
+	}
+	
+	public void completarReserva() throws Exception {
+		boolean resultado = false;
+		
+		if (grupoEnCurso == null) {
+			Exception e = new Exception("Debe establecer una fecha");
+			throw e;
 		}
-		return huespedes;
+		resultado =(grupoEnCurso.getvRelativo() <= grupoEnCurso.getCapacidadCamas());
+		
+		if(resultado) {
+			
+			for (int idHabi: grupoEnCurso.getListaHabitaciones()) {
+				llenarOcupados(idHabi);
+			}
+			
+			grupos.put(grupoEnCurso.getId(), grupoEnCurso);
+			grupoEnCurso = null;
+			
+
+		} else {
+			Exception e = new Exception("Aun No hay suficientes habitaciones");
+			throw e;
+		}
+		
+	}
+	
+	public ArrayList<Integer> getListaHabitacionesGrupo() {
+		if (grupoEnCurso == null) {
+			return new ArrayList<Integer>();
+		}
+		return grupoEnCurso.getListaHabitaciones();
+	}	
+	public ArrayList<Huesped> getHuespedesGrupoEnCurso() {
+		if (grupoEnCurso == null) {
+			return new ArrayList<Huesped>();
+		}
+		return grupoEnCurso.getHuespedes();
 	}
 	
 	private ArrayList<Habitacion> consultarDisponibilidad (Date FechaI, Date FechaF, TipoHabitacion tipo) {
@@ -343,26 +406,13 @@ public class Hotel implements Serializable{
 		return habLista;
 	}
 	
-	public ArrayList<Habitacion> DiponiblesParaGrupoEnCurso(TipoHabitacion tipo) {
+	public ArrayList<Habitacion> DiponiblesParaGrupoEnCurso(TipoHabitacion tipo) throws Exception {
+		if (grupoEnCurso == null) {
+			Exception e = new Exception("No hay grupo");
+			throw e;
+		}
 		return consultarDisponibilidad(grupoEnCurso.getReserva().getFechaI(), grupoEnCurso.getReserva().getFechaF(), tipo);
 		
-	}
-
-	public boolean completarReserva(int idHabitacion) {
-		boolean resultado = false;
-		llenarOcupados(idHabitacion);
-		Habitacion habi = habitaciones.get(idHabitacion);
-		int precioHabitacion = (int)getPrecioHabitacionReserva(habi);
-		grupoEnCurso.añadirHabitacion(idHabitacion, habi.getCapacidad(), precioHabitacion);
-		
-		resultado =(grupoEnCurso.getvRelativo() <= grupoEnCurso.getCapacidadCamas());
-		
-		if(resultado) {
-			grupos.put(grupoEnCurso.getId(), grupoEnCurso);
-			grupoEnCurso = null;
-		}
-		
-		return !resultado;
 	}
 		
 	
