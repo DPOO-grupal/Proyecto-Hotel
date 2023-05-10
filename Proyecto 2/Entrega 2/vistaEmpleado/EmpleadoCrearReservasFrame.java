@@ -53,7 +53,11 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 	public EmpleadoCrearReservasFrame(WindowManager windowManager) {
 
 		super(windowManager);
-
+		if(windowManager.hayReserva()) {
+			JOptionPane.showMessageDialog(null, "Hay una reserva en curso");
+			fechaF.setEnabled(false);
+			fechaI.setEnabled(false);
+		};
 	}
 
 	protected void setPanelInfo() {
@@ -87,16 +91,7 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 
 		panelHabi.add(temLabel, c);
 
-		numHabitacion = new JTextField();
-		numHabitacion.setFont(fontLabel);
-		c.gridy = 2;
-		c.gridx = 0;
 
-		c.ipady = 10;
-		c.ipadx = 200;
-		c.insets = new Insets(0, 0, 0, 0);
-
-		panelHabi.add(numHabitacion, c);
 
 		JButton agregarButton = new JButton("Agregar habitación");
 		agregarButton.setBackground(Color.decode("#204473"));
@@ -459,6 +454,16 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 		    tablaDisponibles.setRowHeight(50);
 		    tablaDisponibles.addMouseListener(this);
 		    tablaDisponibles.setName("TablaDisponibles");
+		    
+			DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
+			modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
+			modelocentrar.setFont(fontTabla);
+			modelocentrar.setBackground(Color.white);
+			
+			for (int i = 0; i < datosHabitaciones.length; i++) {
+				tablaDisponibles.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);
+				tablaDisponibles.getColumnModel().getColumn(i).setCellEditor(null);
+			}
 		    
 		    for (Habitacion habitacion:disponibles) {
 		    	int precioHabitacion = getPrecioHabitacionReserva(habitacion);
