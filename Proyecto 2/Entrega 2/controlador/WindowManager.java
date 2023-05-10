@@ -24,13 +24,19 @@ import com.formdev.flatlaf.FlatLightLaf;
 import modelo.Admin;
 import modelo.Empleado;
 import modelo.Habitacion;
+import modelo.Servicio;
+import modelo.TipoHabitacion;
 import modelo.Usuario;
 import vistaAdmin.AutenticacionFrame;
+import vistaAdmin.AdminHabitacionesFrame;
 import vistaAdmin.AdminMenuPrincipal;
+import vistaAdmin.AdminServiciosFrame;
 import vistaAdmin.AdminUsuariosFrame;
 import vistaEmpleado.EmpleadoCrearReservasFrame;
+import vistaEmpleado.EmpleadoHabitacionesFrame;
 import vistaEmpleado.EmpleadoMenuPrincipal;
 import vistaEmpleado.EmpleadoReservasFrame;
+import vistaEmpleado.EmpleadoServiciosFrame;
 import vistaEmpleado.EmpleadoTarifasFrame;
 
 public class WindowManager {
@@ -179,6 +185,7 @@ public class WindowManager {
 		return area;
 	}
 	
+	
 	public boolean checkUsuario(String nombre) {
 		boolean self = false;
 		Empleado empleado = (Empleado) usuarioActual;
@@ -219,6 +226,77 @@ public class WindowManager {
 	public Date pasarDia(Date dia) {
 		Empleado empleado = (Empleado) usuarioActual;
 		return empleado.pasarDia(dia);
+
+	public HashMap<Integer,Servicio> darServicio() {
+		HashMap<Integer, Servicio> listaServicios = null;
+		if (usuarioActual.getClass() == Empleado.class) {
+			Empleado empleado = (Empleado) usuarioActual;
+			listaServicios = empleado.getServiciosHotel();
+		}
+		else if (usuarioActual.getClass() == Admin.class) {
+			Empleado empleado = (Admin) usuarioActual;
+			listaServicios = empleado.getServiciosHotel();
+		}
+		return listaServicios;
+		
+	}
+	
+	public HashMap<Integer, Habitacion> darHabitaciones() {
+		Empleado empleado = (Empleado) usuarioActual;
+		HashMap<Integer, Habitacion> listaHabitaciones = empleado.getHabitaciones();
+		return listaHabitaciones;
+	}
+	
+	public void agregarServicioHotel(String nombre, double precio) {
+		Admin admin = (Admin) usuarioActual;
+		admin.crearServicioHotel(nombre, precio);
+	}
+	
+	public void añadirServicioHabitacion(int id, String nombre, double precio) {
+		Admin admin = (Admin) usuarioActual;
+		admin.añadirServicioHabitacion(id, nombre, precio);
+	}
+	
+	public void setCaracteriticas(String caracteristicas, int id) {
+		Admin admin = (Admin) usuarioActual;
+		admin.setCaracteristicasHabitacion(caracteristicas, id);
+	}
+	
+	public void añadirServicioHotelHabitacion(int idHabitacion, int idServicio, int cantidad, boolean pagarEnSitio) {
+		Empleado empleado = (Admin) usuarioActual;
+		empleado.añadirServicioHotelHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);
+	}
+	
+	public void crearHabitacion(TipoHabitacion tipoHabitacion, int id, int capacidad, boolean apto) {
+		Admin admin = (Admin) usuarioActual;
+		admin.crearHabitacion(tipoHabitacion, id, capacidad, apto);
+	}
+	
+	public TipoHabitacion getTipoHabitacion(String opcion) {
+		boolean right;
+		TipoHabitacion tipo = null;
+		do {
+			right = false;
+			
+			switch (opcion) {
+			case "estandar":
+				tipo = TipoHabitacion.ESTANDAR;
+				break;
+			case "suite":
+				tipo = TipoHabitacion.SUITE;
+				break;
+			case "suite double":
+				tipo = TipoHabitacion.SUITEDOUBLE;
+				break;
+	
+			default:
+				right = true;
+				break;
+			}
+		} while(right);
+
+		
+		return tipo;
 	}
 	
 	public static void main(String[] args) {
@@ -259,7 +337,7 @@ public class WindowManager {
     			e.printStackTrace();
     		}
         	// JFrame para probar
-    		JFrame pruebas = new EmpleadoCrearReservasFrame(windowManager);
+    		JFrame pruebas = new AdminHabitacionesFrame(windowManager);
     		// Menú de ese Frame
     		JFrame menu = new AdminMenuPrincipal(windowManager);
     		

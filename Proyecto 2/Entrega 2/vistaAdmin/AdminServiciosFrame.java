@@ -6,11 +6,18 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Collection;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -20,14 +27,24 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import controlador.WindowManager;
+import modelo.Servicio;
+import vistaEmpleado.EmpleadoServiciosFrame;
 
-public class AdminServiciosFrame extends FrameBaseInfo{
+public class AdminServiciosFrame extends EmpleadoServiciosFrame implements ActionListener, MouseListener{
 	
 	private DefaultTableModel modeloTabla;
 	private JTable tablaServicios;
+	private JTextField cajaNombre;
+	private JTextField cajaPrecio;
+	private JTextField cajaNombreInfo;
+	private JTextField cajaPrecioInfo;
+	private JTextField cajaNumeroHabitacion;
+	private JTextField cajaCantidadPersonas;
+	private JButton añadirAHabitacion;
 
 	public AdminServiciosFrame(WindowManager windowManager) {
 		super(windowManager);
+		cargarDatos();
 		//setTitle("Servicios");
 		
 	}
@@ -50,7 +67,7 @@ public class AdminServiciosFrame extends FrameBaseInfo{
 		nombre.setForeground(Color.white);
 		nombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		JTextField cajaNombre = new JTextField();
+		cajaNombre = new JTextField();
 		cajaNombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 
 		
@@ -67,7 +84,7 @@ public class AdminServiciosFrame extends FrameBaseInfo{
 		precio.setForeground(Color.white);
 		precio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		JTextField cajaPrecio = new JTextField();
+		cajaPrecio = new JTextField();
 		cajaPrecio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
 		panelPrecio.add(precio);
@@ -79,6 +96,7 @@ public class AdminServiciosFrame extends FrameBaseInfo{
 		
 		//Boton para agregar un servicio
 		JButton agregarServicio = new JButton("Agregar servicio");
+		agregarServicio.addActionListener(this);
 		agregarServicio.setBackground(Color.decode("#ACCAF2"));
 		agregarServicio.setBackground(Color.CYAN);
 		agregarServicio.setFont(new Font("arial", 1, 20));
@@ -107,19 +125,20 @@ public class AdminServiciosFrame extends FrameBaseInfo{
         modeloTabla = new DefaultTableModel(columnas, 0);
         
         //Filas de la tabla
-        String[] fila1 = {"Spa"};
-        String[] fila2 = {"LOL"};
-        modeloTabla.addRow(fila1);
-	    modeloTabla.addRow(fila2);
+        modeloTabla.addTableModelListener(tablaServicios);
+  	    
+  	    //Diseño de la tabla
+        tablaServicios = new JTable(modeloTabla);
+        tablaServicios.addMouseListener(this);
 	    
 	    //Diseño de la tabla
-        tablaServicios = new JTable(modeloTabla);
+        tablaServicios.setDefaultEditor(Object.class, null);
         tablaServicios.getTableHeader().setBackground(Color.decode("#204473"));
         tablaServicios.getTableHeader().setForeground(Color.white);
         tablaServicios.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
         tablaServicios.setFont(new Font("Times New Roman", 1, 20));
         tablaServicios.setRowHeight(70);
-        tablaServicios.setEnabled(false);
+        tablaServicios.setEnabled(true);
 
         DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
         modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
@@ -144,13 +163,13 @@ public class AdminServiciosFrame extends FrameBaseInfo{
 		nombre.setForeground(Color.BLACK);
 		nombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		JTextField cajaNombre = new JTextField();
+		cajaNombreInfo = new JTextField();
 		
 		JLabel precio = new JLabel("Precio");
 		precio.setForeground(Color.BLACK);
 		precio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		JTextField cajaPrecio = new JTextField();
+		cajaPrecioInfo = new JTextField();
 		
 		//Diseño 
 		JPanel buscar = new JPanel(new GridLayout(4,1));
@@ -158,9 +177,9 @@ public class AdminServiciosFrame extends FrameBaseInfo{
 		buscar.setBackground(Color.decode("#accaf2"));
 		
 		buscar.add(nombre);
-		buscar.add(cajaNombre);
+		buscar.add(cajaNombreInfo);
 		buscar.add(precio);
-		buscar.add(cajaPrecio);
+		buscar.add(cajaPrecioInfo);
 		
 		//Tamaño y ubicacion en el panel
 		constraints.gridx = 3;
@@ -173,7 +192,7 @@ public class AdminServiciosFrame extends FrameBaseInfo{
 		panelDerecho.add(buscar, constraints);
 		
 		//Creacion del recuadro para añadir servicio a la habitacion
-		JPanel habitacion = new JPanel(new GridLayout(3,1, 0, 5));
+		JPanel habitacion = new JPanel(new GridLayout(5,1, 0, 5));
 		habitacion.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		habitacion.setBackground(Color.decode("#accaf2"));
 		
@@ -182,16 +201,26 @@ public class AdminServiciosFrame extends FrameBaseInfo{
 		numHabitacion.setForeground(Color.BLACK);
 		numHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		JTextField cajaNumeroHabitacion = new JTextField();
+		cajaNumeroHabitacion = new JTextField();
+		
+		//Numero de habitacion y su caja de texto
+		JLabel cantidadPersonas = new JLabel("#personas");
+		cantidadPersonas.setForeground(Color.BLACK);
+		cantidadPersonas.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		
+		cajaCantidadPersonas = new JTextField();
 		
 		//Boton para añadir un servicio
-		JButton añadirAHabitacion = new JButton("Añadir habitación");
+		añadirAHabitacion = new JButton("Añadir a la habitación");
+		añadirAHabitacion.addActionListener(this);
 		añadirAHabitacion.setBackground(Color.decode("#204473"));
 		añadirAHabitacion.setForeground(Color.white);
 		añadirAHabitacion.setFont(new Font("arial", 1, 20));
 		
 		habitacion.add(numHabitacion);
 		habitacion.add(cajaNumeroHabitacion);
+		habitacion.add(cantidadPersonas);
+		habitacion.add(cajaCantidadPersonas);
 		habitacion.add(añadirAHabitacion);
 		
 		//Tamaño y ubicacion en el panel
@@ -205,18 +234,113 @@ public class AdminServiciosFrame extends FrameBaseInfo{
 		
 		panelDerecho.add(habitacion, constraints);
 	}
+	
+	public void cargarDatos() {
+		modeloTabla.getDataVector().removeAllElements();
+		modeloTabla.fireTableDataChanged(); 
+		Collection<Servicio> listaUsuarios = windowManager.darServicio().values();
+		for (Servicio servicio : listaUsuarios) {
+	        String nombre = servicio.getNombre();
+	        modeloTabla.addRow(new Object[]{nombre, "ICON", "ICON"});
+	    }
+	}
+	
+	private void agregarServicio() {
+		String nombre = cajaNombre.getText();
+		Double precio = Double.parseDouble(cajaPrecio.getText());
+		windowManager.agregarServicioHotel(nombre, precio);
+		cargarDatos();
+		cajaNombre.setText("");
+		cajaPrecio.setText("");
+	}
+	
+	private void añadirServicioHotelHabitacion() {
+		int idServicio = getId(cajaNombreInfo.getText());
+		int idHabitacion = Integer.parseInt(cajaNumeroHabitacion.getText());
+		int cantidad = Integer.parseInt(cajaCantidadPersonas.getText());
+		boolean pagarEnSitio = false;
+		int option = JOptionPane.showConfirmDialog(null, "¿Desea pagar ahora?", "Pagar", JOptionPane.YES_NO_OPTION);
+		cajaNombreInfo.setText("");
+		cajaPrecioInfo.setText("");
+		cajaNumeroHabitacion.setText("");
+		cajaCantidadPersonas.setText("");
+		if (option==JOptionPane.YES_OPTION) {
+			pagarEnSitio=true;
+		}
+		windowManager.añadirServicioHotelHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);
+	}
+	
+	
+	private String getPrecio(String nombre) {
+		Collection<Servicio> listaServicios = windowManager.darServicio().values();
+		String nombreServicio = null;
+		for(Servicio servicio : listaServicios)
+			if (servicio.getNombre().equals(nombre)) {
+				nombreServicio = String.valueOf(servicio.getPrecio());
+			}
+		return nombreServicio;
+		}
+	
+	private int getId(String nombre) {
+		Collection<Servicio> listaServicios = windowManager.darServicio().values();
+		int precioServicio = 0;
+		for(Servicio servicio : listaServicios)
+			if (servicio.getNombre().equals(nombre)) {
+				precioServicio = servicio.getId();
+			}
+		return precioServicio;
+		}
 
 	public void actionPerformedFrame(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "Agregar servicio":
+			agregarServicio();
 			break;
 		
-		case "Añadir a la habitacion":
+		case "Añadir a la habitación":
+			añadirServicioHotelHabitacion();
 			break;
 
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (e.getClickCount() == 1) {
+			int row = tablaServicios.getSelectedRow();
+			int column = tablaServicios.getSelectedColumn();
+			String nombre = tablaServicios.getValueAt(row, column).toString();
+			String precio = getPrecio(nombre);
+			cajaNombreInfo.setText(nombre);
+			cajaPrecioInfo.setText(precio);
+		 }
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

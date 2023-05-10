@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -20,8 +21,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import controlador.WindowManager;
+import vistaEmpleado.EmpleadoRestauranteFrame;
 
-public class AdminRestauranteFrame extends FrameBaseInfo{
+public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements ActionListener{
 
 	private DefaultTableModel modeloTabla;
 	private JTable tablaServicios;
@@ -384,6 +386,10 @@ public class AdminRestauranteFrame extends FrameBaseInfo{
 				
 		
 	}
+	
+	private void agregarAlMenu() {
+		
+	}
 
 	@Override
 	public void actionPerformedFrame(ActionEvent e) {
@@ -396,7 +402,8 @@ public class AdminRestauranteFrame extends FrameBaseInfo{
 			break;
 		case "Pagar ahora":
 			break;
-		case "Agregar al menú":		
+		case "Agregar al menú":
+			
 			break;
 
 		default:

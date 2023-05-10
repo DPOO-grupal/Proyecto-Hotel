@@ -50,9 +50,9 @@ public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
 	public void cargarDatos() {
 		modeloTabla.getDataVector().removeAllElements();
 		modeloTabla.fireTableDataChanged(); 
-		String[] listaUsuarios = windowManager.darUsuarios();		
-		for (int i = 0; i < listaUsuarios.length; i++) {
-	        String nombre = listaUsuarios[i];
+		String[] listaServicios = windowManager.darUsuarios();		
+		for (int i = 0; i < listaServicios.length; i++) {
+	        String nombre = listaServicios[i];
 	        modeloTabla.addRow(new Object[]{nombre, "ICON", "ICON"});
 	    }
 	}

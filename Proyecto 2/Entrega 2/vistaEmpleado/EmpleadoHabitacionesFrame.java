@@ -9,6 +9,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 
 import javax.swing.BorderFactory;
@@ -25,9 +29,11 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import controlador.WindowManager;
+import modelo.Habitacion;
+import modelo.Servicio;
 import vistaAdmin.FrameBaseInfo;
 
-public class EmpleadoHabitacionesFrame extends FrameBaseInfo{
+public class EmpleadoHabitacionesFrame extends FrameBaseInfo implements MouseListener{
 	
 	private DefaultTableModel modeloTabla;
 	private JTable tablaHabitaciones;
@@ -36,10 +42,6 @@ public class EmpleadoHabitacionesFrame extends FrameBaseInfo{
 		super(windowManager);
 		//setTitle("Habitaciones");
 		
-		
-	}
-	@Override
-	protected void setPanelCrear() {
 		
 	}
 	
@@ -55,14 +57,10 @@ public class EmpleadoHabitacionesFrame extends FrameBaseInfo{
 		String[] columnas = {"ID", "Tipo", "Capacidad", "Apto", "Servicios", "Características"}; //Nombre de las columnas
         modeloTabla = new DefaultTableModel(columnas, 0);
         
-        //Filas de la tabla
-        String[] fila1 = {"503", "Suite", "4", "Si", ""};
-        String[] fila2 = {"205", "Double Suite", "6", "No", ""};
-        modeloTabla.addRow(fila1);
-	    modeloTabla.addRow(fila2);
 	    
 	    //Diseño de la tabla
         tablaHabitaciones = new JTable(modeloTabla);
+        tablaHabitaciones.addMouseListener(this);
         tablaHabitaciones.getTableHeader().setBackground(Color.decode("#204473"));
         tablaHabitaciones.getTableHeader().setForeground(Color.white);
         tablaHabitaciones.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
@@ -88,82 +86,66 @@ public class EmpleadoHabitacionesFrame extends FrameBaseInfo{
 
 	}
 	
-	protected void crearCama() {
+	protected void setPanelCrear() {
 		//Edita el aspecto del panel	
-		panelCrear.setLayout(new GridLayout(5, 1, 10, 10));
+		panelCrear.setLayout(new GridLayout(7, 1, 10, 10));
 		panelCrear.setBackground(Color.decode("#204473"));
 		panelCrear.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
 		
-		//Panel ID
-		JPanel panelCapacidad = new JPanel();
-		panelCapacidad.setBackground(Color.decode("#204473"));	
-		panelCapacidad.setLayout(new GridLayout(2, 1));
-		
-		//Id y su caja de texto
-		JLabel capacidadCama = new JLabel("Nombre");
-		capacidadCama.setForeground(Color.white);
-		capacidadCama.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-		
-		JTextField cajaCapacidadCama = new JTextField();
-		cajaCapacidadCama.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-
-		
-		panelCapacidad.add(capacidadCama);
-		panelCapacidad.add(cajaCapacidadCama);
-		
-		//Panel tipo habitacion
-		JPanel panelApto = new JPanel();
-		panelApto.setBackground(Color.decode("#204473"));	
-		panelApto.setLayout(new GridLayout(2, 1));
-
-		//Tipo de habitacion y su caja de texto
-		JLabel apto = new JLabel("Tipo habitación");
-		apto.setForeground(Color.white);
-		apto.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-		
-		JTextField cajaApto = new JTextField();
-		cajaApto.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-		
-		panelApto.add(apto);
-		panelApto.add(cajaApto);
-
-		//Panel agregar
-		JPanel panelCrear = new JPanel();
-		panelCrear.setBackground(Color.decode("#204473"));
-		
-		//Boton crear habitacion
-		JButton crearHabitacion = new JButton("Crear habitación");
-		crearHabitacion.setBackground(Color.decode("#ACCAF2"));
-		crearHabitacion.setPreferredSize(new Dimension( 200, 60));
-		crearHabitacion.setBackground(Color.CYAN);
-		crearHabitacion.setFont(new Font("arial", 1, 20));
-		crearHabitacion.addActionListener(this);
-		
-		panelCrear.add(crearHabitacion);
-		
-		//Agregacion de componentes
-		panelCrear.add(new JLabel());
-		panelCrear.add(panelCapacidad);
-		panelCrear.add(panelApto);
-		panelCrear.add(panelCrear);
+	}
+	
+	protected void cargarDatos() {
+		modeloTabla.getDataVector().removeAllElements();
+		modeloTabla.fireTableDataChanged(); 
+		Collection<Habitacion> listaHabitaciones = windowManager.darHabitaciones().values();
+		for (Habitacion habitacion : listaHabitaciones) {
+	        String id = String.valueOf(habitacion.getId());
+	        String tipo = habitacion.getTipoHabitacion().toString();
+	        String capacidad = String.valueOf(habitacion.getCapacidad());
+	        String apto = "No";
+	        if (habitacion.getApto()) {
+				apto="Si";
+	        }
+	        ArrayList<Servicio> servicios = habitacion.getServicios();
+	        String caracteristicas = habitacion.getCaracteristicas();
+	        modeloTabla.addRow(new Object[]{id, tipo, capacidad, apto, servicios, caracteristicas, "ICON", "ICON"});
+	    }
+	}
+	
+	@Override
+	protected void actionPerformedFrame(ActionEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void actionPerformedFrame(ActionEvent e) {
-		switch (e.getActionCommand()) {
-		case "Crear habitación":
-			break;
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
 		
-		case "Añadir cama":
-			break;
-			
-		case "Añadir servicio":
-			break;
+	}
 
-		default:
-			break;
-		}
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
