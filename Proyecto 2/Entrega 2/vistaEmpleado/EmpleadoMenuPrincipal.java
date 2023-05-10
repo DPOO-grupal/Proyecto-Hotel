@@ -147,7 +147,8 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
         modeloTablaHoy = new DefaultTableModel(columnas, 0);
           
         //Filas de la tabla
-  	    
+//        String[] filaPrueba = {"0"};
+//  	    modeloTablaHoy.addRow(filaPrueba);
   	    //Diseño de la tabla
           tablaHoy = new JTable(modeloTablaHoy);
           tablaHoy.getTableHeader().setBackground(Color.decode("#204473"));
@@ -168,6 +169,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
               tablaHoy.getColumnModel().getColumn(i).setCellEditor(null);
           }
           //Tamaño y ubicacion de la tabla en el panel
+          JScrollPane panelHoy = new JScrollPane(tablaHoy);
           constraints.gridx = 0;
           constraints.insets = new Insets(0, 0, 10, 0);
           constraints.gridy = 1;
@@ -178,7 +180,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
           //constraints.weightx = 1;
           //constraints.weighty = 0.1;
 
-          PanelOcupacion.add(tablaHoy, constraints);
+          PanelOcupacion.add(panelHoy, constraints);
           
           refrescarHoy = new JButton("Refrescar ocupacion diaria");
           refrescarHoy.addActionListener(this);
@@ -345,11 +347,16 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	}
 	
 	public void ocupacionHoy() {
+		modeloTablaHoy.getDataVector().removeAllElements();
+        modeloTablaHoy.fireTableDataChanged();
 		Integer[] habitaciones = getHabitaciones();
 		Integer[] ocupadas = getOcupadas();
-		int[][] matriz = cargarHabitaciones(habitaciones.length, habitaciones);
-		modeloTablaHoy = new DefaultTableModel(matriz, 0);
-		tablaHoy = new JTable(modeloTablaHoy);
+		String[][] matriz = cargarHabitaciones(habitaciones.length, habitaciones);
+		for (int i = 0 ; i < matriz.length ; i++) {
+			String[] fila = matriz[i];
+			System.out.println(Arrays.toString(fila));
+			modeloTablaHoy.addRow(fila);
+		}
 		colorearTabla(ocupadas);
 	}
 	
@@ -364,10 +371,10 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		}
 	}
 	
-	public int[][] cargarHabitaciones(int lenArreglo, Integer[] habitaciones) {
-		int[][] matriz;
+	public String[][] cargarHabitaciones(int lenArreglo, Integer[] habitaciones) {
+		String[][] matriz;
 		if (lenArreglo == 0) {
-			matriz = new int[0][0];
+			matriz = new String[0][0];
 		}
 		else {
 			int cantidadFilas = (habitaciones[lenArreglo-1])/100;
@@ -380,13 +387,18 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 					cantidadColumnas = columnasXfila[filaHabitacion-1];
 				}
 			}			
-			matriz = new int[cantidadFilas][cantidadColumnas];
+			matriz = new String[cantidadFilas][cantidadColumnas];
 		}		
+		
 		for (int i = 0 ; i < lenArreglo ; i++) {
 			int fila = (habitaciones[i]/100)-1;
-			int col = habitaciones[i]%100;
-			matriz[fila][col] = habitaciones[i];
+			int col = habitaciones[i]%100-1;
+			matriz[fila][col] = habitaciones[i] + "";
 		}
+		System.out.println("Len matriz " + matriz.length);
+//		for (int i = 0; i < 3; i++) {
+//		    for (int j = 0; j < 1; j++) {
+//		        System.out.println(matriz[i][j] + " ");}}
 		return matriz;
 	}
 	
