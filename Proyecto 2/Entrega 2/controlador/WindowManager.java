@@ -236,7 +236,7 @@ public class WindowManager {
 	public Date pasarDia(Date dia) {
 		Empleado empleado = (Empleado) usuarioActual;
 		return empleado.pasarDia(dia);
-
+	}
 	public HashMap<Integer,Servicio> darServicio() {
 		HashMap<Integer, Servicio> listaServicios = null;
 		if (usuarioActual.getClass() == Empleado.class) {
@@ -407,21 +407,5 @@ public class WindowManager {
         } else {
         	windowManager.iniciarAutenticacion();
         }
-		
-
-}
-
-	public void cargarReserva(Date fechaI, Date fechaF, int tamanioGrupo, String[] nombres, String[] documentos, String[] emails, String[] telefonos, int[] edades) {
-		if (usuarioActual.getClass() == Empleado.class) {
-			Empleado empleado = (Empleado) usuarioActual;
-			empleado.crearReserva(fechaI, fechaF, tamanioGrupo, nombres, documentos, emails, telefonos, edades);
-			empleado.llenarOcupados(104);
-		}
 	}
-
-
-
-
-
-
 }
