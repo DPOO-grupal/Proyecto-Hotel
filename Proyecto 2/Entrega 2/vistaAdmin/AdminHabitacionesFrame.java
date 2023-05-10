@@ -11,12 +11,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -32,12 +37,12 @@ public class AdminHabitacionesFrame extends EmpleadoHabitacionesFrame{
 	private DefaultTableModel modeloTabla;
 	private JTable tablaHabitaciones;
 	private JButton crearHabitacion;
-	private JTextField cajaApto;
+	private JCheckBox cajaApto;
 	private JTextField cajaPrecio;
 	private JTextField cajaServicioHabitacion;
 	private JTextField cajaCapacidad;
-	private JTextField cajaTipoHabitacion;
-	private JTextField cajaPiso;
+	private JComboBox<String> cajaTipoHabitacion;
+	private JSpinner cajaPiso;
 	
 	
 	public AdminHabitacionesFrame(WindowManager windowManager) {
@@ -64,9 +69,11 @@ public class AdminHabitacionesFrame extends EmpleadoHabitacionesFrame{
 		piso.setForeground(Color.white);
 		piso.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		cajaPiso = new JTextField();
-		cajaPiso.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+        SpinnerModel model = new SpinnerNumberModel(1, 1, 20, 1);
 
+		cajaPiso = new JSpinner(model);
+  		cajaPiso.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+ 
 		
 		panelPiso.add(piso);
 		panelPiso.add(cajaPiso);
@@ -81,7 +88,9 @@ public class AdminHabitacionesFrame extends EmpleadoHabitacionesFrame{
 		tipoHabitacion.setForeground(Color.white);
 		tipoHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		cajaTipoHabitacion = new JTextField();
+		String[] tipos = {"Estandar", "Suite", "Double Suite"};
+		
+		cajaTipoHabitacion =  new JComboBox<>(tipos);
 		cajaTipoHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
 		panelTipoHabitacion.add(tipoHabitacion);
@@ -113,7 +122,7 @@ public class AdminHabitacionesFrame extends EmpleadoHabitacionesFrame{
 		apto.setForeground(Color.white);
 		apto.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		cajaApto = new JTextField();
+		cajaApto = new JCheckBox();
 		cajaApto.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
 		panelApto.add(apto);
@@ -247,18 +256,39 @@ public class AdminHabitacionesFrame extends EmpleadoHabitacionesFrame{
 	
 	
 	private void crearHabitacion() {
-		TipoHabitacion tipoHabitacion = windowManager.getTipoHabitacion(cajaTipoHabitacion.getText());
-		int piso = Integer.parseInt(cajaPiso.getText());
+		
+		
+	    int tipo = cajaTipoHabitacion.getSelectedIndex();
+	    TipoHabitacion tipoHabitacion = TipoHabitacion.ESTANDAR;
+	    
+	    switch (tipo) {
+		case 1:
+			tipoHabitacion  = TipoHabitacion.ESTANDAR;
+			break;
+		case 2:
+			tipoHabitacion = TipoHabitacion.SUITE;
+
+			break;
+		case 3:
+			tipoHabitacion = TipoHabitacion.SUITE;
+
+			break;
+
+		default:
+			break;
+		}
+		
+		int piso = (int) cajaPiso.getValue();
 		int id = Habitacion.getMaxHabitacion(piso);
 		int capacidad = Integer.parseInt(cajaCapacidad.getText());
-		boolean apto = getApto(cajaApto.getText());
+		boolean apto = cajaApto.isSelected();
 		windowManager.crearHabitacion(tipoHabitacion, id, capacidad, apto);
 		String nombre = cajaServicioHabitacion.getText();
 		Double precio = Double.parseDouble(cajaPrecio.getText());
 		windowManager.añadirServicioHabitacion(id, nombre, precio);
 		String option = JOptionPane.showInputDialog("Caracteriticas");
-		cajaTipoHabitacion.setText("");
-		cajaPiso.setText("");
+		cajaTipoHabitacion.setSelectedIndex(0);;
+		cajaPiso.setValue(1);
 		cajaCapacidad.setText("");
 		cajaApto.setText("");
 		cajaServicioHabitacion.setText("");
