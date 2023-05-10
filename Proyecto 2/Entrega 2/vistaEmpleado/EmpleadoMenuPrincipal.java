@@ -307,7 +307,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 			int ocupacionesMes = 0;
 			ocupacionesMes = contarOcupacionesMes(dia);
 			Color color = new ColorUIResource(Color.WHITE);
-			if (ocupacionesMes < 50 && ocupacionesMes >= 0)
+			if (ocupacionesMes < 50 && ocupacionesMes > 0)
 				color = new Color(102, 255, 102);
 			else if (ocupacionesMes < 100 && ocupacionesMes >= 50)
 				color = new Color(255, 255, 153);
