@@ -576,6 +576,7 @@ public class Hotel implements Serializable{
 		} else {
 			inicializarTarifas();
 			añadirUsuario("root", "Cookie", "Lobby", 1);
+			añadirUsuario("E1", "Empleado", "Lobby", 1);
 		}
 				
 	}
