@@ -50,6 +50,84 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo {
 	    GridBagConstraints constraints = new GridBagConstraints();
 	    panelDerecho.setLayout(gridbag);
 	    
+	    JPanel panelBuscar = new JPanel();	    
+	    // añadir al panel
+	    GridBagLayout gba = new GridBagLayout();
+	    GridBagConstraints c = new GridBagConstraints();
+	    
+	    Font fontLabel = new Font("Arial", Font.BOLD, 16);
+	    
+	    panelBuscar.setLayout(gba);
+	    
+	    
+	    JButton buscarButton = new JButton("Buscar Tarifa");
+	    buscarButton.setBackground(Color.decode("#204473"));
+	    buscarButton.setFont(fontLabel);
+	    buscarButton.setForeground(Color.white);
+	    
+	    JXDatePicker fechaI = new JXDatePicker(new Date());
+	    JXDatePicker fechaF = new JXDatePicker(new Date());
+	    
+	    c.gridx = 0;
+	    c.gridy = 0;
+	    
+	    c.ipady = 20;
+	    c.ipadx = 100;
+	    
+	    c.insets = new Insets(0, 0, 0, 0);
+	    
+	    JLabel temLabel = new JLabel("Fecha Incial");
+		temLabel.setFont(fontLabel);
+	    panelBuscar.add(temLabel,c);
+	    
+	    c.gridy = 1;
+	    c.gridx = 0;
+	    c.insets = new Insets(0, 0, 25, 0);
+	    
+	    fechaI.setFont(fontLabel);
+	    panelBuscar.add(fechaI, c);
+	    
+	    c.gridy = 3;
+	    c.gridx = 0;
+	    
+	    c.insets = new Insets(0, 0, 0, 0);
+	    
+	    temLabel = new JLabel("Fecha Final");
+		temLabel.setFont(fontLabel );
+	    panelBuscar.add(temLabel,c);
+	    
+	    c.gridy = 4;
+	    c.gridx = 0;
+	    
+	    c.insets = new Insets(0, 0, 0, 0);
+	    
+	    fechaF.setFont(fontLabel);
+	    panelBuscar.add(fechaF, c);
+	    	    
+	    c.gridx = 2;
+	    c.gridy = 1;
+	    
+	    c.gridheight = 3;
+	    c.gridwidth = 1;
+	    
+	    c.ipadx = 100;
+	    c.ipady = 40;
+	    
+	    c.insets = new Insets(0, 100, 0, 0);
+
+	    
+
+	    panelBuscar.add(buscarButton, c);
+	    panelBuscar.setBackground(Color.decode("#accaf2"));
+	    constraints.ipadx = 500;
+	    constraints.ipady = 50;
+	    constraints.gridx = 0;
+	    constraints.gridy = 0;
+	    constraints.weighty = 1;
+	    
+	    
+	    panelDerecho.add(panelBuscar, constraints);
+	    
 	    
 	    // tabla
 	    String[] columnas = {"Fecha Inicial", "Fecha Final", "Precio", "Tipo"};
@@ -71,6 +149,7 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo {
         modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
         modelocentrar.setFont(fontTabla);
         
+        
         for (int i = 0; i< 4; i++) {
             tablaTarifas.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);
             tablaTarifas.getColumnModel().getColumn(i).setCellEditor(null);
@@ -82,7 +161,7 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo {
         constraints.gridx = 0;
 	    constraints.gridy = 1;
 	    constraints.ipadx = 1000;
-	    constraints.ipady = 800;
+	    constraints.ipady = 500;
 	    
 	    panelDerecho.add(scrollPanel, constraints);
 	}
@@ -92,78 +171,59 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo {
       modeloTabla.addRow(fila);
 
 	}
-
+	
+	@Override
 	protected void setPanelCrear() {
 		   // Configuracion General
-		GridBagLayout gba = new GridBagLayout();
-	    GridBagConstraints c = new GridBagConstraints();
+		
+		GridBagLayout gridbag = new GridBagLayout();
+	    GridBagConstraints constraints = new GridBagConstraints();
 	    
-	    Font fontLabel = new Font("Arial", Font.BOLD, 16);
-	    
-	    panelCrear.setLayout(gba);
-	    
-	    
-	    JButton buscarButton = new JButton("Buscar Tarifa");
-	    buscarButton.setBackground( Color.decode("#ACCAF2"));
-	    buscarButton.setFont(fontLabel);
-	    buscarButton.setForeground(Color.black);
-	    
-	    JXDatePicker fechaI = new JXDatePicker(new Date());
-	    JXDatePicker fechaF = new JXDatePicker(new Date());
-	    
-	    c.gridx = 0;
-	    c.gridy = 0;
-	    
-	    c.ipady = 20;
-	    c.ipadx = 100;
-	    
-	    c.insets = new Insets(0, 0, 0, 0);
-	    
-	    JLabel temLabel = new JLabel("Fecha Incial");
-		temLabel.setFont(fontLabel);
-		temLabel.setForeground(Color.white);
-		panelCrear.add(temLabel,c);
-	    
-	    c.gridy = 1;
-	    c.gridx = 0;
-	    c.insets = new Insets(0, 0, 25, 0);
-	    
-	    fechaI.setFont(fontLabel);
-	    panelCrear.add(fechaI, c);
-	    
-	    c.gridy = 3;
-	    c.gridx = 0;
-	    
-	    c.insets = new Insets(0, 0, 0, 0);
-	    
-	    temLabel = new JLabel("Fecha Final");
-		temLabel.setFont(fontLabel );
-		temLabel.setForeground(Color.white);
-		panelCrear.add(temLabel,c);
-	    
-	    c.gridy = 4;
-	    c.gridx = 0;
-	    
-	    c.insets = new Insets(0, 0, 0, 0);
-	    
-	    fechaF.setFont(fontLabel);
-	    panelCrear.add(fechaF, c);
-	    	    
-	    c.gridx = 0;
-	    c.gridy = 5;
-	    
-	    c.gridheight = 3;
-	    c.gridwidth = 1;
-	    
-	    c.ipadx = 100;
-	    c.ipady = 40;
-	    
-	    c.insets = new Insets(50, 0, 0, 0);
+	    panelCrear.setLayout(gridbag);
 
-	    
+		panelCrear.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
+		panelCrear.setBackground(Color.decode("#204473"));
+		
+		datos = new JTextField[4];
+		String[] titulos = {"Tipo", "Precio", "Fecha Inicial", "Fecha Inicial"};
+		
+		Font fontLabel = new Font("Arial", Font.BOLD, 20);
 
-	    panelCrear.add(buscarButton, c);
-	    panelCrear.setBackground(Color.decode("#204473"));
+		
+		for( int i = 0; i < 4; i++) {
+			JTextField campo = new JTextField();
+			campo.setPreferredSize(new Dimension(200, 30));
+			
+			JLabel titulo = new JLabel(titulos[i]);
+			titulo.setFont(fontLabel);
+			titulo.setForeground(Color.WHITE);
+			
+			datos[i] = campo;
+			
+			constraints.gridx = 0;
+			constraints.gridy = (i*2);
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			constraints.weighty=10;
+			panelCrear.add(titulo, constraints);
+			
+			constraints.gridy = (i*2)+1 ;
+			constraints.weighty=10;
+			constraints.fill = GridBagConstraints.HORIZONTAL;
+			panelCrear.add(campo, constraints);
+		}
+	    
+		panelCrear.add(new JLabel());
+		
+		Font fontBoton = new Font("Arial", Font.BOLD, 20);
+		addDatos =  new JButton("Crear Tarifa");
+		addDatos.setBackground( Color.decode("#ACCAF2"));
+		addDatos.setFont(fontBoton);
+		
+		constraints.gridy = 9 ;
+		constraints.gridy = GridBagConstraints.PAGE_END;
+		panelCrear.add(addDatos,constraints);
+		
+	    
 	}
 
 	@Override

@@ -41,7 +41,6 @@ import controlador.WindowManager;
 import vistaAdmin.AdminHabitacionesFrame;
 import vistaAdmin.AdminRestauranteFrame;
 import vistaAdmin.AdminServiciosFrame;
-import vistaAdmin.AdminTarifasFrame;
 
 public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 
