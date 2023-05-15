@@ -9,6 +9,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.time.LocalTime;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -24,6 +25,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import org.jdesktop.swingx.JXDatePicker;
+
+import com.github.lgooddatepicker.components.*;
+import com.github.lgooddatepicker.components.TimePickerSettings.TimeIncrement;
 
 import controlador.WindowManager;
 import vistaAdmin.FrameBaseInfo;
@@ -65,7 +69,13 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo {
 	    buscarButton.setFont(fontLabel);
 	    buscarButton.setForeground(Color.white);
 	    
-	    JXDatePicker fechaI = new JXDatePicker(new Date());
+	    
+	    TimePickerSettings timeSettings = new TimePickerSettings();
+	    timeSettings.initialTime = LocalTime.of(15, 30);	 
+	    timeSettings.generatePotentialMenuTimes(TimeIncrement.FifteenMinutes, null, null);
+
+	    TimePicker fechaI = new TimePicker(timeSettings);
+	  
 	    JXDatePicker fechaF = new JXDatePicker(new Date());
 	    
 	    c.gridx = 0;

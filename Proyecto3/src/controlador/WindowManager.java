@@ -60,6 +60,8 @@ public class WindowManager {
 	    JPanel panel = new JPanel();
 	    panel.add(mensaje);
 	    panel.add(datePicker);
+	    
+	    
 
 	    JOptionPane.showOptionDialog(setDayFrame, panel, "Establecer fecha del Hotel", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
 
