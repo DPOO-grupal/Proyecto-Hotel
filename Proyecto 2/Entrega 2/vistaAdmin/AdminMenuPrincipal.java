@@ -29,8 +29,6 @@ public class AdminMenuPrincipal extends EmpleadoMenuPrincipal implements ActionL
         super(windowManager);
         usuariosFrame = new AdminUsuariosFrame(windowManager);
         tarifasFrame = new AdminTarifasFrame(windowManager);
-		serviciosFrame = new AdminServiciosFrame(windowManager);
-		habitacionesFrame = new AdminHabitacionesFrame(windowManager);
 		restauranteFrame = new AdminRestauranteFrame(windowManager);
 	}
 

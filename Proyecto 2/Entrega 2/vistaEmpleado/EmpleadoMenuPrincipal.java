@@ -60,6 +60,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	protected WindowManager windowManager;
 	protected JButton checkIn;
 	protected JButton checkOut;
+	protected JButton setFecha;
 	protected JFrame reservasFrame;
 	protected JPanel panelHoy;
 
@@ -87,9 +88,9 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 
 		tarifasFrame = new EmpleadoTarifasFrame(windowManager);
 		serviciosFrame = new EmpleadoServiciosFrame(windowManager);
-		habitacionesFrame = new EmpleadoHabitacionesFrame(windowManager);
-		restauranteFrame = new EmpleadoRestauranteFrame(windowManager);
 		reservasFrame = new EmpleadoReservasFrame(windowManager);
+		serviciosFrame = new AdminServiciosFrame(windowManager);
+		habitacionesFrame = new AdminHabitacionesFrame(windowManager);
 		
 		ocupacionHoy();
 		ocupacionAnual();
@@ -136,7 +137,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	    constraints.insets = new Insets(10, 0, 10, 0);
 	    constraints.anchor = GridBagConstraints.WEST;
 	    constraints.gridx = 0;
-        constraints.gridy = 0;
+        constraints.gridy = 1;
         constraints.gridheight = 1;
         constraints.gridwidth = 1;
         //constraints.weightx = 1;
@@ -174,7 +175,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
           panelHoy.setPreferredSize(new Dimension(200, 100));
           constraints.gridx = 0;
           constraints.insets = new Insets(0, 0, 30, 0);
-          constraints.gridy = 1;
+          constraints.gridy = 2;
           constraints.ipady = 200;
           constraints.ipadx = 800;
           constraints.gridheight = 1;

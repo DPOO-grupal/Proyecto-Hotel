@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.0.0">
+  <zoom_level>5</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>885</x>
+      <y>215</y>
+      <w>100</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>WindowManager
+--
+-ventandaActual: JFrame
+-menu: JFrame
+-autenticacionFrame: JFrame
+-usuarioActual: Usuario
+-pruebas: JFrame
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>880</x>
+      <y>200</y>
+      <w>110</w>
+      <h>85</h>
+    </coordinates>
+    <panel_attributes>controlador
+bg=orange</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>555</x>
+      <y>110</y>
+      <w>140</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>AdminHabitacionesFrame
+--
+-modeloTabla: DefaultTableModel
+-tablaHabitaciones: JTable
+-crearHabitacion: JButton
+-cajaApto: JCheckBox
+-cajaPrecio: JTextField
+-cajaServicioHabitacion: JTextField
+-cajaCapacidad: JTextField
+-cajaTipoHabitacion: JComboBox&lt;String&gt;
+-cajaPiso: JSpinner
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>555</x>
+      <y>370</y>
+      <w>85</w>
+      <h>35</h>
+    </coordinates>
+    <panel_attributes>AdminMenuPrincipal
+--
+-usuariosFrame: JFrame
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>435</x>
+      <y>110</y>
+      <w>115</w>
+      <h>155</h>
+    </coordinates>
+    <panel_attributes>AdminRestauranteFrame
+--
+-modeloTabla: DefaultTableModel
+-tablaMenu: JTable
+-cajaHorarioI: JTextField
+-cajaHorarioF: JTextField
+-cajaPrecioOrden: JTextField
+-cajaNombreOrden: JTextField
+-cajaHorarioIOrden: JTextField
+-cajaHorarioFOrden: JTextField
+-cajaLlevableOrden: JTextField
+-cajaNombre: JTextField
+-cajaPrecio: JTextField
+-agregarServicio: JButton
+-cajaNumeroHabitacion: JTextField
+-cargarAHabitacion: JButton
+-cajaCantidadPersonas: JTextField
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>700</x>
+      <y>110</y>
+      <w>115</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>AdminServiciosFrame
+--
+-modeloTabla: DefaultTableModel
+-tablaServicios: JTable
+-cajaNombre: JTextField
+-cajaPrecio: JTextField
+-cajaNombreInfo: JTextField
+-cajaPrecioInfo: JTextField
+-cajaNumeroHabitacion: JTextField
+-cajaCantidadPersonas: JTextField
+-añadirAHabitacion: JButton
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>435</x>
+      <y>370</y>
+      <w>115</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>AdminTarifasFrame
+--
+-tablaTarifas: JTable
+-modeloTabla: DefaultTableModel
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>560</x>
+      <y>270</y>
+      <w>115</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>AdminUsuariosFrame
+--
+-tablaUsuarios: JTable
+-modeloTabla: DefaultTableModel
+-cajaNombre: JTextField
+-cajaArea: JTextField
+-cajaTipo: JTextField
+-comboTipo: JComboBox&lt;String&gt;
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>680</x>
+      <y>270</y>
+      <w>135</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>AutenticacionFrame
+--
+-windowManager: WindowManager
+-usuJTextField: JTextField
+-contraJPasswordField: JPasswordField
+-intentos: int
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>435</x>
+      <y>270</y>
+      <w>120</w>
+      <h>95</h>
+    </coordinates>
+    <panel_attributes>/FrameBaseInfo/
+--
+#panelVolver: JPanel
+#panelCrear: JPanel
+#panelDerecho: JPanel
+#panelIzquierdo: JPanel
+#volverButton: JButton
+#datos: JTextField[]
+#addDatos: JButton
+#windowManager: WindowManager
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>10</x>
+      <y>55</y>
+      <w>825</w>
+      <h>400</h>
+    </coordinates>
+    <panel_attributes>vista
+bg=blue
+layer=-2</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>310</x>
+      <y>115</y>
+      <w>110</w>
+      <h>95</h>
+    </coordinates>
+    <panel_attributes>EmpleadoCrearReservasFrame
+--
+-tablaTarifas: JTable
+-modeloTabla: DefaultTableModel
+-crearReserva: JButton
+-cancelarReserva: JButton
+-numHabitacion: JTextField
+-selectHabitacion: JFrame
+-fechaI: JXDatePicker
+-fechaF: JXDatePicker
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>300</x>
+      <y>275</y>
+      <w>120</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>EmpleadoHabitacionesFrame
+--
+-modeloTabla: DefaultTableModel
+-tablaHabitaciones: JTable
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>50</x>
+      <y>115</y>
+      <w>130</w>
+      <h>155</h>
+    </coordinates>
+    <panel_attributes>EmpleadoMenuPrincipal
+--
+#panelIzquierdo: JPanel
+-panelDerecho: JPanel
+-tablaHoy: JTable
+-modeloTablaHoy: DefaultTableModel
+-tablaAnual: JTable
+-modeloTablaAnual: DefaultTableModel
+#tarifasFrame: JFrame
+#serviciosFrame: JFrame
+#habitacionesFrame: JFrame
+#restauranteFrame: JFrame
+#windowManager: WindowManager
+#checkIn: JButton
+#checkOut: JButton
+#reservasFrame: JFrame
+#panelHoy: JPanel
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>50</x>
+      <y>275</y>
+      <w>120</w>
+      <h>85</h>
+    </coordinates>
+    <panel_attributes>EmpleadoReservasFrame
+--
+-modeloTabla: DefaultTableModel
+-tablaTarifas: JTable
+-crearReserva: JButton
+-cancelarReserva: JButton
+-buscarJTextField: JTextField
+-verReservasFrame: JFrame
+-numeroReserva: int
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>185</x>
+      <y>115</y>
+      <w>120</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>EmpleadoRestauranteFrame
+--
+-modeloTabla: DefaultTableModel
+-tablaMenu: JTable
+-cajaNumeroHabitacion: JTextField
+-cargarAHabitacion: JButton
+-cajaNombreOrden: JTextField
+-cajaPrecioOrden: JTextField
+-cajaHorarioIOrden: JTextField
+-cajaHorarioFOrden: JTextField
+-cajaLlevableOrden: JTextField
+-cajaCantidadPersonas: JTextField
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>175</x>
+      <y>275</y>
+      <w>120</w>
+      <h>85</h>
+    </coordinates>
+    <panel_attributes>EmpleadoServiciosFrame
+--
+-modeloTabla: DefaultTableModel
+-tablaServicios: JTable
+-cajaNombreInfo: JTextField
+-cajaPrecioInfo: JTextField
+-cajaNumeroHabitacion: JTextField
+-cajaCantidadPersonas: JTextField
+-añadirAHabitacion: JButton
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>50</x>
+      <y>365</y>
+      <w>120</w>
+      <h>45</h>
+    </coordinates>
+    <panel_attributes>EmpleadoTarifasFrame
+--
+-tablaTarifas: JTable
+-modeloTabla: DefaultTableModel
+--
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

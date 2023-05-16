@@ -49,6 +49,7 @@ public class WindowManager {
 
 	}
 	
+	
 	public void setDay() {
 		
 	    JFrame setDayFrame = new JFrame();
