@@ -147,7 +147,7 @@ public class AutenticacionFrame extends JFrame implements ActionListener{
 			if (intentos < 3) {
 				JOptionPane.showMessageDialog(null, "Opss, " + e.getMessage());
 			}else {
-				JOptionPane.showMessageDialog(null, "Demaciados intentos, intente mas tarde");
+				JOptionPane.showMessageDialog(null, "Demasiados intentos, intente mas tarde");
 
 			}
 			intentos ++;

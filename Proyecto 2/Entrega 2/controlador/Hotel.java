@@ -67,17 +67,14 @@ public class Hotel implements Serializable{
 	public void autenticar(String login, String password) throws Exception {
 		
 		Usuario usuarioActual = null;
-		Exception e = new Exception("Usuario o Contraseña incorrectos");
+		Exception e = new Exception("el usuario no existe");
 
 		usuarioActual = usuarios.get(login);
 		
 		if (usuarioActual != null) {
-			if (usuarioActual.iniciarSesion(password)) {
-				this.usuarioActual = usuarioActual;
-			}else {
-				throw e;
-			}
-			
+			usuarioActual.iniciarSesion(password);
+			this.usuarioActual = usuarioActual;
+		
 		} else {
 			throw e;
 		}
