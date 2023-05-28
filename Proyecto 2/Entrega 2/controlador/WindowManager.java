@@ -30,9 +30,14 @@ import modelo.Reserva;
 import modelo.TipoHabitacion;
 import modelo.Usuario;
 import vistaAdmin.AutenticacionFrame;
+import vistaAdmin.AdminHabitacionesFrame;
 import vistaAdmin.AdminMenuPrincipal;
 import vistaAdmin.AdminRestauranteFrame;
+import vistaAdmin.AdminServiciosFrame;
+import vistaEmpleado.EmpleadoHabitacionesFrame;
 import vistaEmpleado.EmpleadoMenuPrincipal;
+import vistaEmpleado.EmpleadoRestauranteFrame;
+import vistaEmpleado.EmpleadoServiciosFrame;
 
 public class WindowManager {
 	private JFrame ventandaActual;
@@ -469,9 +474,9 @@ public class WindowManager {
     		}
         	// JFrame para probar
 
-    		JFrame pruebas = new AdminMenuPrincipal(windowManager);
+    		JFrame pruebas = new AdminRestauranteFrame(windowManager);
     		// Menú de ese Frame
-    		JFrame menu = new AdminMenuPrincipal(windowManager);
+    		JFrame menu = new EmpleadoMenuPrincipal(windowManager);
     		
     		windowManager.setPruebas(pruebas, menu);
     		
