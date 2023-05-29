@@ -32,6 +32,7 @@ import modelo.Usuario;
 import vistaAdmin.AutenticacionFrame;
 import vistaAdmin.AdminMenuPrincipal;
 import vistaAdmin.AdminRestauranteFrame;
+import vistaAdmin.AdminServiciosFrame;
 import vistaEmpleado.EmpleadoMenuPrincipal;
 import vistaEmpleado.EmpleadoTarifasFrame;
 
@@ -471,7 +472,7 @@ public class WindowManager {
     		}
         	// JFrame para probar
 
-    		JFrame pruebas = new EmpleadoTarifasFrame(windowManager);
+    		JFrame pruebas = new AdminRestauranteFrame(windowManager);
     		// Menú de ese Frame
     		JFrame menu = new AdminMenuPrincipal(windowManager);
     		
