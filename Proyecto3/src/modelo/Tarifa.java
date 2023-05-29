@@ -22,7 +22,7 @@ public class Tarifa implements Serializable{
 		double precio = -1;
 		
 		switch (tipo) {
-		case ESTANDAR: 
+		case ESTANDAR:
 			precio = estandar;
 			break;
 		case SUITE:

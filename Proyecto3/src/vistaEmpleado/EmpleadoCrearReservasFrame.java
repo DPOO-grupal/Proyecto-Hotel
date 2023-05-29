@@ -433,7 +433,7 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 	
 		    selectHabitacion = new JFrame();
 		    selectHabitacion.setSize(new Dimension(700,500));
-		    selectHabitacion.setLocale(null);
+		    selectHabitacion.setLocationRelativeTo(null);
 		    String[] datosHabitaciones = {"Número","Capacidad", "Precio", "Caracteristicas"};
 		    
 		    DefaultTableModel modelodisponibles = new DefaultTableModel(datosHabitaciones, disponibles.size());

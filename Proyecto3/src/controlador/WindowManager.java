@@ -3,6 +3,7 @@ package controlador;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
@@ -24,6 +25,7 @@ import modelo.Empleado;
 import modelo.Grupo;
 import modelo.Habitacion;
 import modelo.Servicio;
+import modelo.Tarifa;
 import modelo.Huesped;
 import modelo.ProductoMenu;
 import modelo.Reserva;
@@ -32,6 +34,7 @@ import modelo.Usuario;
 import vistaAdmin.AutenticacionFrame;
 import vistaAdmin.AdminMenuPrincipal;
 import vistaAdmin.AdminRestauranteFrame;
+import vistaAdmin.AdminTarifasFrame;
 import vistaEmpleado.EmpleadoMenuPrincipal;
 
 public class WindowManager {
@@ -377,6 +380,12 @@ public class WindowManager {
 		empleado.completarReserva();
 	}
 	
+	// Tarifas
+	public Collection<Tarifa> consultarTarifas(Date fechaI, Date fechaF) {
+		return ((Empleado) usuarioActual).consultarTarifas(fechaI, fechaF);
+	}
+	// FinTarifas
+	
 	
 	public ArrayList<Integer> getListaHabitacionesGrupo() {
 		Empleado empleado = (Empleado) usuarioActual;
@@ -468,7 +477,8 @@ public class WindowManager {
     		}
         	// JFrame para probar
 
-    		JFrame pruebas = new AdminMenuPrincipal(windowManager);
+
+    		JFrame pruebas = new AdminTarifasFrame(windowManager);
     		// Menú de ese Frame
     		JFrame menu = new AdminMenuPrincipal(windowManager);
     		
