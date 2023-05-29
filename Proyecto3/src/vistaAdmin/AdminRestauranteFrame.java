@@ -20,7 +20,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -35,7 +34,6 @@ import com.github.lgooddatepicker.components.TimePickerSettings.TimeIncrement;
 
 import controlador.WindowManager;
 import modelo.ProductoMenu;
-import modelo.Servicio;
 import vistaEmpleado.EmpleadoRestauranteFrame;
 
 public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements MouseListener,ActionListener{
@@ -261,8 +259,6 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 		panelHorario.setBackground(Color.decode("#ccd2c2"));	
 		panelHorario.setLayout(new GridLayout(2, 2,15,0));
 		panelHorario.setBorder(BorderFactory.createEmptyBorder(20, 40, 0, 40));
-
-		
 		
 		//Precio y su caja de texto
 		JLabel horario = new JLabel("Horario");
