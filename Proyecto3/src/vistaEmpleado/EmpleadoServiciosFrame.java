@@ -29,7 +29,8 @@ import vistaAdmin.FrameBaseInfo;
 
 public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListener{
 	
-	protected DefaultTableModel modeloTabla;
+	protected DefaultTableModel modeloTablaServicios;
+	protected DefaultTableModel modeloTablaOrden;
 	protected JTable tablaServicios;
 	protected JTextField cajaNombreInfo;
 	protected JTextField cajaPrecioInfo;
@@ -158,13 +159,13 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		
 		//Creacion de la tabla servicios
 		String[] columnasServicio = {"Nombre", "Precio"}; //Nombre de las columnas
-        modeloTabla = new DefaultTableModel(columnasServicio, 0);
+        modeloTablaServicios = new DefaultTableModel(columnasServicio, 0);
         
         //Filas de la tabla
-        modeloTabla.addTableModelListener(tablaServicios);
+        modeloTablaServicios.addTableModelListener(tablaServicios);
   	    
   	    //Diseño de la tabla
-        tablaServicios = new JTable(modeloTabla);
+        tablaServicios = new JTable(modeloTablaServicios);
         tablaServicios.addMouseListener(this);
 	    
 	    //Diseño de la tabla
@@ -179,9 +180,10 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
         DefaultTableCellRenderer modelocentrarServicios = new DefaultTableCellRenderer();
         modelocentrarServicios.setHorizontalAlignment(SwingConstants.CENTER);
 
-
-        tablaServicios.getColumnModel().getColumn(0).setCellRenderer(modelocentrarServicios);
-
+        for (int i = 0; i < columnasServicio.length; i++) {
+        	tablaServicios.getColumnModel().getColumn(i).setCellRenderer(modelocentrarServicios);	
+		}
+        
         JScrollPane scrollPanelServicios = new JScrollPane(tablaServicios);
 
         //Tamaño y ubicacion de la tabla en el panel
@@ -196,13 +198,13 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
         
       //Creacion de la tabla servicios
 		String[] columnasOrden = {"Orden"}; //Nombre de las columnas
-	    modeloTabla = new DefaultTableModel(columnasOrden, 0);
+	    modeloTablaOrden = new DefaultTableModel(columnasOrden, 0);
 	      
 	    //Filas de la tabla
-	    modeloTabla.addTableModelListener(tablaOrden);
+	    modeloTablaOrden.addTableModelListener(tablaOrden);
 		 
 		//Diseño de la tabla
-	    tablaOrden = new JTable(modeloTabla);
+	    tablaOrden = new JTable(modeloTablaOrden);
 	    tablaOrden.addMouseListener(this);
 	    
 	    //Diseño de la tabla
@@ -269,12 +271,20 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 	}
 	
 	protected void cargarDatos() {
-		modeloTabla.getDataVector().removeAllElements();
-		modeloTabla.fireTableDataChanged(); 
-		Collection<Servicio> listaUsuarios = windowManager.darServicio().values();
-		for (Servicio servicio : listaUsuarios) {
+		modeloTablaServicios.getDataVector().removeAllElements();
+		modeloTablaServicios.fireTableDataChanged(); 
+		Collection<Servicio> listaServicios = windowManager.darServicio().values();
+		for (Servicio servicio : listaServicios) {
 	        String nombre = servicio.getNombre();
-	        modeloTabla.addRow(new Object[]{nombre, "ICON", "ICON"});
+	        Double precio = servicio.getPrecio();
+	        modeloTablaServicios.addRow(new Object[]{nombre, precio, "ICON"});
+	    }
+		modeloTablaOrden.getDataVector().removeAllElements();
+		modeloTablaOrden.fireTableDataChanged(); 
+		Collection<Servicio> listaOrden = windowManager.darServicio().values();
+		for (Servicio servicio : listaServicios) {
+	        String nombre = servicio.getNombre();
+	        modeloTablaOrden.addRow(new Object[]{nombre, "ICON", "ICON"});
 	    }
 	}
 	

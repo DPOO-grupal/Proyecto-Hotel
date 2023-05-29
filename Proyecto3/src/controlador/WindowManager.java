@@ -254,6 +254,8 @@ public class WindowManager {
 		
 	}
 	
+	
+	
 	public HashMap<Integer, Habitacion> darHabitaciones() {
 		Empleado empleado = (Empleado) usuarioActual;
 		HashMap<Integer, Habitacion> listaHabitaciones = empleado.getHabitaciones();
@@ -472,7 +474,7 @@ public class WindowManager {
     		}
         	// JFrame para probar
 
-    		JFrame pruebas = new AdminRestauranteFrame(windowManager);
+    		JFrame pruebas = new AdminServiciosFrame(windowManager);
     		// Menú de ese Frame
     		JFrame menu = new AdminMenuPrincipal(windowManager);
     		

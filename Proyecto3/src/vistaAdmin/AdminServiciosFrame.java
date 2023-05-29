@@ -32,6 +32,9 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 	private JButton agregarServicio;
 	private JButton eliminarServicio;
 	private JButton agregar;
+	private JTextField cajaNombreAgregar;
+	private JTextField cajaPrecioAgregar;
+	private JFrame frameAgregar;
 
 	public AdminServiciosFrame(WindowManager windowManager) {
 		super(windowManager);
@@ -58,13 +61,13 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 		
 		//Creacion de la tabla servicios
 		String[] columnasServicio = {"Nombre", "Precio"}; //Nombre de las columnas
-        modeloTabla = new DefaultTableModel(columnasServicio, 0);
+        modeloTablaServicios = new DefaultTableModel(columnasServicio, 0);
         
         //Filas de la tabla
-        modeloTabla.addTableModelListener(tablaServicios);
+        modeloTablaServicios.addTableModelListener(tablaServicios);
   	    
   	    //Diseño de la tabla
-        tablaServicios = new JTable(modeloTabla);
+        tablaServicios = new JTable(modeloTablaServicios);
         tablaServicios.addMouseListener(this);
 	    
 	    //Diseño de la tabla
@@ -79,9 +82,10 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
         DefaultTableCellRenderer modelocentrarServicios = new DefaultTableCellRenderer();
         modelocentrarServicios.setHorizontalAlignment(SwingConstants.CENTER);
 
-
-        tablaServicios.getColumnModel().getColumn(0).setCellRenderer(modelocentrarServicios);
-
+        for (int i = 0; i < columnasServicio.length; i++) {
+        	tablaServicios.getColumnModel().getColumn(i).setCellRenderer(modelocentrarServicios);	
+		}
+        
         JScrollPane scrollPanelServicios = new JScrollPane(tablaServicios);
 
         //Tamaño y ubicacion de la tabla en el panel
@@ -96,13 +100,13 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
         
         //Creacion de la tabla servicios
 		String[] columnasOrden = {"Orden"}; //Nombre de las columnas
-	    modeloTabla = new DefaultTableModel(columnasOrden, 0);
+	    modeloTablaOrden = new DefaultTableModel(columnasOrden, 0);
 	      
 	    //Filas de la tabla
-	    modeloTabla.addTableModelListener(tablaOrden);
+	    modeloTablaOrden.addTableModelListener(tablaOrden);
 		
 		//Diseño de la tabla
-	    tablaOrden = new JTable(modeloTabla);
+	    tablaOrden = new JTable(modeloTablaOrden);
 	    tablaOrden.addMouseListener(this);
 	    
 	    //Diseño de la tabla
@@ -118,7 +122,7 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 	    modelocentrarOrden.setHorizontalAlignment(SwingConstants.CENTER);
 	
 	
-	    tablaServicios.getColumnModel().getColumn(0).setCellRenderer(modelocentrarOrden);
+	    tablaOrden.getColumnModel().getColumn(0).setCellRenderer(modelocentrarOrden);
 	
 	    JScrollPane scrollPanelOrden = new JScrollPane(tablaOrden);
 	
@@ -202,7 +206,7 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 	}
 	
 	private void agregarServicio() {
-		JFrame frameAgregar = new JFrame();
+		frameAgregar = new JFrame();
 		frameAgregar.setSize(300, 300);
 		frameAgregar.setLocationRelativeTo(null);
 		
@@ -220,12 +224,12 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 		JLabel nombre = new JLabel("Nombre");
 		nombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		cajaNombre = new JTextField();
-		cajaNombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		cajaNombreAgregar = new JTextField();
+		cajaNombreAgregar.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 
 		
 		panelNombre.add(nombre);
-		panelNombre.add(cajaNombre);
+		panelNombre.add(cajaNombreAgregar);
 		
 		//Panel precio
 		JPanel panelPrecio = new JPanel();
@@ -237,11 +241,11 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 		JLabel precio = new JLabel("Precio");
 		precio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		cajaPrecio = new JTextField();
-		cajaPrecio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		cajaPrecioAgregar = new JTextField();
+		cajaPrecioAgregar.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
 		panelPrecio.add(precio);
-		panelPrecio.add(cajaPrecio);
+		panelPrecio.add(cajaPrecioAgregar);
 		
 		//Panel boton agregar
 		JPanel panelAgregar = new JPanel();
@@ -264,6 +268,20 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 		frameAgregar.setVisible(true);
 	}
 
+	private void agregar() {
+		String nombre = cajaNombreAgregar.getText();
+		Double precio = Double.parseDouble(cajaPrecioAgregar.getText());
+		windowManager.agregarServicioHotel(nombre, precio);
+		cargarDatos();
+		cajaNombreAgregar.setText("");
+		cajaPrecioAgregar.setText("");
+		frameAgregar.setVisible(false);
+	}
+	
+	private void eliminarServicio() {
+		
+	}
+	
 	public void actionPerformedFrame(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "Agregar a la orden":
@@ -276,7 +294,12 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 			agregarServicio();
 			break;
 			
+		case "Agregar":
+			agregar();
+			break;
+			
 		case "Eliminar servicio":
+			eliminarServicio();
 			break;
 		
 		case "Añadir a la habitación":
@@ -287,6 +310,8 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 			break;
 		}
 	}
+
+
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
