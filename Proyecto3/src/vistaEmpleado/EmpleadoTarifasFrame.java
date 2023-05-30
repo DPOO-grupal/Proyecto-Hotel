@@ -145,7 +145,7 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
  	    constraints.weighty = 1;
  	    constraints.gridx = 0;
  	    constraints.gridy = 0;
- 	    constraints.gridwidth =2;
+ 	    constraints.gridwidth =3;
  	    constraints.anchor = GridBagConstraints.NORTH;
  	    constraints.fill = GridBagConstraints.BOTH;
  	    constraints.insets = new Insets(0, 0, 0, 0);
@@ -155,7 +155,7 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
     
     
 	    // tabla
-	    String[] columnas = {"Fecha Inicial", "Precio", "Tipo"};
+	    String[] columnas = {"Fecha", "Precio", "Tipo"};
         modeloTabla = new DefaultTableModel(columnas, 0);
 //	        String[] fila1 = {"01/01/2022", "31/01/2022", "$100"};
 //	        String[] fila2 = {"01/02/2022", "28/02/2022", "$150"};
@@ -185,7 +185,7 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
         scrollPanel.setBackground(Color.decode("#B2BBA4"));
         constraints.gridx = 0;
 	    constraints.gridy = 1;
-	    constraints.gridwidth =2;
+	    constraints.gridwidth =3;
 	    constraints.anchor = GridBagConstraints.NORTH;
 	    constraints.fill = GridBagConstraints.BOTH;
 	    constraints.insets = new Insets(0, 0, 0, 0);
@@ -237,34 +237,8 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 			constraints.gridy = (i*2)+1;
 			panelCrear.add(campo, constraints);
 		}
-		
-		fechaMostrar = new JXDatePicker[1];
-		titulos[0] = "Fecha Tarifa";
-		
-		for( int i = 0; i < fechaMostrar.length; i++) {
-			int iCons = i + 2;
-			JXDatePicker campo = new JXDatePicker(new Date());
-			campo.setPreferredSize(new Dimension(200, 40));
-			campo.setEditable(false);
-
-			JLabel titulo = new JLabel(titulos[i]);
-			titulo.setFont(fontLabel);
-			titulo.setForeground(Color.WHITE);
-			
-			fechaMostrar[i] = campo;
-			fechaMostrar[i].setFont(fontLabel);
-
-			
-			constraints.gridy = (iCons*2);
-
-			panelCrear.add(titulo, constraints);
-			
-			constraints.gridy = (iCons*2)+1 ;
-
-			panelCrear.add(campo, constraints);
-		}
-		
 		constraints.gridy +=1;
+		constraints.gridwidth = 3;
 		JLabel titulo = new JLabel("Dias De la Semana");
 		titulo.setFont(fontLabel);
 		titulo.setForeground(Color.WHITE);
@@ -273,17 +247,49 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 		constraints.gridheight = 1;
 		constraints.gridwidth = 1;
 		
+		int iSum = constraints.gridy + 1;
+		
 		String[] diasSemana = {"Mon", "Tue", "Wed", "Thu", "Fry", "Sat", "Sun"};
 	    dias = new Checkbox[7];
 		for( int i = 0; i < diasSemana.length; i++) {
 			Checkbox campo = new Checkbox(diasSemana[i]);
 			campo.setEnabled(false);
-
 			dias[i] = campo;
 			
-			constraints.gridy= (i/3)+9 ;
+			constraints.gridy= (i/3)+iSum ;
 			constraints.gridx = i%3;
 		
+			panelCrear.add(campo, constraints);
+		}
+		
+	
+		
+		fechaMostrar = new JXDatePicker[1];
+		titulos[0] = "Fecha";
+		iSum = constraints.gridy + 1;
+		constraints.gridwidth = 3;
+
+		
+		for( int i = 0; i < fechaMostrar.length; i++) {
+			JXDatePicker campo = new JXDatePicker(new Date());
+			campo.setPreferredSize(new Dimension(200, 40));
+			campo.setEditable(false);
+
+			titulo = new JLabel(titulos[i]);
+			titulo.setFont(fontLabel);
+			titulo.setForeground(Color.WHITE);
+			
+			fechaMostrar[i] = campo;
+			fechaMostrar[i].setFont(fontLabel);
+			fechaMostrar[i].setEditable(false);
+
+			
+			constraints.gridy = iSum + i*2;
+
+			panelCrear.add(titulo, constraints);
+			
+			constraints.gridy = iSum + i*2 + 1;
+
 			panelCrear.add(campo, constraints);
 		}
 		

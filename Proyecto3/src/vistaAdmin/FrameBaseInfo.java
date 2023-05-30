@@ -6,11 +6,18 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -40,13 +47,12 @@ public abstract class FrameBaseInfo extends JFrame implements ActionListener{
 	
 	public FrameBaseInfo(WindowManager windowManager) {
 		this.windowManager = windowManager;
-		
 		//Panel Izquierdo
 		
         panelIzquierdo = new JPanel();
         panelCrear = new JPanel();
         panelVolver = new JPanel();
-
+ 
         panelIzquierdo.setLayout(new BorderLayout());
 
         panelIzquierdo.add(panelCrear, BorderLayout.CENTER);
@@ -102,6 +108,7 @@ public abstract class FrameBaseInfo extends JFrame implements ActionListener{
 		windowManager.volverMenu();
 	}
 	
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Volver")) {
@@ -115,5 +122,5 @@ public abstract class FrameBaseInfo extends JFrame implements ActionListener{
 	
 	protected abstract void actionPerformedFrame(ActionEvent e);
 
-
+	
 }
