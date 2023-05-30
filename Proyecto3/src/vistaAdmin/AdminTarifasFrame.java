@@ -7,34 +7,45 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import com.formdev.flatlaf.json.ParseException;
+
 import controlador.WindowManager;
+import modelo.Tarifa;
 import modelo.TipoHabitacion;
 import javax.swing.text.NumberFormatter;
 import vistaEmpleado.EmpleadoTarifasFrame;
 import javax.swing.JFormattedTextField;	
 
-public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListener{
+public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListener, MouseListener{
 
-	private Checkbox[] dias;
+	private JCheckBox[] dias;
 	private JXDatePicker[] fechaSeleccionada;
 	private JComboBox<TipoHabitacion> tiposHabi;
 	private JTextField precio;
+	private JFrame selectHabitacion;
 
 
 	public AdminTarifasFrame(WindowManager windowManager) {
@@ -97,10 +108,10 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 	}
 
 	private void crearTarifa() {
-		JFrame selectHabitacion = new JFrame();
+		selectHabitacion = new JFrame();
 	    selectHabitacion.setSize(new Dimension(300,600));
 	    selectHabitacion.setLocationRelativeTo(null);
-	    
+	    selectHabitacion.setBackground(Color.decode("#ccd2c2"));
 	    GridBagLayout gridbag = new GridBagLayout();
 	    GridBagConstraints constraints = new GridBagConstraints();
 	    
@@ -159,9 +170,9 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 		int iSum = constraints.gridy + 1;
 		
 		String[] diasSemana = {"Mon", "Tue", "Wed", "Thu", "Fry", "Sat", "Sun"};
-	    dias = new Checkbox[7];
+	    dias = new JCheckBox[7];
 		for( int i = 0; i < diasSemana.length; i++) {
-			Checkbox campo = new Checkbox(diasSemana[i]);
+			JCheckBox campo = new JCheckBox(diasSemana[i]);
 
 			dias[i] = campo;
 			
@@ -217,25 +228,56 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 		
 	    selectHabitacion.add(panel);
 	    selectHabitacion.setVisible(true);
-	    
 		
 	}
 	
 
 	private void añadirTarifa() {
-		// TODO Auto-generated method stub
+		
+		Date fechaI = fechaSeleccionada[0].getDate();
+		Date fechaF = fechaSeleccionada[1].getDate();
+		TipoHabitacion tipo = (TipoHabitacion) tiposHabi.getSelectedItem();
+		
+		double valor = -1;
+		
+		try {
+			valor = Integer.parseInt( precio.getText().replace(".", "").replace(",", ""));
+			
+			boolean[] diasValores = new boolean[7];
+			
+			for (int i = 0; i < diasValores.length; i++) {
+				if (dias[i].isSelected()) {
+					diasValores[i] = true;
+				}
+			}
+			
+			ArrayList<Tarifa> faltantes = windowManager.crearTarifa(fechaI, fechaF, tipo, valor, diasValores);
+			
+			if(!faltantes.isEmpty()) {
+				JOptionPane.showOptionDialog(null, "Hay tarifas con precio mas economico al ingresado, desea sobre escribir?", null, JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
+			}
+			
+			selectHabitacion.dispose();
+		} catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "Favor revisar Precio");
+		}
+		
+		
 		
 	}
-	
-	
+
 	@Override
 	public void actionPerformedFrame(ActionEvent e) {
+		
+		if(!e.getActionCommand().equals("Añadir Tarifa") && selectHabitacion!=null) {
+			selectHabitacion.dispose();
+		}
+		
 		super.actionPerformedFrame(e);
 		switch (e.getActionCommand()) {
 		case "Crear Tarifa":
 			crearTarifa();
 			break;
-			
 		case "Borrar Tarifa":
 			borrarTarifa();
 			break;
@@ -297,6 +339,8 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
             caja.setText(texto);            
         }
     }
+
+
 
 
 }
