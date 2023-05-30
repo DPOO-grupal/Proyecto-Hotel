@@ -121,6 +121,14 @@ public class Empleado extends Usuario  {
 		return hotel.getHabitaciones();
 	}
 	
+	public ArrayList<String[]> getServicios(String ID) {
+		return hotel.getServiciosHabitacion(ID);
+	}
+	
+	public ArrayList<String[]> getCamas(String ID) {
+		return hotel.getCamasHabitacion(ID);
+	}
+	
 //FIN HABITACIONES -----------------------------------------------------------
 	
 //INICIO PRODUCTO MENU -----------------------------------------------------------

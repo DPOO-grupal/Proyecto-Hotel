@@ -30,8 +30,11 @@ import modelo.Reserva;
 import modelo.TipoHabitacion;
 import modelo.Usuario;
 import vistaAdmin.AutenticacionFrame;
+import vistaAdmin.CrearHabitacionFrame;
+import vistaAdmin.AdminHabitacionesFrame;
 import vistaAdmin.AdminMenuPrincipal;
 import vistaAdmin.AdminRestauranteFrame;
+import vistaEmpleado.EmpleadoHabitacionesFrame;
 import vistaEmpleado.EmpleadoMenuPrincipal;
 
 public class WindowManager {
@@ -99,9 +102,12 @@ public class WindowManager {
 		mostraVentana(menu);
 	}
 	
-
+	public void volverHabitaciones() {
+		((EmpleadoMenuPrincipal) this.menu).volverHabitaciones();
+	}
+	
 	public void volverReserva() {
-		((EmpleadoMenuPrincipal) this.menu).volverReserva();;
+		((EmpleadoMenuPrincipal) this.menu).volverReserva();
 	}
 	
 	
@@ -187,6 +193,22 @@ public class WindowManager {
 			area = admin.getArea(login);
 		}
 		return area;
+	}
+	
+	public ArrayList<String[]> getServicios(String ID) {
+		ArrayList<String[]> servicios = new ArrayList<>();
+		usuarioActual.getClass();
+		Empleado empleado = (Empleado) usuarioActual;
+		servicios = empleado.getServicios(ID);
+		return servicios;
+	}
+	
+	public ArrayList<String[]> getCamas(String ID) {
+		ArrayList<String[]> camas = new ArrayList<>();
+		usuarioActual.getClass();
+		Empleado empleado = (Empleado) usuarioActual;
+		camas = empleado.getCamas(ID);
+		return camas;
 	}
 	
 	
@@ -469,7 +491,7 @@ public class WindowManager {
     		}
         	// JFrame para probar
 
-    		JFrame pruebas = new AdminMenuPrincipal(windowManager);
+    		JFrame pruebas = new CrearHabitacionFrame(windowManager);
     		// Menú de ese Frame
     		JFrame menu = new AdminMenuPrincipal(windowManager);
     		
