@@ -68,49 +68,11 @@ public class AdminMenuPrincipal extends EmpleadoMenuPrincipal implements ActionL
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	
+		super.actionPerformed(e);
+		
 		switch (e.getActionCommand()) {
 		case "Administrar usuarios":
 			windowManager.mostraVentana(usuariosFrame);
-			break;
-		case "Tarifas":
-			windowManager.mostraVentana(tarifasFrame);
-
-			break;
-		case "Servicios":
-
-			windowManager.mostraVentana(serviciosFrame);
-			break;
-		case "Habitaciones":
-
-			windowManager.mostraVentana(habitacionesFrame);
-			break;
-		case "Restaurante":
-
-			windowManager.mostraVentana(restauranteFrame);
-			break;
-		case "Reservas":
-			windowManager.mostraVentana(reservasFrame);
-			break;
-		case "Cerrar sesion":
-			windowManager.cerrarSesion();
-			break;
-		
-			
-		case "Check-In":
-			checkIn();
-			break;
-			
-		case "Check-Out":
-			checkOut();
-			break;
-			
-		case "Refrescar ocupacion diaria":
-			ocupacionHoy();
-			break;
-			
-		case "Refrescar ocupacion anual":
-			ocupacionAnual();
 			break;
 			
 		default:

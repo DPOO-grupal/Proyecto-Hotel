@@ -3,6 +3,7 @@ package controlador;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
@@ -24,6 +25,7 @@ import modelo.Empleado;
 import modelo.Grupo;
 import modelo.Habitacion;
 import modelo.Servicio;
+import modelo.Tarifa;
 import modelo.Huesped;
 import modelo.ProductoMenu;
 import modelo.Reserva;
@@ -39,6 +41,7 @@ import vistaAdmin.AdminMenuPrincipal;
 import vistaAdmin.AdminRestauranteFrame;
 import vistaAdmin.AdminServiciosFrame;
 import vistaEmpleado.EmpleadoHabitacionesFrame;
+import vistaAdmin.AdminTarifasFrame;
 import vistaEmpleado.EmpleadoMenuPrincipal;
 import vistaEmpleado.EmpleadoRestauranteFrame;
 import vistaEmpleado.EmpleadoServiciosFrame;
@@ -79,6 +82,11 @@ public class WindowManager {
 
 	
 		
+	}
+	
+	public Date getHoy() {
+		Empleado empleado = (Empleado) usuarioActual;
+		return empleado.getHoy();
 	}
 
 	public void mostraVentana(JFrame ventana) {
@@ -416,6 +424,28 @@ public class WindowManager {
 		Empleado empleado = (Empleado) usuarioActual;
 		empleado.completarReserva();
 	}
+	
+	// Tarifas
+	public Collection<Tarifa> consultarTarifas(Date fechaI, Date fechaF) {
+		return ((Empleado) usuarioActual).consultarTarifas(fechaI, fechaF);
+	}
+	
+	public boolean tarifasCompletas() {
+		Admin admin = (Admin) usuarioActual;
+		return admin.tarifasCompletas();
+	}
+
+	public ArrayList<Tarifa> TarifasFaltantes() {
+		Admin admin = (Admin) usuarioActual;
+		return admin.TarifasFaltantes();
+	}
+	
+	public ArrayList<Tarifa> crearTarifa(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor, boolean[] diasValores) {
+		Admin admin = (Admin) usuarioActual;
+		return admin.crearTarifa(fechaI, fechaF, tipo, valor, diasValores);
+	}
+	
+	// FinTarifas
 	
 	
 	public ArrayList<Integer> getListaHabitacionesGrupo() {

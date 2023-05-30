@@ -22,7 +22,7 @@ public class Tarifa implements Serializable{
 		double precio = -1;
 		
 		switch (tipo) {
-		case ESTANDAR: 
+		case ESTANDAR:
 			precio = estandar;
 			break;
 		case SUITE:
@@ -57,20 +57,20 @@ public class Tarifa implements Serializable{
 	}
 	
 	
-	public boolean updatePrecio(TipoHabitacion tipo, double valor) {
-		boolean right = false;
-		if (valor < 0) {
-			setPrecio(tipo, -valor);
-			right =  true;
-		} else if(getPrecio(tipo)<0) {
-			setPrecio(tipo, valor);
-			right =  true;
-			
-		} else if(getPrecio(tipo) > valor) {
-			setPrecio(tipo, valor);
-			return right;
+	public void updatePrecio(TipoHabitacion tipo, double valornNuevo, boolean sobreEscribir) throws Exception {
+		double valorAnterior = getPrecio(tipo);
+		 if(valorAnterior < 0 || valornNuevo <= valorAnterior || sobreEscribir) {
+			 setPrecio(tipo, valornNuevo);	
+		} else {
+			throw new Exception("No editable");
 		}
-		return right;
+	
+	}
+	
+	
+	public void updatePrecio(TipoHabitacion tipo, double valornNuevo) throws Exception {
+		updatePrecio(tipo, valornNuevo, false);
+	
 	}
 	
 	public boolean completo() {
