@@ -8,7 +8,10 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -32,18 +35,17 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 	protected DefaultTableModel modeloTablaServicios;
 	protected DefaultTableModel modeloTablaOrden;
 	protected JTable tablaServicios;
-	protected JTextField cajaNombreInfo;
-	protected JTextField cajaPrecioInfo;
 	protected JTextField cajaNumeroHabitacion;
-	protected JTextField cajaCantidadPersonas;
 	protected JButton añadirAHabitacion;
 	protected JTextField cajaNombre;
 	protected JTextField cajaPrecio;
 	protected JTextField cajaCantidad;
 	protected JTable tablaOrden;
+	protected HashMap<String, Integer> listaOrden;
 	
 	public EmpleadoServiciosFrame(WindowManager windowManager) {
 		super(windowManager);
+		listaOrden = new HashMap<>();
 		cargarDatos();
 	}
 	
@@ -67,7 +69,7 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		
 		cajaNombre = new JTextField();
 		cajaNombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-
+		cajaNombre.setEditable(false);
 		
 		panelNombre.add(nombre);
 		panelNombre.add(cajaNombre);
@@ -84,6 +86,7 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		
 		cajaPrecio = new JTextField();
 		cajaPrecio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		cajaPrecio.setEditable(false);
 		
 		panelPrecio.add(precio);
 		panelPrecio.add(cajaPrecio);
@@ -256,7 +259,6 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		
 		habitacion.add(numHabitacion);
 		habitacion.add(cajaNumeroHabitacion);
-		habitacion.add(cajaNumeroHabitacion);
 		habitacion.add(añadirAHabitacion);
 		
 		//Tamaño y ubicacion en el panel
@@ -279,13 +281,12 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 	        Double precio = servicio.getPrecio();
 	        modeloTablaServicios.addRow(new Object[]{nombre, precio, "ICON"});
 	    }
+		
 		modeloTablaOrden.getDataVector().removeAllElements();
-		modeloTablaOrden.fireTableDataChanged(); 
-		Collection<Servicio> listaOrden = windowManager.darServicio().values();
-		for (Servicio servicio : listaServicios) {
-	        String nombre = servicio.getNombre();
-	        modeloTablaOrden.addRow(new Object[]{nombre, "ICON", "ICON"});
-	    }
+		modeloTablaOrden.fireTableDataChanged();
+		for (String nombreServicio : listaOrden.keySet()) {
+			modeloTablaOrden.addRow(new Object[]{nombreServicio, "ICON", "ICON"});
+			}
 	}
 	
 	protected String getPrecio(String nombre) {
@@ -309,29 +310,61 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		}
 	
 	protected void añadirServicioHotelHabitacion() {
-		int idServicio = getId(cajaNombreInfo.getText());
-		int idHabitacion = Integer.parseInt(cajaNumeroHabitacion.getText());
-		int cantidad = Integer.parseInt(cajaCantidadPersonas.getText());
-		boolean pagarEnSitio = false;
-		int option = JOptionPane.showConfirmDialog(null, "¿Desea pagar ahora?", "Pagar", JOptionPane.YES_NO_OPTION);
-		if (option==JOptionPane.YES_OPTION) {
-			pagarEnSitio=true;
+		try {
+			boolean pagarEnSitio = false;
+			int option = JOptionPane.showConfirmDialog(null, "¿Desea pagar ahora?", "Pagar", JOptionPane.YES_NO_OPTION);
+			if (option==JOptionPane.YES_OPTION) {
+				pagarEnSitio=true;
+			}
+			
+			int idHabitacion = Integer.parseInt(cajaNumeroHabitacion.getText());
+			Set<String> nombres = listaOrden.keySet();
+			for (String nombre : nombres) {
+				int idServicio = getId(nombre);
+				int cantidad = listaOrden.get(nombre);
+				windowManager.añadirServicioHotelHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);	
+				listaOrden.remove(nombre);
+			}	
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "No existe la habitación");
 		}
-		windowManager.añadirServicioHotelHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);
-		cajaNombreInfo.setText("");
-		cajaPrecioInfo.setText("");
+		cajaNombre.setText("");
+		cajaPrecio.setText("");
+		cajaCantidad.setText("");
 		cajaNumeroHabitacion.setText("");
-		cajaCantidadPersonas.setText("");
 	}
 	
-	public void actionPerformedFrame(ActionEvent e) {
+	protected void agregarALaOrden() {
+		try {
+			String nombre = cajaNombre.getText();
+			int cantidad = Integer.parseInt(cajaCantidad.getText());
+			listaOrden.put(nombre, cantidad);
+			cargarDatos();
+			cajaNombre.setText("");
+			cajaPrecio.setText("");
+			cajaCantidad.setText("");	
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Dedes selecionar un servicio y decir la cantidad");
+		}
+	}
+	
+	protected void eliminarDeOrden() {
+		String nombre = cajaNombre.getText();
+		listaOrden.remove(nombre);
+		cargarDatos();
+		cajaNombre.setText("");
+		cajaPrecio.setText("");
+		cajaCantidad.setText("");
+	}
+	
+	protected void actionPerformedFrame(ActionEvent e) {
 		switch (e.getActionCommand()) {		
 		case "Agregar a la orden":
-			añadirServicioHotelHabitacion();
+			agregarALaOrden();
 			break;
 			
 		case "Eliminar de orden":
-			añadirServicioHotelHabitacion();
+			eliminarDeOrden();
 			break;
 			
 		case "Añadir a la habitación":
@@ -346,12 +379,25 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 1) {
-			int row = tablaServicios.getSelectedRow();
-			int column = tablaServicios.getSelectedColumn();
-			String nombre = tablaServicios.getValueAt(row, column).toString();
-			String precio = getPrecio(nombre);
-			cajaNombreInfo.setText(nombre);
-			cajaPrecioInfo.setText(precio);
+			if (e.getSource()==tablaServicios) {
+				int rowSer = tablaServicios.getSelectedRow();
+				int columnSer = tablaServicios.getSelectedColumn();
+				String nombre = tablaServicios.getValueAt(rowSer, columnSer).toString();
+				String precio = getPrecio(nombre);
+				cajaNombre.setText(nombre);
+				cajaPrecio.setText(precio);
+			}
+			
+			if (e.getSource()==tablaOrden) {
+				int rowOrd = tablaOrden.getSelectedRow();
+				int columnOrd = tablaOrden.getSelectedColumn();
+				String nombreOrden = tablaOrden.getValueAt(rowOrd, columnOrd).toString();
+				String precioOrden = getPrecio(nombreOrden);
+				String cantidad = listaOrden.get(nombreOrden).toString();
+				cajaNombre.setText(nombreOrden);
+				cajaPrecio.setText(precioOrden);	
+				cajaCantidad.setText(cantidad);
+			}
 		 }
 	}
 

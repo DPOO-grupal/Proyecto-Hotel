@@ -20,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -34,17 +35,23 @@ import com.github.lgooddatepicker.components.TimePickerSettings.TimeIncrement;
 
 import controlador.WindowManager;
 import modelo.ProductoMenu;
+import modelo.Servicio;
 import vistaEmpleado.EmpleadoRestauranteFrame;
 
 public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements MouseListener,ActionListener{
 
 	private JButton agregarAlMenu;
-	private AbstractButton eliminarDelMenu;
+	private JButton eliminarDelMenu;
 	private JButton agregar;
+	private JTextField cajaNombreAgregar;
+	private JTextField cajaPrecioAgregar;
+	private JFrame frameAgregar;
+	private TimePicker horaIAgregar;
+	private TimePicker horaFAgregar;
+	private JCheckBox cajaLlevableAgregar;
 
 	public AdminRestauranteFrame(WindowManager windowManager) {
 		super(windowManager);
-		cargarDatos();
 	}
 
 	@Override
@@ -67,13 +74,13 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 		
 		//Creacion de la tabla servicios
 		String[] columnasMenu = {"Nombre", "Precio"}; //Nombre de las columnas
-        modeloTabla = new DefaultTableModel(columnasMenu, 0);
+        modeloTablaMenu = new DefaultTableModel(columnasMenu, 0);
         
         //Filas de la tabla
-        modeloTabla.addTableModelListener(tablaMenu);
+        modeloTablaMenu.addTableModelListener(tablaMenu);
   	    
   	    //Diseño de la tabla
-        tablaMenu = new JTable(modeloTabla);
+        tablaMenu = new JTable(modeloTablaMenu);
         tablaMenu.addMouseListener(this);
 	    
 	    //Diseño de la tabla
@@ -88,9 +95,10 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
         DefaultTableCellRenderer modelocentrarServicios = new DefaultTableCellRenderer();
         modelocentrarServicios.setHorizontalAlignment(SwingConstants.CENTER);
 
-
-        tablaMenu.getColumnModel().getColumn(0).setCellRenderer(modelocentrarServicios);
-
+        for (int i = 0; i < columnasMenu.length; i++) {
+        	tablaMenu.getColumnModel().getColumn(i).setCellRenderer(modelocentrarServicios);	
+		}
+        
         JScrollPane scrollPanelServicios = new JScrollPane(tablaMenu);
 
         //Tamaño y ubicacion de la tabla en el panel
@@ -105,13 +113,13 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
         
       //Creacion de la tabla servicios
 		String[] columnasOrden = {"Orden"}; //Nombre de las columnas
-	    modeloTabla = new DefaultTableModel(columnasOrden, 0);
+	    modeloTablaOrden = new DefaultTableModel(columnasOrden, 0);
 	      
 	    //Filas de la tabla
-	    modeloTabla.addTableModelListener(tablaOrden);
+	    modeloTablaOrden.addTableModelListener(tablaOrden);
 		 
 		//Diseño de la tabla
-	    tablaOrden = new JTable(modeloTabla);
+	    tablaOrden = new JTable(modeloTablaOrden);
 	    tablaOrden.addMouseListener(this);
 	    
 	    //Diseño de la tabla
@@ -211,10 +219,9 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 	}
 	
 	private void agregarAlMenu() {
-		JFrame frameAgregar = new JFrame();
+		frameAgregar = new JFrame();
 		frameAgregar.setSize(300, 500);
 		frameAgregar.setLocationRelativeTo(null);
-		
 		frameAgregar.setLayout(new GridLayout(5, 1));
 		frameAgregar.setBackground(Color.decode("#ccd2c2"));
 		
@@ -230,12 +237,12 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 		JLabel nombre = new JLabel("Nombre");
 		nombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		cajaNombre = new JTextField();
-		cajaNombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		cajaNombreAgregar = new JTextField();
+		cajaNombreAgregar.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 
 		
 		panelNombre.add(nombre);
-		panelNombre.add(cajaNombre);
+		panelNombre.add(cajaNombreAgregar);
 		
 		//Panel precio
 		JPanel panelPrecio = new JPanel();
@@ -248,11 +255,11 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 		JLabel precio = new JLabel("Precio");
 		precio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		cajaPrecio = new JTextField();
-		cajaPrecio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		cajaPrecioAgregar = new JTextField();
+		cajaPrecioAgregar.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
 		panelPrecio.add(precio);
-		panelPrecio.add(cajaPrecio);
+		panelPrecio.add(cajaPrecioAgregar);
 		
 		//Panel precio
 		JPanel panelHorario = new JPanel();
@@ -267,14 +274,14 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 		TimePickerSettings timeSettings = new TimePickerSettings();
 		timeSettings.initialTime = LocalTime.of(5, 0);
 		timeSettings.generatePotentialMenuTimes(TimeIncrement.FifteenMinutes, null, null);
-		horaI = new TimePicker(timeSettings);
+		horaIAgregar = new TimePicker(timeSettings);
 		timeSettings.initialTime = LocalTime.of(23, 0);
-		horaF = new TimePicker(timeSettings);
+		horaFAgregar = new TimePicker(timeSettings);
 		
 		panelHorario.add(horario);
 		panelHorario.add(new JLabel());
-		panelHorario.add(horaI);
-		panelHorario.add(horaF);
+		panelHorario.add(horaIAgregar);
+		panelHorario.add(horaFAgregar);
 		
 		//Panel precio
 		JPanel panelLlevable = new JPanel();
@@ -285,13 +292,12 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 		
 		//Precio y su caja de texto
 		JLabel llevable = new JLabel("Llevable");
-		llevable.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		cajaLlevable = new JCheckBox();
-		cajaLlevable.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		cajaLlevableAgregar = new JCheckBox();
+		cajaLlevableAgregar.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
 		panelLlevable.add(llevable);
-		panelLlevable.add(cajaLlevable);
+		panelLlevable.add(cajaLlevableAgregar);
 		
 		//Panel boton agregar
 		JPanel panelAgregar = new JPanel();
@@ -315,17 +321,59 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 		frameAgregar.setVisible(true);
 	}
 	
-	public void cargarDatos() {
-		modeloTabla.getDataVector().removeAllElements();
-		modeloTabla.fireTableDataChanged(); 
-		Collection<ProductoMenu> listaProductosMenu = windowManager.getMenu().values();
-		for (ProductoMenu productoMenu : listaProductosMenu) {
-			String nombre = productoMenu.getNombre();
-	        modeloTabla.addRow(new Object[]{nombre, "ICON", "ICON"});
+	
+	private void añadirProductoMenu() {
+		try {
+			String nombre = cajaNombreAgregar.getText();
+			Double precio = Double.parseDouble(cajaPrecioAgregar.getText());
+			Date horaInicial = windowManager.getHora(horaIAgregar.getText());
+			Date horaFinal = windowManager.getHora(horaFAgregar.getText());
+			boolean llevable = cajaLlevableAgregar.isSelected();
+			windowManager.crearProductoMenu(horaInicial, horaFinal, llevable, nombre, precio);
+			cargarDatos();
+			
+			cajaNombreAgregar.setText("");
+			cajaPrecioAgregar.setText("");
+			TimePickerSettings timeSettings = new TimePickerSettings();
+			timeSettings.initialTime = LocalTime.of(5, 0);
+			timeSettings.generatePotentialMenuTimes(TimeIncrement.FifteenMinutes, null, null);
+			horaIAgregar = new TimePicker(timeSettings);
+			timeSettings.initialTime = LocalTime.of(23, 0);
+			horaFAgregar = new TimePicker(timeSettings);
+			cajaLlevableAgregar.setSelected(false);	
+			frameAgregar.setVisible(false);
+			
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Debes llenar todos los espacios");
 		}
 	}
 	
-	private void añadirProductoMenu() {
+	private void eliminarProductoMenu() {
+		String nombre = cajaNombre.getText();
+		ProductoMenu productoMenu = getProductoMenu(nombre);
+		windowManager.eliminarProductoMenu(productoMenu);
+		cargarDatos();
+		cajaNombre.setText("");
+		cajaPrecio.setText("");
+		TimePickerSettings timeSettings = new TimePickerSettings();
+		timeSettings.initialTime = LocalTime.of(5, 0);
+		timeSettings.generatePotentialMenuTimes(TimeIncrement.FifteenMinutes, null, null);
+		horaI = new TimePicker(timeSettings);
+		timeSettings.initialTime = LocalTime.of(23, 0);
+		horaF = new TimePicker(timeSettings);
+		cajaLlevable.setSelected(false);	
+	}
+	
+	
+	private ProductoMenu getProductoMenu(String nombre) {
+		Collection<ProductoMenu> listaProductoMenu= windowManager.getMenu().values();
+		ProductoMenu productoMenu = null;
+		for(ProductoMenu servicio : listaProductoMenu) {
+			if (servicio.getNombre().equals(nombre)) {
+				productoMenu = servicio;
+			}
+		}
+		return productoMenu;
 	}
 	
 	public String formatoHora(Date hora) {
@@ -333,15 +381,20 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 	    String fechaString = sdf.format(hora);
 		return fechaString;
 	}
-
-	@Override
+	
 	public void actionPerformedFrame(ActionEvent e) {
-		switch (e.getActionCommand()) {
+		super.actionPerformedFrame(e);
+		switch (e.getActionCommand()){
 		case "Agregar al Menú":
 			agregarAlMenu();
 			break;
-		case "Cargar a la habitación":
+			
+		case "Agregar":
 			añadirProductoMenu();
+			break;
+			
+		case "Quitar del Menú":
+			eliminarProductoMenu();
 			break;
 
 		default:
@@ -350,18 +403,7 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 	}
 	
 	public void mouseClicked(MouseEvent e) {
-		if (e.getClickCount() == 1) {
-			int row = tablaMenu.getSelectedRow();
-			int column = tablaMenu.getSelectedColumn();
-			String nombre = tablaMenu.getValueAt(row, column).toString();
-			String precio = getPrecio(nombre);
-			Date horaI = getHoraI(nombre);
-			Date horaF = getHoraF(nombre);
-			String llevable = "No";
-			if (getLlevable(nombre)) {
-				llevable="Si";
-			}
-		 }
-		
+		super.mouseClicked(e);
 	}
+	
 }
