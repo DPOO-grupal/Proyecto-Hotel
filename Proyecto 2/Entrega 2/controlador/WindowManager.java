@@ -34,8 +34,14 @@ import vistaAdmin.CrearHabitacionFrame;
 import vistaAdmin.AdminHabitacionesFrame;
 import vistaAdmin.AdminMenuPrincipal;
 import vistaAdmin.AdminRestauranteFrame;
+import vistaAdmin.AdminHabitacionesFrame;
+import vistaAdmin.AdminMenuPrincipal;
+import vistaAdmin.AdminRestauranteFrame;
+import vistaAdmin.AdminServiciosFrame;
 import vistaEmpleado.EmpleadoHabitacionesFrame;
 import vistaEmpleado.EmpleadoMenuPrincipal;
+import vistaEmpleado.EmpleadoRestauranteFrame;
+import vistaEmpleado.EmpleadoServiciosFrame;
 
 public class WindowManager {
 	private JFrame ventandaActual;
@@ -493,7 +499,7 @@ public class WindowManager {
 
     		JFrame pruebas = new CrearHabitacionFrame(windowManager);
     		// Menú de ese Frame
-    		JFrame menu = new AdminMenuPrincipal(windowManager);
+    		JFrame menu = new EmpleadoMenuPrincipal(windowManager);
     		
     		windowManager.setPruebas(pruebas, menu);
     		

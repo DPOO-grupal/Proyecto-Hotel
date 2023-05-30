@@ -50,8 +50,6 @@ public class Hotel implements Serializable{
 		restaurante= new Restaurante();
 		ocupados = new TreeMap<Date, HashMap<Integer, Integer>>(); // <Date, <ID habitacion, ID grupo>
 	}
-	
-	
 
 
 	public boolean usuarioExiste(String login) {
@@ -212,6 +210,9 @@ public class Hotel implements Serializable{
 		serviciosHotel.put(servicio.getId(), servicio);
 	}
 	
+	public void eliminarServicioHotel(String nombre) {
+	}
+	
 	public HashMap<Integer, Servicio> getServiciosHotel(){
 		return serviciosHotel;
 	}
@@ -256,7 +257,7 @@ public class Hotel implements Serializable{
 	
 	
 	public void crearHabitacion(TipoHabitacion tipo, int id, int capacidad, boolean apto) {
-		Habitacion habitacion = new Habitacion(tipo, id, capacidad, apto);
+		Habitacion habitacion = new Habitacion(tipo, id);
 		habitaciones.put(id, habitacion);
 	}
 	

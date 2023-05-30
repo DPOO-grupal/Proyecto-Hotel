@@ -36,6 +36,10 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 	private JTextField cajaNumeroHabitacion;
 	private JTextField cajaCantidadPersonas;
 	private JButton añadirAHabitacion;
+	private JTextField cajaNombre;
+	private JTextField cajaPrecio;
+	private JTextField cajaCantidad;
+	private JTable tablaOrden;
 
 	public EmpleadoServiciosFrame(WindowManager windowManager) {
 		super(windowManager);
@@ -45,10 +49,93 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 	@Override
 	protected void setPanelCrear() {
 		//Edita el aspecto del panel	
-		panelCrear.setLayout(new GridLayout(5, 1, 10, 10));
+		panelCrear.setLayout(new GridLayout(7, 1, 10, 10));
 		panelCrear.setBackground(Color.decode("#204473"));
 		panelCrear.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
+		
+		//Crea el panel para agregar un servicio
+		JPanel panelNombre = new JPanel();
+		panelNombre.setBackground(Color.decode("#204473"));	
+		panelNombre.setLayout(new GridLayout(2, 1));
+		
+		//Nombre y su caja de texto
+		
+		JLabel nombre = new JLabel("Nombre");
+		nombre.setForeground(Color.white);
+		nombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		
+		cajaNombre = new JTextField();
+		cajaNombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 
+		
+		panelNombre.add(nombre);
+		panelNombre.add(cajaNombre);
+		
+		//Panel precio
+		JPanel panelPrecio = new JPanel();
+		panelPrecio.setBackground(Color.decode("#204473"));	
+		panelPrecio.setLayout(new GridLayout(2, 1));
+		
+		//Precio y su caja de texto
+		JLabel precio = new JLabel("Precio");
+		precio.setForeground(Color.white);
+		precio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		
+		cajaPrecio = new JTextField();
+		cajaPrecio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		
+		panelPrecio.add(precio);
+		panelPrecio.add(cajaPrecio);
+		
+		//Panel precio
+		JPanel panelCantidad = new JPanel();
+		panelCantidad.setBackground(Color.decode("#204473"));	
+		panelCantidad.setLayout(new GridLayout(2, 1));
+		
+		//Precio y su caja de texto
+		JLabel cantidad = new JLabel("Cantidad");
+		cantidad.setForeground(Color.white);
+		cantidad.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		
+		cajaCantidad = new JTextField();
+		cajaCantidad.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		
+		panelCantidad.add(cantidad);
+		panelCantidad.add(cajaCantidad);
+
+		//Panel agregar
+		JPanel panelAgregarOrden = new JPanel();
+		panelAgregarOrden.setBackground(Color.decode("#204473"));
+		
+		//Boton para agregar un servicio
+		JButton agregarALaOrden = new JButton("Agregar a la orden");
+		agregarALaOrden.addActionListener(this);
+		agregarALaOrden.setBackground(Color.decode("#accaf2"));
+		agregarALaOrden.setFont(new Font("arial", 1, 24));
+		
+		panelAgregarOrden.add(agregarALaOrden);
+		
+		//Panel agregar
+		JPanel panelEliminarOrden = new JPanel();
+		panelEliminarOrden.setBackground(Color.decode("#204473"));
+		
+		//Boton para agregar un servicio
+		JButton eliminarOrden = new JButton("Eliminar de orden");
+		eliminarOrden.addActionListener(this);
+		eliminarOrden.setBackground(Color.decode("#accaf2"));
+		eliminarOrden.setFont(new Font("arial", 1, 24));
+		
+		panelEliminarOrden.add(eliminarOrden);
+		
+		//Se añaden los componentes al panel
+		panelCrear.add(new JLabel());
+		panelCrear.add(panelNombre);
+		panelCrear.add(panelPrecio);
+		panelCrear.add(panelCantidad);
+		panelCrear.add(new JLabel());
+		panelCrear.add(panelAgregarOrden);
+		panelCrear.add(panelEliminarOrden);
+		
 	}
 
 	@Override
@@ -60,9 +147,18 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		panelDerecho.setBackground(Color.decode("#b2bba4"));
 		panelDerecho.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		
+		//Tamaño y ubicacion en el panel
+		JLabel titulo = new JLabel("Servicios");
+		titulo.setFont(new Font("Times New Roman", Font.PLAIN, 40));
+		
+		constraints.ipady = 50;
+        constraints.gridheight = 1;
+        constraints.gridwidth = 2;
+		panelDerecho.add(titulo,constraints);
+		
 		//Creacion de la tabla servicios
-		String[] columnas = {"Servicios"}; //Nombre de las columnas
-        modeloTabla = new DefaultTableModel(columnas, 0);
+		String[] columnasServicio = {"Nombre", "Precio"}; //Nombre de las columnas
+        modeloTabla = new DefaultTableModel(columnasServicio, 0);
         
         //Filas de la tabla
         modeloTabla.addTableModelListener(tablaServicios);
@@ -80,75 +176,74 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
         tablaServicios.setRowHeight(70);
         tablaServicios.setEnabled(true);
 
-        DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
-        modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
+        DefaultTableCellRenderer modelocentrarServicios = new DefaultTableCellRenderer();
+        modelocentrarServicios.setHorizontalAlignment(SwingConstants.CENTER);
 
 
-        tablaServicios.getColumnModel().getColumn(0).setCellRenderer(modelocentrar);
+        tablaServicios.getColumnModel().getColumn(0).setCellRenderer(modelocentrarServicios);
 
-        JScrollPane scrollPanel = new JScrollPane(tablaServicios);
+        JScrollPane scrollPanelServicios = new JScrollPane(tablaServicios);
 
         //Tamaño y ubicacion de la tabla en el panel
-        constraints.gridx = 0;
-        constraints.ipady = 650;
-        constraints.ipadx = 400;
-        constraints.gridheight = 2;
+        constraints.gridy = 2;
+        constraints.ipady = 300;
+        constraints.ipadx = 830;
+        constraints.gridheight = 1;
         constraints.gridwidth = 2;
         constraints.weightx = 1;
 
-        panelDerecho.add(scrollPanel, constraints);
-		
-        //Creacion del recuadro para buscar un servicio
-		JLabel nombre = new JLabel("Nombre");
-		nombre.setForeground(Color.BLACK);
-		nombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-		
-		cajaNombreInfo = new JTextField();
-		
-		JLabel precio = new JLabel("Precio");
-		precio.setForeground(Color.BLACK);
-		precio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-		
-		cajaPrecioInfo = new JTextField();
-		
-		//Diseño 
-		JPanel buscar = new JPanel(new GridLayout(4,1));
-		buscar.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-		buscar.setBackground(Color.decode("#accaf2"));
-		
-		buscar.add(nombre);
-		buscar.add(cajaNombreInfo);
-		buscar.add(precio);
-		buscar.add(cajaPrecioInfo);
-		
-		//Tamaño y ubicacion en el panel
-		constraints.gridx = 3;
-		constraints.gridy = 0;
-		constraints.ipady = 120;
-        constraints.ipadx = 250;
-        constraints.gridheight = 1;
-        constraints.gridwidth = 1;
-		
-		panelDerecho.add(buscar, constraints);
+        panelDerecho.add(scrollPanelServicios, constraints);
+        
+      //Creacion de la tabla servicios
+		String[] columnasOrden = {"Orden"}; //Nombre de las columnas
+	    modeloTabla = new DefaultTableModel(columnasOrden, 0);
+	      
+	    //Filas de la tabla
+	    modeloTabla.addTableModelListener(tablaOrden);
+		 
+		//Diseño de la tabla
+	    tablaOrden = new JTable(modeloTabla);
+	    tablaOrden.addMouseListener(this);
+	    
+	    //Diseño de la tabla
+	    tablaOrden.setDefaultEditor(Object.class, null);
+	    tablaOrden.getTableHeader().setBackground(Color.decode("#204473"));
+	    tablaOrden.getTableHeader().setForeground(Color.white);
+	    tablaOrden.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
+	    tablaOrden.setFont(new Font("Times New Roman", 1, 20));
+	    tablaOrden.setRowHeight(70);
+	    tablaOrden.setEnabled(true);
+	
+	    DefaultTableCellRenderer modelocentrarOrden = new DefaultTableCellRenderer();
+	    modelocentrarOrden.setHorizontalAlignment(SwingConstants.CENTER);
+	
+	
+	    tablaOrden.getColumnModel().getColumn(0).setCellRenderer(modelocentrarOrden);
+	
+	    JScrollPane scrollPanelOrden = new JScrollPane(tablaOrden);
+	
+	    //Tamaño y ubicacion de la tabla en el panel
+	    constraints.gridy = 3;
+	    constraints.ipady = 250;
+	    constraints.ipadx = 400;
+	    constraints.gridheight = 1;
+	    constraints.gridwidth = 1;
+	    constraints.weightx = 1;
+	    constraints.weighty = 1;
+	
+	    panelDerecho.add(scrollPanelOrden, constraints);
 		
 		//Creacion del recuadro para añadir servicio a la habitacion
-		JPanel habitacion = new JPanel(new GridLayout(5,1, 0, 5));
+		JPanel habitacion = new JPanel(new GridLayout(3,1, 0, 5));
 		habitacion.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		habitacion.setBackground(Color.decode("#accaf2"));
 		
 		//Numero de habitacion y su caja de texto
-		JLabel numHabitacion = new JLabel("Número de habitacion");
+		JLabel numHabitacion = new JLabel("Número de habitación");
 		numHabitacion.setForeground(Color.BLACK);
 		numHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
 		cajaNumeroHabitacion = new JTextField();
-		
-		//Numero de habitacion y su caja de texto
-		JLabel cantidadPersonas = new JLabel("#personas");
-		cantidadPersonas.setForeground(Color.BLACK);
-		cantidadPersonas.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-		
-		cajaCantidadPersonas = new JTextField();
 		
 		//Boton para añadir un servicio
 		añadirAHabitacion = new JButton("Añadir a la habitación");
@@ -159,18 +254,16 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		
 		habitacion.add(numHabitacion);
 		habitacion.add(cajaNumeroHabitacion);
-		habitacion.add(cantidadPersonas);
-		habitacion.add(cajaCantidadPersonas);
+		habitacion.add(cajaNumeroHabitacion);
 		habitacion.add(añadirAHabitacion);
 		
 		//Tamaño y ubicacion en el panel
-		constraints.gridx = 3;
-		constraints.gridy = 1;
+		constraints.gridx = 1;
+		constraints.gridy = 3;
 		constraints.ipady = 50;
         constraints.ipadx = 100;
         constraints.gridheight = 1;
         constraints.gridwidth = 1;
-		
 		
 		panelDerecho.add(habitacion, constraints);
 	}
@@ -223,6 +316,14 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 	
 	public void actionPerformedFrame(ActionEvent e) {
 		switch (e.getActionCommand()) {		
+		case "Agregar a la orden":
+			añadirServicioHotelHabitacion();
+			break;
+			
+		case "Eliminar de orden":
+			añadirServicioHotelHabitacion();
+			break;
+			
 		case "Añadir a la habitación":
 			añadirServicioHotelHabitacion();
 			break;

@@ -91,6 +91,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		reservasFrame = new EmpleadoReservasFrame(windowManager);
 		serviciosFrame = new EmpleadoServiciosFrame(windowManager);
 		habitacionesFrame = new EmpleadoHabitacionesFrame(windowManager);
+		restauranteFrame = new EmpleadoRestauranteFrame(windowManager);
 		
 		ocupacionHoy();
 		ocupacionAnual();
