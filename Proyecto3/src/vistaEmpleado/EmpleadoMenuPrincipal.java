@@ -88,8 +88,9 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		tarifasFrame = new EmpleadoTarifasFrame(windowManager);
 		serviciosFrame = new EmpleadoServiciosFrame(windowManager);
 		reservasFrame = new EmpleadoReservasFrame(windowManager);
-		serviciosFrame = new AdminServiciosFrame(windowManager);
-		habitacionesFrame = new AdminHabitacionesFrame(windowManager);
+		serviciosFrame = new EmpleadoServiciosFrame(windowManager);
+		habitacionesFrame = new EmpleadoHabitacionesFrame(windowManager);
+		restauranteFrame = new EmpleadoRestauranteFrame(windowManager);
 		
 		ocupacionHoy();
 		ocupacionAnual();
@@ -448,6 +449,9 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	}
 	public void volverReserva() {
 		windowManager.mostraVentana(reservasFrame);
+	}
+	public void volverHabitaciones() {
+		windowManager.mostraVentana(habitacionesFrame);
 	}
 
 	@Override
