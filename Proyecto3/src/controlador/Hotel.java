@@ -279,8 +279,8 @@ public class Hotel implements Serializable{
 	}
 	
 	
-	public void crearHabitacion(TipoHabitacion tipo, int id, int capacidad, boolean apto) {
-		Habitacion habitacion = new Habitacion(tipo, id, capacidad, apto);
+	public void crearHabitacion(TipoHabitacion tipo, int id) {
+		Habitacion habitacion = new Habitacion(tipo, id);
 		habitaciones.put(id, habitacion);
 	}
 	

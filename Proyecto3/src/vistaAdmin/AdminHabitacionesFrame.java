@@ -141,9 +141,9 @@ public class AdminHabitacionesFrame extends EmpleadoHabitacionesFrame{
 	        String tipo = habitacion.getTipoHabitacion().toString();
 	        String capacidad = String.valueOf(habitacion.getCapacidad());
 	        String apto = "No";
-	        if (habitacion.getApto()) {
-				apto="Si";
-	        }
+//	        if (habitacion.getApto()) {
+//				apto="Si";
+//	        }
 	        ArrayList<Servicio> servicios = habitacion.getServicios();
 	        String caracteristicas = habitacion.getCaracteristicas();
 	        modeloTabla.addRow(new Object[]{id, tipo, capacidad, apto, servicios, caracteristicas, "ICON", "ICON"});

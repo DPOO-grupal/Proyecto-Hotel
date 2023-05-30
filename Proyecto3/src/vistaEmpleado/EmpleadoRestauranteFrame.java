@@ -100,7 +100,7 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
         modelocentrarServicios.setHorizontalAlignment(SwingConstants.CENTER);
 
         for (int i = 0; i < columnasMenu.length; i++) {
-        	tablaOrden.getColumnModel().getColumn(i).setCellRenderer(modelocentrarServicios);	
+        	tablaMenu.getColumnModel().getColumn(i).setCellRenderer(modelocentrarServicios);	
 		}
         
         JScrollPane scrollPanelMenu = new JScrollPane(tablaMenu);
