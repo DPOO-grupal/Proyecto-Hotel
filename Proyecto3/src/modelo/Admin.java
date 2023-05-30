@@ -31,9 +31,14 @@ public class Admin extends Empleado {
 	
 // FIN TARIFAS ----------------------------------------------
 
+//INICIO SERVICIOS HOTEL -----------------------------------------------------------
 
 	public void crearServicioHotel(String nombre, double precio) {
 		hotel.crearServicioHotel(nombre, precio);
+	}
+	
+	public void eliminarServicioHotel(int id) {
+		hotel.eliminarServicioHotel(id);
 	}
 	
 //FIN SERVICIOS HOTEL -----------------------------------------------------------
@@ -62,6 +67,10 @@ public class Admin extends Empleado {
 
 	public void crearProductoMenu(Date horaI, Date horaF, boolean llevable,String nombre, double precio) {
 		hotel.crearProductoMenu(horaI, horaF, llevable, nombre, precio);
+	}
+	
+	public void eliminarProductoMenu(ProductoMenu productoMenu) {
+		hotel.eliminarProductoMenu(productoMenu);
 	}
 	
 //FIN PRODUCTO MENU -----------------------------------------------------------

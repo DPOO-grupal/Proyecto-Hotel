@@ -34,6 +34,8 @@ import vistaAdmin.AdminMenuPrincipal;
 import vistaAdmin.AdminRestauranteFrame;
 import vistaAdmin.AdminServiciosFrame;
 import vistaEmpleado.EmpleadoMenuPrincipal;
+import vistaEmpleado.EmpleadoRestauranteFrame;
+import vistaEmpleado.EmpleadoServiciosFrame;
 import vistaEmpleado.EmpleadoTarifasFrame;
 
 public class WindowManager {
@@ -267,6 +269,11 @@ public class WindowManager {
 		admin.crearServicioHotel(nombre, precio);
 	}
 	
+	public void eliminarServicioHotel(int id) {
+		Admin admin = (Admin) usuarioActual;
+		admin.eliminarServicioHotel(id);
+	}
+	
 	public void añadirServicioHabitacion(int id, String nombre, double precio) {
 		Admin admin = (Admin) usuarioActual;
 		admin.añadirServicioHabitacion(id, nombre, precio);
@@ -326,6 +333,11 @@ public class WindowManager {
 		admin.crearProductoMenu(horaI, horaF, llevable, nombre, precio);
 	}
 	
+	public void eliminarProductoMenu(ProductoMenu productoMenu) {
+		Admin admin = (Admin)usuarioActual;
+		admin.eliminarProductoMenu(productoMenu);
+	}
+	
 	public void añadirProductoMenuHabitacion(int idHabitacion, int idServicio, int cantidad, boolean pagarEnSitio){
 		Empleado empleado = (Empleado)usuarioActual;
 		empleado.añadirProductoMenuHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);
@@ -335,7 +347,7 @@ public class WindowManager {
 		boolean right;
 		Date hora = null;
 		do{
-			DateFormat DFormat = new SimpleDateFormat("h:mm");
+			DateFormat DFormat = new SimpleDateFormat("hh:mm a");
 
 			try {
 				hora = DFormat.parse(horaString);

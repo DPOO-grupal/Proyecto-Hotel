@@ -210,7 +210,8 @@ public class Hotel implements Serializable{
 		serviciosHotel.put(servicio.getId(), servicio);
 	}
 	
-	public void eliminarServicioHotel(String nombre) {
+	public void eliminarServicioHotel(int id) {
+		serviciosHotel.remove(id);
 	}
 	
 	public HashMap<Integer, Servicio> getServiciosHotel(){
@@ -503,6 +504,10 @@ public class Hotel implements Serializable{
 	public void crearProductoMenu(Date horaI, Date horaF, boolean llevable,String nombre, double precio) {
 		ProductoMenu productoMenu = new ProductoMenu(horaI, horaF, llevable, nombre, precio);
 		restaurante.añadirProducto(productoMenu);
+	}
+	
+	public void eliminarProductoMenu(ProductoMenu productoMenu) {
+		restaurante.quitarProducto(productoMenu);
 	}
 	
 	public void añadirProductoRestaurante(ProductoMenu productoMenu) {

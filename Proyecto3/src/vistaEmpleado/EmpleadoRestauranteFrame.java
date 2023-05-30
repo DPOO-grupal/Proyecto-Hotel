@@ -15,6 +15,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -36,20 +38,23 @@ import vistaAdmin.FrameBaseInfo;
 
 public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseListener{
 
-	protected DefaultTableModel modeloTabla;
 	protected JTable tablaMenu;
 	protected JTextField cajaNumeroHabitacion;
-	protected JTextField cajaCantidadPersonas;
 	protected JTextField cajaNombre;
 	protected JTextField cajaPrecio;
 	protected JCheckBox cajaLlevable;
+	protected JTextField cajaCantidad;
 	protected JTable tablaOrden;
 	protected JButton añadirAHabitacion;
 	protected TimePicker horaF;
 	protected TimePicker horaI;
+	protected DefaultTableModel modeloTablaMenu;
+	protected DefaultTableModel modeloTablaOrden;
+	protected HashMap<String, Integer> listaOrden;
 
 	public EmpleadoRestauranteFrame(WindowManager windowManager) {
 		super(windowManager);
+		listaOrden = new HashMap<>();
 		cargarDatos();
 	}
 
@@ -73,13 +78,13 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 		
 		//Creacion de la tabla servicios
 		String[] columnasMenu = {"Nombre", "Precio"}; //Nombre de las columnas
-        modeloTabla = new DefaultTableModel(columnasMenu, 0);
+        modeloTablaMenu = new DefaultTableModel(columnasMenu, 0);
         
         //Filas de la tabla
-        modeloTabla.addTableModelListener(tablaMenu);
+        modeloTablaMenu.addTableModelListener(tablaMenu);
   	    
   	    //Diseño de la tabla
-        tablaMenu = new JTable(modeloTabla);
+        tablaMenu = new JTable(modeloTablaMenu);
         tablaMenu.addMouseListener(this);
 	    
 	    //Diseño de la tabla
@@ -94,10 +99,11 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
         DefaultTableCellRenderer modelocentrarServicios = new DefaultTableCellRenderer();
         modelocentrarServicios.setHorizontalAlignment(SwingConstants.CENTER);
 
-
-        tablaMenu.getColumnModel().getColumn(0).setCellRenderer(modelocentrarServicios);
-
-        JScrollPane scrollPanelServicios = new JScrollPane(tablaMenu);
+        for (int i = 0; i < columnasMenu.length; i++) {
+        	tablaOrden.getColumnModel().getColumn(i).setCellRenderer(modelocentrarServicios);	
+		}
+        
+        JScrollPane scrollPanelMenu = new JScrollPane(tablaMenu);
 
         //Tamaño y ubicacion de la tabla en el panel
         constraints.gridy = 2;
@@ -107,17 +113,17 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
         constraints.gridwidth = 2;
         constraints.weightx = 1;
 
-        panelDerecho.add(scrollPanelServicios, constraints);
+        panelDerecho.add(scrollPanelMenu, constraints);
         
         //Creacion de la tabla servicios
 		String[] columnasOrden = {"Orden"}; //Nombre de las columnas
-	    modeloTabla = new DefaultTableModel(columnasOrden, 0);
+	    modeloTablaOrden = new DefaultTableModel(columnasOrden, 0);
 	      
 	    //Filas de la tabla
-	    modeloTabla.addTableModelListener(tablaOrden);
+	    modeloTablaOrden.addTableModelListener(tablaOrden);
 		 
 		//Diseño de la tabla
-	    tablaOrden = new JTable(modeloTabla);
+	    tablaOrden = new JTable(modeloTablaOrden);
 	    tablaOrden.addMouseListener(this);
 	    
 	    //Diseño de la tabla
@@ -186,7 +192,7 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 	@Override
 	protected void setPanelCrear() {
 		//Edita el aspecto del panel	
-		panelCrear.setLayout(new GridLayout(7, 1, 10, 10));
+		panelCrear.setLayout(new GridLayout(8, 1, 10, 10));
 		panelCrear.setBackground(Color.decode("#204473"));
 		panelCrear.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
 		
@@ -203,7 +209,7 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 		
 		cajaNombre = new JTextField();
 		cajaNombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-
+		cajaNombre.setEditable(false);
 		
 		panelNombre.add(nombre);
 		panelNombre.add(cajaNombre);
@@ -220,6 +226,7 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 		
 		cajaPrecio = new JTextField();
 		cajaPrecio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		cajaPrecio.setEditable(false);
 		
 		panelPrecio.add(precio);
 		panelPrecio.add(cajaPrecio);
@@ -258,10 +265,26 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 		llevable.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
 		cajaLlevable = new JCheckBox();
-		cajaLlevable.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		cajaLlevable.setEnabled(false);
 		
 		panelLlevable.add(llevable);
 		panelLlevable.add(cajaLlevable);
+		
+		//Panel precio
+		JPanel panelCantidad = new JPanel();
+		panelCantidad.setBackground(Color.decode("#204473"));	
+		panelCantidad.setLayout(new GridLayout(2, 1));
+		
+		//Precio y su caja de texto
+		JLabel cantidad = new JLabel("Cantidad");
+		cantidad.setForeground(Color.white);
+		cantidad.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		
+		cajaCantidad = new JTextField();
+		cajaCantidad.setFont(new Font("Times New Roman", Font.PLAIN, 30));
+		
+		panelCantidad.add(cantidad);
+		panelCantidad.add(cajaCantidad);
 		
 		//Panel agregar
 		JPanel panelAgregarOrden = new JPanel();
@@ -293,19 +316,27 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 		panelCrear.add(panelPrecio);
 		panelCrear.add(panelHorario);
 		panelCrear.add(panelLlevable);
+		panelCrear.add(panelCantidad);
 		panelCrear.add(panelAgregarOrden);
 		panelCrear.add(panelEliminarOrden);
 						
 	}
 	
 	protected void cargarDatos() {
-		modeloTabla.getDataVector().removeAllElements();
-		modeloTabla.fireTableDataChanged(); 
+		modeloTablaMenu.getDataVector().removeAllElements();
+		modeloTablaMenu.fireTableDataChanged(); 
 		Collection<ProductoMenu> listaProductosMenu = windowManager.getMenu().values();
 		for (ProductoMenu productoMenu : listaProductosMenu) {
 			String nombre = productoMenu.getNombre();
-	        modeloTabla.addRow(new Object[]{nombre, "ICON", "ICON"});
+			String precio = productoMenu.getPrecio()+"";
+			modeloTablaMenu.addRow(new Object[]{nombre, precio, "ICON"});
 		}
+		
+		modeloTablaOrden.getDataVector().removeAllElements();
+		modeloTablaOrden.fireTableDataChanged();
+		for (String nombreProductoMenu : listaOrden.keySet()) {
+			modeloTablaOrden.addRow(new Object[]{nombreProductoMenu, "ICON", "ICON"});
+			}
 	}
 	
 	protected String getPrecio(String nombre) {
@@ -358,20 +389,76 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 		return precioServicio;
 		}
 	
-	protected void añadirServicioHotelHabitacion() {
+	protected void añadirProductoMenuHabitacion() {
+		try {
+			boolean pagarEnSitio = false;
+			int option = JOptionPane.showConfirmDialog(null, "¿Desea pagar ahora?", "Pagar", JOptionPane.YES_NO_OPTION);
+			if (option==JOptionPane.YES_OPTION) {
+				pagarEnSitio=true;
+			}
+			
+			int idHabitacion = Integer.parseInt(cajaNumeroHabitacion.getText());
+			Set<String> nombres = listaOrden.keySet();
+			for (String nombre : nombres) {
+				int idServicio = getId(nombre);
+				int cantidad = listaOrden.get(nombre);
+				windowManager.añadirProductoMenuHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);	
+				listaOrden.remove(nombre);
+			}	
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "No existe la habitación");
 		}
+		cajaNombre.setText("");
+		cajaPrecio.setText("");
+		cajaCantidad.setText("");
+		cajaNumeroHabitacion.setText("");
+	}
+
 	
 	protected String formatoHora(Date hora) {
-		SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
+		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
 	    String fechaString = sdf.format(hora);
 		return fechaString;
+	}
+
+	
+	protected void agregarALaOrden() {
+		try {
+			String nombre = cajaNombre.getText();
+			int cantidad = Integer.parseInt(cajaCantidad.getText());
+			listaOrden.put(nombre, cantidad);
+			cargarDatos();
+			cajaNombre.setText("");
+			cajaPrecio.setText("");
+			cajaCantidad.setText("");
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Dedes selecionar un producto del menu y decir la cantidad");
+		}
+		
+	}
+	
+	protected void eliminarDeOrden() {
+		String nombre = cajaNombre.getText();
+		listaOrden.remove(nombre);
+		cargarDatos();
+		cajaNombre.setText("");
+		cajaPrecio.setText("");
+		cajaCantidad.setText("");
 	}
 
 	@Override
 	public void actionPerformedFrame(ActionEvent e) {
 		switch (e.getActionCommand()) {
-		case "Cargar a la habitación":
-			añadirServicioHotelHabitacion();
+		case "Agregar a la orden":
+			agregarALaOrden();
+			break;
+			
+		case "Eliminar de orden":
+			eliminarDeOrden();
+			break;
+			
+		case "Añadir a la habitación":
+			añadirProductoMenuHabitacion();
 			break;
 
 		default:
@@ -379,25 +466,44 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 		}
 	}
 	
+
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 1) {
-			int row = tablaMenu.getSelectedRow();
-			int column = tablaMenu.getSelectedColumn();
-			String nombre = tablaMenu.getValueAt(row, column).toString();
-			String precio = getPrecio(nombre);
-			Date horaI = getHoraI(nombre);
-			Date horaF = getHoraF(nombre);
-			String llevable = "No";
-			if (getLlevable(nombre)) {
-				llevable="Si";
+			if (e.getSource()==tablaMenu) {
+				int rowSer = tablaMenu.getSelectedRow();
+				int columnSer = tablaMenu.getSelectedColumn();
+				String nombre = tablaMenu.getValueAt(rowSer, columnSer).toString();
+				String precio = getPrecio(nombre);
+				String horaInicial = formatoHora(getHoraI(nombre));
+				String horaFinal = formatoHora(getHoraF(nombre));
+				boolean llevable = getLlevable(nombre);
+				cajaNombre.setText(nombre);
+				cajaPrecio.setText(precio);
+				horaI.setText(horaInicial);
+				horaF.setText(horaFinal);
+				cajaLlevable.setSelected(llevable);
+				cajaCantidad.setText("");
+				cajaCantidad.setEditable(true);
 			}
-			cajaNombre.setText(nombre);
-			cajaPrecio.setText(precio);
-			horaI.setTime(column);
-			horaF.setTime(column);
-			cajaLlevable.setText(llevable);
+			
+			if (e.getSource()==tablaOrden) {
+				int rowOrd = tablaOrden.getSelectedRow();
+				int columnOrd = tablaOrden.getSelectedColumn();
+				String nombreOrden = tablaOrden.getValueAt(rowOrd, columnOrd).toString();
+				String precioOrden = getPrecio(nombreOrden);
+				String horaInicial = formatoHora(getHoraI(nombreOrden));
+				String horaFinal = formatoHora(getHoraF(nombreOrden));
+				boolean llevable = getLlevable(nombreOrden);
+				String cantidad = listaOrden.get(nombreOrden).toString();
+				cajaNombre.setText(nombreOrden);
+				cajaPrecio.setText(precioOrden);
+				horaI.setText(horaInicial);
+				horaF.setText(horaFinal);
+				cajaLlevable.setSelected(llevable);
+				cajaCantidad.setText(cantidad);
+				cajaCantidad.setEditable(false);
+			}
 		 }
-		
 	}
 
 	@Override

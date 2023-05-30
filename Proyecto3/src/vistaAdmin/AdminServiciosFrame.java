@@ -14,6 +14,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -27,8 +28,6 @@ import vistaEmpleado.EmpleadoServiciosFrame;
 
 public class AdminServiciosFrame extends EmpleadoServiciosFrame implements ActionListener, MouseListener{
 	
-	private JTextField cajaNombre;
-	private JTextField cajaPrecio;
 	private JButton agregarServicio;
 	private JButton eliminarServicio;
 	private JButton agregar;
@@ -279,17 +278,17 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 	}
 	
 	private void eliminarServicio() {
-		
+		String nombre = cajaNombre.getText();
+		int id = getId(nombre);
+		windowManager.eliminarServicioHotel(id);
+		cargarDatos();
+		cajaNombre.setText("");
+		cajaPrecio.setText("");
 	}
 	
 	public void actionPerformedFrame(ActionEvent e) {
-		switch (e.getActionCommand()) {
-		case "Agregar a la orden":
-			break;
-			
-		case "Eliminar de orden":
-			break;
-			
+		super.actionPerformedFrame(e);
+		switch (e.getActionCommand()) {				
 		case "Agregar servicio":
 			agregarServicio();
 			break;
@@ -301,29 +300,10 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 		case "Eliminar servicio":
 			eliminarServicio();
 			break;
-		
-		case "Añadir a la habitación":
-			añadirServicioHotelHabitacion();
-			break;
 
 		default:
 			break;
 		}
-	}
-
-
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		if (e.getClickCount() == 1) {
-			int row = tablaServicios.getSelectedRow();
-			int column = tablaServicios.getSelectedColumn();
-			String nombre = tablaServicios.getValueAt(row, column).toString();
-			String precio = getPrecio(nombre);
-			cajaNombreInfo.setText(nombre);
-			cajaPrecioInfo.setText(precio);
-		 }
-		
 	}
 
 	@Override

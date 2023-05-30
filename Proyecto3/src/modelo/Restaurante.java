@@ -31,7 +31,7 @@ public class Restaurante implements Serializable{
 	}
 	
 	public ProductoMenu getProducto(int id) {
-		return menu.get(id);	
+		return menu.get(id);
 	}
 	
 }
