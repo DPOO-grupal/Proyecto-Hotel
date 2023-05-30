@@ -13,7 +13,6 @@ public class Habitacion implements Serializable{
 	//Atributos 
 	private int id;
 	private int capacidad;
-	private boolean apto;
 	private ArrayList<Servicio> listaServicios;
 	private ArrayList<Cama> listaCamas;
 	private String caracteristicas;
@@ -21,12 +20,11 @@ public class Habitacion implements Serializable{
 	private static ArrayList<Integer> pisoIds = new ArrayList<Integer>();; 
 	
 //Constructor
-	public Habitacion(TipoHabitacion tipo, int id, int capacidad, Boolean apto) {
+	public Habitacion(TipoHabitacion tipo, int id) {
 		listaServicios = new ArrayList<Servicio>();
-		this.capacidad = capacidad;
+		listaCamas = new ArrayList<Cama>();
 		this.tipo=tipo;
 		this.id=id;
-		this.apto=apto;
 	}
 
 //Metodos
@@ -39,7 +37,11 @@ public class Habitacion implements Serializable{
 	}
 	
 	public int getCapacidad () {
-		return this.capacidad;
+		for (int i = 0; i < listaCamas.size(); i++) {
+			Cama cama= listaCamas.get(i);
+			capacidad += cama.getCapacidadCama();
+		}
+		return capacidad;
 	}	
 	
 	public void añadirServicioHabitacion(Servicio servicio) {
@@ -64,8 +66,17 @@ public class Habitacion implements Serializable{
 		this.listaServicios = listaServicios;
 	}
 	
-	public boolean getApto() {
-		return this.apto;
+	public int getApto(ArrayList<Cama> listaCamas) {
+		int apto = 0;
+		for (int i = 0; i < listaCamas.size(); i++) {
+			boolean cama = listaCamas.get(i).getAptoParaNiño();
+			if (cama==true) 
+			{
+				apto++;
+			}
+			
+		}
+		return apto;
 	}
 	
 	public String getCaracteristicas() {
