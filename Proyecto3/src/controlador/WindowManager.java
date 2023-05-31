@@ -21,6 +21,7 @@ import org.jdesktop.swingx.JXDatePicker;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import modelo.Admin;
+import modelo.Cama;
 import modelo.Empleado;
 import modelo.Grupo;
 import modelo.Habitacion;
@@ -112,6 +113,7 @@ public class WindowManager {
 	}
 	
 	public void volverMenu() {
+		((EmpleadoMenuPrincipal) this.menu).resetDatos();
 		((EmpleadoMenuPrincipal) this.menu).ocupacionHoy();
 		((EmpleadoMenuPrincipal) this.menu).ocupacionAnual();
 		mostraVentana(menu);
@@ -192,6 +194,22 @@ public class WindowManager {
 		}
 	}
 	
+	public void quitarHabitacion(Integer ID) {
+		if (usuarioActual.getClass() == Admin.class) {
+			Admin admin = (Admin) usuarioActual;
+			admin.quitarHabitacion(ID);
+		}
+	}
+	
+	public boolean reservada(Integer ID) {
+		boolean resultado = false;
+		if (usuarioActual.getClass() == Admin.class) {
+			Admin admin = (Admin) usuarioActual;
+			resultado = admin.reservada(ID);
+		}
+		return resultado;
+	}
+	
 	public String getTipo(String login) {
 		String tipo = "Usuario";
 		if (usuarioActual.getClass() == Admin.class) {
@@ -251,6 +269,11 @@ public class WindowManager {
 			Arrays.sort(resultados);
 			return resultados;
 		}
+	}
+	
+	public Habitacion getHabitacion(int id) {
+		Admin admin = (Admin) usuarioActual;
+		return admin.getHabitacion(id);
 	}
 	
 	public Date getDia() {
@@ -314,14 +337,24 @@ public class WindowManager {
 		admin.setCaracteristicasHabitacion(caracteristicas, id);
 	}
 	
+	public Servicio crearServicio(String nombre, double precio) {
+		Admin admin = (Admin) usuarioActual;
+		return admin.crearServicio(nombre, precio);
+	}
+	
+	public Cama crearCama(int capacidad, boolean exclusiva) {
+		Admin admin = (Admin) usuarioActual;
+		return admin.crearCama(capacidad, exclusiva);
+	}
+	
 	public void añadirServicioHotelHabitacion(int idHabitacion, int idServicio, int cantidad, boolean pagarEnSitio) {
 		Empleado empleado = (Admin) usuarioActual;
 		empleado.añadirServicioHotelHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);
 	}
 	
-	public void crearHabitacion(TipoHabitacion tipoHabitacion, int id, int capacidad, boolean apto) {
+	public void crearHabitacion(TipoHabitacion tipoHabitacion, int id) {
 		Admin admin = (Admin) usuarioActual;
-		admin.crearHabitacion(tipoHabitacion, id, capacidad, apto);
+		admin.crearHabitacion(tipoHabitacion, id);
 	}
 	
 	public TipoHabitacion getTipoHabitacion(String opcion) {
@@ -538,9 +571,9 @@ public class WindowManager {
     		}
         	// JFrame para probar
 
-    		JFrame pruebas = new CrearHabitacionFrame(windowManager);
+    		JFrame pruebas = new AdminHabitacionesFrame(windowManager);
     		// Menú de ese Frame
-    		JFrame menu = new EmpleadoMenuPrincipal(windowManager);
+    		JFrame menu = new AdminMenuPrincipal(windowManager);
     		
     		windowManager.setPruebas(pruebas, menu);
     		

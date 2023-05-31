@@ -442,6 +442,12 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 		
 	}
 
+	@Override
+	public void resetDatos() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 }

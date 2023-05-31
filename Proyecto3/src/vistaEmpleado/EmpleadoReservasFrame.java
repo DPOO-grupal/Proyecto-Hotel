@@ -473,5 +473,11 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 		
 	}
 
+	@Override
+	public void resetDatos() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

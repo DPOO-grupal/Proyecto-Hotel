@@ -424,5 +424,11 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void resetDatos() {
+		// TODO Auto-generated method stub
+		
+	}
 }
 
