@@ -31,6 +31,7 @@ public class AdminMenuPrincipal extends EmpleadoMenuPrincipal implements ActionL
         tarifasFrame = new AdminTarifasFrame(windowManager);
 		restauranteFrame = new AdminRestauranteFrame(windowManager);
 		habitacionesFrame = new AdminHabitacionesFrame(windowManager);
+		serviciosFrame = new AdminServiciosFrame(windowManager);
 	}
 
 	@Override
