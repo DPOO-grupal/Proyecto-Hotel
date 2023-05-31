@@ -153,6 +153,9 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 //  	    modeloTablaHoy.addRow(filaPrueba);
   	    //Diseño de la tabla
           tablaHoy = new JTable(modeloTablaHoy);
+//          tablaHoy.setShowHorizontalLines(true);
+//          tablaHoy.setShowVerticalLines(true);
+//          tablaHoy.setGridColor(Color.BLACK);
           tablaHoy.getTableHeader().setBackground(Color.decode("#204473"));
           tablaHoy.getTableHeader().setForeground(Color.white);
           tablaHoy.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
@@ -248,7 +251,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
           //constraints.weightx = 1;
           //constraints.weighty = 0.1;
 
-          PanelOcupacion.add(scrollPanelAnual, constraints);
+          //PanelOcupacion.add(scrollPanelAnual, constraints);
 	    
 		panelDerecho.add(PanelOcupacion, BorderLayout.CENTER);
 	}
@@ -361,6 +364,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 				label.setAlignmentX(CENTER_ALIGNMENT);
 				label.setAlignmentY(CENTER_ALIGNMENT);
 				label.setOpaque(false);
+				label.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5));
 				label.setFont(new Font("Times New Roman", 1, 20));
 				GridBagConstraints co = new GridBagConstraints();
 				co.gridy = i;
