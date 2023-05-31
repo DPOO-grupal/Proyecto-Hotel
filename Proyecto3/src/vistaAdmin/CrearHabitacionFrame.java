@@ -73,19 +73,22 @@ public class CrearHabitacionFrame extends FrameBaseInfo implements KeyListener{
 		GridBagConstraints constraints = new GridBagConstraints();
 		panelDerecho.setLayout(gridbag);
 		panelDerecho.setBackground(Color.decode("#b2bba4"));
-		panelDerecho.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 //-------------------------------------------------------------------------------------------------------------------------------//		
 		JLabel labelCamas = new JLabel("Camas");
 		labelCamas.setForeground(Color.BLACK);
 		labelCamas.setFont(new Font("Times New Roman", Font.BOLD, 30));
 		
+		constraints.weightx = 1;
+		constraints.weighty = 1;
+		
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-        constraints.ipady = 0;
         constraints.gridwidth = 1;
         constraints.gridheight = 1;
-        //constraints.ipadx = 150;
-        constraints.insets = new Insets(34, 60, 0, 0);
+        constraints.insets = new Insets(20, 0, 0, 0);
+
+        constraints.fill = GridBagConstraints.NONE;
+        constraints.anchor = GridBagConstraints.NORTH;
 
         panelDerecho.add(labelCamas, constraints);
 		
@@ -117,11 +120,14 @@ public class CrearHabitacionFrame extends FrameBaseInfo implements KeyListener{
 	        //Tamaño y ubicacion de la tabla en el panel
 	        constraints.gridx = 0;
 	        constraints.gridy = 1;
-	        constraints.ipady = 0;
-	        constraints.ipadx = 10;
+	        
 	        constraints.gridwidth = 1;
-	        constraints.gridheight = 1;
-	        constraints.insets = new Insets(20, 60, 30, 0);
+	        constraints.gridheight = 3;
+	        
+	        constraints.insets = new Insets(-100, 20, -100, 20);
+
+	        constraints.fill = GridBagConstraints.BOTH;
+	        constraints.anchor = GridBagConstraints.CENTER;
 
 	        panelDerecho.add(scrollPanel, constraints);
 	        
@@ -131,13 +137,13 @@ public class CrearHabitacionFrame extends FrameBaseInfo implements KeyListener{
 			botonCamas.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 			
 			constraints.gridx = 0;
-			constraints.gridy = 2;
-	        constraints.ipady = 0;
+			constraints.gridy = 4;
 	        constraints.gridwidth = 1;
 	        constraints.gridheight = 1;
-	        constraints.insets = new Insets(0, 60, 10, 0);
-	        //constraints.ipadx = 150;
-	        //constraints.insets = new Insets(0, 0, 0, 0);
+	        constraints.insets = new Insets(10, 0, 20, 0);
+
+	        constraints.fill = GridBagConstraints.NONE;
+	        constraints.anchor = GridBagConstraints.SOUTH;
 
 	        panelDerecho.add(botonCamas, constraints);
 //-------------------------------------------------------------------------------------------------------------------------------//
@@ -147,11 +153,12 @@ public class CrearHabitacionFrame extends FrameBaseInfo implements KeyListener{
 			
 			constraints.gridx = 1;
 			constraints.gridy = 0;
-	        constraints.ipady = 0;
 	        constraints.gridwidth = 1;
 	        constraints.gridheight = 1;
-	        //constraints.ipadx = 150;
-	        constraints.insets = new Insets(20, 20, -10, 0);
+	        constraints.insets = new Insets(20, 0, 0, 0);
+
+	        constraints.fill = GridBagConstraints.NONE;
+	        constraints.anchor = GridBagConstraints.NORTH;
 
 	        panelDerecho.add(labelServicios, constraints);
 			
@@ -183,11 +190,13 @@ public class CrearHabitacionFrame extends FrameBaseInfo implements KeyListener{
 		        //Tamaño y ubicacion de la tabla en el panel
 		        constraints.gridx = 1;
 		        constraints.gridy = 1;
-		        constraints.ipady = 0;
-		        constraints.ipadx = 10;
+
 		        constraints.gridwidth = 1;
-		        constraints.gridheight = 1;
-		        constraints.insets = new Insets(-10, 0, 0, 0);
+		        constraints.gridheight = 3;
+		        constraints.insets = new Insets(-100, 20, -100, 20);
+
+		        constraints.fill = GridBagConstraints.BOTH;
+		        constraints.anchor = GridBagConstraints.CENTER;
 
 		        panelDerecho.add(scrollPanelServicios, constraints);
 		        
@@ -197,19 +206,22 @@ public class CrearHabitacionFrame extends FrameBaseInfo implements KeyListener{
 				botonServicios.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 				
 				constraints.gridx = 1;
-				constraints.gridy = 2;
-		        constraints.ipady = 0;
+				constraints.gridy = 4;
+				
 		        constraints.gridwidth = 1;
 		        constraints.gridheight = 1;
-		        //constraints.ipadx = 150;
-		        constraints.insets = new Insets(0, 0, 15, 0);
+		        
+		        constraints.insets = new Insets(10, 0, 20, 0);
+
+		        constraints.fill = GridBagConstraints.NONE; 
+		        constraints.anchor = GridBagConstraints.SOUTH;
 
 		        panelDerecho.add(botonServicios, constraints);
 //-------------------------------------------------------------------------------------------------------------------------------//		
 		JPanel check = new JPanel();
 		check.setBackground(Color.decode("#7E8C69"));
 		check.setPreferredSize(new Dimension(0,199));
-		check.setLayout(new FlowLayout(FlowLayout.CENTER, 300, 80));
+		check.setLayout(new FlowLayout(FlowLayout.CENTER, 200, 60));
 	    Font fontButton = new Font("Arial", Font.BOLD, 16);
 
 		crearHabitacion = new JButton("Crear habitación");
@@ -229,12 +241,15 @@ public class CrearHabitacionFrame extends FrameBaseInfo implements KeyListener{
 		check.add(borrarHabitacion);
 		
 		constraints.gridx = 0;
-		constraints.gridy = 3;
-        constraints.ipady = 1;
-        constraints.ipadx = 1084;
-        constraints.gridwidth = 2;
+		constraints.gridy = 5;
+		constraints.gridwidth = 2;
         constraints.gridheight = 1;
-        constraints.insets = new Insets(30, 0, 0, 0);
+        
+        constraints.ipady = -90 ;
+        
+        constraints.insets = new Insets(0, 0, 0, 0);
+
+        constraints.fill = GridBagConstraints.BOTH;		
         constraints.anchor = GridBagConstraints.SOUTH;		
 		panelDerecho.add(check, constraints);
 	}

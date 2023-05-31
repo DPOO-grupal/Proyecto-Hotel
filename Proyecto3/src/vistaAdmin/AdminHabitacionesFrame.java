@@ -87,16 +87,18 @@ public class AdminHabitacionesFrame extends EmpleadoHabitacionesFrame{
 
         //Tamaño y ubicacion de la tabla en el panel
         constraints.gridx = 0;
-        constraints.ipady = 0;
-        constraints.ipadx = 400;
-        constraints.insets = new Insets(90, 0, 100, 0);
+        constraints.gridy = 0;
+        constraints.weightx =1;
+        constraints.weighty =1;
+        constraints.insets = new Insets(30, 30, 30, 30);
+        constraints.fill = GridBagConstraints.BOTH;
 
         panelDerecho.add(scrollPanel, constraints);
         
 		JPanel check = new JPanel();
 		check.setBackground(Color.decode("#7E8C69"));
 		check.setPreferredSize(new Dimension(0,199));
-		check.setLayout(new FlowLayout(FlowLayout.CENTER, 300, 80));
+		check.setLayout(new FlowLayout(FlowLayout.CENTER, 200, 80));
 	    Font fontButton = new Font("Arial", Font.BOLD, 16);
 
 		crearHabitacion = new JButton("Crear habitación");
@@ -117,9 +119,9 @@ public class AdminHabitacionesFrame extends EmpleadoHabitacionesFrame{
 		
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-        constraints.ipady = 1;
-        constraints.ipadx = 1084;
-        constraints.insets = new Insets(10, 0, 0, 0);
+        constraints.insets = new Insets(0, 0, 0, 0);
+
+        constraints.fill = GridBagConstraints.HORIZONTAL;		
         constraints.anchor = GridBagConstraints.SOUTH;		
 		panelDerecho.add(check, constraints);
 	}
