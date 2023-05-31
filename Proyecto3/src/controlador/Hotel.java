@@ -827,4 +827,9 @@ public class Hotel implements Serializable{
 			return resultado;
 		}
 	}
+
+	public void borrarDatos() {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -585,6 +585,12 @@ public class WindowManager {
 }
 
 
+	public void borrarDatos() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 
 
