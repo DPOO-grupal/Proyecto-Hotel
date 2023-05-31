@@ -209,7 +209,7 @@ public class Hotel implements Serializable{
 		for (Tarifa tarifa : rangoTarifas.values()) {
 
 			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(tarifa.getFecha());
+			calendar.setTime(tarifa.getFechaDate());
 			
 			int diaSemana = (calendar.get(Calendar.DAY_OF_WEEK)+5)%7;
 			System.out.println("dia: " + diaSemana+ "Estado: " + diasValores[diaSemana]);

@@ -24,6 +24,7 @@ import java.util.TimeZone;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -167,12 +168,14 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 //	        modeloTabla.addRow(fila2);        
         Font fontTabla= new Font("Arial", Font.BOLD, 20);
         tablaTarifas = new JTable(modeloTabla);
+        tablaTarifas.setDefaultEditor(Object.class, null);
+        tablaTarifas.getTableHeader().setReorderingAllowed(false);
         tablaTarifas.getTableHeader().setBackground(Color.decode("#204473"));
         tablaTarifas.getTableHeader().setForeground(Color.white);
         tablaTarifas.getTableHeader().setFont(fontTabla);
-        tablaTarifas.setBackground(Color.decode("#B2BBA4"));
+        tablaTarifas.setFont(fontTabla);
+        tablaTarifas.setBackground(Color.decode("#FFFFFF"));
         tablaTarifas.setRowHeight(50);
-        tablaTarifas.setEnabled(false);
         tablaTarifas.addMouseListener(this);
         
         DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
@@ -356,9 +359,9 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 		for (Tarifa tarifa : tarifasColl) {
 			String [] datos = new String[3];
 			
-			datos[0] = tarifa.getFecha().toString();
+			datos[0] = tarifa.getFechaString();
 			for (TipoHabitacion tipo: TipoHabitacion.values()) {
-				double precio = tarifa.getPrecio(tipo);
+				int precio = (int)tarifa.getPrecio(tipo);
 				
 	            NumberFormatter numberFormatter = new NumberFormatter();
 	            numberFormatter.setValueClass(Integer.class);
@@ -400,11 +403,11 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
+			resetDatos();
 			int row = tablaTarifas.getSelectedRow();
 			String fechaString[] = ((String) tablaTarifas.getValueAt(row, 0)).split("/");
-			String tipo = (String) tablaTarifas.getValueAt(row, 2);
-			String precio = (String) tablaTarifas.getValueAt(row, 3);
+			String tipo = (String) tablaTarifas.getValueAt(row, 1);
+			String precio = (String) tablaTarifas.getValueAt(row, 2);
 			Calendar calendar = Calendar.getInstance();
 			calendar.set(Integer.parseInt(fechaString[2]), Integer.parseInt(fechaString[1]), Integer.parseInt(fechaString[0]));
 			Date fecha = calendar.getTime();
@@ -412,7 +415,7 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 			datos[0].setText(tipo);
 			datos[1].setText(precio);
 			fechaMostrar[0].setDate(fecha);
-			dias[calendar.get((Calendar.DAY_OF_WEEK)+6)%8].setSelected(true);
+			dias[((calendar.get(Calendar.DAY_OF_WEEK)-1)-4)%7].setSelected(true);
 			
 			
 		 
@@ -444,7 +447,10 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 
 	@Override
 	public void resetDatos() {
-		// TODO Auto-generated method stub
+
+		for (JCheckBox dia:dias) {
+			dia.setSelected(false);
+		}
 		
 	}
 
