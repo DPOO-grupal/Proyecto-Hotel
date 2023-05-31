@@ -49,12 +49,20 @@ public class Admin extends Empleado {
 		hotel.crearCama(id, capacidadCama, aptoParaNiño);
 	}
 	
-	public void crearHabitacion(TipoHabitacion tipo,int id, int capacidad, boolean apto) {
+	public void crearHabitacion(TipoHabitacion tipo,int id) {
 		hotel.crearHabitacion(tipo, id);
 	}
 	
 	public void setCaracteristicasHabitacion(String habitacion, int id) {
 		hotel.setCaracteristicas(habitacion, id);
+	}
+	
+	public Servicio crearServicio(String nombre, double precio) {
+		return hotel.crearServicio(nombre, precio);
+	}
+	
+	public Cama crearCama(int capacidad, boolean exclusiva) {
+		return hotel.crearCama(capacidad, exclusiva);
 	}
 	
 	public void añadirServicioHabitacion(int id, String nombre, double precio) {
@@ -90,8 +98,16 @@ public class Admin extends Empleado {
 		return hotel.getArea(login);
 	}
 	
+	public Habitacion getHabitacion(int id) {
+		return hotel.getHabitacion(id);
+	}
+	
 	public void quitarUsuario(String nombre) {
 		hotel.quitarUsuario(nombre);
+	}
+	
+	public void quitarHabitacion(Integer ID) {
+		hotel.quitarHabitacion(ID);
 	}
 //FIN DAR DATOS ---------------------------------------------------------------
 }

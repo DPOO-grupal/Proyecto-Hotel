@@ -8,6 +8,8 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+
 import javax.swing.text.NumberFormatter;
 
 import com.formdev.flatlaf.json.ParseException;
@@ -36,6 +38,10 @@ import javax.swing.JCheckBox;
 import javax.swing.BorderFactory;
 
 import controlador.WindowManager;
+import modelo.Cama;
+import modelo.Habitacion;
+import modelo.Servicio;
+import modelo.TipoHabitacion;
 
 public class CrearHabitacionFrame extends FrameBaseInfo implements KeyListener{
 
@@ -85,10 +91,11 @@ public class CrearHabitacionFrame extends FrameBaseInfo implements KeyListener{
 		
 		//Creacion de la tabla camas
 			String[] columnasCamas = {"Capacidad", "Exclusiva para niños"}; //Nombre de las columnas
-	        modeloTablaCamas = new DefaultTableModel(columnasCamas, 0);        
+	        modeloTablaCamas = new DefaultTableModel(columnasCamas, 0);
 		    
 		    //Diseño de la tabla
 	        tablaCamas = new JTable(modeloTablaCamas);
+	        tablaCamas.getTableHeader().setReorderingAllowed(false);
 	        tablaCamas.setDefaultEditor(Object.class, null);
 	        tablaCamas.getTableHeader().setBackground(Color.decode("#204473"));
 	        tablaCamas.getTableHeader().setForeground(Color.white);
@@ -155,6 +162,7 @@ public class CrearHabitacionFrame extends FrameBaseInfo implements KeyListener{
 			    //Diseño de la tabla
 		        tablaServicios = new JTable(modeloTablaServicios);
 		        tablaServicios.setDefaultEditor(Object.class, null);
+		        tablaServicios.getTableHeader().setReorderingAllowed(false);
 		        tablaServicios.getTableHeader().setBackground(Color.decode("#204473"));
 		        tablaServicios.getTableHeader().setForeground(Color.white);
 		        tablaServicios.getTableHeader().setFont(new Font("Times New Roman", 1, 25));
@@ -245,7 +253,7 @@ public class CrearHabitacionFrame extends FrameBaseInfo implements KeyListener{
 		piso.setForeground(Color.white);
 		piso.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-        SpinnerModel model = new SpinnerNumberModel(1, 1, 20, 1);
+        SpinnerModel model = new SpinnerNumberModel(1, 1, 9, 1);
 
 		cajaPiso = new JSpinner(model);
   		cajaPiso.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -276,7 +284,7 @@ public class CrearHabitacionFrame extends FrameBaseInfo implements KeyListener{
 		tipoHabitacion.setForeground(Color.white);
 		tipoHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		String[] tipos = {"Estandar", "Suite", "Double Suite"};
+		TipoHabitacion[] tipos = TipoHabitacion.values();
 		
 		cajaTipoHabitacion =  new JComboBox<>(tipos);
 		cajaTipoHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -448,17 +456,9 @@ public class CrearHabitacionFrame extends FrameBaseInfo implements KeyListener{
 	private int calcularNuevaCapacidad() {
 		int total = 0;
 		int cantidadFilas = tablaCamas.getRowCount();
-		try {
 		for (int i = 0; i < cantidadFilas; i++) {
 			int capacidad = Integer.parseInt((String) tablaCamas.getValueAt(i, 0));
 			total+=capacidad;
-		}
-		}
-		catch (ParseException e) {
-			for (int i = 0; i < cantidadFilas; i++) {
-				int capacidad = Integer.parseInt((String) tablaCamas.getValueAt(i, 1));
-				total+=capacidad;
-			}
 		}
 		return total;
 	}
@@ -511,19 +511,110 @@ public class CrearHabitacionFrame extends FrameBaseInfo implements KeyListener{
 	    	JOptionPane.showMessageDialog(null, "Servicio descartado");
 	    }
 	    else {
-	    	String nom = nombre.getText();
-	    	String prec = precio.getText();
-	    	String[] fila = {nom, prec};
-	    	modeloTablaServicios.addRow(fila);
+	    	if (!(nombre.getText().strip().equals("")) && !(precio.getText().equals(""))) {
+		    	String nom = nombre.getText();
+		    	String prec = precio.getText();
+		    	String[] fila = {nom, prec};
+		    	modeloTablaServicios.addRow(fila);
+	    	}
+	    	else {
+	    		JOptionPane.showMessageDialog(null, "Verifique que ni el nombre ni el precio estén vacíos", "Error de nombre o precio", JOptionPane.ERROR_MESSAGE);;
+	    	}
 	    }
 	}
 	public void crearHabitacion() {
+		int piso = (int) cajaPiso.getValue();
+		int idHab = Habitacion.getMaxHabitacion(piso);
+		TipoHabitacion tipo = (TipoHabitacion) cajaTipoHabitacion.getSelectedItem();
+		windowManager.crearHabitacion(tipo, idHab);
+		Habitacion habitacion = windowManager.getHabitacion(idHab);
 		
+		ArrayList<Servicio> servicios = crearListaServicios();
+		habitacion.setListaServicios(servicios);
+		
+		String caracteristicas = getCaracteristicas();
+		habitacion.setCaracteristicas(caracteristicas);
+		
+		ArrayList<Cama> camas = crearListaCamas();
+		habitacion.setListaCamas(camas);
+		
+		JOptionPane.showMessageDialog(null, "Habitación creada correctamente");
+		setVisible(false);
+		volverMenu();
+		
+		
+		//windowManager.setServiciosHabitacion(idHab, servicios);
 	}
 	
+	private ArrayList<Cama> crearListaCamas() {
+		ArrayList<Cama> arrayCamas = new ArrayList<>();
+		int cantidadCamas = tablaCamas.getRowCount();
+		for (int i = 0; i < cantidadCamas; i++) {
+			int capacidad = Integer.parseInt(tablaCamas.getValueAt(i, 0).toString());
+			String apto = tablaCamas.getValueAt(i, 1).toString();
+			boolean exclusiva = (apto == "No") ? false : true;
+			Cama cama = windowManager.crearCama(capacidad, exclusiva);
+			arrayCamas.add(cama);
+		}
+		return arrayCamas;
+	}
+	
+	private String getCaracteristicas() {
+		String caracteristicas = "";
+		boolean balcon = cajaBalcon.isSelected();
+		boolean vista = cajaVista.isSelected();
+		boolean cocina = cajaCocina.isSelected();
+		if (balcon) {
+			caracteristicas+= "Balcón, ";
+		}
+		if (vista) {
+			caracteristicas+= "Vista, ";
+		}
+		if (cocina) {
+			caracteristicas+= "Cocina, ";
+		}
+		int fin = (caracteristicas.length())-2;
+		if (caracteristicas.length() > 2) {
+			caracteristicas = caracteristicas.substring(0, fin);
+		}
+		else {
+			caracteristicas += "Ninguna";
+		}
+		caracteristicas += ".";
+		return caracteristicas;
+	}
+	
+	public ArrayList<Servicio> crearListaServicios() {
+		ArrayList<Servicio> arrayServicios = new ArrayList<>();
+		int cantidadServicios = tablaServicios.getRowCount();
+		for (int i = 0; i < cantidadServicios; i++) {
+			String nombreServicio = tablaServicios.getValueAt(i, 0).toString();
+			double precioServicio = Double.parseDouble(tablaServicios.getValueAt(i, 1).toString().replace(",", ""));
+			Servicio servicio = windowManager.crearServicio(nombreServicio, precioServicio);
+			arrayServicios.add(servicio);
+		}
+		return arrayServicios;
+	}
 	@Override
 	public void volverMenu() {
+		modeloTablaCamas.getDataVector().removeAllElements();
+		modeloTablaCamas.fireTableDataChanged();
+		modeloTablaServicios.getDataVector().removeAllElements();
+		modeloTablaServicios.fireTableDataChanged();
 		windowManager.volverHabitaciones();
+	}
+	@Override
+	public void resetDatos() {
+		cajaPiso.setValue(new Integer(1));
+		cajaTipoHabitacion.setSelectedIndex(0);
+		cajaBalcon.setSelected(false);
+		cajaVista.setSelected(false);
+		cajaCocina.setSelected(false);
+		cajaCapacidad.setText("");
+		modeloTablaCamas.getDataVector().removeAllElements();
+		modeloTablaCamas.fireTableDataChanged();
+		modeloTablaServicios.getDataVector().removeAllElements();
+		modeloTablaServicios.fireTableDataChanged();
 	}
 	@Override
 	protected void actionPerformedFrame(ActionEvent e) {
@@ -535,16 +626,19 @@ public class CrearHabitacionFrame extends FrameBaseInfo implements KeyListener{
 			nuevoServicio();
 			break;
 		case "Descartar habitación":
+			resetDatos();
 			JOptionPane.showMessageDialog(null, "Habitación descartada");
 			setVisible(false);
 			volverMenu();
 			break;
 		case "Crear habitación":
-			crearHabitacion();
-			break;
-		case "Volver":
-			setVisible(false);
-			volverMenu();
+			if (tablaCamas.getRowCount() == 0) {
+				JOptionPane.showMessageDialog(null, "Añade camas antes de crear la habitación.");
+			}
+			else {
+				crearHabitacion();
+				resetDatos();
+			}
 			break;
 		default:
 			break;

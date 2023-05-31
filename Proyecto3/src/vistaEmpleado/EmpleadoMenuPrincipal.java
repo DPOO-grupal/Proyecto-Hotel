@@ -299,7 +299,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		for (int i = 0 ; i < 12 ; i++) {
 			int ocupacionesMes = 0;
 			ocupacionesMes = contarOcupacionesMes(dia, i);
-			System.out.println(ocupacionesMes);
+			//System.out.println(ocupacionesMes);
 			Color color = new ColorUIResource(Color.WHITE);
 			if (ocupacionesMes < 50 && ocupacionesMes > 0)
 				color = new Color(102, 255, 102);
@@ -425,6 +425,8 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 				}
 			}			
 			matriz = new String[cantidadFilas][cantidadColumnas];
+			System.out.println("Filas: " + cantidadFilas + ", Columnas: " + cantidadColumnas + ".");
+			System.out.println("Len arreglo: " + lenArreglo);
 		}		
 		
 		for (int i = 0 ; i < lenArreglo ; i++) {
@@ -432,7 +434,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 			int col = (habitaciones[i]%100)-1;
 			matriz[fila][col] = habitaciones[i] + "";
 		}
-		System.out.println("Len matriz " + matriz.length);
+		//System.out.println("Len matriz " + matriz.length);
 //		for (int i = 0; i < 3; i++) {
 //		    for (int j = 0; j < 1; j++) {
 //		        System.out.println(matriz[i][j] + " ");}}
@@ -452,7 +454,13 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		windowManager.mostraVentana(reservasFrame);
 	}
 	public void volverHabitaciones() {
+		((AdminHabitacionesFrame) habitacionesFrame).resetDatos();
+		habitacionesFrame.revalidate();
 		windowManager.mostraVentana(habitacionesFrame);
+	}
+	
+	public void resetDatos() {
+		
 	}
 
 	@Override

@@ -529,5 +529,11 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void resetDatos() {
+		// TODO Auto-generated method stub
+		
+	}
 }
 

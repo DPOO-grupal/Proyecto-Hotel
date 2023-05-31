@@ -41,6 +41,7 @@ public class AdminHabitacionesFrame extends EmpleadoHabitacionesFrame{
 	private JButton crearHabitacion;
 	private JButton borrarHabitacion;
 	private JFrame CrearHabitacionFrame;
+	private DefaultTableModel modeloTablaInfo;
 	
 	
 	public AdminHabitacionesFrame(WindowManager windowManager) {
@@ -60,11 +61,12 @@ public class AdminHabitacionesFrame extends EmpleadoHabitacionesFrame{
 		
 		//Creacion de la tabla servicios
 		String[] columnas = {"ID", "Tipo", "Capacidad", "Características"}; //Nombre de las columnas
-        modeloTabla = new DefaultTableModel(columnas, 0);        
+        modeloTablaInfo = new DefaultTableModel(columnas, 0);        
 	    
 	    //Diseño de la tabla
-        tablaHabitaciones = new JTable(modeloTabla);
+        tablaHabitaciones = new JTable(modeloTablaInfo);
         tablaHabitaciones.setDefaultEditor(Object.class, null);
+        tablaHabitaciones.getTableHeader().setReorderingAllowed(false);
         tablaHabitaciones.addMouseListener(this);
         tablaHabitaciones.getTableHeader().setBackground(Color.decode("#204473"));
         tablaHabitaciones.getTableHeader().setForeground(Color.white);
@@ -133,44 +135,63 @@ public class AdminHabitacionesFrame extends EmpleadoHabitacionesFrame{
 	}
 	
 	protected void cargarDatos() {
-		modeloTabla.getDataVector().removeAllElements();
-		modeloTabla.fireTableDataChanged(); 
+		modeloTablaInfo.getDataVector().removeAllElements();
+		modeloTablaInfo.fireTableDataChanged(); 
 		Collection<Habitacion> listaHabitaciones = windowManager.darHabitaciones().values();
 		for (Habitacion habitacion : listaHabitaciones) {
 	        String id = String.valueOf(habitacion.getId());
 	        String tipo = habitacion.getTipoHabitacion().toString();
 	        String capacidad = String.valueOf(habitacion.getCapacidad());
-	        String apto = "No";
-//	        if (habitacion.getApto()) {
-//				apto="Si";
-//	        }
 	        ArrayList<Servicio> servicios = habitacion.getServicios();
 	        String caracteristicas = habitacion.getCaracteristicas();
-	        modeloTabla.addRow(new Object[]{id, tipo, capacidad, apto, servicios, caracteristicas, "ICON", "ICON"});
+	        modeloTablaInfo.addRow(new Object[]{id, tipo, capacidad, caracteristicas, "ICON", "ICON"});
 	    }
 	}
 	
 	
 	private void crearHabitacion() {
 		//JOptionPane.showMessageDialog(null, "Crear");
+		resetDatos();
 		windowManager.mostraVentana(CrearHabitacionFrame);
 	}
 	
+	
 	private void borrarHabitacion() {
-		JOptionPane.showMessageDialog(null, "Borrar");
+		int row = tablaHabitaciones.getSelectedRow();
+		//JOptionPane.showMessageDialog(null, ID);
+		if (row == -1) {
+			JOptionPane.showMessageDialog(null, "Seleccione una habitación primero");
+		}
+		else {
+			Integer ID = Integer.parseInt(tablaHabitaciones.getValueAt(row, 0).toString());
+			int opcion = JOptionPane.YES_OPTION;
+			opcion = JOptionPane.showConfirmDialog(null, "¿Desea eliminar la habitación: " + ID + "?", "Panel de Opciones", JOptionPane.YES_NO_OPTION);
+			
+	        if (opcion == JOptionPane.YES_OPTION) {
+	    		windowManager.quitarHabitacion(ID);
+	    		resetDatos();
+	    		cargarDatos();
+	    		JOptionPane.showMessageDialog(null, "La habitación " + ID + " se eliminó correctamente.");
+	        }
+	    	else {
+	    		JOptionPane.showMessageDialog(null, "Acción cancelada.");
+	    	}
+		}
 	}
 
 	@Override
 	public void actionPerformedFrame(ActionEvent e) {
+		super.actionPerformedFrame(e);
 		switch (e.getActionCommand()) {
 		case "Crear habitación":
 			crearHabitacion();
 			break;
 			
-		default:
-			case "Borrar habitación":
+		case "Borrar habitación":
 			borrarHabitacion();
 			break;
+			
+		default:
 		}
 	}
 

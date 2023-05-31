@@ -58,6 +58,7 @@ public class EmpleadoHabitacionesFrame extends FrameBaseInfo implements MouseLis
 	    //Diseño de la tabla
         tablaHabitaciones = new JTable(modeloTabla);
         tablaHabitaciones.setDefaultEditor(Object.class, null);
+        tablaHabitaciones.getTableHeader().setReorderingAllowed(false);
         tablaHabitaciones.addMouseListener(this);
         tablaHabitaciones.getTableHeader().setBackground(Color.decode("#204473"));
         tablaHabitaciones.getTableHeader().setForeground(Color.white);
@@ -156,6 +157,7 @@ public class EmpleadoHabitacionesFrame extends FrameBaseInfo implements MouseLis
 		//Diseño de la tabla
         tablaHabitacionesCamas = new JTable(modeloTablaCamas);
         tablaHabitacionesCamas.setDefaultEditor(Object.class, null);
+        tablaHabitacionesCamas.getTableHeader().setReorderingAllowed(false);
         tablaHabitacionesCamas.addMouseListener(this);
         tablaHabitacionesCamas.getTableHeader().setBackground(Color.decode("#204473"));
         tablaHabitacionesCamas.getTableHeader().setForeground(Color.white);
@@ -203,6 +205,7 @@ public class EmpleadoHabitacionesFrame extends FrameBaseInfo implements MouseLis
 		//Diseño de la tabla
         tablaHabitacionesServicios = new JTable(modeloTablaServicios);
         tablaHabitacionesServicios.setDefaultEditor(Object.class, null);
+        tablaHabitacionesServicios.getTableHeader().setReorderingAllowed(false);
         tablaHabitacionesServicios.addMouseListener(this);
         tablaHabitacionesServicios.getTableHeader().setBackground(Color.decode("#204473"));
         tablaHabitacionesServicios.getTableHeader().setForeground(Color.white);
@@ -234,8 +237,6 @@ public class EmpleadoHabitacionesFrame extends FrameBaseInfo implements MouseLis
 	
 	protected void cargarDatos() {
 		modeloTabla.getDataVector().removeAllElements();
-		//String[] fila = {"301", "Suite", "5", "Balcon"};
-		//modeloTabla.addRow(fila);
 		modeloTabla.fireTableDataChanged(); 
 		Collection<Habitacion> listaHabitaciones = windowManager.darHabitaciones().values();
 		for (Habitacion habitacion : listaHabitaciones) {
@@ -257,25 +258,38 @@ public class EmpleadoHabitacionesFrame extends FrameBaseInfo implements MouseLis
 	public void llenarTablaCamas(String ID) {
 		ArrayList<String[]> camas = windowManager.getCamas(ID);
 		for (String[] cama : camas) {
-			modeloTablaServicios.addRow(cama);
+			modeloTablaCamas.addRow(cama);
 		}
+	}
+	@Override
+	public void resetDatos() {
+		cajaPiso.setText("");
+		cajaTipo.setText("");
+		modeloTablaCamas.getDataVector().removeAllElements();
+		modeloTablaCamas.fireTableDataChanged(); 
+		modeloTablaServicios.getDataVector().removeAllElements();
+		modeloTablaServicios.fireTableDataChanged();
+		cargarDatos();
 	}
 	
 	@Override
 	protected void actionPerformedFrame(ActionEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 1) {
+			modeloTablaCamas.getDataVector().removeAllElements();
+			modeloTablaCamas.fireTableDataChanged();
+			modeloTablaServicios.getDataVector().removeAllElements();
+			modeloTablaServicios.fireTableDataChanged();
 			JTable target = (JTable)e.getSource();
 			int row = target.getSelectedRow();
  		    String ID = tablaHabitaciones.getValueAt(row, 0).toString();
  		    cajaPiso.setText(ID.substring(0, 1));
  		    cajaTipo.setText(tablaHabitaciones.getValueAt(row, 1).toString());
- 		    JOptionPane.showMessageDialog(null, "Seleccionó a: "+tablaHabitaciones.getValueAt(row, 0));
+ 		    //JOptionPane.showMessageDialog(null, "Seleccionó a: "+tablaHabitaciones.getValueAt(row, 0));
  		    llenarTablaCamas(ID);
  		    llenarTablaServicios(ID);
  		  }
