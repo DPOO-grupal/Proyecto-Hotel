@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Collection;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -24,6 +25,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import controlador.WindowManager;
+import modelo.ProductoMenu;
+import modelo.Servicio;
 import vistaEmpleado.EmpleadoServiciosFrame;
 
 public class AdminServiciosFrame extends EmpleadoServiciosFrame implements ActionListener, MouseListener{
@@ -268,13 +271,38 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 	}
 
 	private void agregar() {
-		String nombre = cajaNombreAgregar.getText();
-		Double precio = Double.parseDouble(cajaPrecioAgregar.getText());
-		windowManager.agregarServicioHotel(nombre, precio);
-		cargarDatos();
-		cajaNombreAgregar.setText("");
-		cajaPrecioAgregar.setText("");
-		frameAgregar.setVisible(false);
+		try {
+			String nombre = cajaNombreAgregar.getText();
+			Double precio = Double.parseDouble(cajaPrecioAgregar.getText());
+			if (!(verificarExistencia(nombre))) {
+				windowManager.agregarServicioHotel(nombre, precio);
+				cargarDatos();
+				cajaNombreAgregar.setText("");
+				cajaPrecioAgregar.setText("");
+				frameAgregar.setVisible(false);
+			}
+			else {
+				int option = JOptionPane.showConfirmDialog(null, "Ya existe el servicio.\n Desea cambiar sus valores?", null, JOptionPane.YES_NO_OPTION);
+				if (option == 0) {
+					editarServicio(nombre);
+					windowManager.agregarServicioHotel(nombre, precio);
+					cargarDatos();
+					cajaNombreAgregar.setText("");
+					cajaPrecioAgregar.setText("");
+					frameAgregar.setVisible(false);
+				}
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Debes llenar todos los espacios");
+		}
+	}
+	
+	private void editarServicio(String nombre) {
+		Collection<Servicio> listaProductoMenu = windowManager.darServicio().values();
+		for(Servicio productoMenu : listaProductoMenu)
+			if (productoMenu.getNombre().toLowerCase().equals(nombre.toLowerCase())) {
+				windowManager.eliminarServicioHotel(getId(nombre));
+			}
 	}
 	
 	private void eliminarServicio() {
@@ -284,6 +312,17 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 		cargarDatos();
 		cajaNombre.setText("");
 		cajaPrecio.setText("");
+	}
+	
+	private boolean verificarExistencia(String nombre) {
+		Collection<Servicio> listaServicios = windowManager.darServicio().values();
+		boolean existe = false;
+		for(Servicio servicio : listaServicios)
+			if (servicio.getNombre().toLowerCase().equals(nombre.toLowerCase())) {
+				existe = true;
+			}
+		return existe;
+		
 	}
 	
 	public void actionPerformedFrame(ActionEvent e) {

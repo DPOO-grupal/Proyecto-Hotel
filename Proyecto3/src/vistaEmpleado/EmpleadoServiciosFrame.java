@@ -1,6 +1,8 @@
 package vistaEmpleado;
 
 import java.awt.Color;
+
+
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,7 +17,6 @@ import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -25,8 +26,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.JSpinner;
+import javax.swing.JComboBox;
 
 import controlador.WindowManager;
+import modelo.Habitacion;
 import modelo.Servicio;
 import vistaAdmin.FrameBaseInfo;
 
@@ -42,10 +47,13 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 	protected JTextField cajaCantidad;
 	protected JTable tablaOrden;
 	protected HashMap<String, Integer> listaOrden;
+	protected JComboBox comboHabitaciones;
+	protected ArrayList<Integer> listaHabitaciones;
 	
 	public EmpleadoServiciosFrame(WindowManager windowManager) {
 		super(windowManager);
 		listaOrden = new HashMap<>();
+		listaHabitaciones = new ArrayList<>();
 		cargarDatos();
 	}
 	
@@ -62,7 +70,6 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		panelNombre.setLayout(new GridLayout(2, 1));
 		
 		//Nombre y su caja de texto
-		
 		JLabel nombre = new JLabel("Nombre");
 		nombre.setForeground(Color.white);
 		nombre.setFont(new Font("Times New Roman", Font.PLAIN, 30));
@@ -248,7 +255,21 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		numHabitacion.setForeground(Color.BLACK);
 		numHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		cajaNumeroHabitacion = new JTextField();
+//		if (!listaHabitaciones.isEmpty()) {
+//			
+//		}
+//		Collection<Habitacion> habitaciones = windowManager.getHabitaciones().values();
+//		for (Habitacion hab : habitaciones) {
+//			listaHabitaciones.add(hab.getId());
+//			String[] opciones = new String[listaHabitaciones.size()];
+//			opciones = listaHabitaciones.toArray(opciones);
+//			comboHabitaciones = new JComboBox<>(opciones);
+//			comboHabitaciones.addActionListener(this);
+//		}
+		String[] opciones = {};
+		comboHabitaciones = new JComboBox<>(opciones);
+		comboHabitaciones.addActionListener(this);
+		
 		
 		//Boton para añadir un servicio
 		añadirAHabitacion = new JButton("Añadir a la habitación");
@@ -258,7 +279,7 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		añadirAHabitacion.setFont(new Font("arial", 1, 20));
 		
 		habitacion.add(numHabitacion);
-		habitacion.add(cajaNumeroHabitacion);
+		habitacion.add(comboHabitaciones);
 		habitacion.add(añadirAHabitacion);
 		
 		//Tamaño y ubicacion en el panel
@@ -311,22 +332,27 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 	
 	protected void añadirServicioHotelHabitacion() {
 		try {
-			boolean pagarEnSitio = false;
-			int option = JOptionPane.showConfirmDialog(null, "¿Desea pagar ahora?", "Pagar", JOptionPane.YES_NO_OPTION);
-			if (option==JOptionPane.YES_OPTION) {
-				pagarEnSitio=true;
+			if (cajaNumeroHabitacion.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "Hace falta el número de la habitación");
 			}
-			
-			int idHabitacion = Integer.parseInt(cajaNumeroHabitacion.getText());
-			Set<String> nombres = listaOrden.keySet();
-			for (String nombre : nombres) {
-				int idServicio = getId(nombre);
-				int cantidad = listaOrden.get(nombre);
-				windowManager.añadirServicioHotelHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);	
-				listaOrden.remove(nombre);
-			}	
+			else {
+				boolean pagarEnSitio = false;
+				int option = JOptionPane.showConfirmDialog(null, "¿Desea pagar ahora?", "Pagar", JOptionPane.YES_NO_OPTION);
+				if (option==JOptionPane.YES_OPTION) {
+					pagarEnSitio=true;
+				}
+				
+				int idHabitacion = Integer.parseInt(cajaNumeroHabitacion.getText());
+				Set<String> nombres = listaOrden.keySet();
+				for (String nombre : nombres) {
+					int idServicio = getId(nombre);
+					int cantidad = listaOrden.get(nombre);
+					windowManager.añadirServicioHotelHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);	
+					listaOrden.remove(nombre);
+				}
+			}
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "No existe la habitación");
+			JOptionPane.showMessageDialog(null, "No existe la habitación");				
 		}
 		cajaNombre.setText("");
 		cajaPrecio.setText("");
