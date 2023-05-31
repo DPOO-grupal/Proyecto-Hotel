@@ -351,6 +351,9 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		tablaHoy.setTableHeader(null);
 		tablaHoy.setShowGrid(true);
 		tablaHoy.setGridColor(Color.BLACK);
+		panelHoy.removeAll();
+//		GridBagLayout gridbag = new GridBagLayout();
+//		panelHoy.setLayout(gridbag);
 		
 		for (int i = 0 ; i < matriz.length ; i++) {
 			for (int j = 0 ; j < matriz[0].length ; j++) {
@@ -418,10 +421,9 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 			int[] columnasXfila = new int[cantidadFilas];
 			int cantidadColumnas = 0;
 			for (int i = 0 ; i < lenArreglo ; i++) {
-				int filaHabitacion = habitaciones[i]/100;
-				columnasXfila[filaHabitacion-1]++;
-				if (cantidadColumnas<columnasXfila[filaHabitacion-1]) {
-					cantidadColumnas = columnasXfila[filaHabitacion-1];
+				int col = (habitaciones[i]%100);
+				if (col > cantidadColumnas) {
+					cantidadColumnas = col;
 				}
 			}			
 			matriz = new String[cantidadFilas][cantidadColumnas];
@@ -460,7 +462,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	}
 	
 	public void resetDatos() {
-		
+		revalidate();
 	}
 
 	@Override

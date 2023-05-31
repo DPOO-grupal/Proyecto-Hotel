@@ -113,6 +113,7 @@ public class WindowManager {
 	}
 	
 	public void volverMenu() {
+		((EmpleadoMenuPrincipal) this.menu).resetDatos();
 		((EmpleadoMenuPrincipal) this.menu).ocupacionHoy();
 		((EmpleadoMenuPrincipal) this.menu).ocupacionAnual();
 		mostraVentana(menu);
@@ -198,6 +199,15 @@ public class WindowManager {
 			Admin admin = (Admin) usuarioActual;
 			admin.quitarHabitacion(ID);
 		}
+	}
+	
+	public boolean reservada(Integer ID) {
+		boolean resultado = false;
+		if (usuarioActual.getClass() == Admin.class) {
+			Admin admin = (Admin) usuarioActual;
+			resultado = admin.reservada(ID);
+		}
+		return resultado;
 	}
 	
 	public String getTipo(String login) {

@@ -110,6 +110,15 @@ public class Hotel implements Serializable{
 		habitaciones.remove(ID);
 	}
 	
+	public boolean reservada(Integer ID) {
+		for (HashMap<Integer, Integer> mapa : ocupados.values()) {
+			if (mapa.get(ID) != null) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void inicializarTarifas(){
 		// TODO promando
 		Tarifa tarifa;

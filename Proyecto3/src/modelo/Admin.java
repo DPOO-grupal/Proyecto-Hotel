@@ -109,5 +109,9 @@ public class Admin extends Empleado {
 	public void quitarHabitacion(Integer ID) {
 		hotel.quitarHabitacion(ID);
 	}
+	
+	public boolean reservada(Integer ID) {
+		return hotel.reservada(ID);
+	}
 //FIN DAR DATOS ---------------------------------------------------------------
 }

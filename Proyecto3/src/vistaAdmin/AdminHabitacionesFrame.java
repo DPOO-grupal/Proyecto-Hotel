@@ -164,19 +164,29 @@ public class AdminHabitacionesFrame extends EmpleadoHabitacionesFrame{
 		}
 		else {
 			Integer ID = Integer.parseInt(tablaHabitaciones.getValueAt(row, 0).toString());
-			int opcion = JOptionPane.YES_OPTION;
-			opcion = JOptionPane.showConfirmDialog(null, "¿Desea eliminar la habitación: " + ID + "?", "Panel de Opciones", JOptionPane.YES_NO_OPTION);
-			
-	        if (opcion == JOptionPane.YES_OPTION) {
-	    		windowManager.quitarHabitacion(ID);
-	    		resetDatos();
-	    		cargarDatos();
-	    		JOptionPane.showMessageDialog(null, "La habitación " + ID + " se eliminó correctamente.");
-	        }
-	    	else {
-	    		JOptionPane.showMessageDialog(null, "Acción cancelada.");
-	    	}
+			boolean habReservada = verificarReservada(ID);
+			if (habReservada) {
+				JOptionPane.showMessageDialog(null, "No puedes eliminar una habitación que está reservada.");
+			}
+			else {
+				int opcion = JOptionPane.YES_OPTION;
+				opcion = JOptionPane.showConfirmDialog(null, "¿Desea eliminar la habitación: " + ID + "?", "Panel de Opciones", JOptionPane.YES_NO_OPTION);
+				
+		        if (opcion == JOptionPane.YES_OPTION) {
+		    		windowManager.quitarHabitacion(ID);
+		    		resetDatos();
+		    		cargarDatos();
+		    		JOptionPane.showMessageDialog(null, "La habitación " + ID + " se eliminó correctamente.");
+		        }
+		    	else {
+		    		JOptionPane.showMessageDialog(null, "Acción cancelada.");
+		    	}
+			}
 		}
+	}
+	
+	private boolean verificarReservada(Integer ID) {
+		return windowManager.reservada(ID);
 	}
 
 	@Override
