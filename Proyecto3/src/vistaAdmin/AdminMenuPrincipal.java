@@ -41,19 +41,20 @@ public class AdminMenuPrincipal extends EmpleadoMenuPrincipal implements ActionL
 	    panelIzquierdo.setLayout(gridbag);
 	    panelIzquierdo.setBackground(Color.decode("#204473"));
 	    
-	    JButton[] opciones = new JButton[7];
 	    String[] nombres = {"Administrar usuarios" , 
 	    					"Tarifas", 
 	    					"Servicios", 
 	    					"Habitaciones", 
 	    					"Restaurante", 
 	    					"Reservas",
-	    					"Cerrar sesion"};
+	    					"Cerrar sesion",
+	    					"Borrar Datos"};
 	    
+	    JButton[] opciones = new JButton[nombres.length];
 	    Font fontButton = new Font("Arial", Font.BOLD, 16);
 	    panelIzquierdo.setBorder(BorderFactory.createEmptyBorder(100, 20, 100, 20));
 
-	    for (int i = 0; i<7; i++) {
+	    for (int i = 0; i<nombres.length; i++) {
 	    	opciones[i] = new JButton(nombres[i]);
 	    	opciones[i].setBackground(Color.decode("#ACCAF2"));
 	    	opciones[i].addActionListener(this);
@@ -74,7 +75,9 @@ public class AdminMenuPrincipal extends EmpleadoMenuPrincipal implements ActionL
 		case "Administrar usuarios":
 			windowManager.mostraVentana(usuariosFrame);
 			break;
-			
+		case "Borrar Datos":
+			windowManager.borrarDatos();
+			break;
 		default:
 			break;
 		}

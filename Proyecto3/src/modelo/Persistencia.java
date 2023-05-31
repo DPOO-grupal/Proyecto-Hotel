@@ -57,7 +57,6 @@ public class Persistencia implements Serializable{
 		dataFile.delete();
 		dataFile.createNewFile();
 		fileOut = new FileOutputStream("./data/hotel.ser");
-		
 		ouput = new ObjectOutputStream(fileOut);
 
 	}
@@ -80,16 +79,19 @@ public class Persistencia implements Serializable{
 	// cerrar el fichero leectura
 	
 	public void cerrarInput() throws IOException{
-		if (input != null)
+		if (input != null) {
 			input.close();
+		}
 	}
 	
 	// escribir fichero 
 	
 	public void escribir(Hotel hotel) throws IOException{
-		if (ouput != null)
+		if (ouput != null) {
 			ouput.reset();
 			ouput.writeObject(hotel);
+		}
+			
 	}
 	
 	// Leer fichero 
@@ -135,15 +137,35 @@ public class Persistencia implements Serializable{
 	
 	public void guardarStaticData(int servicio, int grupo, ArrayList<Integer> arrayList) {
 		String texto = String.valueOf(servicio) + ";" + String.valueOf(grupo) + ";" + arrayList.toString();
+		java.io.PrintWriter output = null;
 		 try {
-			java.io.PrintWriter output = new java.io.PrintWriter(staticDataFile);
+			output = new java.io.PrintWriter(staticDataFile);
 			output.print(texto);
-			output.close();
+			
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+		}finally {
+			if(output!=null) {
+				output.close();
+			}
 		}
 			
+		
+	}
+	public void borrarDatos() {
+		try {
+			dataFile.delete();
+			dataFile.createNewFile();
+			abrirOutput();
+			escribir(null);
+			cerrarOutput();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		guardarStaticData(0, 0, new ArrayList<Integer>());
 		
 	}
 	

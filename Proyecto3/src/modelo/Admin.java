@@ -94,4 +94,9 @@ public class Admin extends Empleado {
 		hotel.quitarUsuario(nombre);
 	}
 //FIN DAR DATOS ---------------------------------------------------------------
+
+	public void borrarDatos() {
+		hotel.borrarDatos();
+		
+	}
 }
