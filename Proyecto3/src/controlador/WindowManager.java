@@ -72,6 +72,11 @@ public class WindowManager {
 	
 		
 	}
+	
+	public Date getHoy() {
+		Empleado empleado = (Empleado) usuarioActual;
+		return empleado.getHoy();
+	}
 
 	public void mostraVentana(JFrame ventana) {
 		if(ventandaActual != null) {
@@ -384,6 +389,22 @@ public class WindowManager {
 	public Collection<Tarifa> consultarTarifas(Date fechaI, Date fechaF) {
 		return ((Empleado) usuarioActual).consultarTarifas(fechaI, fechaF);
 	}
+	
+	public boolean tarifasCompletas() {
+		Admin admin = (Admin) usuarioActual;
+		return admin.tarifasCompletas();
+	}
+
+	public ArrayList<Tarifa> TarifasFaltantes() {
+		Admin admin = (Admin) usuarioActual;
+		return admin.TarifasFaltantes();
+	}
+	
+	public ArrayList<Tarifa> crearTarifa(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor, boolean[] diasValores) {
+		Admin admin = (Admin) usuarioActual;
+		return admin.crearTarifa(fechaI, fechaF, tipo, valor, diasValores);
+	}
+	
 	// FinTarifas
 	
 	

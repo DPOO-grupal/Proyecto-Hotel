@@ -175,7 +175,7 @@ public class Hotel implements Serializable{
         return cal.getTime();
     }
 	
-	public ArrayList<Tarifa> checkTarifas() {
+	public ArrayList<Tarifa> TarifasFaltantes() {
 		Date fechaF = pasarAnno(hoy);
 		boolean completo;
 		ArrayList<Tarifa> faltantes = new ArrayList<Tarifa>();
@@ -192,19 +192,40 @@ public class Hotel implements Serializable{
 		return faltantes;
 	}
 	
-	public boolean crearTarifa(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor) {
-		boolean completado = true;
+	public ArrayList<Tarifa> crearTarifasRango(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor, boolean[] diasValores){
+		ArrayList<Tarifa> tarifasFaltantes = new ArrayList<>();
+		
 		fechaF = pasarDia(fechaF);
 		SortedMap<Date, Tarifa> rangoTarifas = tarifas.subMap(fechaI, fechaF);
 		
 		for (Tarifa tarifa : rangoTarifas.values()) {
-			if(!tarifa.updatePrecio(tipo, valor)) {
-				completado = false;
+
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(tarifa.getFecha());
+			
+			int diaSemana = (calendar.get(Calendar.DAY_OF_WEEK)+5)%7;
+			System.out.println("dia: " + diaSemana+ "Estado: " + diasValores[diaSemana]);
+			if (diasValores[diaSemana]) {
+				try {
+					tarifa.updatePrecio(tipo, valor);
+				} catch (Exception e) {
+					tarifasFaltantes.add(tarifa);
+				}
 			}
 			
 		}
-		return completado;
+		return tarifasFaltantes;
 		
+	}
+	
+	public void crearTarifasEspecificas(ArrayList<Tarifa> tarifas,  TipoHabitacion tipo, double valor){
+		for (Tarifa tarifa : tarifas) {
+			try {
+				tarifa.updatePrecio(tipo, valor, true);
+			} catch (Exception e) {
+				
+			}
+		}
 	}
 	
 	public void crearServicioHotel(String nombre, double precio) {

@@ -18,15 +18,15 @@ public class Admin extends Empleado {
 // INICIO TARIFAS ---------------------------------------------
 	
 	public boolean tarifasCompletas() {
-		return checkTarifas().size() == 0;
+		return TarifasFaltantes().size() == 0;
 	}
 
-	public ArrayList<Tarifa> checkTarifas() {
-		return hotel.checkTarifas();
+	public ArrayList<Tarifa> TarifasFaltantes() {
+		return hotel.TarifasFaltantes();
 	}
 	
-	public boolean crearTarifa(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor) {
-		return hotel.crearTarifa(fechaI, fechaF, tipo, valor);
+	public ArrayList<Tarifa> crearTarifa(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor, boolean[] diasValores) {
+		return hotel.crearTarifasRango(fechaI, fechaF, tipo, valor, diasValores);
 	}
 	
 // FIN TARIFAS ----------------------------------------------
