@@ -50,6 +50,10 @@ public class Habitacion implements Serializable{
 		return this.listaServicios;
 	}
 	
+	public ArrayList<Cama> getCamas() {
+		return this.listaCamas;
+	}
+	
 	public void añadirCamas(Cama cama) {
 		listaCamas.add(cama);
 		this.capacidad=getCapacidad();

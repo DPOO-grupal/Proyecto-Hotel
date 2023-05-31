@@ -18,15 +18,13 @@ public class Usuario implements Serializable{
 		this.area = area;
 	}
 	
-	public boolean iniciarSesion(String password) {
+	public void iniciarSesion(String password) throws Exception {
+		Exception e = new Exception("contraseña incorrecta");
 		
-		boolean autent = false;
-		
-		if (this.password.equals(password)) {
-			autent = true;
+		if (!this.password.equals(password)) {
+			throw e;
 		}
 		
-		return autent;
 	}
 	
 	public void cerrarSesion() {

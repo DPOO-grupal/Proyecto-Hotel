@@ -32,10 +32,20 @@ import modelo.Reserva;
 import modelo.TipoHabitacion;
 import modelo.Usuario;
 import vistaAdmin.AutenticacionFrame;
+import vistaAdmin.CrearHabitacionFrame;
+import vistaAdmin.AdminHabitacionesFrame;
 import vistaAdmin.AdminMenuPrincipal;
 import vistaAdmin.AdminRestauranteFrame;
+import vistaAdmin.AdminHabitacionesFrame;
+import vistaAdmin.AdminMenuPrincipal;
+import vistaAdmin.AdminRestauranteFrame;
+import vistaAdmin.AdminServiciosFrame;
+import vistaEmpleado.EmpleadoHabitacionesFrame;
 import vistaAdmin.AdminTarifasFrame;
 import vistaEmpleado.EmpleadoMenuPrincipal;
+import vistaEmpleado.EmpleadoRestauranteFrame;
+import vistaEmpleado.EmpleadoServiciosFrame;
+import vistaEmpleado.EmpleadoTarifasFrame;
 
 public class WindowManager {
 	private JFrame ventandaActual;
@@ -51,6 +61,7 @@ public class WindowManager {
 		Usuario.cargarInformacion();
 
 	}
+	
 	
 	public void setDay() {
 		
@@ -106,9 +117,12 @@ public class WindowManager {
 		mostraVentana(menu);
 	}
 	
-
+	public void volverHabitaciones() {
+		((EmpleadoMenuPrincipal) this.menu).volverHabitaciones();
+	}
+	
 	public void volverReserva() {
-		((EmpleadoMenuPrincipal) this.menu).volverReserva();;
+		((EmpleadoMenuPrincipal) this.menu).volverReserva();
 	}
 	
 	
@@ -196,6 +210,22 @@ public class WindowManager {
 		return area;
 	}
 	
+	public ArrayList<String[]> getServicios(String ID) {
+		ArrayList<String[]> servicios = new ArrayList<>();
+		usuarioActual.getClass();
+		Empleado empleado = (Empleado) usuarioActual;
+		servicios = empleado.getServicios(ID);
+		return servicios;
+	}
+	
+	public ArrayList<String[]> getCamas(String ID) {
+		ArrayList<String[]> camas = new ArrayList<>();
+		usuarioActual.getClass();
+		Empleado empleado = (Empleado) usuarioActual;
+		camas = empleado.getCamas(ID);
+		return camas;
+	}
+	
 	
 	public boolean checkUsuario(String nombre) {
 		boolean self = false;
@@ -269,6 +299,11 @@ public class WindowManager {
 		admin.crearServicioHotel(nombre, precio);
 	}
 	
+	public void eliminarServicioHotel(int id) {
+		Admin admin = (Admin) usuarioActual;
+		admin.eliminarServicioHotel(id);
+	}
+	
 	public void añadirServicioHabitacion(int id, String nombre, double precio) {
 		Admin admin = (Admin) usuarioActual;
 		admin.añadirServicioHabitacion(id, nombre, precio);
@@ -328,6 +363,11 @@ public class WindowManager {
 		admin.crearProductoMenu(horaI, horaF, llevable, nombre, precio);
 	}
 	
+	public void eliminarProductoMenu(ProductoMenu productoMenu) {
+		Admin admin = (Admin)usuarioActual;
+		admin.eliminarProductoMenu(productoMenu);
+	}
+	
 	public void añadirProductoMenuHabitacion(int idHabitacion, int idServicio, int cantidad, boolean pagarEnSitio){
 		Empleado empleado = (Empleado)usuarioActual;
 		empleado.añadirProductoMenuHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);
@@ -337,7 +377,7 @@ public class WindowManager {
 		boolean right;
 		Date hora = null;
 		do{
-			DateFormat DFormat = new SimpleDateFormat("h:mm");
+			DateFormat DFormat = new SimpleDateFormat("hh:mm a");
 
 			try {
 				hora = DFormat.parse(horaString);
@@ -498,10 +538,9 @@ public class WindowManager {
     		}
         	// JFrame para probar
 
-
-    		JFrame pruebas = new AdminTarifasFrame(windowManager);
+    		JFrame pruebas = new CrearHabitacionFrame(windowManager);
     		// Menú de ese Frame
-    		JFrame menu = new AdminMenuPrincipal(windowManager);
+    		JFrame menu = new EmpleadoMenuPrincipal(windowManager);
     		
     		windowManager.setPruebas(pruebas, menu);
     		

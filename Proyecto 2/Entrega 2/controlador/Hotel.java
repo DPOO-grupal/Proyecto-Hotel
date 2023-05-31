@@ -67,17 +67,14 @@ public class Hotel implements Serializable{
 	public void autenticar(String login, String password) throws Exception {
 		
 		Usuario usuarioActual = null;
-		Exception e = new Exception("Usuario o Contraseña incorrectos");
+		Exception e = new Exception("el usuario no existe");
 
 		usuarioActual = usuarios.get(login);
 		
 		if (usuarioActual != null) {
-			if (usuarioActual.iniciarSesion(password)) {
-				this.usuarioActual = usuarioActual;
-			}else {
-				throw e;
-			}
-			
+			usuarioActual.iniciarSesion(password);
+			this.usuarioActual = usuarioActual;
+		
 		} else {
 			throw e;
 		}
@@ -214,6 +211,29 @@ public class Hotel implements Serializable{
 	
 	public HashMap<Integer, Servicio> getServiciosHotel(){
 		return serviciosHotel;
+	}
+	
+	public ArrayList<String[]> getServiciosHabitacion(String ID) {
+		ArrayList<String[]> array = new ArrayList<>();
+		Habitacion habitacion = habitaciones.get(Integer.parseInt(ID));
+		ArrayList<Servicio> listaServicios = habitacion.getServicios();
+		for (Servicio servicio : listaServicios) {
+			String[] contenedora = {servicio.getNombre(), servicio.getPrecio()+""};
+			array.add(contenedora);
+		}
+		return array;
+	}
+	
+	public ArrayList<String[]> getCamasHabitacion(String ID) {
+		ArrayList<String[]> array = new ArrayList<>();
+		Habitacion habitacion = habitaciones.get(Integer.parseInt(ID));
+		ArrayList<Cama> listaCamas = habitacion.getCamas();
+		for (Cama cama : listaCamas) {
+			String apto = cama.getAptoParaNiño() ? "Si" : "No";
+			String[] contenedora = {cama.getCapacidadCama()+"", apto};
+			array.add(contenedora);
+		}
+		return array;
 	}
 	
 	public void setCaracteristicas(String caracteristicas, int id) {
