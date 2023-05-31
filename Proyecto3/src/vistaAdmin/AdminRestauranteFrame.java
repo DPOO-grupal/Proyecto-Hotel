@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.lang.StackWalker.Option;
 import java.util.Collection;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -329,23 +330,49 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 			Date horaInicial = windowManager.getHora(horaIAgregar.getText());
 			Date horaFinal = windowManager.getHora(horaFAgregar.getText());
 			boolean llevable = cajaLlevableAgregar.isSelected();
-			windowManager.crearProductoMenu(horaInicial, horaFinal, llevable, nombre, precio);
-			cargarDatos();
-			
-			cajaNombreAgregar.setText("");
-			cajaPrecioAgregar.setText("");
-			TimePickerSettings timeSettings = new TimePickerSettings();
-			timeSettings.initialTime = LocalTime.of(5, 0);
-			timeSettings.generatePotentialMenuTimes(TimeIncrement.FifteenMinutes, null, null);
-			horaIAgregar = new TimePicker(timeSettings);
-			timeSettings.initialTime = LocalTime.of(23, 0);
-			horaFAgregar = new TimePicker(timeSettings);
-			cajaLlevableAgregar.setSelected(false);	
-			frameAgregar.setVisible(false);
-			
+			if (!(verificarExistencia(nombre))) {
+				windowManager.crearProductoMenu(horaInicial, horaFinal, llevable, nombre, precio);
+				cargarDatos();
+				
+				cajaNombreAgregar.setText("");
+				cajaPrecioAgregar.setText("");
+				TimePickerSettings timeSettings = new TimePickerSettings();
+				timeSettings.initialTime = LocalTime.of(5, 0);
+				timeSettings.generatePotentialMenuTimes(TimeIncrement.FifteenMinutes, null, null);
+				horaIAgregar = new TimePicker(timeSettings);
+				timeSettings.initialTime = LocalTime.of(23, 0);
+				horaFAgregar = new TimePicker(timeSettings);
+				cajaLlevableAgregar.setSelected(false);	
+				frameAgregar.setVisible(false);		
+			} else {
+				int option = JOptionPane.showConfirmDialog(null, "Ya existe el producto menu.\n Desea cambiar sus valores?", null, JOptionPane.YES_NO_OPTION);
+				if (option == 0) {
+					editarProductoMenu(nombre);
+					windowManager.crearProductoMenu(horaInicial, horaFinal, llevable, nombre, precio);
+					cargarDatos();
+					cajaNombreAgregar.setText("");
+					cajaPrecioAgregar.setText("");
+					TimePickerSettings timeSettings = new TimePickerSettings();
+					timeSettings.initialTime = LocalTime.of(5, 0);
+					timeSettings.generatePotentialMenuTimes(TimeIncrement.FifteenMinutes, null, null);
+					horaIAgregar = new TimePicker(timeSettings);
+					timeSettings.initialTime = LocalTime.of(23, 0);
+					horaFAgregar = new TimePicker(timeSettings);
+					cajaLlevableAgregar.setSelected(false);	
+					frameAgregar.setVisible(false);
+					}
+			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Debes llenar todos los espacios");
 		}
+	}
+	
+	private void editarProductoMenu(String nombre) {
+		Collection<ProductoMenu> listaProductoMenu = windowManager.getMenu().values();
+		for(ProductoMenu productoMenu : listaProductoMenu)
+			if (productoMenu.getNombre().toLowerCase().equals(nombre.toLowerCase())) {
+				windowManager.eliminarProductoMenu(productoMenu);
+			}
 	}
 	
 	private void eliminarProductoMenu() {
@@ -365,6 +392,7 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 	}
 	
 	
+	
 	private ProductoMenu getProductoMenu(String nombre) {
 		Collection<ProductoMenu> listaProductoMenu= windowManager.getMenu().values();
 		ProductoMenu productoMenu = null;
@@ -374,6 +402,17 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 			}
 		}
 		return productoMenu;
+	}
+	
+	private boolean verificarExistencia(String nombre) {
+		Collection<ProductoMenu> listaServicios = windowManager.getMenu().values();
+		boolean existe = false;
+		for(Servicio servicio : listaServicios)
+			if (servicio.getNombre().toLowerCase().equals(nombre.toLowerCase())) {
+				existe = true;
+			}
+		return existe;
+		
 	}
 	
 	public String formatoHora(Date hora) {

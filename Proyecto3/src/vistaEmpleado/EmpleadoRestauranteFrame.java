@@ -391,20 +391,25 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 	
 	protected void añadirProductoMenuHabitacion() {
 		try {
-			boolean pagarEnSitio = false;
-			int option = JOptionPane.showConfirmDialog(null, "¿Desea pagar ahora?", "Pagar", JOptionPane.YES_NO_OPTION);
-			if (option==JOptionPane.YES_OPTION) {
-				pagarEnSitio=true;
+			if (cajaNumeroHabitacion.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "Hace falta el número de la habitación");
 			}
-			
-			int idHabitacion = Integer.parseInt(cajaNumeroHabitacion.getText());
-			Set<String> nombres = listaOrden.keySet();
-			for (String nombre : nombres) {
-				int idServicio = getId(nombre);
-				int cantidad = listaOrden.get(nombre);
-				windowManager.añadirProductoMenuHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);	
-				listaOrden.remove(nombre);
-			}	
+			else {
+				boolean pagarEnSitio = false;
+				int option = JOptionPane.showConfirmDialog(null, "¿Desea pagar ahora?", "Pagar", JOptionPane.YES_NO_OPTION);
+				if (option==JOptionPane.YES_OPTION) {
+					pagarEnSitio=true;
+				}
+				
+				int idHabitacion = Integer.parseInt(cajaNumeroHabitacion.getText());
+				Set<String> nombres = listaOrden.keySet();
+				for (String nombre : nombres) {
+					int idServicio = getId(nombre);
+					int cantidad = listaOrden.get(nombre);
+					windowManager.añadirProductoMenuHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);	
+					listaOrden.remove(nombre);
+				}
+			}
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "No existe la habitación");
 		}

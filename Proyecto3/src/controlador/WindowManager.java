@@ -388,6 +388,11 @@ public class WindowManager {
 		return empleado.DiponiblesParaGrupoEnCurso(tipo);
 	}
 	
+	public HashMap<Integer, Habitacion> getHabitaciones() {
+		Empleado empleado = (Empleado)usuarioActual;
+		return empleado.getHabitaciones();
+	}
+	
 	public void llenarHabitaciones(int idHabitacion) throws Exception {
 		Empleado empleado = (Empleado) usuarioActual;
 		empleado.añadirHabitacion(idHabitacion);
@@ -508,9 +513,9 @@ public class WindowManager {
     		}
         	// JFrame para probar
 
-    		JFrame pruebas = new CrearHabitacionFrame(windowManager);
+    		JFrame pruebas = new EmpleadoServiciosFrame(windowManager);
     		// Menú de ese Frame
-    		JFrame menu = new EmpleadoMenuPrincipal(windowManager);
+    		JFrame menu = new AdminMenuPrincipal(windowManager);
     		
     		windowManager.setPruebas(pruebas, menu);
     		
