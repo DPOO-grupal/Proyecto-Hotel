@@ -106,7 +106,9 @@ public class Hotel implements Serializable{
 		usuarios.remove(nombre);
 	}
 	
-
+	public void quitarHabitacion(Integer ID) {
+		habitaciones.remove(ID);
+	}
 	
 	public void inicializarTarifas(){
 		// TODO promando
@@ -282,6 +284,11 @@ public class Hotel implements Serializable{
 	public void crearHabitacion(TipoHabitacion tipo, int id) {
 		Habitacion habitacion = new Habitacion(tipo, id);
 		habitaciones.put(id, habitacion);
+	}
+	
+	public Servicio crearServicio(String nombre, double precio) {
+		Servicio servicio = new Servicio(nombre, precio);
+		return servicio;
 	}
 	
 	
@@ -683,6 +690,14 @@ public class Hotel implements Serializable{
 
 	public HashMap<Integer, Habitacion> getHabitaciones() {
 		return habitaciones;
+	}
+	
+	public Habitacion getHabitacion(int id) {
+		return habitaciones.get(id);
+	}
+	
+	public Cama crearCama(int capacidad, boolean exclusiva) {
+		return new Cama(capacidad, exclusiva);
 	}
 
 	public Restaurante getRestaurante() {

@@ -647,4 +647,10 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 
 	}
 
+	@Override
+	public void resetDatos() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

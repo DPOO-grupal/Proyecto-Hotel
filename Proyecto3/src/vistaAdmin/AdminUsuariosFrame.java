@@ -297,10 +297,6 @@ public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
         	boolean self = windowManager.checkUsuario(nombre);
         	if (!self) {
         		windowManager.quitarUsuario(nombre);
-        		cajaArea.setText("");
-        		cajaNombre.setText("");
-        		cajaTipo.setText("");
-        		cargarDatos();
         		JOptionPane.showMessageDialog(null, "El usuario '" + nombre + "' se eliminó correctamente.");
         	}
         	else {
@@ -314,6 +310,7 @@ public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
         else {
         	JOptionPane.showMessageDialog(null, "Acción cancelada.");
         }
+        resetDatos();
 	}
 	
 	@Override
@@ -330,6 +327,16 @@ public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public void resetDatos() {
+		cajaArea.setText("");
+		cajaNombre.setText("");
+		cajaTipo.setText("");
+		modeloTabla.getDataVector().removeAllElements();
+		modeloTabla.fireTableDataChanged(); 
+		cargarDatos();
 	}
 
 }

@@ -242,5 +242,11 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo {
 		
 	}
 
+	@Override
+	public void resetDatos() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }

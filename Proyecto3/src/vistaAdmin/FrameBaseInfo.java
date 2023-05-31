@@ -101,11 +101,13 @@ public abstract class FrameBaseInfo extends JFrame implements ActionListener{
 	public void volverMenu() {
 		windowManager.volverMenu();
 	}
+	public abstract void resetDatos();
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Volver")) {
 			setVisible(false);
+			resetDatos();
 			volverMenu();
 		
 		} else {
