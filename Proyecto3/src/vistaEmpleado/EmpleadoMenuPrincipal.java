@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -33,6 +34,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import controlador.WindowManager;
+import modelo.Grupo;
+import modelo.Habitacion;
+import modelo.Reserva;
+import modelo.Servicio;
 import vistaAdmin.AdminHabitacionesFrame;
 
 public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
@@ -55,6 +60,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	protected JButton setFecha;
 	protected JFrame reservasFrame;
 	protected JPanel panelHoy;
+	private JButton pagar;
 
 	public EmpleadoMenuPrincipal(WindowManager windowManager){
         setLayout(new BorderLayout());
@@ -318,54 +324,103 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		frameFactura.setBackground(Color.decode("#ccd2c2"));
 
 		
-		//ArrayList<String[]> listaServiciosHabitacion = windowManager.getServiciosHabitacion(idGrupo);
-		ArrayList<String[]> listaServiciosHabitacion = new ArrayList<String[]>();
-		String[] ejemplo1 = {"Lomo", "13000"};
-		String[] ejemplo2 = {"Carne", "12000"};
-		String[] ejemplo3 = {"Pulpo", "11000"};
-		listaServiciosHabitacion.add(ejemplo1);
-		listaServiciosHabitacion.add(ejemplo2);
-		listaServiciosHabitacion.add(ejemplo3);
+		double precioTotalFactura = 0;
+		//ArrayList<String[]> listaServiciosHabitacion = new ArrayList<String[]>();
+//		String[] ejemplo1 = {"Lomo", "13000"};
+//		String[] ejemplo2 = {"Carne", "12000"};
+//		String[] ejemplo3 = {"Pulpo", "11000"};
+//		listaServiciosHabitacion.add(ejemplo1);
+//		listaServiciosHabitacion.add(ejemplo2);
+//		listaServiciosHabitacion.add(ejemplo3);
 		
 		
+		HashMap<Servicio, Integer> listaServiciosGrupo = new HashMap<>();
+		double precioReserva = 0;
+		double saldoPagado = 0;
 		
-		int tamañoColumnas = 2+listaServiciosHabitacion.size();
+		try {
+			Grupo grupo = windowManager.getGrupo(Integer.parseInt(idGrupo));
+			listaServiciosGrupo = grupo.getListaServicios();
+			Reserva reserva = grupo.getReserva();
+			precioReserva += reserva.getPrecioReserva();
+			saldoPagado += grupo.getSaldoPagado();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		int tamañoColumnas = 10+listaServiciosGrupo.size();
 		
 		JPanel panelPrincipal = new JPanel();
 		panelPrincipal.setLayout(new GridLayout(tamañoColumnas,2,2,0));
 		panelPrincipal.setBackground(Color.decode("#ccd2c2"));
 		
-		JLabel tituloFactura = new JLabel("Factura del grupo:");
+		
+		JLabel tituloFactura = new JLabel("FACTURA DEL GRUPO:");
 		JLabel tituloIdGrupo = new JLabel(idGrupo);
-		JLabel tituloServicio = new JLabel("Servicio");
-		JLabel tituloPrecio = new JLabel("Precio");
+		JLabel tituloServicio = new JLabel("SERVICIO");
+		JLabel tituloPrecio = new JLabel("PRECIO");
 		
 		panelPrincipal.add(tituloFactura);
 		panelPrincipal.add(tituloIdGrupo);
+		panelPrincipal.add(new JLabel("____________________________"));
+		panelPrincipal.add(new JLabel("____________________________"));
 		panelPrincipal.add(tituloServicio);
 		panelPrincipal.add(tituloPrecio);
 		
 		
-		for (String[] servicioHabitacion : listaServiciosHabitacion) {
-			JLabel nombreServicio = new JLabel(servicioHabitacion[0]);
-			nombreServicio.setSize(30, 30);
-			JLabel precioServicio = new JLabel(servicioHabitacion[1]);
-			precioServicio.setSize(30, 30);
+		for (Servicio servicioHabitacion : listaServiciosGrupo.keySet()) {
+			JLabel nombreServicio = new JLabel(servicioHabitacion.getNombre());
+			JLabel precioServicio = new JLabel(servicioHabitacion.getPrecio()+"");
+			
 			panelPrincipal.add(nombreServicio);
 			panelPrincipal.add(precioServicio);
+			
+			double precioSer = servicioHabitacion.getPrecio();
+			precioTotalFactura+=precioSer;
 		}		
 		
-		JLabel tituloHabitaciones = new JLabel("Habitación");
-		JLabel espacio = new JLabel("");
+		panelPrincipal.add(new JLabel("____________________________"));
+		panelPrincipal.add(new JLabel("____________________________"));		
 		
-		panelPrincipal.add(tituloHabitaciones);
-		panelPrincipal.add(espacio);
+		JLabel reserva = new JLabel("VALOR RESERVA");
+		panelPrincipal.add(reserva);
 		
+		JLabel precioReser = new JLabel(precioReserva+"");
+		panelPrincipal.add(precioReser);
+		
+		JLabel tituloPagado = new JLabel("SALDO PAGADO");
+		panelPrincipal.add(tituloPagado);
+		
+		JLabel pagado = new JLabel(saldoPagado+"");
+		panelPrincipal.add(pagado);
+		
+		precioReserva -= saldoPagado;
+		
+		JLabel tituloTotal = new JLabel("TOTAL A PAGAR");
+		panelPrincipal.add(tituloTotal);
+		
+		JLabel total = new JLabel(precioTotalFactura+"");
+		panelPrincipal.add(total);
+		
+		panelPrincipal.add(new JLabel("____________________________"));
+		panelPrincipal.add(new JLabel("____________________________"));
+		
+		panelPrincipal.add(new JLabel());
+		
+		pagar = new JButton("Pagar");
+		pagar.addActionListener(this);
+		pagar.setBackground(Color.decode("#204473"));
+		pagar.setForeground(Color.WHITE);
+		pagar.setFont(new Font("arial", 1, 25));
+		
+		panelPrincipal.add(pagar);
 		
 		JScrollPane scroll = new JScrollPane(panelPrincipal);
 		
 		frameFactura.add(scroll);
 		frameFactura.setVisible(true);
+		windowManager.checkOut(Integer.parseInt(idGrupo));
 	}
 	
 	public void colorearTablaAnio(int i, Color color, String cantidad) {
@@ -606,6 +661,9 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 			
 		case "Check-Out":
 			checkOut();
+			break;
+			
+		case "Pagar":
 			break;
 			
 		case "Refrescar ocupacion diaria":
