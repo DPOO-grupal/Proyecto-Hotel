@@ -539,6 +539,9 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 	private void editarFaltantes() {
 		int[] row = tablaFaltantes.getSelectedRows();
 		
+		for (int i : row) {
+			
+		}
 	}
 
 	@Override
