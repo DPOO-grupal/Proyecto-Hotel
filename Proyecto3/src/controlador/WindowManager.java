@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -409,7 +411,7 @@ public class WindowManager {
 		return empleado.getMenu();
 	}
 	
-	public void crearProductoMenu(Date horaI, Date horaF, boolean llevable,String nombre, double precio){
+	public void crearProductoMenu(LocalTime horaI, LocalTime horaF, boolean llevable,String nombre, double precio){
 		Admin admin = (Admin)usuarioActual;
 		admin.crearProductoMenu(horaI, horaF, llevable, nombre, precio);
 	}
@@ -496,6 +498,12 @@ public class WindowManager {
 		return admin.crearTarifa(fechaI, fechaF, tipo, valor, diasValores);
 	}
 	
+	public void borrarTarifa(Date fecha) {
+		Admin admin = (Admin) usuarioActual;
+		admin.borrarTarifa(fecha);
+		
+	}
+	
 	// FinTarifas
 	
 	
@@ -534,7 +542,7 @@ public class WindowManager {
 	}
 	
 	
-	public Grupo getGrupo(int id) {
+	public Grupo getGrupo(int id) throws Exception {
 		Empleado empleado = (Empleado) usuarioActual;
 		return empleado.getGrupo(id);
 	}
