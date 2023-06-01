@@ -1,8 +1,7 @@
 package vistaEmpleado;
 
 import java.awt.Color;
-
-
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -40,14 +39,13 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 	protected DefaultTableModel modeloTablaServicios;
 	protected DefaultTableModel modeloTablaOrden;
 	protected JTable tablaServicios;
-	protected JTextField cajaNumeroHabitacion;
+	protected JComboBox<Integer> cajaNumeroHabitacion;
 	protected JButton añadirAHabitacion;
 	protected JTextField cajaNombre;
 	protected JTextField cajaPrecio;
 	protected JTextField cajaCantidad;
 	protected JTable tablaOrden;
 	protected HashMap<String, Integer> listaOrden;
-	protected JComboBox comboHabitaciones;
 	protected ArrayList<Integer> listaHabitaciones;
 	
 	public EmpleadoServiciosFrame(WindowManager windowManager) {
@@ -266,9 +264,9 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 //			comboHabitaciones = new JComboBox<>(opciones);
 //			comboHabitaciones.addActionListener(this);
 //		}
-		String[] opciones = {};
-		comboHabitaciones = new JComboBox<>(opciones);
-		comboHabitaciones.addActionListener(this);
+		cajaNumeroHabitacion = new JComboBox<Integer>();
+		cajaNumeroHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		cargarComboBox();
 		
 		
 		//Boton para añadir un servicio
@@ -279,7 +277,7 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		añadirAHabitacion.setFont(new Font("arial", 1, 20));
 		
 		habitacion.add(numHabitacion);
-		habitacion.add(comboHabitaciones);
+		habitacion.add(cajaNumeroHabitacion);
 		habitacion.add(añadirAHabitacion);
 		
 		//Tamaño y ubicacion en el panel
@@ -294,6 +292,7 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 	}
 	
 	protected void cargarDatos() {
+		cargarComboBox();
 		modeloTablaServicios.getDataVector().removeAllElements();
 		modeloTablaServicios.fireTableDataChanged(); 
 		Collection<Servicio> listaServicios = windowManager.darServicio().values();
@@ -310,6 +309,14 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		for (String nombreServicio : listaOrden.keySet()) {
 			modeloTablaOrden.addRow(new Object[]{nombreServicio, "ICON", "ICON"});
 			}
+	}
+	
+	protected void cargarComboBox() {
+		ArrayList<Integer> opciones = windowManager.getArrayHabitaciones();
+		cajaNumeroHabitacion.removeAllItems();
+		for (Integer opcion : opciones) {
+			cajaNumeroHabitacion.addItem(opcion);			
+		}
 	}
 	
 	protected String getPrecio(String nombre) {
@@ -334,7 +341,7 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 	
 	protected void añadirServicioHotelHabitacion() {
 		try {
-			if (cajaNumeroHabitacion.getText().equals("")) {
+			if (cajaNumeroHabitacion.getSelectedItem() == "") {
 				JOptionPane.showMessageDialog(null, "Hace falta el número de la habitación");
 			}
 			else {
@@ -344,7 +351,7 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 					pagarEnSitio=true;
 				}
 				
-				int idHabitacion = Integer.parseInt(cajaNumeroHabitacion.getText());
+				int idHabitacion = Integer.parseInt(cajaNumeroHabitacion.getSelectedItem().toString());
 				Set<String> nombres = listaOrden.keySet();
 				for (String nombre : nombres) {
 					int idServicio = getId(nombre);
@@ -356,10 +363,7 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "No existe la habitación");				
 		}
-		cajaNombre.setText("");
-		cajaPrecio.setText("");
-		cajaCantidad.setText("");
-		cajaNumeroHabitacion.setText("");
+		resetDatos();
 	}
 	
 	protected void agregarALaOrden() {
@@ -459,7 +463,9 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		cajaCantidad.setText("");
 		cajaNombre.setText("");
 		cajaPrecio.setText("");
-		cajaNumeroHabitacion.setText("");
+		cargarDatos();
+		cargarComboBox();
+		cajaNumeroHabitacion.setSelectedIndex(-1);
 	}
 }
 

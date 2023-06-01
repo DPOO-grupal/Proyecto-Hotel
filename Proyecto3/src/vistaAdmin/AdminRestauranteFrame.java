@@ -1,10 +1,12 @@
 package vistaAdmin;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -59,139 +61,14 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 
 	@Override
 	protected void setPanelInfo() {
-		//Edita el aspecto del panel	
-		GridBagLayout gridbag = new GridBagLayout();
+		super.setPanelInfo();
         GridBagConstraints constraints = new GridBagConstraints();
-        panelDerecho.setLayout(gridbag);
-		panelDerecho.setBackground(Color.decode("#b2bba4"));
-		panelDerecho.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-		
-		//Tamaño y ubicacion en el panel
-		JLabel titulo = new JLabel("Menú");
-		titulo.setFont(new Font("Times New Roman", Font.PLAIN, 40));
-		
-		constraints.ipady = 50;
-        constraints.gridheight = 1;
-        constraints.gridwidth = 2;
-		panelDerecho.add(titulo,constraints);
-		
-		//Creacion de la tabla servicios
-		String[] columnasMenu = {"Nombre", "Precio"}; //Nombre de las columnas
-        modeloTablaMenu = new DefaultTableModel(columnasMenu, 0);
-        
-        //Filas de la tabla
-        modeloTablaMenu.addTableModelListener(tablaMenu);
-  	    
-  	    //Diseño de la tabla
-        tablaMenu = new JTable(modeloTablaMenu);
-        tablaMenu.addMouseListener(this);
-	    
-	    //Diseño de la tabla
-        tablaMenu.setDefaultEditor(Object.class, null);
-        tablaMenu.getTableHeader().setBackground(Color.decode("#204473"));
-        tablaMenu.getTableHeader().setForeground(Color.white);
-        tablaMenu.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
-        tablaMenu.setFont(new Font("Times New Roman", 1, 20));
-        tablaMenu.setRowHeight(70);
-        tablaMenu.setEnabled(true);
-
-        DefaultTableCellRenderer modelocentrarServicios = new DefaultTableCellRenderer();
-        modelocentrarServicios.setHorizontalAlignment(SwingConstants.CENTER);
-
-        for (int i = 0; i < columnasMenu.length; i++) {
-        	tablaMenu.getColumnModel().getColumn(i).setCellRenderer(modelocentrarServicios);	
-		}
-        
-        JScrollPane scrollPanelServicios = new JScrollPane(tablaMenu);
-
-        //Tamaño y ubicacion de la tabla en el panel
-        constraints.gridy = 2;
-        constraints.ipady = 200;
-        constraints.ipadx = 830;
-        constraints.gridheight = 1;
-        constraints.gridwidth = 2;
-        constraints.weightx = 1;
-
-        panelDerecho.add(scrollPanelServicios, constraints);
-        
-      //Creacion de la tabla servicios
-		String[] columnasOrden = {"Orden"}; //Nombre de las columnas
-	    modeloTablaOrden = new DefaultTableModel(columnasOrden, 0);
-	      
-	    //Filas de la tabla
-	    modeloTablaOrden.addTableModelListener(tablaOrden);
-		 
-		//Diseño de la tabla
-	    tablaOrden = new JTable(modeloTablaOrden);
-	    tablaOrden.addMouseListener(this);
-	    
-	    //Diseño de la tabla
-	    tablaOrden.setDefaultEditor(Object.class, null);
-	    tablaOrden.getTableHeader().setBackground(Color.decode("#204473"));
-	    tablaOrden.getTableHeader().setForeground(Color.white);
-	    tablaOrden.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
-	    tablaOrden.setFont(new Font("Times New Roman", 1, 20));
-	    tablaOrden.setRowHeight(70);
-	    tablaOrden.setEnabled(true);
-	
-	    DefaultTableCellRenderer modelocentrarOrden = new DefaultTableCellRenderer();
-	    modelocentrarOrden.setHorizontalAlignment(SwingConstants.CENTER);
-	
-	
-	    tablaOrden.getColumnModel().getColumn(0).setCellRenderer(modelocentrarOrden);
-	
-	    JScrollPane scrollPanelOrden = new JScrollPane(tablaOrden);
-	
-	    //Tamaño y ubicacion de la tabla en el panel
-	    constraints.gridy = 3;
-	    constraints.ipady = 150;
-	    constraints.ipadx = 400;
-	    constraints.gridheight = 1;
-	    constraints.gridwidth = 1;
-	    constraints.weightx = 1;
-	    constraints.weighty = 1;
-	
-	    panelDerecho.add(scrollPanelOrden, constraints);
-		
-		//Creacion del recuadro para añadir servicio a la habitacion
-		JPanel habitacion = new JPanel(new GridLayout(3,1, 0, 5));
-		habitacion.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-		habitacion.setBackground(Color.decode("#accaf2"));
-		
-		//Numero de habitacion y su caja de texto
-		JLabel numHabitacion = new JLabel("Número de habitación");
-		numHabitacion.setForeground(Color.BLACK);
-		numHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 30));
-		
-		cajaNumeroHabitacion = new JTextField();
-		
-		//Boton para añadir un servicio
-		añadirAHabitacion = new JButton("Añadir a la habitación");
-		añadirAHabitacion.addActionListener(this);
-		añadirAHabitacion.setBackground(Color.decode("#204473"));
-		añadirAHabitacion.setForeground(Color.white);
-		añadirAHabitacion.setFont(new Font("arial", 1, 20));
-		
-		habitacion.add(numHabitacion);
-		habitacion.add(cajaNumeroHabitacion);
-		habitacion.add(cajaNumeroHabitacion);
-		habitacion.add(añadirAHabitacion);
-		
-		//Tamaño y ubicacion en el panel
-		constraints.gridx = 1;
-		constraints.gridy = 3;
-		constraints.ipady = 50;
-        constraints.ipadx = 100;
-        constraints.gridheight = 1;
-        constraints.gridwidth = 1;
-		
-		panelDerecho.add(habitacion, constraints);
-	
 		//Creación boton agregar servicio
 		agregarAlMenu = new JButton("Agregar al Menú");
 		agregarAlMenu.addActionListener(this);
 		agregarAlMenu.setBackground(Color.decode("#accaf2"));
 		agregarAlMenu.setFont(new Font("arial", 1, 25));
+		agregarAlMenu.setPreferredSize(new Dimension(200,40));
 		
 		//Tamaño y ubicacion en el panel
 		constraints.gridy = 4;
@@ -200,6 +77,8 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
         constraints.gridwidth = 1;
         constraints.weightx = 1;
         constraints.weighty = 1;
+        constraints.ipady = 20 ;
+        constraints.insets = new Insets(10, 0, 10, 0);
 		
 		panelDerecho.add(agregarAlMenu, constraints);
 		
@@ -208,6 +87,7 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 		eliminarDelMenu.addActionListener(this);
 		eliminarDelMenu.setBackground(Color.decode("#accaf2"));
 		eliminarDelMenu.setFont(new Font("arial", 1, 25));
+		eliminarDelMenu.setPreferredSize(new Dimension(200,40));
 		
 		//Tamaño y ubicacion en el panel
 		constraints.gridy = 4;
