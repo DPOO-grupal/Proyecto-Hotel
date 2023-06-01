@@ -523,7 +523,7 @@ public class Hotel implements Serializable{
 	}
 	
 	
-	public double getPrecioHabitacionReserva(Habitacion habitacion) {
+	public double getPrecioHabitacionReserva(Habitacion habitacion) throws Exception {
 		TipoHabitacion tipo = habitacion.getTipoHabitacion(); 
 		double precio = habitacion.getPrecioServicios();
 		Date FechaI = grupoEnCurso.getReserva().getFechaI();
