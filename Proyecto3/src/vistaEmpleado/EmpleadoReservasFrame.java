@@ -8,9 +8,12 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,7 +44,7 @@ import modelo.Servicio;
 import modelo.TipoHabitacion;
 import vistaAdmin.FrameBaseInfo;
 
-public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListener {
+public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListener, KeyListener{
 
 	private DefaultTableModel modeloTabla;
 	private JTable tablaTarifas;
@@ -88,7 +91,7 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 		
 		buscarJTextField = new JTextField();
 		buscarJTextField.setPreferredSize(new Dimension(200, 40));
-
+		buscarJTextField.addKeyListener(this);
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		constraints.weighty = 1;
@@ -311,9 +314,20 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 
 	    JOptionPane.showOptionDialog(selectFechas, panel, "Seleccionar Rango", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
 
+	    try {
+			fechasValidas(fechaIJX.getDate(), fechaFJX.getDate());
+		} catch (Exception e1) {
+			JOptionPane.showMessageDialog(null, e1.getMessage());
+			return;
+
+		}
 	    
 	    HashMap<Integer, Grupo> reservas = null;
+	    
+	    
 		try {
+			
+			
 			reservas = windowManager.mostrarReservas(fechaIJX.getDate(), fechaFJX.getDate());
 			
 			
@@ -376,7 +390,16 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 	
 	
 	private void llenarDatosReserva(int parseInt) {
-		Grupo grupo = windowManager.getGrupo(parseInt);
+		modeloTabla.getDataVector().removeAllElements();
+		modeloTabla.fireTableDataChanged();
+		
+		Grupo grupo;
+		try {
+			grupo = windowManager.getGrupo(parseInt);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+			return;
+		}		
 		Huesped huesped = grupo.getLider();
 		Reserva reserva = grupo.getReserva();
 		datos[0].setText(huesped.getNombre());
@@ -432,10 +455,18 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 		case "Ver reservas":
 			verReservas();
 			break;
+		case "Buscar Reserva":
+			buscarReserva();
 		default:
 			break;
 		}
 
+	}
+
+	private void buscarReserva() {
+		int grupo = Integer.parseInt(buscarJTextField.getText().replace(".", "").replace(",", ""));
+		llenarDatosReserva(grupo);
+		
 	}
 
 	@Override
@@ -475,6 +506,24 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 
 	@Override
 	public void resetDatos() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
