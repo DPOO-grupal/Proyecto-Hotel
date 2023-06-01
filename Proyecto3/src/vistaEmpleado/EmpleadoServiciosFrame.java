@@ -301,6 +301,7 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 	        double precio = servicio.getPrecio();
 	        DecimalFormat df=new DecimalFormat("#,###.00");
 	        String precioS = df.format(precio);
+	        precioS = precioS.substring(0, precioS.length()-3);
 	        modeloTablaServicios.addRow(new Object[]{nombre, precioS, "ICON"});
 	    }
 		
@@ -415,7 +416,10 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 				int rowSer = tablaServicios.getSelectedRow();
 				int columnSer = 0;
 				String nombre = tablaServicios.getValueAt(rowSer, columnSer).toString();
-				String precio = getPrecio(nombre);
+				double preci = Double.parseDouble(getPrecio(nombre));
+				DecimalFormat df = new DecimalFormat("#,###.00");
+		        String precio = df.format(preci);
+		        precio = precio.substring(0, precio.length()-3);
 				cajaNombre.setText(nombre);
 				cajaPrecio.setText(precio);
 			}
@@ -424,10 +428,13 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 				int rowOrd = tablaOrden.getSelectedRow();
 				int columnOrd = tablaOrden.getSelectedColumn();
 				String nombreOrden = tablaOrden.getValueAt(rowOrd, columnOrd).toString();
-				String precioOrden = getPrecio(nombreOrden);
+				double preci = Double.parseDouble(getPrecio(nombreOrden));
+				DecimalFormat df = new DecimalFormat("#,###.00");
+		        String precio = df.format(preci);
+		        precio = precio.substring(0, precio.length()-3);
 				String cantidad = listaOrden.get(nombreOrden).toString();
 				cajaNombre.setText(nombreOrden);
-				cajaPrecio.setText(precioOrden);	
+				cajaPrecio.setText(precio);	
 				cajaCantidad.setText(cantidad);
 			}
 		 }

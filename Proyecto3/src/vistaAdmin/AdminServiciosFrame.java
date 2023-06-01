@@ -158,7 +158,7 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 	private void agregar() {
 		try {
 			String nombre = cajaNombreAgregar.getText();
-			Double precio = Double.parseDouble(cajaPrecioAgregar.getText());
+			Double precio = Double.parseDouble(cajaPrecioAgregar.getText().replace(",", ""));
 			if (!(verificarExistencia(nombre))) {
 				windowManager.agregarServicioHotel(nombre, precio);
 				cargarDatos();
@@ -194,9 +194,11 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 		String nombre = cajaNombre.getText();
 		int id = getId(nombre);
 		windowManager.eliminarServicioHotel(id);
+		eliminarDeOrden();
 		cargarDatos();
 		cajaNombre.setText("");
 		cajaPrecio.setText("");
+		resetDatos();
 	}
 	
 	private boolean verificarExistencia(String nombre) {

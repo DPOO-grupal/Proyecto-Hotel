@@ -9,8 +9,11 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -32,13 +36,14 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.NumberFormatter;
 
 import controlador.WindowManager;
 import modelo.ProductoMenu;
 import modelo.Servicio;
 import vistaAdmin.FrameBaseInfo;
 
-public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseListener{
+public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseListener, KeyListener{
 
 	protected JTable tablaMenu;
 	protected JComboBox<Integer> cajaNumeroHabitacion;
@@ -285,6 +290,7 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 		cantidad.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
 		cajaCantidad = new JTextField();
+		cajaCantidad.addKeyListener(this);
 		cajaCantidad.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
 		panelCantidad.add(cantidad);
@@ -340,8 +346,11 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 		Collection<ProductoMenu> listaProductosMenu = windowManager.getMenu().values();
 		for (ProductoMenu productoMenu : listaProductosMenu) {
 			String nombre = productoMenu.getNombre();
-			String precio = productoMenu.getPrecio()+"";
-			modeloTablaMenu.addRow(new Object[]{nombre, precio, "ICON"});
+			double precio = productoMenu.getPrecio();
+			DecimalFormat df=new DecimalFormat("#,###.00");
+		    String precioS = df.format(precio);
+		    precioS = precioS.substring(0, precioS.length()-3);
+			modeloTablaMenu.addRow(new Object[]{nombre, precioS, "ICON"});
 		}
 		
 		modeloTablaOrden.getDataVector().removeAllElements();
@@ -449,7 +458,8 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 			cajaNombre.setText("");
 			cajaPrecio.setText("");
 			cajaCantidad.setText("");
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Dedes selecionar un producto del menu y decir la cantidad");
 		}
 		
@@ -490,7 +500,10 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 			if (e.getSource()==tablaMenu) {
 				int rowSer = tablaMenu.getSelectedRow();
 				String nombre = tablaMenu.getValueAt(rowSer, 0).toString();
-				String precio = getPrecio(nombre);
+				double preci = Double.parseDouble(getPrecio(nombre));
+				DecimalFormat df = new DecimalFormat("#,###.00");
+		        String precio = df.format(preci);
+		        precio = precio.substring(0, precio.length()-3);
 				LocalTime horaInicial = getHoraI(nombre);
 				LocalTime horaFinal =  getHoraF(nombre);
 				boolean llevable = getLlevable(nombre);
@@ -507,13 +520,16 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 				int rowOrd = tablaOrden.getSelectedRow();
 				int columnOrd = tablaOrden.getSelectedColumn();
 				String nombreOrden = tablaOrden.getValueAt(rowOrd, columnOrd).toString();
-				String precioOrden = getPrecio(nombreOrden);
+				double precioOrden = Double.parseDouble(getPrecio(nombreOrden));
+				DecimalFormat df = new DecimalFormat("#,###.00");
+		        String precio = df.format(precioOrden);
+		        precio = precio.substring(0, precio.length()-3);
 				LocalTime horaInicial = getHoraI(nombreOrden);
 				LocalTime horaFinal = getHoraF(nombreOrden);
 				boolean llevable = getLlevable(nombreOrden);
 				String cantidad = listaOrden.get(nombreOrden).toString();
 				cajaNombre.setText(nombreOrden);
-				cajaPrecio.setText(precioOrden);
+				cajaPrecio.setText(precio);
 				horaI.setTime(horaInicial);
 				horaF.setTime(horaFinal);
 				cajaLlevable.setSelected(llevable);
@@ -545,6 +561,54 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		JTextField caja = (JTextField) e.getSource();
+        int numeros;
+        try {
+            String cadena = caja.getText().replace(",", "").replace(".", "");
+
+            numeros = Integer.parseInt(cadena);
+            NumberFormatter numberFormatter = new NumberFormatter();
+            numberFormatter.setValueClass(Integer.class);
+            numberFormatter.setMinimum(1);
+            numberFormatter.setMaximum(Integer.MAX_VALUE);
+            numberFormatter.setAllowsInvalid(false);
+            JFormattedTextField input = new JFormattedTextField(numberFormatter);
+            input.setText(numeros + "");
+            String texto = input.getText();
+            if (texto.length() == 0) {
+                texto = caja.getText();
+                texto = texto.substring(0, texto.length() - 1);
+                caja.setText(texto);
+            }
+            else {
+                caja.setText(input.getText());              
+            }
+        } catch (NumberFormatException nfe) {
+            String texto = caja.getText();
+            if (texto.length() > 0) {
+                texto = texto.substring(0, texto.length() - 1);
+            }
+            else {                
+            }
+            caja.setText(texto);            
+        }
 	}
 
 	@Override

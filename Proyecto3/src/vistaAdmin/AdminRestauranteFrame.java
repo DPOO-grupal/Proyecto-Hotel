@@ -9,6 +9,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.lang.StackWalker.Option;
@@ -23,6 +25,7 @@ import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -33,6 +36,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.NumberFormatter;
 
 import com.github.lgooddatepicker.components.TimePicker;
 import com.github.lgooddatepicker.components.TimePickerSettings;
@@ -139,6 +143,7 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 		precio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
 		cajaPrecioAgregar = new JTextField();
+		cajaPrecioAgregar.addKeyListener(this);
 		cajaPrecioAgregar.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
 		panelPrecio.add(precio);
@@ -208,17 +213,13 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 	private void añadirProductoMenu() {
 		try {
 			String nombre = cajaNombreAgregar.getText();
-			double precio = Double.parseDouble(cajaPrecioAgregar.getText());
+			Double precio = Double.parseDouble(cajaPrecioAgregar.getText().replace(",", ""));
 			LocalTime horaInicial = horaIAgregar.getTime();
 			LocalTime horaFinal = horaFAgregar.getTime();
-			System.out.println("AdminRestauranteFrame.añadirProductoMenu()");
-			System.out.println("horaInicial date: " + horaInicial + "horaInicial date:" + horaIAgregar.getTime());
-			System.out.println("horaFinal date: " + horaFinal + "horaInicial date:" + horaFAgregar.getTime());
 			boolean llevable = cajaLlevableAgregar.isSelected();
 			if (!(verificarExistencia(nombre))) {
 				windowManager.crearProductoMenu(horaInicial, horaFinal, llevable, nombre, precio);
 				cargarDatos();
-				
 				cajaNombreAgregar.setText("");
 				cajaPrecioAgregar.setText("");
 				TimePickerSettings timeSettings = new TimePickerSettings();
@@ -266,6 +267,7 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 		String nombre = cajaNombre.getText();
 		ProductoMenu productoMenu = getProductoMenu(nombre);
 		windowManager.eliminarProductoMenu(productoMenu);
+		eliminarDeOrden();
 		cargarDatos();
 		cajaNombre.setText("");
 		cajaPrecio.setText("");
@@ -275,7 +277,8 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 		horaI = new TimePicker(timeSettings);
 		timeSettings.initialTime = LocalTime.of(23, 0);
 		horaF = new TimePicker(timeSettings);
-		cajaLlevable.setSelected(false);	
+		cajaLlevable.setSelected(false);
+		resetDatos();
 	}
 	
 	
