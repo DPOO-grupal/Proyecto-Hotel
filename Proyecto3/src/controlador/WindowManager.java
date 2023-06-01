@@ -287,6 +287,11 @@ public class WindowManager {
 		return empleado.contarOcupadasDia(dia);
 	}
 	
+	public int getTotalHabitaciones() {
+		Empleado empleado = (Empleado) usuarioActual;
+		return empleado.getTotalHabitaciones();
+	}
+	
 	public Date pasarDia(Date dia) {
 		Empleado empleado = (Empleado) usuarioActual;
 		return empleado.pasarDia(dia);

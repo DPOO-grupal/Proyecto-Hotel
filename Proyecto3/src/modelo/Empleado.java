@@ -167,7 +167,12 @@ public class Empleado extends Usuario  {
 	}
 	
 	public int contarOcupadasDia(Date dia) {
+		//hotel.printOcupados();
 		return hotel.contarOcupadasDia(dia);
+	}
+	
+	public int getTotalHabitaciones() {
+		return hotel.getTotalHabitaciones();
 	}
 	
 	public Date pasarDia(Date dia) {
