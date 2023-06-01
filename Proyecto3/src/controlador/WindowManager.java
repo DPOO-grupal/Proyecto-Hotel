@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.temporal.TemporalField;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -396,7 +400,7 @@ public class WindowManager {
 		return empleado.getMenu();
 	}
 	
-	public void crearProductoMenu(Date horaI, Date horaF, boolean llevable,String nombre, double precio){
+	public void crearProductoMenu(LocalTime horaI, LocalTime horaF, boolean llevable,String nombre, double precio){
 		Admin admin = (Admin)usuarioActual;
 		admin.crearProductoMenu(horaI, horaF, llevable, nombre, precio);
 	}
@@ -411,22 +415,9 @@ public class WindowManager {
 		empleado.añadirProductoMenuHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);
 	}
 	
-	public Date getHora(String horaString) {
-		boolean right;
-		Date hora = null;
-		do{
-			DateFormat DFormat = new SimpleDateFormat("hh:mm a");
-
-			try {
-				hora = DFormat.parse(horaString);
-				right = false;
-			} catch (ParseException e) {
-				right = true;
-			}
-			
-		} while (right);
-		
-		return hora;
+	public Date getHora(LocalTime localTime) {
+		Date date = new Date(localTime.getNano());
+		return date;
 	}
 	
 	public ArrayList<Habitacion> DiponiblesParaGrupoEnCurso(TipoHabitacion tipo) throws Exception {
