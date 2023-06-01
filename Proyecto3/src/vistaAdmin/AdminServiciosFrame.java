@@ -7,11 +7,14 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -22,11 +25,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.NumberFormatter;
 
 import controlador.WindowManager;
 import vistaEmpleado.EmpleadoServiciosFrame;
 
-public class AdminServiciosFrame extends EmpleadoServiciosFrame implements ActionListener, MouseListener{
+public class AdminServiciosFrame extends EmpleadoServiciosFrame implements ActionListener, MouseListener, KeyListener{
 	
 	private JButton agregarServicio;
 	private JButton eliminarServicio;
@@ -241,6 +245,7 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 		precio.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
 		cajaPrecioAgregar = new JTextField();
+		cajaPrecioAgregar.addKeyListener(this);
 		cajaPrecioAgregar.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
 		panelPrecio.add(precio);
@@ -269,7 +274,8 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 
 	private void agregar() {
 		String nombre = cajaNombreAgregar.getText();
-		Double precio = Double.parseDouble(cajaPrecioAgregar.getText());
+		String precioS = cajaPrecioAgregar.getText();
+		Double precio = Double.parseDouble(cajaPrecioAgregar.getText().replace(",", ""));
 		windowManager.agregarServicioHotel(nombre, precio);
 		cargarDatos();
 		cajaNombreAgregar.setText("");
@@ -328,6 +334,53 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		JTextField caja = (JTextField) e.getSource();
+        int numeros;
+        try {
+            String cadena = caja.getText().replace(",", "").replace(".", "");
+
+            numeros = Integer.parseInt(cadena);
+            NumberFormatter numberFormatter = new NumberFormatter();
+            numberFormatter.setValueClass(Integer.class);
+            numberFormatter.setMinimum(1);
+            numberFormatter.setMaximum(Integer.MAX_VALUE);
+            numberFormatter.setAllowsInvalid(false);
+            JFormattedTextField input = new JFormattedTextField(numberFormatter);
+            input.setText(numeros + "");
+            String texto = input.getText();
+            if (texto.length() == 0) {
+                texto = caja.getText();
+                texto = texto.substring(0, texto.length() - 1);
+                caja.setText(texto);
+            }
+            else {
+                caja.setText(input.getText());              
+            }
+        } catch (NumberFormatException nfe) {
+            String texto = caja.getText();
+            if (texto.length() > 0) {
+                texto = texto.substring(0, texto.length() - 1);
+            }
+            else {                
+            }
+            caja.setText(texto);            
+        }
 	}
 }
 
