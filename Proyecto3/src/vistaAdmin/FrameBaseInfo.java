@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.imageio.ImageIO;
@@ -123,6 +124,44 @@ public abstract class FrameBaseInfo extends JFrame implements ActionListener{
 	}
 	
 	protected abstract void actionPerformedFrame(ActionEvent e);
+	
+	protected void fechasValidas(Date dateI, Date dateF) throws Exception {
+		Calendar calendarHoy = Calendar.getInstance();
+		Calendar calendarAnno = Calendar.getInstance();
+		Calendar calendarBusquedaI = Calendar.getInstance();
+		Calendar calendarBusquedaF = Calendar.getInstance();
+		
+		calendarHoy.setTime(windowManager.getHoy());
+		calendarAnno.setTime(windowManager.getHoy());
+		calendarAnno.add(Calendar.YEAR, 1);
+		
+		calendarBusquedaI.setTime(dateI);
+		calendarBusquedaF.setTime(dateF);
+		
+		if(calendarBusquedaI.compareTo(calendarHoy) < 0) {
+			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + (calendarHoy.get(Calendar.MONTH)+1) + "/" +calendarHoy.get(Calendar.YEAR);
+			throw new Exception("La fecha Inicial no puede ser menor a la fecha de \"hoy\" " + diaString);
+			
+		} else if(calendarBusquedaF.compareTo(calendarAnno) > 0) {
+			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + calendarHoy.get(Calendar.MONTH) + "/" +calendarHoy.get(Calendar.YEAR);
+			throw new Exception("La fecha Final no puede ser mas de un año de la fecha de \"hoy\" " + diaString);
 
+		}else if(calendarBusquedaF.compareTo(calendarHoy) < 0) {
+			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + (calendarHoy.get(Calendar.MONTH)+1) + "/" +calendarHoy.get(Calendar.YEAR);
+			throw new Exception("La fecha Inicial no puede ser mas de un año de la fecha de \"hoy\"  "+ diaString);
+		} else if(calendarBusquedaI.compareTo(calendarAnno) > 0) {
+			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + calendarHoy.get(Calendar.MONTH) + "/" +calendarHoy.get(Calendar.YEAR);
+			throw new Exception("La fecha Final no puede ser menor a la fecha de \"hoy\" " + diaString);
+
+		}else if(calendarBusquedaI.compareTo(calendarBusquedaF) > 0) {
+			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + calendarHoy.get(Calendar.MONTH) + "/" +calendarHoy.get(Calendar.YEAR);
+			throw new Exception("La fecha Inicial no puede ser mayor a la fecha de final " + diaString);
+
+		}else if(calendarBusquedaF.compareTo(calendarBusquedaI) < 0) {
+			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + calendarHoy.get(Calendar.MONTH) + "/" +calendarHoy.get(Calendar.YEAR);
+			throw new Exception("La fecha Final no puede ser menor a la fecha de Inicial " + diaString);
+
+		}
+	}
 	
 }

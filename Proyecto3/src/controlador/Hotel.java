@@ -236,6 +236,12 @@ public class Hotel implements Serializable{
 		}
 	}
 	
+	public void borrarTarifa(Date fecha) {
+		Tarifa tarifa = new Tarifa(fecha);
+		tarifas.replace(fecha, tarifa);
+		
+	}
+	
 	public void crearServicioHotel(String nombre, double precio) {
 		Servicio servicio = new Servicio(nombre, precio);
 		serviciosHotel.put(servicio.getId(), servicio);
@@ -837,4 +843,9 @@ public class Hotel implements Serializable{
 		// TODO Auto-generated method stub
 		
 	}
+
+
+
+
+
 }

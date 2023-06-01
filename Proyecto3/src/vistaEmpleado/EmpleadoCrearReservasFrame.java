@@ -533,48 +533,14 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 			fechasValidas(fechaI.getDate(),fechaF.getDate());
 			fechaF.setEnabled(false);
 			fechaI.setEnabled(false);
-			
 			windowManager.crearReserva(fechaI.getDate(), fechaF.getDate());
 		} catch (Exception e) {
+			fechaI.setDate(windowManager.getHoy());
+			fechaF.setDate(windowManager.getHoy());
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		};
 	}
 	
-	private void fechasValidas(Date dateI, Date dateF) throws Exception {
-		Calendar calendarHoy = Calendar.getInstance();
-		Calendar calendarAnno = Calendar.getInstance();
-		Calendar calendarBusquedaHoy = Calendar.getInstance();
-		Calendar calendarBusquedaAño = Calendar.getInstance();
-		
-		calendarHoy.setTime(windowManager.getHoy());
-		calendarAnno.setTime(windowManager.getHoy());
-		calendarAnno.add(Calendar.YEAR, 1);
-		
-		calendarBusquedaHoy.setTime(dateI);
-		calendarBusquedaAño.setTime(dateF);
-		
-		if(calendarBusquedaHoy.compareTo(calendarHoy) < 0) {
-			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + (calendarHoy.get(Calendar.MONTH)+1) + "/" +calendarHoy.get(Calendar.YEAR);
-			fechaI.setDate(dateI);
-			throw new Exception("La fecha Inicial no puede ser menor a la fecha de \"hoy\" " + diaString);
-			
-		} else if(calendarBusquedaAño.compareTo(calendarAnno) > 0) {
-			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + calendarHoy.get(Calendar.MONTH) + "/" +calendarHoy.get(Calendar.YEAR);
-			fechaF.setDate(dateI);
-
-			throw new Exception("La fecha Final no puede ser mas de un año de la fecha de \"hoy\" " + diaString);
-
-		}else if(calendarBusquedaAño.compareTo(calendarHoy) > 0) {
-			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + (calendarHoy.get(Calendar.MONTH)+1) + "/" +calendarHoy.get(Calendar.YEAR);
-			fechaI.setDate(dateI);
-			throw new Exception("La fecha Inicial no puede ser mas de un año de la fecha de \"hoy\"  "+ diaString);
-		} else if(calendarBusquedaHoy.compareTo(calendarAnno) < 0) {
-			fechaF.setDate(dateI);
-			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + calendarHoy.get(Calendar.MONTH) + "/" +calendarHoy.get(Calendar.YEAR);
-			throw new Exception("La fecha Final no puede ser menor a la fecha de \"hoy\" " + diaString);
-
-		}
-	}
 
 	private void crearReserva() {
 		try {

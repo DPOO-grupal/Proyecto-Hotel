@@ -28,6 +28,10 @@ public class Admin extends Empleado {
 	public ArrayList<Tarifa> crearTarifa(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor, boolean[] diasValores) {
 		return hotel.crearTarifasRango(fechaI, fechaF, tipo, valor, diasValores);
 	}
+
+	public void borrarTarifa(Date fecha) {
+		hotel.borrarTarifa(fecha);
+	}
 	
 // FIN TARIFAS ----------------------------------------------
 
@@ -119,4 +123,5 @@ public class Admin extends Empleado {
 		hotel.borrarDatos();
 		
 	}
+
 }

@@ -295,36 +295,7 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 
 
 	}
-	private void fechasValidas(Date dateI, Date dateF) throws Exception {
-		Calendar calendarHoy = Calendar.getInstance();
-		Calendar calendarAnno = Calendar.getInstance();
-		Calendar calendarBusquedaHoy = Calendar.getInstance();
-		Calendar calendarBusquedaAño = Calendar.getInstance();
-		
-		calendarHoy.setTime(windowManager.getHoy());
-		calendarAnno.setTime(windowManager.getHoy());
-		calendarAnno.add(Calendar.YEAR, 1);
-		
-		calendarBusquedaHoy.setTime(dateI);
-		calendarBusquedaAño.setTime(dateF);
-		
-		if(calendarBusquedaHoy.compareTo(calendarHoy) < 0) {
-			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + (calendarHoy.get(Calendar.MONTH)+1) + "/" +calendarHoy.get(Calendar.YEAR);
-			throw new Exception("La fecha Inicial no puede ser menor a la fecha de \"hoy\" " + diaString);
-			
-		} else if(calendarBusquedaAño.compareTo(calendarAnno) > 0) {
-			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + calendarHoy.get(Calendar.MONTH) + "/" +calendarHoy.get(Calendar.YEAR);
-			throw new Exception("La fecha Final no puede ser mas de un año de la fecha de \"hoy\" " + diaString);
-
-		}else if(calendarBusquedaAño.compareTo(calendarHoy) > 0) {
-			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + (calendarHoy.get(Calendar.MONTH)+1) + "/" +calendarHoy.get(Calendar.YEAR);
-			throw new Exception("La fecha Inicial no puede ser mas de un año de la fecha de \"hoy\"  "+ diaString);
-		} else if(calendarBusquedaHoy.compareTo(calendarAnno) < 0) {
-			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + calendarHoy.get(Calendar.MONTH) + "/" +calendarHoy.get(Calendar.YEAR);
-			throw new Exception("La fecha Final no puede ser menor a la fecha de \"hoy\" " + diaString);
-
-		}
-	}
+	
 	private void verReservas() {
 		
 		JFrame selectFechas = new JFrame();
@@ -343,9 +314,6 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 
 	    JOptionPane.showOptionDialog(selectFechas, panel, "Seleccionar Rango", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
 
-	    
-	    HashMap<Integer, Grupo> reservas = null;
-	    
 	    try {
 			fechasValidas(fechaIJX.getDate(), fechaFJX.getDate());
 		} catch (Exception e1) {
@@ -353,6 +321,10 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 			return;
 
 		}
+	    
+	    HashMap<Integer, Grupo> reservas = null;
+	    
+	    
 		try {
 			
 			

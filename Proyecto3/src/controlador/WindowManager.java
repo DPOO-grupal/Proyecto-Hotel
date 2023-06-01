@@ -384,7 +384,7 @@ public class WindowManager {
 		return tipo;
 	}
 	
-	// Reservas
+	// TODO Reservas
 		
 	public HashMap<Integer, ProductoMenu> getMenu() {
 		Empleado empleado = (Empleado)usuarioActual;
@@ -458,7 +458,7 @@ public class WindowManager {
 		empleado.completarReserva();
 	}
 	
-	// Tarifas
+	// TODO Tarifas
 	public Collection<Tarifa> consultarTarifas(Date fechaI, Date fechaF) {
 		return ((Empleado) usuarioActual).consultarTarifas(fechaI, fechaF);
 	}
@@ -477,7 +477,11 @@ public class WindowManager {
 		Admin admin = (Admin) usuarioActual;
 		return admin.crearTarifa(fechaI, fechaF, tipo, valor, diasValores);
 	}
-	
+	public void borrarTarifa(Date fecha) {
+		Admin admin = (Admin) usuarioActual;
+		admin.borrarTarifa(fecha);
+		
+	}
 	// FinTarifas
 	
 	
@@ -589,6 +593,9 @@ public class WindowManager {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+
 
 
 
