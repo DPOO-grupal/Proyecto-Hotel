@@ -380,8 +380,13 @@ public class Hotel implements Serializable{
 				
 	}
 	
-	public Grupo getGrupo(int id) {
+	public Grupo getGrupo(int id) throws Exception {
 		Grupo grupo = grupos.get(id);
+		
+		if (grupo == null) {
+			throw new Exception("El Numero ingresado no esta registrado");
+		}
+		
 		return grupo;
 	}
 	

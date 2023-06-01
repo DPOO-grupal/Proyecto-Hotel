@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -398,8 +399,7 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 
 	    // Crear un JXDatePicker con la fecha actual
 	    
-	    String[] tipos = {"estandar", "Suite", "Double Suite"};
-	    JComboBox<String> tiposHabi = new JComboBox<>(tipos);
+	    JComboBox<TipoHabitacion> tiposHabi = new JComboBox<>(TipoHabitacion.values());
 	    JLabel mensaje = new JLabel("Seleccione una tipo de habitacion"); 
 	    JPanel panel = new JPanel();
 	    panel.add(mensaje);
@@ -407,25 +407,8 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 
 	    JOptionPane.showOptionDialog(setTipoHabi, panel, "Seleccionar tipo Habitación", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
 
-	    int tipo = tiposHabi.getSelectedIndex();
-	    TipoHabitacion tipoEnum = TipoHabitacion.ESTANDAR;
-	    
-	    switch (tipo) {
-		case 1:
-			tipoEnum = TipoHabitacion.ESTANDAR;
-			break;
-		case 2:
-			tipoEnum = TipoHabitacion.SUITE;
-
-			break;
-		case 3:
-			tipoEnum = TipoHabitacion.SUITE;
-
-			break;
-
-		default:
-			break;
-		}
+	    TipoHabitacion tipoEnum = (TipoHabitacion) tiposHabi.getSelectedItem();
+		
 	    
 	    ArrayList<Habitacion> disponibles = null;
 		try {
@@ -547,12 +530,51 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 
 	private void EstablecerFecha() {
 		try {
+			fechasValidas(fechaI.getDate(),fechaF.getDate());
+			fechaF.setEnabled(false);
+			fechaI.setEnabled(false);
+			
 			windowManager.crearReserva(fechaI.getDate(), fechaF.getDate());
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage());
 		};
 	}
+	
+	private void fechasValidas(Date dateI, Date dateF) throws Exception {
+		Calendar calendarHoy = Calendar.getInstance();
+		Calendar calendarAnno = Calendar.getInstance();
+		Calendar calendarBusquedaHoy = Calendar.getInstance();
+		Calendar calendarBusquedaAño = Calendar.getInstance();
+		
+		calendarHoy.setTime(windowManager.getHoy());
+		calendarAnno.setTime(windowManager.getHoy());
+		calendarAnno.add(Calendar.YEAR, 1);
+		
+		calendarBusquedaHoy.setTime(dateI);
+		calendarBusquedaAño.setTime(dateF);
+		
+		if(calendarBusquedaHoy.compareTo(calendarHoy) < 0) {
+			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + (calendarHoy.get(Calendar.MONTH)+1) + "/" +calendarHoy.get(Calendar.YEAR);
+			fechaI.setDate(dateI);
+			throw new Exception("La fecha Inicial no puede ser menor a la fecha de \"hoy\" " + diaString);
+			
+		} else if(calendarBusquedaAño.compareTo(calendarAnno) > 0) {
+			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + calendarHoy.get(Calendar.MONTH) + "/" +calendarHoy.get(Calendar.YEAR);
+			fechaF.setDate(dateI);
 
+			throw new Exception("La fecha Final no puede ser mas de un año de la fecha de \"hoy\" " + diaString);
+
+		}else if(calendarBusquedaAño.compareTo(calendarHoy) > 0) {
+			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + (calendarHoy.get(Calendar.MONTH)+1) + "/" +calendarHoy.get(Calendar.YEAR);
+			fechaI.setDate(dateI);
+			throw new Exception("La fecha Inicial no puede ser mas de un año de la fecha de \"hoy\"  "+ diaString);
+		} else if(calendarBusquedaHoy.compareTo(calendarAnno) < 0) {
+			fechaF.setDate(dateI);
+			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + calendarHoy.get(Calendar.MONTH) + "/" +calendarHoy.get(Calendar.YEAR);
+			throw new Exception("La fecha Final no puede ser menor a la fecha de \"hoy\" " + diaString);
+
+		}
+	}
 
 	private void crearReserva() {
 		try {
@@ -589,8 +611,6 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 			cambiarFecha();
 			break;
 		case "Establecer Fecha":
-			fechaF.setEnabled(false);
-			fechaI.setEnabled(false);
 			EstablecerFecha();
 			break;
 		case "Crear Reserva":

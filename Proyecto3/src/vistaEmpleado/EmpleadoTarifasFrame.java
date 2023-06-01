@@ -320,6 +320,18 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 		Date dateI = fechaBusqueda[0].getDate();
 		Date dateF = fechaBusqueda[1].getDate();
 
+		try {
+			fechasValidas(dateI, dateF);
+			Collection<Tarifa> tarifasColl = windowManager.consultarTarifas(dateI, dateF);
+			System.out.println("Las tarifas son " + tarifasColl.size());
+			llenarTabla(tarifasColl);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage());
+
+		}
+		
+	}
+	private void fechasValidas(Date dateI, Date dateF) throws Exception {
 		Calendar calendarHoy = Calendar.getInstance();
 		Calendar calendarAnno = Calendar.getInstance();
 		Calendar calendarBusquedaHoy = Calendar.getInstance();
@@ -334,25 +346,29 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 		
 		if(calendarBusquedaHoy.compareTo(calendarHoy) < 0) {
 			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + (calendarHoy.get(Calendar.MONTH)+1) + "/" +calendarHoy.get(Calendar.YEAR);
-			JOptionPane.showMessageDialog(null, "La fecha Inicial no puede ser menor a la fecha de \"hoy\" " + diaString);
 			fechaBusqueda[0].setDate(windowManager.getHoy());
-			return;
+			throw new Exception("La fecha Inicial no puede ser menor a la fecha de \"hoy\" " + diaString);
+			
 		} else if(calendarBusquedaAño.compareTo(calendarAnno) > 0) {
 			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + calendarHoy.get(Calendar.MONTH) + "/" +calendarHoy.get(Calendar.YEAR);
 			JOptionPane.showMessageDialog(null, "La fecha Final no puede ser mas de un año de la fecha de \"hoy\" " + diaString);
 	 	    fechaBusqueda[1].setDate(windowManager.getHoy());
+			throw new Exception("La fecha Final no puede ser mas de un año de la fecha de \"hoy\" " + diaString);
 
-			return;
+		}else if(calendarBusquedaAño.compareTo(calendarHoy) > 0) {
+			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + (calendarHoy.get(Calendar.MONTH)+1) + "/" +calendarHoy.get(Calendar.YEAR);
+			JOptionPane.showMessageDialog(null, "La fecha Inicial no puede ser mas de un año de la fecha de \"hoy\"  "+ diaString);
+			fechaBusqueda[0].setDate(windowManager.getHoy());
+			throw new Exception("La fecha Inicial no puede ser mas de un año de la fecha de \"hoy\"  "+ diaString);
+		} else if(calendarBusquedaHoy.compareTo(calendarAnno) < 0) {
+			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + calendarHoy.get(Calendar.MONTH) + "/" +calendarHoy.get(Calendar.YEAR);
+			JOptionPane.showMessageDialog(null, "La fecha Final no puede ser menor a la fecha de \"hoy\" " + diaString);
+	 	    fechaBusqueda[1].setDate(windowManager.getHoy());
+
+			throw new Exception("La fecha Final no puede ser menor a la fecha de \"hoy\" " + diaString);
 
 		}
-		
-		
-		
-		Collection<Tarifa> tarifasColl = windowManager.consultarTarifas(dateI, dateF);
-		System.out.println("Las tarifas son " + tarifasColl.size());
-		llenarTabla(tarifasColl);
 	}
-
 	private void llenarTabla(Collection<Tarifa> tarifasColl) {
 		modeloTabla.getDataVector().removeAllElements();
 		modeloTabla.fireTableDataChanged();

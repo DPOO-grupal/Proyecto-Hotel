@@ -26,7 +26,7 @@ public class Empleado extends Usuario  {
 		return hotel.mostrarReservas(fechaI, fechaF);
 	}
 	
-	public Grupo getGrupo(int id) {
+	public Grupo getGrupo(int id) throws Exception {
 		return hotel.getGrupo(id);
 	}
 	

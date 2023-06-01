@@ -516,7 +516,7 @@ public class WindowManager {
 	}
 	
 	
-	public Grupo getGrupo(int id) {
+	public Grupo getGrupo(int id) throws Exception {
 		Empleado empleado = (Empleado) usuarioActual;
 		return empleado.getGrupo(id);
 	}
