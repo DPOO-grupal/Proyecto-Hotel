@@ -3,6 +3,7 @@ package controlador;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -221,7 +222,7 @@ public class Hotel implements Serializable{
 		for (Tarifa tarifa : rangoTarifas.values()) {
 
 			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(tarifa.getFecha());
+			calendar.setTime(tarifa.getFechaDate());
 			
 			int diaSemana = (calendar.get(Calendar.DAY_OF_WEEK)+5)%7;
 			System.out.println("dia: " + diaSemana+ "Estado: " + diasValores[diaSemana]);
@@ -246,6 +247,12 @@ public class Hotel implements Serializable{
 				
 			}
 		}
+	}
+	
+	public void borrarTarifa(Date fecha) {
+		Tarifa tarifa = new Tarifa(fecha);
+		tarifas.replace(fecha, tarifa);
+		
 	}
 	
 	public void crearServicioHotel(String nombre, double precio) {
@@ -392,8 +399,13 @@ public class Hotel implements Serializable{
 				
 	}
 	
-	public Grupo getGrupo(int id) {
+	public Grupo getGrupo(int id) throws Exception {
 		Grupo grupo = grupos.get(id);
+		
+		if (grupo == null) {
+			throw new Exception("El Numero ingresado no esta registrado");
+		}
+		
 		return grupo;
 	}
 	
@@ -572,7 +584,7 @@ public class Hotel implements Serializable{
 	}
 
 	
-	public void crearProductoMenu(Date horaI, Date horaF, boolean llevable,String nombre, double precio) {
+	public void crearProductoMenu(LocalTime horaI, LocalTime horaF, boolean llevable,String nombre, double precio) {
 		ProductoMenu productoMenu = new ProductoMenu(horaI, horaF, llevable, nombre, precio);
 		restaurante.añadirProducto(productoMenu);
 	}
@@ -869,4 +881,9 @@ public class Hotel implements Serializable{
 		// TODO Auto-generated method stub
 		
 	}
+
+
+
+
+
 }

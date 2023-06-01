@@ -1,5 +1,6 @@
 package modelo;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -27,6 +28,10 @@ public class Admin extends Empleado {
 	
 	public ArrayList<Tarifa> crearTarifa(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor, boolean[] diasValores) {
 		return hotel.crearTarifasRango(fechaI, fechaF, tipo, valor, diasValores);
+	}
+
+	public void borrarTarifa(Date fecha) {
+		hotel.borrarTarifa(fecha);
 	}
 	
 // FIN TARIFAS ----------------------------------------------
@@ -73,7 +78,7 @@ public class Admin extends Empleado {
 
 //INICIO PRODUCTO MENU -----------------------------------------------------------
 
-	public void crearProductoMenu(Date horaI, Date horaF, boolean llevable,String nombre, double precio) {
+	public void crearProductoMenu(LocalTime horaI, LocalTime horaF, boolean llevable,String nombre, double precio) {
 		hotel.crearProductoMenu(horaI, horaF, llevable, nombre, precio);
 	}
 	
@@ -119,4 +124,5 @@ public class Admin extends Empleado {
 		hotel.borrarDatos();
 		
 	}
+
 }

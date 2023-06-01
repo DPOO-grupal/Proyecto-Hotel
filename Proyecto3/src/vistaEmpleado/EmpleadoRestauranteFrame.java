@@ -359,23 +359,27 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 		return precioServicio;
 		}
 	
-	protected Date getHoraI(String nombre) {
+	protected LocalTime getHoraI(String nombre) {
 		Collection<ProductoMenu> menu = windowManager.getMenu().values();
-		Date precioServicio = null;
+		LocalTime precioServicio = null;
 		for(ProductoMenu servicio : menu)
 			if (servicio.getNombre().equals(nombre)) {
 				precioServicio = servicio.getHorarioI();
+				System.out.println("EmpleadoRestauranteFrame.getHoraI()");
 			}
+		System.out.println(precioServicio);
 		return precioServicio;
 		}
 	
-	protected Date getHoraF(String nombre) {
+	protected LocalTime getHoraF(String nombre) {
 		Collection<ProductoMenu> menu = windowManager.getMenu().values();
-		Date precioServicio = null;
+		LocalTime precioServicio = null;
 		for(ProductoMenu servicio : menu)
 			if (servicio.getNombre().equals(nombre)) {
 				precioServicio = servicio.getHorarioF();
+				System.out.println("EmpleadoRestauranteFrame.getHoraF()");
 			}
+		System.out.println(precioServicio);
 		return precioServicio;
 		}
 	
@@ -476,16 +480,15 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 		if (e.getClickCount() == 1) {
 			if (e.getSource()==tablaMenu) {
 				int rowSer = tablaMenu.getSelectedRow();
-				int columnSer = tablaMenu.getSelectedColumn();
-				String nombre = tablaMenu.getValueAt(rowSer, columnSer).toString();
+				String nombre = tablaMenu.getValueAt(rowSer, 0).toString();
 				String precio = getPrecio(nombre);
-				String horaInicial = formatoHora(getHoraI(nombre));
-				String horaFinal = formatoHora(getHoraF(nombre));
+				LocalTime horaInicial = getHoraI(nombre);
+				LocalTime horaFinal =  getHoraF(nombre);
 				boolean llevable = getLlevable(nombre);
 				cajaNombre.setText(nombre);
 				cajaPrecio.setText(precio);
-				horaI.setText(horaInicial);
-				horaF.setText(horaFinal);
+				horaI.setTime(horaInicial);
+				horaF.setTime(horaFinal);
 				cajaLlevable.setSelected(llevable);
 				cajaCantidad.setText("");
 				cajaCantidad.setEditable(true);
@@ -496,14 +499,14 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 				int columnOrd = tablaOrden.getSelectedColumn();
 				String nombreOrden = tablaOrden.getValueAt(rowOrd, columnOrd).toString();
 				String precioOrden = getPrecio(nombreOrden);
-				String horaInicial = formatoHora(getHoraI(nombreOrden));
-				String horaFinal = formatoHora(getHoraF(nombreOrden));
+				LocalTime horaInicial = getHoraI(nombreOrden);
+				LocalTime horaFinal = getHoraF(nombreOrden);
 				boolean llevable = getLlevable(nombreOrden);
 				String cantidad = listaOrden.get(nombreOrden).toString();
 				cajaNombre.setText(nombreOrden);
 				cajaPrecio.setText(precioOrden);
-				horaI.setText(horaInicial);
-				horaF.setText(horaFinal);
+				horaI.setTime(horaInicial);
+				horaF.setTime(horaFinal);
 				cajaLlevable.setSelected(llevable);
 				cajaCantidad.setText(cantidad);
 				cajaCantidad.setEditable(false);

@@ -1,6 +1,7 @@
 package modelo;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
@@ -122,8 +123,14 @@ public class Tarifa implements Serializable{
 		return Objects.equals(fecha, other.fecha);
 	}
 
-	public Date getFecha() {
+	public Date getFechaDate() {
 		return this.fecha;
+	}
+	public String getFechaString() {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	    String fechaString = sdf.format(fecha);
+	
+		return fechaString;
 	}
 	
 	

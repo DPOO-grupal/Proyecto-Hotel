@@ -103,7 +103,14 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 	
 
 	private void borrarTarifa() {
-		// TODO Auto-generated method stub
+		if (!datos[0].getText().isBlank()) {
+			Date fecha = fechaMostrar[0].getDate();
+			windowManager.borrarTarifa(fecha);
+			buscarTarifa();
+			
+		}else {
+			JOptionPane.showMessageDialog(null, "No Borrable");
+		}
 		
 	}
 
@@ -124,7 +131,8 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 		
 		TipoHabitacion[] tipos = TipoHabitacion.values();
 	    tiposHabi = new JComboBox<TipoHabitacion>(tipos);
-		
+	    tiposHabi.setSelectedIndex(-1);
+	    
 		precio = new JTextField();
 		precio.addKeyListener(this);
 		JComponent[] components = {tiposHabi, precio}; 
@@ -236,6 +244,17 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 		
 		Date fechaI = fechaSeleccionada[0].getDate();
 		Date fechaF = fechaSeleccionada[1].getDate();
+		
+		try {
+			fechasValidas(fechaI, fechaF);
+		} catch (Exception e1) {
+			fechaSeleccionada[0].setDate(windowManager.getHoy());
+			fechaSeleccionada[1].setDate(windowManager.getHoy());
+			JOptionPane.showMessageDialog(null, e1.getMessage());
+			return;
+
+		}
+		
 		TipoHabitacion tipo = (TipoHabitacion) tiposHabi.getSelectedItem();
 		
 		double valor = -1;
@@ -244,20 +263,31 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 			valor = Integer.parseInt( precio.getText().replace(".", "").replace(",", ""));
 			
 			boolean[] diasValores = new boolean[7];
-			
+			boolean almenos1 = false;
 			for (int i = 0; i < diasValores.length; i++) {
 				if (dias[i].isSelected()) {
 					diasValores[i] = true;
+					almenos1 = true;
 				}
 			}
 			
-			ArrayList<Tarifa> faltantes = windowManager.crearTarifa(fechaI, fechaF, tipo, valor, diasValores);
-			
-			if(!faltantes.isEmpty()) {
-				JOptionPane.showOptionDialog(null, "Hay tarifas con precio mas economico al ingresado, desea sobre escribir?", null, JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
+			if (!almenos1) {
+				JOptionPane.showMessageDialog(null, "Debe seleccionar al menos un dia de la semana");
+
+			}else {
+				ArrayList<Tarifa> faltantes = windowManager.crearTarifa(fechaI, fechaF, tipo, valor, diasValores);
+				
+				if(!faltantes.isEmpty()) {
+					int opcion = JOptionPane.showOptionDialog(null, "Hay tarifas con precio mas economico al ingresado, desea sobre escribir?", null, JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
+					if (opcion == 1) {
+						
+					}
+				}
+				
+				selectHabitacion.dispose();
 			}
 			
-			selectHabitacion.dispose();
+			
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Favor revisar Precio");
 		}

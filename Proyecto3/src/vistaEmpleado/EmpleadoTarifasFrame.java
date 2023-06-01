@@ -24,6 +24,7 @@ import java.util.TimeZone;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -52,7 +53,7 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 	private JTable tablaTarifas;
     private DefaultTableModel modeloTabla;
     private JXDatePicker[] fechaBusqueda;
-    private JXDatePicker[] fechaMostrar;
+    protected JXDatePicker[] fechaMostrar;
     private JCheckBox[] dias;
     
 	
@@ -167,12 +168,14 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 //	        modeloTabla.addRow(fila2);        
         Font fontTabla= new Font("Arial", Font.BOLD, 20);
         tablaTarifas = new JTable(modeloTabla);
+        tablaTarifas.setDefaultEditor(Object.class, null);
+        tablaTarifas.getTableHeader().setReorderingAllowed(false);
         tablaTarifas.getTableHeader().setBackground(Color.decode("#204473"));
         tablaTarifas.getTableHeader().setForeground(Color.white);
         tablaTarifas.getTableHeader().setFont(fontTabla);
-        tablaTarifas.setBackground(Color.decode("#B2BBA4"));
+        tablaTarifas.setFont(fontTabla);
+        tablaTarifas.setBackground(Color.decode("#FFFFFF"));
         tablaTarifas.setRowHeight(50);
-        tablaTarifas.setEnabled(false);
         tablaTarifas.addMouseListener(this);
         
         DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
@@ -259,6 +262,7 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 		for( int i = 0; i < diasSemana.length; i++) {
 			JCheckBox campo = new JCheckBox(diasSemana[i]);
 			campo.setEnabled(false);
+			campo.setForeground(Color.white);
 			dias[i] = campo;
 			
 			constraints.gridy= (i/3)+iSum ;
@@ -313,52 +317,34 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 	}
 	
 
-	private void buscarTarifa() {
+	protected void buscarTarifa() {
 		Date dateI = fechaBusqueda[0].getDate();
 		Date dateF = fechaBusqueda[1].getDate();
 
-		Calendar calendarHoy = Calendar.getInstance();
-		Calendar calendarAnno = Calendar.getInstance();
-		Calendar calendarBusquedaHoy = Calendar.getInstance();
-		Calendar calendarBusquedaAño = Calendar.getInstance();
-		
-		calendarHoy.setTime(windowManager.getHoy());
-		calendarAnno.setTime(windowManager.getHoy());
-		calendarAnno.add(Calendar.YEAR, 1);
-		
-		calendarBusquedaHoy.setTime(dateI);
-		calendarBusquedaAño.setTime(dateF);
-		
-		if(calendarBusquedaHoy.compareTo(calendarHoy) < 0) {
-			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + (calendarHoy.get(Calendar.MONTH)+1) + "/" +calendarHoy.get(Calendar.YEAR);
-			JOptionPane.showMessageDialog(null, "La fecha Inicial no puede ser menor a la fecha de \"hoy\" " + diaString);
+		try {
+			fechasValidas(dateI, dateF);
+			Collection<Tarifa> tarifasColl = windowManager.consultarTarifas(dateI, dateF);
+			System.out.println("Las tarifas son " + tarifasColl.size());
+			llenarTabla(tarifasColl);
+		} catch (Exception e) {
 			fechaBusqueda[0].setDate(windowManager.getHoy());
-			return;
-		} else if(calendarBusquedaAño.compareTo(calendarAnno) > 0) {
-			String diaString = calendarHoy.get(Calendar.DAY_OF_MONTH) + "/" + calendarHoy.get(Calendar.MONTH) + "/" +calendarHoy.get(Calendar.YEAR);
-			JOptionPane.showMessageDialog(null, "La fecha Final no puede ser mas de un año de la fecha de \"hoy\" " + diaString);
-	 	    fechaBusqueda[1].setDate(windowManager.getHoy());
-
-			return;
+			fechaBusqueda[1].setDate(windowManager.getHoy());
+			JOptionPane.showMessageDialog(null, e.getMessage());
 
 		}
 		
-		
-		
-		Collection<Tarifa> tarifasColl = windowManager.consultarTarifas(dateI, dateF);
-		System.out.println("Las tarifas son " + tarifasColl.size());
-		llenarTabla(tarifasColl);
 	}
 
 	private void llenarTabla(Collection<Tarifa> tarifasColl) {
+		resetDatos();
 		modeloTabla.getDataVector().removeAllElements();
 		modeloTabla.fireTableDataChanged();
 		for (Tarifa tarifa : tarifasColl) {
 			String [] datos = new String[3];
 			
-			datos[0] = tarifa.getFecha().toString();
+			datos[0] = tarifa.getFechaString();
 			for (TipoHabitacion tipo: TipoHabitacion.values()) {
-				double precio = tarifa.getPrecio(tipo);
+				int precio = (int)tarifa.getPrecio(tipo);
 				
 	            NumberFormatter numberFormatter = new NumberFormatter();
 	            numberFormatter.setValueClass(Integer.class);
@@ -371,13 +357,8 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 				if (precio > 0) {
 					datos[1] = input.getText();
 					datos[2] = tipo.toString();
-					System.out.println(datos);
 					modeloTabla.addRow(datos);
-				} else {
-					datos[1] = precio + "";
-					datos[2] = tipo.toString();
-					System.out.println(datos[0] + "," +datos[1] + "," + datos[2]);
-				}
+				} 
 			}
 			
 		}
@@ -400,19 +381,21 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
+			resetDatos();
 			int row = tablaTarifas.getSelectedRow();
 			String fechaString[] = ((String) tablaTarifas.getValueAt(row, 0)).split("/");
-			String tipo = (String) tablaTarifas.getValueAt(row, 2);
-			String precio = (String) tablaTarifas.getValueAt(row, 3);
+			System.out.println("EmpleadoTarifasFrame.mouseClicked()");
+			String tipo = (String) tablaTarifas.getValueAt(row, 1);
+			String precio = (String) tablaTarifas.getValueAt(row, 2);
 			Calendar calendar = Calendar.getInstance();
 			calendar.set(Integer.parseInt(fechaString[2]), Integer.parseInt(fechaString[1]), Integer.parseInt(fechaString[0]));
 			Date fecha = calendar.getTime();
-			
+			System.out.println(fecha);
+
 			datos[0].setText(tipo);
 			datos[1].setText(precio);
 			fechaMostrar[0].setDate(fecha);
-			dias[calendar.get((Calendar.DAY_OF_WEEK)+6)%8].setSelected(true);
+			dias[((calendar.get(Calendar.DAY_OF_WEEK)-1)-3)%7].setSelected(true);
 			
 			
 		 
@@ -444,8 +427,15 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 
 	@Override
 	public void resetDatos() {
-		// TODO Auto-generated method stub
+
+		for (JCheckBox dia:dias) {
+			dia.setSelected(false);
+		}
 		
+		for (JTextField datos:datos) {
+			datos.setText("");
+		}
+				
 	}
 
 

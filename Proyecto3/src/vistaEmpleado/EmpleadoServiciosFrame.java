@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
-
+import java.text.DecimalFormat;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -299,8 +299,10 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		Collection<Servicio> listaServicios = windowManager.darServicio().values();
 		for (Servicio servicio : listaServicios) {
 	        String nombre = servicio.getNombre();
-	        Double precio = servicio.getPrecio();
-	        modeloTablaServicios.addRow(new Object[]{nombre, precio, "ICON"});
+	        double precio = servicio.getPrecio();
+	        DecimalFormat df=new DecimalFormat("#,###.00");
+	        String precioS = df.format(precio);
+	        modeloTablaServicios.addRow(new Object[]{nombre, precioS, "ICON"});
 	    }
 		
 		modeloTablaOrden.getDataVector().removeAllElements();
@@ -407,7 +409,7 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		if (e.getClickCount() == 1) {
 			if (e.getSource()==tablaServicios) {
 				int rowSer = tablaServicios.getSelectedRow();
-				int columnSer = tablaServicios.getSelectedColumn();
+				int columnSer = 0;
 				String nombre = tablaServicios.getValueAt(rowSer, columnSer).toString();
 				String precio = getPrecio(nombre);
 				cajaNombre.setText(nombre);
@@ -454,7 +456,10 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 	@Override
 	public void resetDatos() {
 		// TODO Auto-generated method stub
-		
+		cajaCantidad.setText("");
+		cajaNombre.setText("");
+		cajaPrecio.setText("");
+		cajaNumeroHabitacion.setText("");
 	}
 }
 
