@@ -118,6 +118,10 @@ public class Empleado extends Usuario  {
 		return hotel.añadirProductoMenuHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);
 	}
 	
+	public ArrayList<String[]> getServiciosHabitacion(String ID){
+		return hotel.getServiciosHabitacion(ID);
+	}
+	
 //FIN SERVICIOS HOTEL -----------------------------------------------------------
 
 //INICIO HABITACIONES -----------------------------------------------------------
@@ -155,7 +159,7 @@ public class Empleado extends Usuario  {
 	public Grupo checkOut(int idGrupo) {
 		return hotel.checkOut(idGrupo);
 	}
-	// a
+	
 	public boolean checkUsuario(String nombre) {
 		return hotel.checkUsuario(nombre);
 	}
@@ -187,9 +191,5 @@ public class Empleado extends Usuario  {
 	public Date pasarMes(Date dia, int i) {
 		return hotel.pasarMes(dia, i);
 	}
-	// a
-
-
-
 
 }

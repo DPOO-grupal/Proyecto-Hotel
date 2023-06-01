@@ -12,8 +12,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.temporal.TemporalField;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -84,9 +82,6 @@ public class WindowManager {
 
 	    Date fecha = datePicker.getDate();
 		Usuario.setHoy(fecha);
-	
-
-	
 		
 	}
 	
@@ -262,6 +257,11 @@ public class WindowManager {
 		return self;
 	}
 	
+	public Grupo checkOut(int idGrupo) {
+		Empleado empleado = (Empleado) usuarioActual;
+		return empleado.checkOut(idGrupo);
+	}
+	
 	public Integer[] ocupacionHoy() {
 		return ((Empleado) usuarioActual).ocupacionHoy();
 	}
@@ -367,6 +367,11 @@ public class WindowManager {
 		empleado.añadirServicioHotelHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);
 	}
 	
+	public ArrayList<String[]> getServiciosHabitacion(String ID){
+		Empleado empleado = (Empleado) usuarioActual;
+		return empleado.getServiciosHabitacion(ID);
+	}
+	
 	public void crearHabitacion(TipoHabitacion tipoHabitacion, int id) {
 		Admin admin = (Admin) usuarioActual;
 		admin.crearHabitacion(tipoHabitacion, id);
@@ -421,9 +426,22 @@ public class WindowManager {
 		empleado.añadirProductoMenuHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);
 	}
 	
-	public Date getHora(LocalTime localTime) {
-		Date date = new Date(localTime.getNano());
-		return date;
+	public Date getHora(String horaString) {
+		boolean right;
+		Date hora = null;
+		do{
+			DateFormat DFormat = new SimpleDateFormat("hh:mm a");
+
+			try {
+				hora = DFormat.parse(horaString);
+				right = false;
+			} catch (ParseException e) {
+				right = true;
+			}
+			
+		} while (right);
+		
+		return hora;
 	}
 	
 	public ArrayList<Habitacion> DiponiblesParaGrupoEnCurso(TipoHabitacion tipo) throws Exception {
@@ -480,6 +498,12 @@ public class WindowManager {
 		return admin.crearTarifa(fechaI, fechaF, tipo, valor, diasValores);
 	}
 	
+	public void borrarTarifa(Date fecha) {
+		Admin admin = (Admin) usuarioActual;
+		admin.borrarTarifa(fecha);
+		
+	}
+	
 	// FinTarifas
 	
 	
@@ -518,7 +542,7 @@ public class WindowManager {
 	}
 	
 	
-	public Grupo getGrupo(int id) {
+	public Grupo getGrupo(int id) throws Exception {
 		Empleado empleado = (Empleado) usuarioActual;
 		return empleado.getGrupo(id);
 	}
@@ -578,9 +602,9 @@ public class WindowManager {
     		}
         	// JFrame para probar
 
-    		JFrame pruebas = new EmpleadoRestauranteFrame(windowManager);
+    		JFrame pruebas = new EmpleadoMenuPrincipal(windowManager);
     		// Menú de ese Frame
-    		JFrame menu = new AdminMenuPrincipal(windowManager);
+    		JFrame menu = new EmpleadoMenuPrincipal(windowManager);
     		
     		windowManager.setPruebas(pruebas, menu);
     		

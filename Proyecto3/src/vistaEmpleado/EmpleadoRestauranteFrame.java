@@ -158,7 +158,7 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 	    constraints.gridwidth = 1;
 	    constraints.weightx = 1;
 	    constraints.weighty = 1;
-	
+	    
 	    panelDerecho.add(scrollPanelOrden, constraints);
 		
 		//Creacion del recuadro para añadir servicio a la habitacion
