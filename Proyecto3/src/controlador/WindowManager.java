@@ -439,7 +439,7 @@ public class WindowManager {
 		empleado.añadirHuesped(documento, nombre, email, telefono, edad);;
 	}
 	
-	public int getPrecioHabitacionReserva(Habitacion habitacion) {
+	public int getPrecioHabitacionReserva(Habitacion habitacion) throws Exception {
 		Empleado empleado = (Empleado) usuarioActual;
 		return (int)empleado.getPrecioHabitacionReserva(habitacion);
 	}
@@ -482,6 +482,15 @@ public class WindowManager {
 		admin.borrarTarifa(fecha);
 		
 	}
+	
+
+
+	public void forzarCrearTarifas(ArrayList<Tarifa> tarifas,  TipoHabitacion tipo, double valor) {
+		Admin admin = (Admin) usuarioActual;
+		admin.forzarCrearTarifas(tarifas, tipo, valor);
+		
+	}
+
 	// FinTarifas
 	
 	

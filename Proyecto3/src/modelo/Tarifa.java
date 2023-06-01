@@ -19,7 +19,7 @@ public class Tarifa implements Serializable{
 		suiteDouble = -1;
 	}
 	
-	public double getPrecio(TipoHabitacion tipo) {
+	public double getPrecio(TipoHabitacion tipo) throws Exception {
 		double precio = -1;
 		
 		switch (tipo) {
@@ -34,6 +34,10 @@ public class Tarifa implements Serializable{
 			break;
 		default:
 			break;
+		}
+		
+		if (precio < 0) {
+			throw new Exception("No hay tarifa");
 		}
 		
 		return precio;

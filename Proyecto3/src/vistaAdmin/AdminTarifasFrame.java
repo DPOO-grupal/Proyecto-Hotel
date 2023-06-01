@@ -14,7 +14,10 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -26,13 +29,19 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 import org.jdesktop.swingx.JXDatePicker;
 
 import com.formdev.flatlaf.json.ParseException;
 
 import controlador.WindowManager;
+import modelo.Grupo;
 import modelo.Tarifa;
 import modelo.TipoHabitacion;
 import javax.swing.text.NumberFormatter;
@@ -46,6 +55,11 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 	private JComboBox<TipoHabitacion> tiposHabi;
 	private JTextField precio;
 	private JFrame selectHabitacion;
+	private DefaultTableModel modeloFaltantes;
+	private JFrame verFaltantesFrame;
+	private JComboBox<TipoHabitacion> tiposFaltantes;
+	private JTextField cantidadSelecionados;
+	private JTable tablaFaltantes;
 
 
 	public AdminTarifasFrame(WindowManager windowManager) {
@@ -257,6 +271,11 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 		
 		TipoHabitacion tipo = (TipoHabitacion) tiposHabi.getSelectedItem();
 		
+		if (tipo == null) {
+			JOptionPane.showMessageDialog(null, "Debe seleccionar un tipo de habitación");
+			return;
+		}
+		
 		double valor = -1;
 		
 		try {
@@ -280,7 +299,7 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 				if(!faltantes.isEmpty()) {
 					int opcion = JOptionPane.showOptionDialog(null, "Hay tarifas con precio mas economico al ingresado, desea sobre escribir?", null, JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
 					if (opcion == 1) {
-						
+						windowManager.forzarCrearTarifas(faltantes, tipo, valor);
 					}
 				}
 				
@@ -294,6 +313,196 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 		
 		
 		
+	}
+	
+	private void tarifasFaltantes() {
+		ArrayList<Tarifa> faltantes = windowManager.TarifasFaltantes();
+		if (faltantes.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Todas las tarifas están Completas");
+			return;
+		}
+		
+		verFaltantesFrame = new JFrame();
+	    verFaltantesFrame.setSize(new Dimension(700,500));
+	    verFaltantesFrame.setLocationRelativeTo(null);
+	    GridBagConstraints constraints = new GridBagConstraints();
+	    GridBagLayout grid = new GridBagLayout();
+	    
+	    verFaltantesFrame.setLayout(grid);
+	    String[] datosFaltantes = {"Fecha","Estandar", "Suite", "Double Suite"};
+	    
+	    modeloFaltantes = new DefaultTableModel(datosFaltantes, faltantes.size());
+	    
+		Font fontTabla = new Font("Arial", Font.BOLD, 15 );
+		
+	    tablaFaltantes = new JTable(modeloFaltantes);
+	    tablaFaltantes.setDefaultEditor(Object.class, null);
+	    tablaFaltantes.getTableHeader().setBackground(Color.decode("#204473"));
+	    tablaFaltantes.getTableHeader().setForeground(Color.white);
+	    tablaFaltantes.getTableHeader().setFont(fontTabla);
+	    tablaFaltantes.setBackground(Color.decode("#B2BBA4"));
+	    tablaFaltantes.setRowHeight(50);
+	    tablaFaltantes.addMouseListener(this);
+	    tablaFaltantes.setName("TablaFaltantes");
+	    
+		DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
+		modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
+		modelocentrar.setFont(fontTabla);
+		modelocentrar.setBackground(Color.white);
+		
+		for (int i = 0; i < datosFaltantes.length; i++) {
+			tablaFaltantes.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);
+			tablaFaltantes.getColumnModel().getColumn(i).setCellEditor(null);
+		}
+		tablaTarifaFaltantes();
+	    
+	    JScrollPane scrollPane = new JScrollPane(tablaFaltantes);
+	    constraints.fill = GridBagConstraints.BOTH;
+	    constraints.weightx = 1;
+	    constraints.weighty = 1;
+	    verFaltantesFrame.add(scrollPane, constraints);
+	    
+	    JPanel panel = new JPanel();
+	    panel.setLayout(grid);
+	    panel.setBackground(Color.decode("#B2BBA4"));
+	    
+	    Font fontLabel = new Font("Arial", Font.BOLD, 16);
+	    
+	    precio = new JTextField();
+		precio.addKeyListener(this);
+	    
+	
+		JLabel selectTitilo = new JLabel("Seleccionadas");
+		selectTitilo.setFont(fontLabel);
+		selectTitilo.setForeground(Color.black);
+		
+		constraints.fill = GridBagConstraints.NONE;
+	    constraints.anchor = GridBagConstraints.SOUTH;
+	    constraints.gridheight = 1;
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+	    constraints.insets = new Insets(0, 20, 0, 20);
+		constraints.weighty = 0;
+		
+	    panel.add(selectTitilo, constraints);
+	    
+	    cantidadSelecionados =  new JTextField();
+	    cantidadSelecionados.setEditable(false);
+	    cantidadSelecionados.setPreferredSize(new Dimension(200, 30));
+		
+		constraints.gridy = 1;
+
+	    constraints.anchor = GridBagConstraints.CENTER;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+	    constraints.insets = new Insets(10, 20, 20, 20);
+
+	    panel.add(cantidadSelecionados, constraints);
+	    
+		JLabel titulo = new JLabel("Precio");
+		titulo.setFont(fontLabel);
+		titulo.setForeground(Color.black);
+		
+		constraints.fill = GridBagConstraints.NONE;
+	    constraints.anchor = GridBagConstraints.SOUTH;
+	    constraints.gridheight = 1;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+	    constraints.insets = new Insets(0, 20, 0, 20);
+		constraints.weighty = 0;
+
+	    panel.add(titulo, constraints);
+		
+		precio.setPreferredSize(new Dimension(200, 30));
+		
+		constraints.gridy = 3;
+
+	    constraints.anchor = GridBagConstraints.CENTER;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+	    constraints.insets = new Insets(10, 20, 20, 20);
+
+	    panel.add(precio, constraints);
+		
+	    JLabel tituloTipos = new JLabel("Tipo de habitación");
+	    tituloTipos.setFont(fontLabel);
+	    tituloTipos.setForeground(Color.black);
+	    
+		constraints.weighty = 0;
+
+	    constraints.anchor = GridBagConstraints.SOUTH;
+		constraints.fill = GridBagConstraints.NONE;
+
+		constraints.gridy = 4;
+	    constraints.insets = new Insets(10, 20, 0, 20);
+
+	    panel.add(tituloTipos, constraints);
+
+	    tiposFaltantes = new JComboBox<TipoHabitacion>();
+	    tiposFaltantes.setSelectedIndex(-1);
+	    
+	    constraints.anchor = GridBagConstraints.CENTER;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.gridy = 5;
+		constraints.weighty = 0;
+	    constraints.insets = new Insets(10, 20, 20, 20);
+
+	    panel.add(tiposFaltantes, constraints);
+
+	    JButton crearFaltanteButton = new JButton("Editar faltantes");
+	    crearFaltanteButton.setBackground(Color.decode("#558ad0"));
+	    crearFaltanteButton.setFont(fontLabel);
+	    crearFaltanteButton.setForeground(Color.black);
+	    crearFaltanteButton.setPreferredSize(new Dimension(200, 50));
+	    crearFaltanteButton.addActionListener(this);
+	    
+		constraints.gridy = 6;
+
+	    constraints.anchor = GridBagConstraints.NORTH;
+		constraints.fill = GridBagConstraints.NONE;
+
+	    constraints.insets = new Insets(50, 20, 50, 20);
+
+	    panel.add(crearFaltanteButton,constraints);
+	    
+	    constraints.insets = new Insets(0, 0,0 ,0);
+ 
+	    constraints.gridx = 1;
+	    constraints.gridy = 0;
+	    constraints.weightx = 0;
+		constraints.weighty = 1;
+	    constraints.fill = GridBagConstraints.BOTH;
+
+	    
+	    verFaltantesFrame.add(panel, constraints);
+	    
+	    verFaltantesFrame.setVisible(true);
+		
+	}
+	
+	public void tablaTarifaFaltantes() {
+		modeloFaltantes.getDataVector().removeAllElements();
+		modeloFaltantes.fireTableDataChanged();
+		
+		ArrayList<Tarifa> faltantes = windowManager.TarifasFaltantes();
+		if (faltantes.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Todas las tarifas están Completas");
+			return;
+		}
+		verFaltantesFrame.dispose();
+		TipoHabitacion[] tipos = TipoHabitacion.values();
+
+	    for (Tarifa tarifa :faltantes) {
+	    	String[] precios = new String[3];
+	    	for (int i = 0; i < precios.length; i++) {
+	    		try {
+					precios[i] = tarifa.getPrecio(tipos[i])+"";
+				} catch (Exception e) {
+					precios[i] = "Faltante";
+				}
+				
+			}
+	    	String[] data = {tarifa.getFechaString()+"", precios[0], precios[1], precios[2]};
+	    	modeloFaltantes.addRow(data);
+	    }
 	}
 
 	@Override
@@ -314,6 +523,12 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 		case "Añadir Tarifa":
 			añadirTarifa();
 			break;
+		case "Faltantes":
+			tarifasFaltantes();
+			break;
+		case "Editar faltantes":
+			editarFaltantes();
+			break;
 		default:
 			break;
 		
@@ -321,6 +536,54 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 		}
 	}
 
+	private void editarFaltantes() {
+		int[] row = tablaFaltantes.getSelectedRows();
+		
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		super.mouseClicked(e);
+		JTable tabla = (JTable) e.getSource();
+		if (tabla.getName().equals("TablaFaltantes")) {
+			int[] row = tabla.getSelectedRows();
+//			String fechaString = ((String) tabla.getValueAt(row, 0));
+//			String tipo = (String) tabla.getValueAt(row, 1);
+//			String precio = (String) tabla.getValueAt(row, 2);
+//			Calendar calendar = Calendar.getInstance();
+//			DateFormat DFormat = new SimpleDateFormat("dd/MM/yyyy");
+//			Date fecha = null;
+//			try {
+//				fecha = DFormat.parse(fechaString);
+//			} catch (ParseException | java.text.ParseException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+//			
+//			calendar.setTime(fecha);
+//			
+//			añadirTarifa();
+//			
+			
+			cantidadSelecionados.setText(row.length+"");
+//			datos[0].setText(tipo);
+//			datos[1].setText(precio);
+//			fechaMostrar[0].setDate(fecha);
+//			dias[((calendar.get(Calendar.DAY_OF_WEEK)-1)-3)%7].setSelected(true);
+		}
+	}
+			
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		JTable tabla = (JTable) e.getSource();
+		if (tabla.getName().equals("TablaFaltantes")) {
+			int[] row = tabla.getSelectedRows();
+			cantidadSelecionados.setText(row.length+"");
+	}
+
+		
+		 
+	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {

@@ -70,7 +70,7 @@ public class Empleado extends Usuario  {
 		
 	}
 	
-	public double getPrecioHabitacionReserva(Habitacion habitacion) {
+	public double getPrecioHabitacionReserva(Habitacion habitacion) throws Exception {
 		return hotel.getPrecioHabitacionReserva(habitacion);
 	}
 	

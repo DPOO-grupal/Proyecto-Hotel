@@ -464,7 +464,7 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 		}
 	    
 	}
-	public int getPrecioHabitacionReserva(Habitacion habitacion) {
+	public int getPrecioHabitacionReserva(Habitacion habitacion) throws Exception {
 		return windowManager.getPrecioHabitacionReserva(habitacion);
 	}
 
