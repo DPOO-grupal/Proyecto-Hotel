@@ -34,6 +34,7 @@ import modelo.TipoHabitacion;
 import modelo.Usuario;
 import vistaAdmin.AutenticacionFrame;
 import vistaAdmin.CrearHabitacionFrame;
+import vistaAdmin.FrameBaseInfo;
 import vistaAdmin.AdminHabitacionesFrame;
 import vistaAdmin.AdminMenuPrincipal;
 import vistaAdmin.AdminRestauranteFrame;
@@ -93,6 +94,11 @@ public class WindowManager {
 		}
 		
 		ventandaActual = ventana;
+		try {
+			((FrameBaseInfo)ventandaActual).resetDatos();
+		}catch (ClassCastException e) {
+			((EmpleadoMenuPrincipal)ventandaActual).resetDatos();
+		}
 		
 		// configuraciones generales
 		ventandaActual.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -531,6 +537,11 @@ public class WindowManager {
 	public Grupo getGrupo(int id) {
 		Empleado empleado = (Empleado) usuarioActual;
 		return empleado.getGrupo(id);
+	}
+	
+	public ArrayList<Integer> getArrayHabitaciones() {
+		Empleado empleado = (Empleado) usuarioActual;
+		return empleado.getArrayHabitaciones();
 	}
 	
 	public String formatoFecha(Date date) {

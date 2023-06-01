@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,6 +22,7 @@ import java.util.Set;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -39,7 +41,7 @@ import vistaAdmin.FrameBaseInfo;
 public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseListener{
 
 	protected JTable tablaMenu;
-	protected JTextField cajaNumeroHabitacion;
+	protected JComboBox<Integer> cajaNumeroHabitacion;
 	protected JTextField cajaNombre;
 	protected JTextField cajaPrecio;
 	protected JCheckBox cajaLlevable;
@@ -164,7 +166,9 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 		numHabitacion.setForeground(Color.BLACK);
 		numHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 30));
 		
-		cajaNumeroHabitacion = new JTextField();
+		cajaNumeroHabitacion = new JComboBox<Integer>();
+		cajaNumeroHabitacion.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		cargarComboBox();
 		
 		//Boton para añadir un servicio
 		añadirAHabitacion = new JButton("Añadir a la habitación");
@@ -322,6 +326,14 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 						
 	}
 	
+	protected void cargarComboBox() {
+		ArrayList<Integer> opciones = windowManager.getArrayHabitaciones();
+		cajaNumeroHabitacion.removeAllItems();
+		for (Integer opcion : opciones) {
+			cajaNumeroHabitacion.addItem(opcion);			
+		}
+	}
+	
 	protected void cargarDatos() {
 		modeloTablaMenu.getDataVector().removeAllElements();
 		modeloTablaMenu.fireTableDataChanged(); 
@@ -395,7 +407,7 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 	
 	protected void añadirProductoMenuHabitacion() {
 		try {
-			if (cajaNumeroHabitacion.getText().equals("")) {
+			if (cajaNumeroHabitacion.getSelectedItem() == "") {
 				JOptionPane.showMessageDialog(null, "Hace falta el número de la habitación");
 			}
 			else {
@@ -405,7 +417,7 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 					pagarEnSitio=true;
 				}
 				
-				int idHabitacion = Integer.parseInt(cajaNumeroHabitacion.getText());
+				int idHabitacion = Integer.parseInt(cajaNumeroHabitacion.getSelectedItem().toString());
 				Set<String> nombres = listaOrden.keySet();
 				for (String nombre : nombres) {
 					int idServicio = getId(nombre);
@@ -417,10 +429,7 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "No existe la habitación");
 		}
-		cajaNombre.setText("");
-		cajaPrecio.setText("");
-		cajaCantidad.setText("");
-		cajaNumeroHabitacion.setText("");
+		resetDatos();
 	}
 
 	
@@ -540,8 +549,12 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 
 	@Override
 	public void resetDatos() {
-		// TODO Auto-generated method stub
-		
+		cajaCantidad.setText("");
+		cajaNombre.setText("");
+		cajaPrecio.setText("");
+		cargarDatos();
+		cargarComboBox();
+		cajaNumeroHabitacion.setSelectedIndex(-1);
 	}
 }
 

@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -118,18 +119,23 @@ public class Hotel implements Serializable{
 	}
 	
 	public boolean reservada(Integer ID) {
-		Date first = ocupados.ceilingKey(this.hoy);
-		if (first == null) {
-			first = ocupados.floorKey(this.hoy);
-		}
-		SortedMap<Date, HashMap<Integer, Integer>> submapa = ocupados.subMap(first, ocupados.lastKey());
-		for (HashMap<Integer, Integer> mapa : submapa.values()) {
-			if (mapa.get(ID) != null) {
-				return true;
+		try {
+			Date first = ocupados.ceilingKey(this.hoy);
+			Date last = ocupados.lastKey();
+			if (first == null) {
+				first = ocupados.floorKey(this.hoy);
 			}
+			SortedMap<Date, HashMap<Integer, Integer>> submapa = ocupados.subMap(first, last);
+			for (HashMap<Integer, Integer> mapa : submapa.values()) {
+				if (mapa.get(ID) != null) {
+					return true;
+				}
+			}
+			return false;
 		}
-		return false;
-		
+		catch (NoSuchElementException e) {
+			return false;
+		}
 	}
 	
 	public void inicializarTarifas(){
@@ -482,12 +488,22 @@ public class Hotel implements Serializable{
 		
 	}
 	
+	public ArrayList<Integer> getArrayHabitaciones() {
+		Set<Integer> set = habitaciones.keySet();	
+		ArrayList<Integer> array = new ArrayList<>();
+		for (Integer ID : set) {
+			array.add(ID);
+		}
+		return array;
+	}
+	
 	public ArrayList<Integer> getListaHabitacionesGrupo() {
 		if (grupoEnCurso == null) {
 			return new ArrayList<Integer>();
 		}
 		return grupoEnCurso.getListaHabitaciones();
 	}	
+	
 	public ArrayList<Huesped> getHuespedesGrupoEnCurso() {
 		if (grupoEnCurso == null) {
 			return new ArrayList<Huesped>();
