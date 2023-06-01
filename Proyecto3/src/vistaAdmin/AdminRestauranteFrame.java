@@ -14,6 +14,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalField;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -326,9 +328,12 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 	private void añadirProductoMenu() {
 		try {
 			String nombre = cajaNombreAgregar.getText();
-			Double precio = Double.parseDouble(cajaPrecioAgregar.getText());
-			Date horaInicial = windowManager.getHora(horaIAgregar.getText());
-			Date horaFinal = windowManager.getHora(horaFAgregar.getText());
+			double precio = Double.parseDouble(cajaPrecioAgregar.getText());
+			LocalTime horaInicial = horaIAgregar.getTime();
+			LocalTime horaFinal = horaFAgregar.getTime();
+			System.out.println("AdminRestauranteFrame.añadirProductoMenu()");
+			System.out.println("horaInicial date: " + horaInicial + "horaInicial date:" + horaIAgregar.getTime());
+			System.out.println("horaFinal date: " + horaFinal + "horaInicial date:" + horaFAgregar.getTime());
 			boolean llevable = cajaLlevableAgregar.isSelected();
 			if (!(verificarExistencia(nombre))) {
 				windowManager.crearProductoMenu(horaInicial, horaFinal, llevable, nombre, precio);
@@ -363,8 +368,10 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 					}
 			}
 		} catch (Exception e) {
+			System.err.println(e); 
 			JOptionPane.showMessageDialog(null, "Debes llenar todos los espacios");
 		}
+		
 	}
 	
 	private void editarProductoMenu(String nombre) {
@@ -416,7 +423,7 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 	}
 	
 	public String formatoHora(Date hora) {
-		SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
+		SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
 	    String fechaString = sdf.format(hora);
 		return fechaString;
 	}

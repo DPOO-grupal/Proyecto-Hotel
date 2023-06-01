@@ -3,6 +3,7 @@ package controlador;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -572,7 +573,7 @@ public class Hotel implements Serializable{
 	}
 
 	
-	public void crearProductoMenu(Date horaI, Date horaF, boolean llevable,String nombre, double precio) {
+	public void crearProductoMenu(LocalTime horaI, LocalTime horaF, boolean llevable,String nombre, double precio) {
 		ProductoMenu productoMenu = new ProductoMenu(horaI, horaF, llevable, nombre, precio);
 		restaurante.añadirProducto(productoMenu);
 	}
