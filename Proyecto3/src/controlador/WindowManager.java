@@ -38,6 +38,7 @@ import modelo.TipoHabitacion;
 import modelo.Usuario;
 import vistaAdmin.AutenticacionFrame;
 import vistaAdmin.CrearHabitacionFrame;
+import vistaAdmin.FrameBaseInfo;
 import vistaAdmin.AdminHabitacionesFrame;
 import vistaAdmin.AdminMenuPrincipal;
 import vistaAdmin.AdminRestauranteFrame;
@@ -100,6 +101,11 @@ public class WindowManager {
 		}
 		
 		ventandaActual = ventana;
+		try {
+			((FrameBaseInfo)ventandaActual).resetDatos();
+		}catch (ClassCastException e) {
+			((EmpleadoMenuPrincipal)ventandaActual).resetDatos();
+		}
 		
 		// configuraciones generales
 		ventandaActual.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -393,7 +399,7 @@ public class WindowManager {
 		return tipo;
 	}
 	
-	// TODO Reservas
+	// Reservas
 		
 	public HashMap<Integer, ProductoMenu> getMenu() {
 		Empleado empleado = (Empleado)usuarioActual;
@@ -454,7 +460,7 @@ public class WindowManager {
 		empleado.completarReserva();
 	}
 	
-	// TODO Tarifas
+	// Tarifas
 	public Collection<Tarifa> consultarTarifas(Date fechaI, Date fechaF) {
 		return ((Empleado) usuarioActual).consultarTarifas(fechaI, fechaF);
 	}
@@ -473,11 +479,7 @@ public class WindowManager {
 		Admin admin = (Admin) usuarioActual;
 		return admin.crearTarifa(fechaI, fechaF, tipo, valor, diasValores);
 	}
-	public void borrarTarifa(Date fecha) {
-		Admin admin = (Admin) usuarioActual;
-		admin.borrarTarifa(fecha);
-		
-	}
+	
 	// FinTarifas
 	
 	
@@ -516,9 +518,14 @@ public class WindowManager {
 	}
 	
 	
-	public Grupo getGrupo(int id) throws Exception {
+	public Grupo getGrupo(int id) {
 		Empleado empleado = (Empleado) usuarioActual;
 		return empleado.getGrupo(id);
+	}
+	
+	public ArrayList<Integer> getArrayHabitaciones() {
+		Empleado empleado = (Empleado) usuarioActual;
+		return empleado.getArrayHabitaciones();
 	}
 	
 	public String formatoFecha(Date date) {
@@ -571,7 +578,7 @@ public class WindowManager {
     		}
         	// JFrame para probar
 
-    		JFrame pruebas = new AdminTarifasFrame(windowManager);
+    		JFrame pruebas = new EmpleadoRestauranteFrame(windowManager);
     		// Menú de ese Frame
     		JFrame menu = new AdminMenuPrincipal(windowManager);
     		
@@ -589,9 +596,6 @@ public class WindowManager {
 		// TODO Auto-generated method stub
 		
 	}
-
-
-
 
 
 

@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Set;
 
 public class Empleado extends Usuario  {
 	
@@ -28,6 +29,10 @@ public class Empleado extends Usuario  {
 	
 	public Grupo getGrupo(int id) throws Exception {
 		return hotel.getGrupo(id);
+	}
+	
+	public ArrayList<Integer> getArrayHabitaciones() {
+		return hotel.getArrayHabitaciones();
 	}
 	
 	public void cancelarReserva(int id) throws Exception {
