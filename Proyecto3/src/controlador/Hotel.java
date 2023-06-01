@@ -9,11 +9,17 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import modelo.*;
 
@@ -111,12 +117,18 @@ public class Hotel implements Serializable{
 	}
 	
 	public boolean reservada(Integer ID) {
-		for (HashMap<Integer, Integer> mapa : ocupados.values()) {
+		Date first = ocupados.ceilingKey(this.hoy);
+		if (first == null) {
+			first = ocupados.floorKey(this.hoy);
+		}
+		SortedMap<Date, HashMap<Integer, Integer>> submapa = ocupados.subMap(first, ocupados.lastKey());
+		for (HashMap<Integer, Integer> mapa : submapa.values()) {
 			if (mapa.get(ID) != null) {
 				return true;
 			}
 		}
 		return false;
+		
 	}
 	
 	public void inicializarTarifas(){
@@ -777,7 +789,12 @@ public class Hotel implements Serializable{
 	}
 	
 	public void setHoy(Date hoy) {
-		this.hoy = hoy;
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(hoy);
+		calendar.set(Calendar.HOUR, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		this.hoy = calendar.getTime();
 	}
 
 	public void setServiciosHotel(HashMap<Integer, Servicio> serviciosHotel) {
@@ -814,10 +831,26 @@ public class Hotel implements Serializable{
 		//Integer[] r = {104, 105, 202, 203, 206, 308};
 		//return r;
 	}
+	public void printOcupados() {
+		//System.out.println("------------INICIO LLAVES------------");
+		Set<Date> keyss = ocupados.keySet();
+		for (Date dia : keyss) {
+			System.out.println("Dia " + dia.toString());
+		}
+		//System.out.println("------------FIN LLAVES------------");
+	}
 	
 	public int contarOcupadasDia(Date diaX) {
+//		diaX.setHours(0);
+//		diaX.setMinutes(0);
+//		diaX.setSeconds(0);
+//		GregorianCalendar gregorianCalendar = new GregorianCalendar();
+//        gregorianCalendar.setTime(diaX);
+//        System.out.println("LA LLAVE ACTUAL ES: " + diaX.toString() + "///////////////////////////////////////////////////////");
+//        printOcupados();
 		HashMap<Integer, Integer> mapa = ocupados.get(diaX);
 		if (mapa == null) {
+			//System.out.println("Null");
 			return 0;	
 		}
 		else {
@@ -826,6 +859,10 @@ public class Hotel implements Serializable{
 			int resultado = array.length;
 			return resultado;
 		}
+	}
+	
+	public int getTotalHabitaciones() {
+		return habitaciones.keySet().size();
 	}
 
 	public void borrarDatos() {

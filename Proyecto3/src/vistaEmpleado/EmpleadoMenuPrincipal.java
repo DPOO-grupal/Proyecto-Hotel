@@ -16,6 +16,7 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -126,7 +127,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		panelDerecho.add(check, BorderLayout.SOUTH);
 		
 		JPanel PanelOcupacion = new JPanel();
-		PanelOcupacion.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
+		PanelOcupacion.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
 		PanelOcupacion.setBackground(Color.decode("#ACCAF2"));
 		GridBagLayout gridbag = new GridBagLayout();
 	    GridBagConstraints constraints = new GridBagConstraints();
@@ -136,12 +137,15 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	    OHoy.setText("Ocupacion hoy: ");
 	    OHoy.setFont(new Font("Times New Roman", 1, 20));
 	    constraints.insets = new Insets(10, 0, 10, 0);
-	    constraints.anchor = GridBagConstraints.WEST;
+	    constraints.anchor = GridBagConstraints.SOUTHWEST;
 	    constraints.gridx = 0;
-        constraints.gridy = 1;
+        constraints.gridy = 0;
         constraints.gridheight = 1;
         constraints.gridwidth = 1;
-        //constraints.weightx = 1;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+  	    constraints.fill = GridBagConstraints.NONE;
+
 	    PanelOcupacion.add(OHoy, constraints);
 	    
 	    //Creacion de la tabla servicios
@@ -176,30 +180,34 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
           //Tamaño y ubicacion de la tabla en el panel
           panelHoy = new JPanel();
           panelHoy.setLayout(gridbag);
-          panelHoy.setPreferredSize(new Dimension(200, 100));
+          //panelHoy.setPreferredSize(new Dimension(200, 100));
           constraints.gridx = 0;
-          constraints.insets = new Insets(0, 0, 30, 0);
-          constraints.gridy = 2;
-          constraints.ipady = 200;
-          constraints.ipadx = 800;
+          constraints.insets = new Insets(0, 0, 0, 0);
+          constraints.gridy = 1;
+
           constraints.gridheight = 1;
-          constraints.gridwidth = 1;
+          constraints.gridwidth = 10;
           //constraints.weightx = 1;
           //constraints.weighty = 0.1;
+          
+  	    constraints.anchor = GridBagConstraints.WEST;
+  	    constraints.fill = GridBagConstraints.BOTH;
 
           PanelOcupacion.add(panelHoy, constraints);
           
         JLabel OAnual = new JLabel();
         OAnual.setText("Ocupacion anual: ");
         OAnual.setFont(new Font("Times New Roman", 1, 20));
-  	    constraints.insets = new Insets(0, 0, 10, 0);
+  	    constraints.insets = new Insets(0, 0, -10, 0);
   	    constraints.gridx = 0;
         constraints.gridy = 3;
-        constraints.ipady = 0;
-        constraints.ipadx = 0;
+
         constraints.gridheight = 1;
         constraints.gridwidth = 1;
         //constraints.weightx = 1;
+	    constraints.anchor = GridBagConstraints.SOUTHWEST;
+  	    constraints.fill = GridBagConstraints.NONE;
+
   	    PanelOcupacion.add(OAnual, constraints);
   	    
   	//Creacion de la tabla servicios
@@ -250,8 +258,11 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
           constraints.gridwidth = 1;
           //constraints.weightx = 1;
           //constraints.weighty = 0.1;
+          
+          constraints.anchor = GridBagConstraints.WEST;
+    	    constraints.fill = GridBagConstraints.HORIZONTAL;
 
-          //PanelOcupacion.add(scrollPanelAnual, constraints);
+          PanelOcupacion.add(scrollPanelAnual, constraints);
 	    
 		panelDerecho.add(PanelOcupacion, BorderLayout.CENTER);
 	}
@@ -297,46 +308,78 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		JOptionPane.showInputDialog(null, "Ingrese el número de su grupo para el check-out", "Check-out", JOptionPane.PLAIN_MESSAGE);
 	}
 	
-	public void ocupacionAnual() {
-		Date dia = windowManager.getDia();
-		for (int i = 0 ; i < 12 ; i++) {
-			int ocupacionesMes = 0;
-			ocupacionesMes = contarOcupacionesMes(dia, i);
-			//System.out.println(ocupacionesMes);
-			Color color = new ColorUIResource(Color.WHITE);
-			if (ocupacionesMes < 50 && ocupacionesMes > 0)
-				color = new Color(102, 255, 102);
-			else if (ocupacionesMes < 100 && ocupacionesMes >= 50)
-				color = new Color(255, 255, 153);
-			else if (ocupacionesMes >= 100)
-				color = new Color(255, 102, 102);
-			colorearTablaAnio(i, color);
-		}		
-	}
-	
-	public void colorearTablaAnio(int i, Color color) {
+	public void colorearTablaAnio(int i, Color color, String cantidad) {
 		DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
-        modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
-        modelocentrar.setBackground(color);
-        tablaAnual.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);
-        tablaAnual.getColumnModel().getColumn(i).setCellEditor(null);
-        tablaAnual.setShowHorizontalLines(true);
-        tablaAnual.setShowVerticalLines(true);
+		modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
+		modelocentrar.setBackground(color);
+		tablaAnual.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);
+		tablaAnual.getColumnModel().getColumn(i).setCellEditor(null);
+		tablaAnual.setShowHorizontalLines(true);
+		tablaAnual.setShowVerticalLines(true);
+		modeloTablaAnual.setValueAt((Object) cantidad, 0, i);
+		//resetDatos();
+		
 		//JLabel label = new JLabel((String) tablaAnual.getValueAt(0, i));
 		//label.setBackground(Color.GREEN);
 		//tablaAnual.setValueAt(label, 0, i);
 		//((DefaultTableModel) tablaAnual.getModel()).fireTableDataChanged();
 	}
+	public void ocupacionAnual() {
+//		modeloTablaAnual.getDataVector().removeAllElements();
+//		modeloTablaAnual.fireTableDataChanged();
+		Date dia = windowManager.getDia();
+		for (int i = 0 ; i < 12 ; i++) {
+			//System.out.println("-----------------------NUEVO MES: " + i + " --- DIA DE BUSQUEDA: " + dia.toString() + "-------------------------------");
+			int ocupacionesMes = 0;
+			int cantidadDias = hastaFinMes(dia);
+			ocupacionesMes = contarOcupacionesMes(dia, cantidadDias);
+			//System.out.println("ocupacionesMes " + ocupacionesMes + ",cantidadDias " + cantidadDias);
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(dia);
+//			calendar.set(dia.getYear(), dia.getMonth()+1, 1);
+			calendar.add(Calendar.MONTH, 1);
+			calendar.set(Calendar.DAY_OF_MONTH, 1);
+			dia = calendar.getTime();
+			int totalHabitaciones = windowManager.getTotalHabitaciones();
+			int maximoPosible =  30*totalHabitaciones;
+			//System.out.println("Total: " + totalHabitaciones);
+			Color color = new ColorUIResource(Color.WHITE);
+			if (maximoPosible == 0) {
+				color = new ColorUIResource(Color.WHITE);
+			}
+			else if (ocupacionesMes < maximoPosible/3 && ocupacionesMes > 0) {
+				color = new Color(102, 255, 102);
+			}
+			else if (ocupacionesMes < (maximoPosible/3)*2 && ocupacionesMes >= maximoPosible/3) {
+				color = new Color(255, 255, 153);
+			}
+			else if (ocupacionesMes >= (maximoPosible/3)*2) {
+				color = new Color(255, 102, 102);
+			}
+			else {
+				color = new ColorUIResource(Color.WHITE);
+			}
+			colorearTablaAnio(i, color, ocupacionesMes+"");
+		}		
+	}
 	
-	public int contarOcupacionesMes(Date dia, int i) {
+	public int contarOcupacionesMes(Date dia, int cantidadDias) {
 		int contadorOcupadas = 0;
-		Date diaF = windowManager.pasarMes(dia, i);
-		for (int j = 0 ; j < 31 ; j++) {
-			int incremento = windowManager.contarOcupadasDia(diaF);
+		for (int j = 0 ; j < cantidadDias ; j++) {
+			int incremento = windowManager.contarOcupadasDia(dia);
 			contadorOcupadas += incremento;
-			dia = windowManager.pasarDia(diaF);
+			//System.out.println("Incremento: " + incremento + ", Ocupadas: " + contadorOcupadas);
+			//System.out.println("====================================  NUEVO DIA: " + dia.toString());
+			dia = windowManager.pasarDia(dia);
 		}
 		return contadorOcupadas;
+	}
+	
+	public int hastaFinMes(Date dia) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(dia.getYear(), dia.getMonth()+1, 0);
+		int ultimoDia = calendar.get(Calendar.DAY_OF_MONTH);
+		return ultimoDia - (dia.getDate()) + 1;
 	}
 	
 	public void ocupacionHoy() {
@@ -431,8 +474,8 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 				}
 			}			
 			matriz = new String[cantidadFilas][cantidadColumnas];
-			System.out.println("Filas: " + cantidadFilas + ", Columnas: " + cantidadColumnas + ".");
-			System.out.println("Len arreglo: " + lenArreglo);
+//			System.out.println("Filas: " + cantidadFilas + ", Columnas: " + cantidadColumnas + ".");
+//			System.out.println("Len arreglo: " + lenArreglo);
 		}		
 		
 		for (int i = 0 ; i < lenArreglo ; i++) {
