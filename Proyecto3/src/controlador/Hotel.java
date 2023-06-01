@@ -568,7 +568,7 @@ public class Hotel implements Serializable{
 			}
 			ocupados.put(date, mapa);
 		}
-		return grupo;	
+		return grupo;
 	}
 
 	

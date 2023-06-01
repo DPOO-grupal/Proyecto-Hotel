@@ -2,20 +2,16 @@ package vistaEmpleado;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GraphicsConfiguration;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.HeadlessException;
+import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -26,23 +22,18 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.SwingContainer;
 import javax.swing.UIManager;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.plaf.ColorUIResource;
-import javax.swing.plaf.basic.BasicTreeUI.TreeCancelEditingAction;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.DefaultTableCellRenderer;
 
 import controlador.WindowManager;
 import vistaAdmin.AdminHabitacionesFrame;
-import vistaAdmin.AdminRestauranteFrame;
-import vistaAdmin.AdminServiciosFrame;
-import vistaAdmin.AdminTarifasFrame;
 
 public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 
@@ -304,8 +295,77 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	}
 	
 	public void checkOut() {
-		UIManager.put("OptionPane.minimumSize",new Dimension(400,200));
-		JOptionPane.showInputDialog(null, "Ingrese el número de su grupo para el check-out", "Check-out", JOptionPane.PLAIN_MESSAGE);
+		try {
+			UIManager.put("OptionPane.minimumSize",new Dimension(400,200));
+			String idGrupo = JOptionPane.showInputDialog(null, "Ingrese el número de su grupo para el check-out", "Check-out", JOptionPane.PLAIN_MESSAGE);
+			factura(idGrupo);
+			//windowManager.checkOut(Integer.parseInt(idGrupo));
+		} catch (Exception e) {
+			String error = e.getMessage();
+			if (error.contains("null")) {
+				JOptionPane.showMessageDialog(null, "No existe el grupo");
+			} else {
+				JOptionPane.showMessageDialog(null, "Seleccione un grupo");
+			}
+		}
+	}
+	
+	public void factura (String idGrupo) {
+		JFrame frameFactura = new JFrame();
+		frameFactura.setSize(300, 500);
+		frameFactura.setLocationRelativeTo(null);
+		frameFactura.setLayout(new GridLayout(1,0));
+		frameFactura.setBackground(Color.decode("#ccd2c2"));
+
+		
+		//ArrayList<String[]> listaServiciosHabitacion = windowManager.getServiciosHabitacion(idGrupo);
+		ArrayList<String[]> listaServiciosHabitacion = new ArrayList<String[]>();
+		String[] ejemplo1 = {"Lomo", "13000"};
+		String[] ejemplo2 = {"Carne", "12000"};
+		String[] ejemplo3 = {"Pulpo", "11000"};
+		listaServiciosHabitacion.add(ejemplo1);
+		listaServiciosHabitacion.add(ejemplo2);
+		listaServiciosHabitacion.add(ejemplo3);
+		
+		
+		
+		int tamañoColumnas = 2+listaServiciosHabitacion.size();
+		
+		JPanel panelPrincipal = new JPanel();
+		panelPrincipal.setLayout(new GridLayout(tamañoColumnas,2,2,0));
+		panelPrincipal.setBackground(Color.decode("#ccd2c2"));
+		
+		JLabel tituloFactura = new JLabel("Factura del grupo:");
+		JLabel tituloIdGrupo = new JLabel(idGrupo);
+		JLabel tituloServicio = new JLabel("Servicio");
+		JLabel tituloPrecio = new JLabel("Precio");
+		
+		panelPrincipal.add(tituloFactura);
+		panelPrincipal.add(tituloIdGrupo);
+		panelPrincipal.add(tituloServicio);
+		panelPrincipal.add(tituloPrecio);
+		
+		
+		for (String[] servicioHabitacion : listaServiciosHabitacion) {
+			JLabel nombreServicio = new JLabel(servicioHabitacion[0]);
+			nombreServicio.setSize(30, 30);
+			JLabel precioServicio = new JLabel(servicioHabitacion[1]);
+			precioServicio.setSize(30, 30);
+			panelPrincipal.add(nombreServicio);
+			panelPrincipal.add(precioServicio);
+		}		
+		
+		JLabel tituloHabitaciones = new JLabel("Habitación");
+		JLabel espacio = new JLabel("");
+		
+		panelPrincipal.add(tituloHabitaciones);
+		panelPrincipal.add(espacio);
+		
+		
+		JScrollPane scroll = new JScrollPane(panelPrincipal);
+		
+		frameFactura.add(scroll);
+		frameFactura.setVisible(true);
 	}
 	
 	public void colorearTablaAnio(int i, Color color, String cantidad) {

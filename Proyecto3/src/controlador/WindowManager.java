@@ -79,9 +79,6 @@ public class WindowManager {
 
 	    Date fecha = datePicker.getDate();
 		Usuario.setHoy(fecha);
-	
-
-	
 		
 	}
 	
@@ -252,6 +249,11 @@ public class WindowManager {
 		return self;
 	}
 	
+	public Grupo checkOut(int idGrupo) {
+		Empleado empleado = (Empleado) usuarioActual;
+		return empleado.checkOut(idGrupo);
+	}
+	
 	public Integer[] ocupacionHoy() {
 		return ((Empleado) usuarioActual).ocupacionHoy();
 	}
@@ -355,6 +357,11 @@ public class WindowManager {
 	public void añadirServicioHotelHabitacion(int idHabitacion, int idServicio, int cantidad, boolean pagarEnSitio) {
 		Empleado empleado = (Admin) usuarioActual;
 		empleado.añadirServicioHotelHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);
+	}
+	
+	public ArrayList<String[]> getServiciosHabitacion(String ID){
+		Empleado empleado = (Empleado) usuarioActual;
+		return empleado.getServiciosHabitacion(ID);
 	}
 	
 	public void crearHabitacion(TipoHabitacion tipoHabitacion, int id) {
@@ -576,9 +583,9 @@ public class WindowManager {
     		}
         	// JFrame para probar
 
-    		JFrame pruebas = new AdminHabitacionesFrame(windowManager);
+    		JFrame pruebas = new EmpleadoMenuPrincipal(windowManager);
     		// Menú de ese Frame
-    		JFrame menu = new AdminMenuPrincipal(windowManager);
+    		JFrame menu = new EmpleadoMenuPrincipal(windowManager);
     		
     		windowManager.setPruebas(pruebas, menu);
     		
