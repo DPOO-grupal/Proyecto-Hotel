@@ -341,7 +341,7 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		}
 	
 	protected void añadirServicioHotelHabitacion() {
-		try {
+//		try {
 			if (cajaNumeroHabitacion.getSelectedItem() == "") {
 				JOptionPane.showMessageDialog(null, "Hace falta el número de la habitación");
 			}
@@ -361,9 +361,10 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 					listaOrden.remove(nombre);
 				}
 			}
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "No existe la habitación");				
-		}
+//		} catch (Exception e) {
+//			//JOptionPane.showMessageDialog(null, "No existe la habitación");			
+//			System.out.println(e.getLocalizedMessage());
+//		}
 		resetDatos();
 	}
 	

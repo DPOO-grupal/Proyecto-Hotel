@@ -999,6 +999,7 @@ public class CrearHabitacionFrame extends FrameBaseInfo implements KeyListener{
         int numeros;
         try {
             String cadena = caja.getText().replace(",", "");
+            cadena = cadena.replace(".", "");
             numeros = Integer.parseInt(cadena);
             NumberFormatter numberFormatter = new NumberFormatter();
             numberFormatter.setValueClass(Integer.class);
