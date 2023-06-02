@@ -420,7 +420,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		
 		frameFactura.add(scroll);
 		frameFactura.setVisible(true);
-		windowManager.checkOut(Integer.parseInt(idGrupo));
+		windowManager.checkOut(Integer.parseInt(idGrupo) );
 	}
 	
 	public void colorearTablaAnio(int i, Color color, String cantidad) {
