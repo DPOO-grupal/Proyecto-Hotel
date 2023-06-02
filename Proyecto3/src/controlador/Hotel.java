@@ -551,6 +551,10 @@ public class Hotel implements Serializable{
 		return fechaString;
 	}
 	
+	public String getCaracteristicasHabitacion(Integer ID) {
+		Habitacion habitacion = habitaciones.get(ID);
+		return habitacion.getCaracteristicas();
+	}
 	
 	public double getPrecioHabitacionReserva(Habitacion habitacion) {
 		TipoHabitacion tipo = habitacion.getTipoHabitacion(); 

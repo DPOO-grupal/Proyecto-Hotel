@@ -144,8 +144,14 @@ public class AdminHabitacionesFrame extends EmpleadoHabitacionesFrame{
 	        String id = String.valueOf(habitacion.getId());
 	        String tipo = habitacion.getTipoHabitacion().toString();
 	        String capacidad = String.valueOf(habitacion.getCapacidad());
-	        ArrayList<Servicio> servicios = habitacion.getServicios();
-	        String caracteristicas = habitacion.getCaracteristicas();
+	        String carac = windowManager.getCaracteristicas(Integer.parseInt(id));
+	        int cantidadCaracteristicas;
+	        cantidadCaracteristicas = carac.split(",").length; 
+	        if (carac.equals("Caracteristicas adicionales:\nNinguna.")) {
+	        	cantidadCaracteristicas = 0;
+	        }
+	        cantidadCaracteristicas += 7;
+	        String caracteristicas = cantidadCaracteristicas + ", Click para ver";
 	        modeloTablaInfo.addRow(new Object[]{id, tipo, capacidad, caracteristicas, "ICON", "ICON"});
 	    }
 	}

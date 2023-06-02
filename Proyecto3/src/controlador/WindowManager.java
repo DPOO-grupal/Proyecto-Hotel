@@ -12,6 +12,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.temporal.TemporalField;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -82,6 +84,9 @@ public class WindowManager {
 
 	    Date fecha = datePicker.getDate();
 		Usuario.setHoy(fecha);
+	
+
+	
 		
 	}
 	
@@ -98,8 +103,13 @@ public class WindowManager {
 		ventandaActual = ventana;
 		try {
 			((FrameBaseInfo)ventandaActual).resetDatos();
-		}catch (ClassCastException e) {
-			((EmpleadoMenuPrincipal)ventandaActual).resetDatos();
+		}
+		catch (ClassCastException e) {
+			try {
+				((EmpleadoMenuPrincipal)ventandaActual).resetDatos();
+			}
+			catch (ClassCastException e1) {
+			}
 		}
 		
 		// configuraciones generales
@@ -257,11 +267,6 @@ public class WindowManager {
 		return self;
 	}
 	
-	public Grupo checkOut(int idGrupo) {
-		Empleado empleado = (Empleado) usuarioActual;
-		return empleado.checkOut(idGrupo);
-	}
-	
 	public Integer[] ocupacionHoy() {
 		return ((Empleado) usuarioActual).ocupacionHoy();
 	}
@@ -367,11 +372,6 @@ public class WindowManager {
 		empleado.añadirServicioHotelHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);
 	}
 	
-	public ArrayList<String[]> getServiciosHabitacion(String ID){
-		Empleado empleado = (Empleado) usuarioActual;
-		return empleado.getServiciosHabitacion(ID);
-	}
-	
 	public void crearHabitacion(TipoHabitacion tipoHabitacion, int id) {
 		Admin admin = (Admin) usuarioActual;
 		admin.crearHabitacion(tipoHabitacion, id);
@@ -426,22 +426,9 @@ public class WindowManager {
 		empleado.añadirProductoMenuHabitacion(idHabitacion, idServicio, cantidad, pagarEnSitio);
 	}
 	
-	public Date getHora(String horaString) {
-		boolean right;
-		Date hora = null;
-		do{
-			DateFormat DFormat = new SimpleDateFormat("hh:mm a");
-
-			try {
-				hora = DFormat.parse(horaString);
-				right = false;
-			} catch (ParseException e) {
-				right = true;
-			}
-			
-		} while (right);
-		
-		return hora;
+	public Date getHora(LocalTime localTime) {
+		Date date = new Date(localTime.getNano());
+		return date;
 	}
 	
 	public ArrayList<Habitacion> DiponiblesParaGrupoEnCurso(TipoHabitacion tipo) throws Exception {
@@ -498,12 +485,6 @@ public class WindowManager {
 		return admin.crearTarifa(fechaI, fechaF, tipo, valor, diasValores);
 	}
 	
-	public void borrarTarifa(Date fecha) {
-		Admin admin = (Admin) usuarioActual;
-		admin.borrarTarifa(fecha);
-		
-	}
-	
 	// FinTarifas
 	
 	
@@ -542,7 +523,7 @@ public class WindowManager {
 	}
 	
 	
-	public Grupo getGrupo(int id) throws Exception {
+	public Grupo getGrupo(int id) {
 		Empleado empleado = (Empleado) usuarioActual;
 		return empleado.getGrupo(id);
 	}
@@ -555,6 +536,11 @@ public class WindowManager {
 	public String formatoFecha(Date date) {
 		Empleado empleado = (Empleado) usuarioActual;
 		return empleado.formatoFecha(date);
+	}
+	
+	public String getCaracteristicas(Integer ID) {
+		Empleado empleado = (Empleado) usuarioActual;
+		return empleado.getCaracteristicasHabitacion(ID);
 	}
 	
 	public Grupo getGrupoEnCurso() {
@@ -602,9 +588,9 @@ public class WindowManager {
     		}
         	// JFrame para probar
 
-    		JFrame pruebas = new EmpleadoMenuPrincipal(windowManager);
+    		JFrame pruebas = new CrearHabitacionFrame(windowManager);
     		// Menú de ese Frame
-    		JFrame menu = new EmpleadoMenuPrincipal(windowManager);
+    		JFrame menu = new AdminMenuPrincipal(windowManager);
     		
     		windowManager.setPruebas(pruebas, menu);
     		

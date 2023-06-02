@@ -102,6 +102,10 @@ public class Empleado extends Usuario  {
 		 
 	}
 	
+	public String getCaracteristicasHabitacion(Integer ID) {
+		return hotel.getCaracteristicasHabitacion(ID);
+	}
+	
 // FIN RESERVAS ---------------------------------------------
 
 //INICIO SERVICIOS HOTEL -----------------------------------------------------
