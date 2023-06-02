@@ -484,9 +484,9 @@ public class WindowManager {
 		Admin admin = (Admin) usuarioActual;
 		return admin.crearTarifa(fechaI, fechaF, tipo, valor, diasValores);
 	}
-	public void borrarTarifa(Date fecha) {
+	public void borrarTarifa(Date fecha, TipoHabitacion tipo) {
 		Admin admin = (Admin) usuarioActual;
-		admin.borrarTarifa(fecha);
+		admin.borrarTarifa(fecha, tipo);
 		
 	}
 	
@@ -545,7 +545,7 @@ public class WindowManager {
 	}
 	
 	
-	public Grupo getGrupo(int id) {
+	public Grupo getGrupo(int id) throws Exception {
 		Empleado empleado = (Empleado) usuarioActual;
 		return empleado.getGrupo(id);
 	}

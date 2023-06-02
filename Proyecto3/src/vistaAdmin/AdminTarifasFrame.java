@@ -119,7 +119,8 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 	private void borrarTarifa() {
 		if (!datos[0].getText().isBlank()) {
 			Date fecha = fechaMostrar[0].getDate();
-			windowManager.borrarTarifa(fecha);
+			TipoHabitacion tipo  = TipoHabitacion.valueOf( datos[0].getText());
+			windowManager.borrarTarifa(fecha, tipo);
 			buscarTarifa();
 			
 		}else {
@@ -390,7 +391,7 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 	    cantidadSelecionados =  new JTextField();
 	    cantidadSelecionados.setEditable(false);
 	    cantidadSelecionados.setPreferredSize(new Dimension(200, 30));
-		
+	    cantidadSelecionados.setText("0");
 		constraints.gridy = 1;
 
 	    constraints.anchor = GridBagConstraints.CENTER;
@@ -578,6 +579,9 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 				}
 			}
 			
+			tiposFaltantes.removeAllItems();
+			cantidadSelecionados.setText("0");
+			precio.setText("");
 			tablaTarifaFaltantes();
 		}else {
 			JOptionPane.showMessageDialog(null, "Debe seleccionar almenos una reserva");

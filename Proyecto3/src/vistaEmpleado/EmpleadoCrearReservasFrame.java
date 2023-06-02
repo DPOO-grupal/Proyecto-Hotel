@@ -76,18 +76,19 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 		Font fontLabel = new Font("Arial", Font.BOLD, 16);
 
 		panelHabi.setLayout(gba);
-
+		panelHabi.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		JLabel temLabel = new JLabel("Añadir habitación");
 		temLabel.setFont(fontLabel);
 
 		c.gridx = 0;
-		c.gridy = 0;
-
-		c.ipady = 20;
-		c.ipadx = 100;
+		c.gridy = 1;
 
 		c.weightx = 1;
-
+		c.weighty = 1;
+	    c.ipadx = 1;
+	    c.ipady = 1;
+	    
+		c.anchor = GridBagConstraints.SOUTH;
 		c.insets = new Insets(0, 0, 0, 0);
 
 		panelHabi.add(temLabel, c);
@@ -99,16 +100,98 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 		agregarButton.setFont(fontLabel);
 		agregarButton.setForeground(Color.white);
 		agregarButton.addActionListener(this);
+		agregarButton.setPreferredSize(new Dimension(200, 40));
 
 		c.gridx = 0;
-		c.gridy = 3;
+		c.gridy = 2;
+	    c.ipadx = 1;
+	    c.ipady = 1;
 
-		c.ipadx = 100;
-		c.ipady = 10;
+		c.anchor = GridBagConstraints.CENTER;
 
 		c.insets = new Insets(10, 0, 0, 0);
 
 		panelHabi.add(agregarButton, c);
+	    
+	    
+	    fechaI = new JXDatePicker(new Date());
+	    fechaF = new JXDatePicker(new Date());
+	    
+	    c.gridx = 1;
+	    c.gridy = 0;
+		c.anchor = GridBagConstraints.SOUTH;
+
+	    
+	    c.insets = new Insets(0, 0, 0, 0);
+	    
+	    JLabel temLabel1 = new JLabel("Fecha Incial");
+		temLabel1.setFont(fontLabel);
+		panelHabi.add(temLabel1,c);
+	    
+	    c.gridy = 1;
+	    c.gridx = 1;
+		c.anchor = GridBagConstraints.CENTER;
+	    c.insets = new Insets(0, 0, 25, 0);
+	    
+	    fechaI.setFont(fontLabel);
+	    fechaI.setPreferredSize(new Dimension(200, 40));
+
+	    panelHabi.add(fechaI, c);
+	    
+	    c.gridy = 2;
+	    c.gridx = 1;
+		c.anchor = GridBagConstraints.CENTER;
+	    c.insets = new Insets(0, 0, 0, 0);
+	    
+	    temLabel1 = new JLabel("Fecha Final");
+		temLabel1.setFont(fontLabel );
+		panelHabi.add(temLabel1,c);
+	    
+	    c.gridy = 3;
+	    c.gridx = 1;
+	    c.ipadx = 1;
+	    c.ipady = 1;
+		c.anchor = GridBagConstraints.NORTH;
+
+	    c.insets = new Insets(0, 0, 0, 0);
+	    
+	    fechaF.setFont(fontLabel);
+	    fechaF.setPreferredSize(new Dimension(200, 40));
+	    panelHabi.add(fechaF, c);
+	    
+	    JButton establecerFecha = new JButton("Establecer Fecha");
+	    
+	    establecerFecha.setBackground(Color.decode("#204473"));
+	    establecerFecha.setFont(fontLabel);
+	    establecerFecha.setForeground(Color.white);
+	    establecerFecha.addActionListener(this);
+	    establecerFecha.setPreferredSize(new Dimension(200, 40));
+
+	    
+	    c.gridy = 1;
+	    c.gridx = 2;
+		c.anchor = GridBagConstraints.CENTER;
+	    c.insets = new Insets(0, 0, 0, 0);
+	    
+	    panelHabi.add(establecerFecha, c);
+	    
+	    JButton cambiarFecha = new JButton("Cambiar fecha");
+	    
+	    cambiarFecha.setBackground(Color.decode("#204473"));
+	    cambiarFecha.setFont(fontLabel);
+	    cambiarFecha.setForeground(Color.white);
+	    cambiarFecha.addActionListener(this);
+	    cambiarFecha.setPreferredSize(new Dimension(200, 40));
+
+	    
+	    
+	    c.gridy = 2;
+	    c.gridx = 2;
+		c.anchor = GridBagConstraints.CENTER;
+	    c.insets = new Insets(0, 0, 0, 0);
+	    
+	    panelHabi.add(cambiarFecha, c);
+	    
 
 		panelHabi.setBackground(Color.decode("#accaf2"));
 		constraints.ipadx = 200;
@@ -118,97 +201,9 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.NORTHWEST;
 		constraints.weighty = 0.1;
-
-		panelDerecho.add(panelHabi, constraints);
-		
-		JPanel panelBuscar = new JPanel();	    
-	    // añadir al panel
-	    	    
-	    panelBuscar.setLayout(gba);
-	    panelBuscar.setBackground(Color.decode("#accaf2"));
 	    
 	    
-	    fechaI = new JXDatePicker(new Date());
-	    fechaF = new JXDatePicker(new Date());
-	    
-	    c.gridx = 0;
-	    c.gridy = 0;
-	    
-	    c.ipady = 20;
-	    c.ipadx = 100;
-	    
-	    c.insets = new Insets(0, 0, 0, 0);
-	    
-	    JLabel temLabel1 = new JLabel("Fecha Incial");
-		temLabel1.setFont(fontLabel);
-	    panelBuscar.add(temLabel1,c);
-	    
-	    c.gridy = 1;
-	    c.gridx = 0;
-	    c.insets = new Insets(0, 0, 25, 0);
-	    
-	    fechaI.setFont(fontLabel);
-	    panelBuscar.add(fechaI, c);
-	    
-	    c.gridy = 3;
-	    c.gridx = 0;
-	    
-	    c.insets = new Insets(0, 0, 0, 0);
-	    
-	    temLabel1 = new JLabel("Fecha Final");
-		temLabel1.setFont(fontLabel );
-	    panelBuscar.add(temLabel1,c);
-	    
-	    c.gridy = 4;
-	    c.gridx = 0;
-	    
-	    c.insets = new Insets(0, 0, 0, 0);
-	    
-	    fechaF.setFont(fontLabel);
-	    panelBuscar.add(fechaF, c);
-	    
-	    JButton establecerFecha = new JButton("Establecer Fecha");
-	    
-	    establecerFecha.setBackground(Color.decode("#204473"));
-	    establecerFecha.setFont(fontLabel);
-	    establecerFecha.setForeground(Color.white);
-	    establecerFecha.addActionListener(this);
-	    
-	    
-	    c.gridy = 1;
-	    c.gridx = 2;
-	    c.ipadx = 10;
-	    c.insets = new Insets(0, 0, 0, 0);
-	    
-	    panelBuscar.add(establecerFecha, c);
-	    
-	    JButton cambiarFecha = new JButton("Cambiar fecha");
-	    
-	    cambiarFecha.setBackground(Color.decode("#204473"));
-	    cambiarFecha.setFont(fontLabel);
-	    cambiarFecha.setForeground(Color.white);
-	    cambiarFecha.addActionListener(this);
-	    
-	    
-	    c.gridy = 3;
-	    c.gridx = 2;
-	    c.ipadx = 10;
-	    c.insets = new Insets(0, 0, 0, 0);
-	    
-	    panelBuscar.add(cambiarFecha, c);
-	    
-	    constraints.gridx = 1;
-	    constraints.gridy = 0;
-	    
-	    constraints.ipadx = 100;
-	    constraints.ipady = 40;
-	    
-	    constraints.fill = GridBagConstraints.HORIZONTAL;
-		constraints.anchor = GridBagConstraints.NORTHEAST;
-		
-	    constraints.insets = new Insets(0, 0  , 0, 0);
-
-	    panelDerecho.add(panelBuscar, constraints);
+	    panelDerecho.add(panelHabi, constraints);
 		
 		// tabla
 		String[] columnas = { "Habitacion", "Huesped" };
@@ -244,7 +239,7 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		
-		constraints.gridwidth = 2;
+		constraints.gridwidth = 1;
 		
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.CENTER;
@@ -413,55 +408,69 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 	    ArrayList<Habitacion> disponibles = null;
 		try {
 			disponibles = windowManager.DiponiblesParaGrupoEnCurso(tipoEnum);
-	
-		    selectHabitacion = new JFrame();
-		    selectHabitacion.setSize(new Dimension(700,500));
-		    selectHabitacion.setLocationRelativeTo(null);
-		    String[] datosHabitaciones = {"Número","Capacidad", "Precio", "Caracteristicas"};
-		    
-		    DefaultTableModel modelodisponibles = new DefaultTableModel(datosHabitaciones, disponibles.size());
-		    
-			Font fontTabla = new Font("Arial", Font.BOLD, 20);
-			
-		    JTable tablaDisponibles = new JTable(modelodisponibles);
-		    tablaDisponibles.setDefaultEditor(Object.class, null);
-		    tablaDisponibles.getTableHeader().setBackground(Color.decode("#204473"));
-		    tablaDisponibles.getTableHeader().setForeground(Color.white);
-		    tablaDisponibles.getTableHeader().setFont(fontTabla);
-		    tablaDisponibles.setBackground(Color.decode("#B2BBA4"));
-		    tablaDisponibles.setRowHeight(50);
-		    tablaDisponibles.addMouseListener(this);
-		    tablaDisponibles.setName("TablaDisponibles");
-		    
-			DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
-			modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
-			modelocentrar.setFont(fontTabla);
-			modelocentrar.setBackground(Color.white);
-			
-			for (int i = 0; i < datosHabitaciones.length; i++) {
-				tablaDisponibles.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);
-				tablaDisponibles.getColumnModel().getColumn(i).setCellEditor(null);
-			}
-		    
-			modelodisponibles.getDataVector().removeAllElements();
-			modelodisponibles.fireTableDataChanged();
-			
-		    for (Habitacion habitacion:disponibles) {
-		    	int precioHabitacion = getPrecioHabitacionReserva(habitacion);
-		    	String[] data = {habitacion.getId()+"",""+habitacion.getCapacidad(), ""+precioHabitacion, habitacion.getCaracteristicas()};
-		    	modelodisponibles.addRow(data);
-		    }
-		    
-		    JScrollPane scrollPane = new JScrollPane(tablaDisponibles);
-		    selectHabitacion.add(scrollPane);
-		    selectHabitacion.setVisible(true);
-	    
 		} catch (Exception e) {
 			if (e.getMessage().equals("No hay grupo")) {
 				JOptionPane.showMessageDialog(null, "Debe establecer la Fecha");
+				
 			}
+			return;
 
 		}
+	    selectHabitacion = new JFrame();
+	    selectHabitacion.setSize(new Dimension(700,500));
+	    selectHabitacion.setLocationRelativeTo(null);
+	    String[] datosHabitaciones = {"Número","Capacidad", "Precio", "Caracteristicas"};
+	    
+	    DefaultTableModel modelodisponibles = new DefaultTableModel(datosHabitaciones, disponibles.size());
+	    
+		Font fontTabla = new Font("Arial", Font.BOLD, 20);
+		
+	    JTable tablaDisponibles = new JTable(modelodisponibles);
+	    tablaDisponibles.setDefaultEditor(Object.class, null);
+	    tablaDisponibles.getTableHeader().setBackground(Color.decode("#204473"));
+	    tablaDisponibles.getTableHeader().setForeground(Color.white);
+	    tablaDisponibles.getTableHeader().setFont(fontTabla);
+	    tablaDisponibles.setBackground(Color.decode("#B2BBA4"));
+	    tablaDisponibles.setRowHeight(50);
+	    tablaDisponibles.addMouseListener(this);
+	    tablaDisponibles.setName("TablaDisponibles");
+	    
+		DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
+		modelocentrar.setHorizontalAlignment(SwingConstants.CENTER);
+		modelocentrar.setFont(fontTabla);
+		modelocentrar.setBackground(Color.white);
+		
+		for (int i = 0; i < datosHabitaciones.length; i++) {
+			tablaDisponibles.getColumnModel().getColumn(i).setCellRenderer(modelocentrar);
+			tablaDisponibles.getColumnModel().getColumn(i).setCellEditor(null);
+		}
+	    
+		modelodisponibles.getDataVector().removeAllElements();
+		modelodisponibles.fireTableDataChanged();
+		
+		boolean todas = true;
+		
+	    for (Habitacion habitacion:disponibles) {
+	    	int precioHabitacion;
+			try {
+				precioHabitacion = getPrecioHabitacionReserva(habitacion);
+				String[] data = {habitacion.getId()+"",""+habitacion.getCapacidad(), ""+precioHabitacion, habitacion.getCaracteristicas()};
+		    	modelodisponibles.addRow(data);
+			} catch (Exception e) {
+				todas = false;
+			}
+	    	
+	    }
+	    
+	    if (!todas) {
+	    	JOptionPane.showMessageDialog(null, "Algunas habitaciones no fueron mostradas por no tener tarifa", "Tarifa Faltantes", JOptionPane.ERROR_MESSAGE);;
+	    }
+	    
+	    JScrollPane scrollPane = new JScrollPane(tablaDisponibles);
+	    selectHabitacion.add(scrollPane);
+	    selectHabitacion.setVisible(true);
+	    
+	
 	    
 	}
 	public int getPrecioHabitacionReserva(Habitacion habitacion) throws Exception {

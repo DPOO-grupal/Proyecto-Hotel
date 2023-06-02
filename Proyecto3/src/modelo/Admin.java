@@ -30,8 +30,8 @@ public class Admin extends Empleado {
 		return hotel.crearTarifasRango(fechaI, fechaF, tipo, valor, diasValores);
 	}
 
-	public void borrarTarifa(Date fecha) {
-		hotel.borrarTarifa(fecha);
+	public void borrarTarifa(Date fecha, TipoHabitacion tipo) {
+		hotel.borrarTarifa(fecha, tipo);
 	}
 	
 

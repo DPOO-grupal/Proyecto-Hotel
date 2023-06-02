@@ -412,7 +412,7 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 				datos[0].setText(tipo);
 				datos[1].setText(precio);
 				fechaMostrar[0].setDate(fecha);
-				dias[((calendar.get(Calendar.DAY_OF_WEEK)-1)-3)%7].setSelected(true);
+				dias[((calendar.get(Calendar.DAY_OF_WEEK))+5)%7].setSelected(true);
 			}
 			
 			

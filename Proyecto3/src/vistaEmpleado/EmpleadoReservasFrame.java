@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -75,7 +76,8 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 
 		JPanel panelBuscar = new JPanel();
 		panelBuscar.setBackground(Color.decode("#accaf2"));
-		panelBuscar.setPreferredSize(new Dimension(100,100));
+		panelBuscar.setPreferredSize(new Dimension(150,100));
+		panelBuscar.setBorder(BorderFactory.createEmptyBorder(10, 100, 10, 100));
 		
 		panelBuscar.setLayout(gridbag);
 		  
@@ -83,22 +85,23 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 		titulo.setFont(fontLabels );
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		constraints.insets = new Insets(30, 0, 0, 0);
+		constraints.weighty = 1;
+		constraints.weightx = 1;
+		constraints.insets = new Insets(0, 0, 0, 0);
 	
 		
 		panelBuscar.add(titulo,constraints);
-
+  
 		
 		buscarJTextField = new JTextField();
-		buscarJTextField.setPreferredSize(new Dimension(200, 40));
+		buscarJTextField.setPreferredSize(new Dimension(10, 40));
 		buscarJTextField.addKeyListener(this);
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		constraints.weighty = 1;
-		constraints.insets = new Insets(0, 0, 0, 0);
-
 	
-		
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.insets = new Insets(1, 0, 1, 0);
+
 		panelBuscar.add(buscarJTextField,constraints);
 		
 		JButton buscarButton = new JButton("Buscar Reserva");
@@ -129,11 +132,11 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 		
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		constraints.ipadx = 300;
-		constraints.ipady = 100;
-		constraints.anchor = GridBagConstraints.WEST;
-	    constraints.fill = GridBagConstraints.BOTH;
-
+		constraints.ipadx = 1;
+		constraints.ipady = 1;
+		constraints.anchor = GridBagConstraints.NORTHWEST;
+	    //constraints.fill = GridBagConstraints.BOTH;
+	    constraints.insets = new Insets(0, 0, 0, 0);
 		
 		panelDerecho.add(panelBuscar,constraints);
 		
@@ -141,8 +144,7 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 		
 		// panel datos
 		JPanel panelDatos = new JPanel();
-
-		
+		panelDatos.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 		panelDatos.setBackground(Color.decode("#B2BBA4"));		
 		panelDatos.setLayout(gridbag);
 		constraints = new GridBagConstraints();
@@ -155,14 +157,18 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 			datos[i] = new JTextField();
 			datos[i].setForeground(Color.black);
 			datos[i].setEditable(false);
-			datos[i].setPreferredSize(new Dimension(200, 30));
-			
+			datos[i].setPreferredSize(new Dimension(1000, 30));
+			constraints.anchor = GridBagConstraints.CENTER;
+		    constraints.fill = GridBagConstraints.BOTH;
+			constraints.insets = new Insets(1, 20, 1, 20);
 			constraints.gridx = (i/2);
 			constraints.gridy = ((i%2)*2)+2;
 			constraints.gridwidth = 1;
 			constraints.gridheight = 1;
 			constraints.weighty = 1;
 			constraints.weightx = 1;
+			constraints.ipadx = 1;
+			constraints.ipady = 1;
 			panelDatos.add(datos[i],constraints);
 		}
 		
@@ -170,6 +176,8 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 		for (int i = 0; i < labels.length; i++) {
 			labels[i] = new JLabel(nombres[i]);
 			labels[i].setFont(fontLabels);
+		    constraints.fill = GridBagConstraints.NONE;
+			constraints.insets = new Insets(0, 0, 0, 0);
 			constraints.gridx = (i/2);
 			constraints.gridy = ((i%2)*2)+1;
 			constraints.gridwidth = 1;
@@ -184,10 +192,11 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridwidth = 2;
-		constraints.gridheight = 1;
+		constraints.gridheight = 1;  
 	
 		constraints.weighty = 1;
 		constraints.weightx = 1;
+		constraints.insets = new Insets(5, 20, 5, 20);
 
 		
 		panelDatos.add(tituloDatos,constraints);
@@ -203,7 +212,8 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 	
 		constraints.weighty = 1;
 		constraints.weightx = 1;
-
+		constraints.insets = new Insets(0, 0, 0, 0);
+ 
 		
 		panelDatos.add(tituloFecha,constraints);
 		
@@ -215,7 +225,7 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 		constraints.gridwidth = 1;
 		constraints.anchor = GridBagConstraints.CENTER;
 	    constraints.fill = GridBagConstraints.BOTH;
-
+	    
 		
 		panelDerecho.add(panelDatos,constraints);
 		
@@ -420,6 +430,10 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 		} else if(numFilas <servicios.length) {
 			numFilas = servicios.length;
 		}
+		
+		modeloTabla.getDataVector().removeAllElements();
+		modeloTabla.fireTableDataChanged();
+		
 		for (int i = 0; i <numFilas; i++) {
 			String huespedString = "";
 			String habitacion = "";
@@ -464,8 +478,12 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 	}
 
 	private void buscarReserva() {
-		int grupo = Integer.parseInt(buscarJTextField.getText().replace(".", "").replace(",", ""));
-		llenarDatosReserva(grupo);
+		try {
+			int grupo = Integer.parseInt(buscarJTextField.getText().replace(".", "").replace(",", ""));
+			llenarDatosReserva(grupo);
+		}catch (NumberFormatException e) {
+			JOptionPane.showMessageDialog(null, "Ingrese un numero valido", "Error datos", JOptionPane.ERROR_MESSAGE);;
+		}
 		
 	}
 

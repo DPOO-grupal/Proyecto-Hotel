@@ -63,20 +63,37 @@ public class Tarifa implements Serializable{
 	
 	
 	public void updatePrecio(TipoHabitacion tipo, double valorNuevo, boolean sobreEscribir) throws Exception {
-		double valorAnterior = -1;
+		System.out.println("Tarifa.updatePrecio()");
+		System.out.println("tipo: " + tipo + "valorNuevo: " + valorNuevo + "sobreEscribir: " +sobreEscribir);
 
+		if (sobreEscribir) {
+			setPrecio(tipo, valorNuevo);
+			System.out.println("if 0");
+			return;
+		}
+		
+		double valorAnterior = -1;
 		try {
 			valorAnterior = getPrecio(tipo);
-			if(valorNuevo <= valorAnterior || sobreEscribir) {
-				setPrecio(tipo, valorNuevo);
+			System.out.println("if 1");
 
-			} else {
-				throw new Exception("No editable");
-			}
-			
 		} catch (Exception e) {
 			setPrecio(tipo, valorNuevo);
+			System.out.println("if 2");
+
+			return;
+
 		}
+		
+		if(valorNuevo <= valorAnterior) {
+			System.out.println("if 3");
+			setPrecio(tipo, valorNuevo);
+		} else {
+			System.out.println("if 4");
+
+			throw new Exception("No editable");
+		}
+		
 		 
 	
 	}
