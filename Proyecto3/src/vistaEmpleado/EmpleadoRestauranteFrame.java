@@ -503,7 +503,7 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 				double preci = Double.parseDouble(getPrecio(nombre));
 				DecimalFormat df = new DecimalFormat("#,###.00");
 		        String precio = df.format(preci);
-		        precio = precio.substring(0, precio.length()-3);
+		        //precio = precio.substring(0, precio.length()-3);
 				LocalTime horaInicial = getHoraI(nombre);
 				LocalTime horaFinal =  getHoraF(nombre);
 				boolean llevable = getLlevable(nombre);
@@ -523,7 +523,7 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 				double precioOrden = Double.parseDouble(getPrecio(nombreOrden));
 				DecimalFormat df = new DecimalFormat("#,###.00");
 		        String precio = df.format(precioOrden);
-		        precio = precio.substring(0, precio.length()-3);
+		        //precio = precio.substring(0, precio.length()-3);
 				LocalTime horaInicial = getHoraI(nombreOrden);
 				LocalTime horaFinal = getHoraF(nombreOrden);
 				boolean llevable = getLlevable(nombreOrden);
