@@ -236,6 +236,7 @@ public class Hotel implements Serializable{
 				try {
 					tarifa.updatePrecio(tipo, valor);
 				} catch (Exception e) {
+		
 					tarifasFaltantes.add(tarifa);
 				}
 			}
@@ -245,14 +246,30 @@ public class Hotel implements Serializable{
 		
 	}
 	
-	public void crearTarifasEspecificas(ArrayList<Tarifa> tarifas,  TipoHabitacion tipo, double valor){
+	public void ForzarTarifasSobreTarifas(ArrayList<Tarifa> tarifas,  TipoHabitacion tipo, double valor){
+		
 		for (Tarifa tarifa : tarifas) {
 			try {
 				tarifa.updatePrecio(tipo, valor, true);
 			} catch (Exception e) {
-				
+
 			}
 		}
+	}
+	
+	public ArrayList<Tarifa> crearTarifasSobreFechas(ArrayList<Date> fechas,  TipoHabitacion tipo, double valor){
+		ArrayList<Tarifa> tarifasFaltantes = new ArrayList<>();
+
+		for (Date fecha : fechas) {
+			Tarifa tarifa = tarifas.get(fecha);
+			try {
+				tarifa.updatePrecio(tipo, valor, true);
+			} catch (Exception e) {
+				tarifasFaltantes.add(tarifa);
+			}
+		}
+		return tarifasFaltantes;
+
 	}
 	
 	public void borrarTarifa(Date fecha) {
@@ -556,7 +573,7 @@ public class Hotel implements Serializable{
 		return habitacion.getCaracteristicas();
 	}
 	
-	public double getPrecioHabitacionReserva(Habitacion habitacion) {
+	public double getPrecioHabitacionReserva(Habitacion habitacion) throws Exception {
 		TipoHabitacion tipo = habitacion.getTipoHabitacion(); 
 		double precio = habitacion.getPrecioServicios();
 		Date FechaI = grupoEnCurso.getReserva().getFechaI();

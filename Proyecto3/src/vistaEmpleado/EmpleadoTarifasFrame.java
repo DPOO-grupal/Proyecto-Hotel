@@ -15,6 +15,9 @@ import java.awt.event.ActionEvent;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Collection;
@@ -176,6 +179,7 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
         tablaTarifas.setFont(fontTabla);
         tablaTarifas.setBackground(Color.decode("#FFFFFF"));
         tablaTarifas.setRowHeight(50);
+        tablaTarifas.setName("TablaTarifas");
         tablaTarifas.addMouseListener(this);
         
         DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
@@ -344,21 +348,26 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 			
 			datos[0] = tarifa.getFechaString();
 			for (TipoHabitacion tipo: TipoHabitacion.values()) {
-				int precio = (int)tarifa.getPrecio(tipo);
-				
-	            NumberFormatter numberFormatter = new NumberFormatter();
-	            numberFormatter.setValueClass(Integer.class);
-	            numberFormatter.setMinimum(1);
-	            numberFormatter.setMaximum(Integer.MAX_VALUE);
-	            numberFormatter.setAllowsInvalid(false);
-	            JFormattedTextField input = new JFormattedTextField(numberFormatter);
-	            input.setText(precio + "");
-				
-				if (precio > 0) {
+				int precio;
+				try {
+					precio = (int)tarifa.getPrecio(tipo);
+					NumberFormatter numberFormatter = new NumberFormatter();
+		            numberFormatter.setValueClass(Integer.class);
+		            numberFormatter.setMinimum(1);
+		            numberFormatter.setMaximum(Integer.MAX_VALUE);
+		            numberFormatter.setAllowsInvalid(false);
+		            JFormattedTextField input = new JFormattedTextField(numberFormatter);
+		            input.setText(precio + "");
 					datos[1] = input.getText();
 					datos[2] = tipo.toString();
 					modeloTabla.addRow(datos);
-				} 
+				} catch (Exception e) {
+				}
+				
+	            
+				
+					
+				
 			}
 			
 		}
@@ -382,20 +391,30 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 	@Override
 	public void mouseClicked(MouseEvent e) {
 			resetDatos();
-			int row = tablaTarifas.getSelectedRow();
-			String fechaString[] = ((String) tablaTarifas.getValueAt(row, 0)).split("/");
-			System.out.println("EmpleadoTarifasFrame.mouseClicked()");
-			String tipo = (String) tablaTarifas.getValueAt(row, 1);
-			String precio = (String) tablaTarifas.getValueAt(row, 2);
-			Calendar calendar = Calendar.getInstance();
-			calendar.set(Integer.parseInt(fechaString[2]), Integer.parseInt(fechaString[1]), Integer.parseInt(fechaString[0]));
-			Date fecha = calendar.getTime();
-			System.out.println(fecha);
+			JTable tabla = (JTable) e.getSource();
+			if (tabla.getName().equals("TablaTarifas")) {
+				int row = tablaTarifas.getSelectedRow();
+				String fechaString = ((String) tablaTarifas.getValueAt(row, 0));
+				System.out.println("EmpleadoTarifasFrame.mouseClicked()");
+				String tipo = (String) tablaTarifas.getValueAt(row, 1);
+				String precio = (String) tablaTarifas.getValueAt(row, 2);
+				Calendar calendar = Calendar.getInstance();
+				DateFormat DFormat = new SimpleDateFormat("dd/MM/yyyy");
+				Date fecha = null;
+				try {
+					fecha = DFormat.parse(fechaString);
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				calendar.setTime(fecha);
 
-			datos[0].setText(tipo);
-			datos[1].setText(precio);
-			fechaMostrar[0].setDate(fecha);
-			dias[((calendar.get(Calendar.DAY_OF_WEEK)-1)-3)%7].setSelected(true);
+				datos[0].setText(tipo);
+				datos[1].setText(precio);
+				fechaMostrar[0].setDate(fecha);
+				dias[((calendar.get(Calendar.DAY_OF_WEEK)-1)-3)%7].setSelected(true);
+			}
+			
 			
 			
 		 

@@ -446,7 +446,7 @@ public class WindowManager {
 		empleado.añadirHuesped(documento, nombre, email, telefono, edad);;
 	}
 	
-	public int getPrecioHabitacionReserva(Habitacion habitacion) {
+	public int getPrecioHabitacionReserva(Habitacion habitacion) throws Exception {
 		Empleado empleado = (Empleado) usuarioActual;
 		return (int)empleado.getPrecioHabitacionReserva(habitacion);
 	}
@@ -484,7 +484,29 @@ public class WindowManager {
 		Admin admin = (Admin) usuarioActual;
 		return admin.crearTarifa(fechaI, fechaF, tipo, valor, diasValores);
 	}
+	public void borrarTarifa(Date fecha) {
+		Admin admin = (Admin) usuarioActual;
+		admin.borrarTarifa(fecha);
+		
+	}
 	
+
+
+	public void forzarCrearTarifas(ArrayList<Tarifa> tarifas,  TipoHabitacion tipo, double valor) {
+		Admin admin = (Admin) usuarioActual;
+		admin.forzarCrearTarifas(tarifas, tipo, valor);
+		
+	}
+	
+
+	public ArrayList<Tarifa> crearTarifasSobreFechas(ArrayList<Date> fechasFaltates, TipoHabitacion selectedItem,
+			double parseDouble) {
+		Admin admin = (Admin) usuarioActual;
+		return admin.crearTarifasSobreFechas(fechasFaltates, selectedItem, parseDouble);
+		
+	}
+
+
 	// FinTarifas
 	
 	
@@ -552,12 +574,6 @@ public class WindowManager {
 		Empleado empleado = (Empleado) usuarioActual;
 		return empleado.checkOut(idGrupo);
 	}
-	
-	public void borrarTarifa(Date fecha) {
-		Admin admin = (Admin) usuarioActual;
-		admin.borrarTarifa(fecha);
-		
-	}
 	// fin reservas
 	
 	public static void main(String[] args) {
@@ -617,6 +633,10 @@ public class WindowManager {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+
+
 
 
 

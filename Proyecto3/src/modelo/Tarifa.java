@@ -19,7 +19,7 @@ public class Tarifa implements Serializable{
 		suiteDouble = -1;
 	}
 	
-	public double getPrecio(TipoHabitacion tipo) {
+	public double getPrecio(TipoHabitacion tipo) throws Exception {
 		double precio = -1;
 		
 		switch (tipo) {
@@ -34,6 +34,10 @@ public class Tarifa implements Serializable{
 			break;
 		default:
 			break;
+		}
+		
+		if (precio < 0) {
+			throw new Exception("No hay tarifa");
 		}
 		
 		return precio;
@@ -58,19 +62,28 @@ public class Tarifa implements Serializable{
 	}
 	
 	
-	public void updatePrecio(TipoHabitacion tipo, double valornNuevo, boolean sobreEscribir) throws Exception {
-		double valorAnterior = getPrecio(tipo);
-		 if(valorAnterior < 0 || valornNuevo <= valorAnterior || sobreEscribir) {
-			 setPrecio(tipo, valornNuevo);	
-		} else {
-			throw new Exception("No editable");
+	public void updatePrecio(TipoHabitacion tipo, double valorNuevo, boolean sobreEscribir) throws Exception {
+		double valorAnterior = -1;
+
+		try {
+			valorAnterior = getPrecio(tipo);
+			if(valorNuevo <= valorAnterior || sobreEscribir) {
+				setPrecio(tipo, valorNuevo);
+
+			} else {
+				throw new Exception("No editable");
+			}
+			
+		} catch (Exception e) {
+			setPrecio(tipo, valorNuevo);
 		}
+		 
 	
 	}
 	
 	
-	public void updatePrecio(TipoHabitacion tipo, double valornNuevo) throws Exception {
-		updatePrecio(tipo, valornNuevo, false);
+	public void updatePrecio(TipoHabitacion tipo, double valorNuevo) throws Exception {
+		updatePrecio(tipo, valorNuevo, false);
 	
 	}
 	
