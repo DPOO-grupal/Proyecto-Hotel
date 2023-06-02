@@ -263,8 +263,10 @@ public class Hotel implements Serializable{
 		for (Date fecha : fechas) {
 			Tarifa tarifa = tarifas.get(fecha);
 			try {
-				tarifa.updatePrecio(tipo, valor, true);
+				tarifa.updatePrecio(tipo, valor);
 			} catch (Exception e) {
+				System.out.println("Hotel.crearTarifasSobreFechas()");
+				System.out.println(e.getMessage());
 				tarifasFaltantes.add(tarifa);
 			}
 		}
@@ -272,9 +274,13 @@ public class Hotel implements Serializable{
 
 	}
 	
-	public void borrarTarifa(Date fecha) {
-		Tarifa tarifa = new Tarifa(fecha);
-		tarifas.replace(fecha, tarifa);
+	public void borrarTarifa(Date fecha, TipoHabitacion tipo) {
+		Tarifa tarifa = tarifas.get(fecha);
+		try {
+			tarifa.updatePrecio(tipo,-1,  true);
+		} catch (Exception e) {
+
+		}
 		
 	}
 	
