@@ -547,6 +547,17 @@ public class WindowManager {
 		Empleado empleado = (Empleado) usuarioActual;
 		return empleado.getGrupoEnCurso();
 	}
+	
+	public Grupo checkOut(int idGrupo) {
+		Empleado empleado = (Empleado) usuarioActual;
+		return empleado.checkOut(idGrupo);
+	}
+	
+	public void borrarTarifa(Date fecha) {
+		Admin admin = (Admin) usuarioActual;
+		admin.borrarTarifa(fecha);
+		
+	}
 	// fin reservas
 	
 	public static void main(String[] args) {
