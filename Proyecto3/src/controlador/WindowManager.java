@@ -103,8 +103,13 @@ public class WindowManager {
 		ventandaActual = ventana;
 		try {
 			((FrameBaseInfo)ventandaActual).resetDatos();
-		}catch (ClassCastException e) {
-			((EmpleadoMenuPrincipal)ventandaActual).resetDatos();
+		}
+		catch (ClassCastException e) {
+			try {
+				((EmpleadoMenuPrincipal)ventandaActual).resetDatos();
+			}
+			catch (ClassCastException e1) {
+			}
 		}
 		
 		// configuraciones generales
@@ -533,6 +538,11 @@ public class WindowManager {
 		return empleado.formatoFecha(date);
 	}
 	
+	public String getCaracteristicas(Integer ID) {
+		Empleado empleado = (Empleado) usuarioActual;
+		return empleado.getCaracteristicasHabitacion(ID);
+	}
+	
 	public Grupo getGrupoEnCurso() {
 		Empleado empleado = (Empleado) usuarioActual;
 		return empleado.getGrupoEnCurso();
@@ -578,7 +588,7 @@ public class WindowManager {
     		}
         	// JFrame para probar
 
-    		JFrame pruebas = new EmpleadoRestauranteFrame(windowManager);
+    		JFrame pruebas = new CrearHabitacionFrame(windowManager);
     		// Menú de ese Frame
     		JFrame menu = new AdminMenuPrincipal(windowManager);
     		

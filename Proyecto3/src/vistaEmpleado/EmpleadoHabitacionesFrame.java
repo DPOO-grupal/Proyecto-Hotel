@@ -243,7 +243,14 @@ public class EmpleadoHabitacionesFrame extends FrameBaseInfo implements MouseLis
 	        String id = String.valueOf(habitacion.getId());
 	        String tipo = habitacion.getTipoHabitacion().toString();
 	        String capacidad = String.valueOf(habitacion.getCapacidad());
-	        String caracteristicas = habitacion.getCaracteristicas();
+	        String carac = windowManager.getCaracteristicas(Integer.parseInt(id));
+	        int cantidadCaracteristicas;
+	        cantidadCaracteristicas = carac.split(",").length; 
+	        if (carac.equals("Caracteristicas adicionales:\nNinguna.")) {
+	        	cantidadCaracteristicas = 0;
+	        }
+	        cantidadCaracteristicas += 7;
+	        String caracteristicas = cantidadCaracteristicas + ", Click para ver";
 	        modeloTabla.addRow(new Object[]{id, tipo, capacidad, caracteristicas, "ICON", "ICON"});
 	    }
 	}
@@ -286,12 +293,17 @@ public class EmpleadoHabitacionesFrame extends FrameBaseInfo implements MouseLis
 			modeloTablaServicios.fireTableDataChanged();
 			JTable target = (JTable)e.getSource();
 			int row = target.getSelectedRow();
+			int col = target.getSelectedColumn(); //3
  		    String ID = tablaHabitaciones.getValueAt(row, 0).toString();
  		    cajaPiso.setText(ID.substring(0, 1));
  		    cajaTipo.setText(tablaHabitaciones.getValueAt(row, 1).toString());
- 		    //JOptionPane.showMessageDialog(null, "Seleccionó a: "+tablaHabitaciones.getValueAt(row, 0));
  		    llenarTablaCamas(ID);
  		    llenarTablaServicios(ID);
+ 		    if (col == 3) {
+ 		    	String caracteristicas = windowManager.getCaracteristicas(Integer.parseInt(ID)) + "\n\nCaracteristicas base:\nParqueadero pago, Piscina, Zonas húmedas, BBQ, Wifi gratis, Recepción 24 horas, Admite mascotas."; 
+ 		    	//JOptionPane.showMessageDialog(null, caracteristicas);
+ 		    	JOptionPane.showMessageDialog(null, caracteristicas, "Caracteristicas", JOptionPane.INFORMATION_MESSAGE);
+ 		    }
  		  }
 		
 	}
