@@ -213,7 +213,8 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 	private void añadirProductoMenu() {
 		try {
 			String nombre = cajaNombreAgregar.getText();
-			Double precio = Double.parseDouble(cajaPrecioAgregar.getText().replace(",", ""));
+			String preci = cajaPrecioAgregar.getText().replace(",", "");
+			Double precio = Double.parseDouble(preci.replace(".", ""));
 			LocalTime horaInicial = horaIAgregar.getTime();
 			LocalTime horaFinal = horaFAgregar.getTime();
 			boolean llevable = cajaLlevableAgregar.isSelected();

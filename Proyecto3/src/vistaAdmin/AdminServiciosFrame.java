@@ -158,7 +158,8 @@ public class AdminServiciosFrame extends EmpleadoServiciosFrame implements Actio
 	private void agregar() {
 		try {
 			String nombre = cajaNombreAgregar.getText();
-			Double precio = Double.parseDouble(cajaPrecioAgregar.getText().replace(",", ""));
+			String preci = cajaPrecioAgregar.getText().replace(",", "");
+			Double precio = Double.parseDouble(preci.replace(".", ""));
 			if (!(verificarExistencia(nombre))) {
 				windowManager.agregarServicioHotel(nombre, precio);
 				cargarDatos();

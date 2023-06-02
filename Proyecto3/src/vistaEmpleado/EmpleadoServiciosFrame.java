@@ -419,9 +419,10 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 				double preci = Double.parseDouble(getPrecio(nombre));
 				DecimalFormat df = new DecimalFormat("#,###.00");
 		        String precio = df.format(preci);
-		        //precio = precio.substring(0, precio.length()-3);
+		        precio = precio.substring(0, precio.length()-3);
 				cajaNombre.setText(nombre);
 				cajaPrecio.setText(precio);
+				cajaCantidad.setText("");
 			}
 			
 			if (e.getSource()==tablaOrden) {
@@ -431,7 +432,7 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 				double preci = Double.parseDouble(getPrecio(nombreOrden));
 				DecimalFormat df = new DecimalFormat("#,###.00");
 		        String precio = df.format(preci);
-		        //precio = precio.substring(0, precio.length()-3);
+		        precio = precio.substring(0, precio.length()-3);
 				String cantidad = listaOrden.get(nombreOrden).toString();
 				cajaNombre.setText(nombreOrden);
 				cajaPrecio.setText(precio);	
