@@ -408,7 +408,6 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 					e1.printStackTrace();
 				}
 				calendar.setTime(fecha);
-				System.out.println(fecha);
 
 				datos[0].setText(tipo);
 				datos[1].setText(precio);

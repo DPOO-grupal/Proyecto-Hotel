@@ -490,6 +490,15 @@ public class WindowManager {
 		admin.forzarCrearTarifas(tarifas, tipo, valor);
 		
 	}
+	
+
+	public ArrayList<Tarifa> crearTarifasSobreFechas(ArrayList<Date> fechasFaltates, TipoHabitacion selectedItem,
+			double parseDouble) {
+		Admin admin = (Admin) usuarioActual;
+		return admin.crearTarifasSobreFechas(fechasFaltates, selectedItem, parseDouble);
+		
+	}
+
 
 	// FinTarifas
 	
@@ -602,6 +611,7 @@ public class WindowManager {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 
 

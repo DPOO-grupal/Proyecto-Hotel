@@ -298,7 +298,8 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 				
 				if(!faltantes.isEmpty()) {
 					int opcion = JOptionPane.showOptionDialog(null, "Hay tarifas con precio mas economico al ingresado, desea sobre escribir?", null, JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
-					if (opcion == 1) {
+
+					if (opcion == 0) {
 						windowManager.forzarCrearTarifas(faltantes, tipo, valor);
 					}
 				}
@@ -329,7 +330,7 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 	    GridBagLayout grid = new GridBagLayout();
 	    
 	    verFaltantesFrame.setLayout(grid);
-	    String[] datosFaltantes = {"Fecha","Estandar", "Suite", "Double Suite"};
+	    String[] datosFaltantes = {"Fecha","Estandar", "Suite", "Suite Double"};
 	    
 	    modeloFaltantes = new DefaultTableModel(datosFaltantes, faltantes.size());
 	    
@@ -487,7 +488,7 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 			JOptionPane.showMessageDialog(null, "Todas las tarifas están Completas");
 			return;
 		}
-		verFaltantesFrame.dispose();
+		
 		TipoHabitacion[] tipos = TipoHabitacion.values();
 
 	    for (Tarifa tarifa :faltantes) {
@@ -511,6 +512,11 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 		if(!e.getActionCommand().equals("Añadir Tarifa") && selectHabitacion!=null) {
 			selectHabitacion.dispose();
 		}
+		
+		if(!e.getActionCommand().equals("Editar faltantes") && verFaltantesFrame!=null) {
+			verFaltantesFrame.dispose();
+		}
+		
 		
 		super.actionPerformedFrame(e);
 		switch (e.getActionCommand()) {
@@ -538,10 +544,45 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 
 	private void editarFaltantes() {
 		int[] row = tablaFaltantes.getSelectedRows();
+		ArrayList<Date> fechasFaltates = new ArrayList<>();
 		
-		for (int i : row) {
-			
+		if (precio.getText().isBlank()) {
+			JOptionPane.showMessageDialog(null, "Ingrese un precio para la reserva");
+			return;
 		}
+		
+		if (!cantidadSelecionados.getText().equals('0')) {
+			for (int i : row) {
+				DateFormat DFormat = new SimpleDateFormat("dd/MM/yyyy");
+				Date fecha = null;
+			
+				try {
+					fecha = DFormat.parse((String) tablaFaltantes.getValueAt(i, 0));
+					fechasFaltates.add(fecha);
+				} catch (java.text.ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			TipoHabitacion tipo = (TipoHabitacion)tiposFaltantes.getSelectedItem();
+			double valor = Double.parseDouble(precio.getText().replace(",", "").replace(".", ""));
+			ArrayList<Tarifa> faltantes = windowManager.crearTarifasSobreFechas(fechasFaltates,  tipo, valor);
+			
+
+			if(!faltantes.isEmpty()) {
+				int opcion = JOptionPane.showOptionDialog(null, "Hay tarifas con precio mas economico al ingresado, desea sobre escribir?", null, JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE, null, null, null);
+
+				if (opcion == 0) {
+					windowManager.forzarCrearTarifas(faltantes, tipo, valor);
+				}
+			}
+			
+			tablaTarifaFaltantes();
+		}else {
+			JOptionPane.showMessageDialog(null, "Debe seleccionar almenos una reserva");
+		}
+		
 	}
 
 	@Override
@@ -549,30 +590,25 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 		super.mouseClicked(e);
 		JTable tabla = (JTable) e.getSource();
 		if (tabla.getName().equals("TablaFaltantes")) {
-			int[] row = tabla.getSelectedRows();
-//			String fechaString = ((String) tabla.getValueAt(row, 0));
-//			String tipo = (String) tabla.getValueAt(row, 1);
-//			String precio = (String) tabla.getValueAt(row, 2);
-//			Calendar calendar = Calendar.getInstance();
-//			DateFormat DFormat = new SimpleDateFormat("dd/MM/yyyy");
-//			Date fecha = null;
-//			try {
-//				fecha = DFormat.parse(fechaString);
-//			} catch (ParseException | java.text.ParseException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-//			
-//			calendar.setTime(fecha);
-//			
-//			añadirTarifa();
-//			
+			int[] rows = tabla.getSelectedRows();
+			TipoHabitacion[] tipos = new TipoHabitacion[3];
+			tiposFaltantes.removeAllItems();
+			for (int row : rows) {
+				for (int i = 0; i < tipos.length; i++) {
+					String annadir = tabla.getColumnName(i+1).toUpperCase().replace(" ", "");
+					if (((String)tabla.getValueAt(row, i+1)).equals("Faltante") && tipos[i] == null) {
+						
+						tipos[i] = TipoHabitacion.valueOf(annadir);
+						tiposFaltantes.addItem(tipos[i]);
+					}
+					
+				}
+			}
 			
-			cantidadSelecionados.setText(row.length+"");
-//			datos[0].setText(tipo);
-//			datos[1].setText(precio);
-//			fechaMostrar[0].setDate(fecha);
-//			dias[((calendar.get(Calendar.DAY_OF_WEEK)-1)-3)%7].setSelected(true);
+			
+			
+			cantidadSelecionados.setText(rows.length+"");
+			
 		}
 	}
 			
@@ -580,9 +616,26 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 	public void mouseReleased(MouseEvent e) {
 		JTable tabla = (JTable) e.getSource();
 		if (tabla.getName().equals("TablaFaltantes")) {
-			int[] row = tabla.getSelectedRows();
-			cantidadSelecionados.setText(row.length+"");
-	}
+			int[] rows = tabla.getSelectedRows();
+			TipoHabitacion[] tipos = new TipoHabitacion[3];
+			tiposFaltantes.removeAllItems();
+			for (int row : rows) {
+				for (int i = 0; i < tipos.length; i++) {
+					String annadir = tabla.getColumnName(i+1).toUpperCase().replace(" ", "");
+					if (((String)tabla.getValueAt(row, i+1)).equals("Faltante") && tipos[i] == null) {
+						
+						tipos[i] = TipoHabitacion.valueOf(annadir);
+						tiposFaltantes.addItem(tipos[i]);
+					}
+					
+				}
+			}
+			
+			
+			
+			cantidadSelecionados.setText(rows.length+"");
+			
+		}
 
 		
 		 

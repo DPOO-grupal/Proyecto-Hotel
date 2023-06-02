@@ -35,7 +35,13 @@ public class Admin extends Empleado {
 	
 
 	public void forzarCrearTarifas(ArrayList<Tarifa> tarifas,  TipoHabitacion tipo, double valor) {
-		hotel.crearTarifasEspecificas(tarifas, tipo, valor);;
+		hotel.ForzarTarifasSobreTarifas(tarifas, tipo, valor);;
+		
+	}
+	
+	public ArrayList<Tarifa> crearTarifasSobreFechas(ArrayList<Date> fechasFaltates, TipoHabitacion selectedItem,
+			double parseDouble) {
+		return hotel.crearTarifasSobreFechas(fechasFaltates, selectedItem, parseDouble);
 		
 	}
 	
@@ -129,6 +135,8 @@ public class Admin extends Empleado {
 		hotel.borrarDatos();
 		
 	}
+
+
 
 
 }
