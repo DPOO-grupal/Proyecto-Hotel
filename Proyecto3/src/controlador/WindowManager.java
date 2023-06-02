@@ -615,7 +615,7 @@ public class WindowManager {
     		}
         	// JFrame para probar
 
-    		JFrame pruebas = new AdminMenuPrincipal(windowManager);
+    		JFrame pruebas = new AdminHabitacionesFrame(windowManager);
     		// Menú de ese Frame
     		JFrame menu = new AdminMenuPrincipal(windowManager);
     		
