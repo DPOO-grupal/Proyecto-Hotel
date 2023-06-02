@@ -32,6 +32,10 @@ public class Habitacion implements Serializable{
 		return this.tipo;
 	}
 	
+	public TipoHabitacion setTipoHabitacion(TipoHabitacion tipoHabitacion) {
+		return this.tipo = tipoHabitacion;
+	}
+	
 	public int getId () {
 		return this.id;
 	}
