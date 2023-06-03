@@ -31,6 +31,7 @@ import modelo.Servicio;
 import modelo.Tarifa;
 import modelo.TipoHabitacion;
 import modelo.Usuario;
+import vistaAdmin.AdminHabitacionesFrame;
 import vistaAdmin.AdminMenuPrincipal;
 import vistaAdmin.AutenticacionFrame;
 import vistaAdmin.FrameBaseInfo;
