@@ -361,7 +361,8 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 		modeloTablaOrden.getDataVector().removeAllElements();
 		modeloTablaOrden.fireTableDataChanged();
 		for (String nombreProductoMenu : listaOrden.keySet()) {
-			modeloTablaOrden.addRow(new Object[]{nombreProductoMenu, "ICON", "ICON"});
+			int cantidad = listaOrden.get(nombreProductoMenu);
+			modeloTablaOrden.addRow(new Object[]{nombreProductoMenu+" x"+cantidad, "ICON", "ICON"});
 			}
 	}
 	

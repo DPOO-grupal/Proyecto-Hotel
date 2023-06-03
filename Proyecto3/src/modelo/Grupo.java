@@ -126,6 +126,8 @@ public class Grupo implements Serializable{
 		if (pagarEnSitio) {
 			saldoPagado+=servicio.getPrecio()*cantidad;
 		}
+		
+		
 	}
 
 	public void setReserva(Reserva reserva) {

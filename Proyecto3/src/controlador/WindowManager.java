@@ -1,5 +1,6 @@
 package controlador;
 
+import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.LocalTime;
@@ -129,7 +130,7 @@ public class WindowManager {
 		}
 		
 		// configuraciones generales
-		ventanaActual.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		ventanaActual.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		ventanaActual.setResizable(false);
 		ventanaActual.setVisible(true);
 		
@@ -645,7 +646,7 @@ public class WindowManager {
     		}
         	// JFrame para probar
 
-    		JFrame pruebas = new EmpleadoMenuPrincipal(windowManager);
+    		JFrame pruebas = new AdminMenuPrincipal(windowManager);
     		// Menú de ese Frame
     		JFrame menu = new EmpleadoMenuPrincipal(windowManager);
     		

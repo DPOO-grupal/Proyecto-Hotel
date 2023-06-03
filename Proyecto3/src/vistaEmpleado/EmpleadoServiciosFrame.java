@@ -313,7 +313,8 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		modeloTablaOrden.getDataVector().removeAllElements();
 		modeloTablaOrden.fireTableDataChanged();
 		for (String nombreServicio : listaOrden.keySet()) {
-			modeloTablaOrden.addRow(new Object[]{nombreServicio, "ICON", "ICON"});
+			int cantidad = listaOrden.get(nombreServicio);
+			modeloTablaOrden.addRow(new Object[]{nombreServicio+" x"+cantidad, "ICON", "ICON"});
 			}
 	}
 	
@@ -366,10 +367,6 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 					listaOrden.remove(nombre);
 				}
 			}
-//		} catch (Exception e) {
-//			//JOptionPane.showMessageDialog(null, "No existe la habitación");			
-//			System.out.println(e.getLocalizedMessage());
-//		}
 		resetDatos();
 	}
 	
