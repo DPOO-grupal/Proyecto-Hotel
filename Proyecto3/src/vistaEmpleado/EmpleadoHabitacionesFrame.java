@@ -26,6 +26,7 @@ import modelo.Habitacion;
 import modelo.Servicio;
 import vistaAdmin.FrameBaseInfo;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class EmpleadoHabitacionesFrame extends FrameBaseInfo implements MouseListener{
 	
@@ -259,6 +260,12 @@ public class EmpleadoHabitacionesFrame extends FrameBaseInfo implements MouseLis
 	public void llenarTablaServicios(String ID) {
 		ArrayList<String[]> servicios = windowManager.getServicios(ID);
 		for (String[] servicio : servicios) {
+			double precio = Double.parseDouble(servicio[1]);
+			NumberFormat nf= NumberFormat.getInstance();
+			nf.setMaximumFractionDigits(0);
+		    String precioS = nf.format(precio);
+		    servicio[1] = precioS;
+		    //precioS = precioS.substring(0, precioS.length()-3);
 			modeloTablaServicios.addRow(servicio);
 		}
 	}

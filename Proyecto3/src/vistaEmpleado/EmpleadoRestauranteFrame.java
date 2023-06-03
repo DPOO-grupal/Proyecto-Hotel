@@ -37,6 +37,8 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.NumberFormatter;
+import java.text.NumberFormat;
+
 
 import controlador.WindowManager;
 import modelo.ProductoMenu;
@@ -98,6 +100,7 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
         tablaMenu.setDefaultEditor(Object.class, null);
         tablaMenu.getTableHeader().setBackground(Color.decode("#204473"));
         tablaMenu.getTableHeader().setForeground(Color.white);
+        tablaMenu.getTableHeader().setReorderingAllowed(false);
         tablaMenu.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
         tablaMenu.setFont(new Font("Times New Roman", 1, 20));
         tablaMenu.setRowHeight(70);
@@ -137,6 +140,7 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 	    tablaOrden.setDefaultEditor(Object.class, null);
 	    tablaOrden.getTableHeader().setBackground(Color.decode("#204473"));
 	    tablaOrden.getTableHeader().setForeground(Color.white);
+	    tablaOrden.getTableHeader().setReorderingAllowed(false);
 	    tablaOrden.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
 	    tablaOrden.setFont(new Font("Times New Roman", 1, 20));
 	    tablaOrden.setRowHeight(70);
@@ -347,9 +351,10 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 		for (ProductoMenu productoMenu : listaProductosMenu) {
 			String nombre = productoMenu.getNombre();
 			double precio = productoMenu.getPrecio();
-			DecimalFormat df=new DecimalFormat("#,###.00");
-		    String precioS = df.format(precio);
-		    precioS = precioS.substring(0, precioS.length()-3);
+			NumberFormat nf= NumberFormat.getInstance();
+			nf.setMaximumFractionDigits(0);
+		    String precioS = nf.format(precio);
+		    //precioS = precioS.substring(0, precioS.length()-3);
 			modeloTablaMenu.addRow(new Object[]{nombre, precioS, "ICON"});
 		}
 		

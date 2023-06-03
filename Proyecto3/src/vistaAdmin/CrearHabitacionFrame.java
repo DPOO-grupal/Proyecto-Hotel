@@ -631,7 +631,7 @@ public class CrearHabitacionFrame extends FrameBaseInfo implements KeyListener{
 		int cantidadServicios = tablaServicios.getRowCount();
 		for (int i = 0; i < cantidadServicios; i++) {
 			String nombreServicio = tablaServicios.getValueAt(i, 0).toString();
-			double precioServicio = Double.parseDouble(tablaServicios.getValueAt(i, 1).toString().replace(",", ""));
+			int precioServicio = Integer.parseInt(tablaServicios.getValueAt(i, 1).toString().replace(",", ""));
 			Servicio servicio = windowManager.crearServicio(nombreServicio, precioServicio);
 			arrayServicios.add(servicio);
 		}

@@ -50,7 +50,7 @@ public class Admin extends Empleado {
 
 //INICIO SERVICIOS HOTEL -----------------------------------------------------------
 
-	public void crearServicioHotel(String nombre, double precio) {
+	public void crearServicioHotel(String nombre, int precio) {
 		hotel.crearServicioHotel(nombre, precio);
 	}
 	
@@ -74,7 +74,7 @@ public class Admin extends Empleado {
 		hotel.setCaracteristicas(habitacion, id);
 	}
 	
-	public Servicio crearServicio(String nombre, double precio) {
+	public Servicio crearServicio(String nombre, int precio) {
 		return hotel.crearServicio(nombre, precio);
 	}
 	
@@ -82,7 +82,7 @@ public class Admin extends Empleado {
 		return hotel.crearCama(capacidad, exclusiva);
 	}
 	
-	public void añadirServicioHabitacion(int id, String nombre, double precio) {
+	public void añadirServicioHabitacion(int id, String nombre, int precio) {
 		hotel.añadirServicioHabitacion(id, nombre, precio);
 	}
 	
@@ -90,7 +90,7 @@ public class Admin extends Empleado {
 
 //INICIO PRODUCTO MENU -----------------------------------------------------------
 
-	public void crearProductoMenu(LocalTime horaI, LocalTime horaF, boolean llevable,String nombre, double precio) {
+	public void crearProductoMenu(LocalTime horaI, LocalTime horaF, boolean llevable,String nombre, int precio) {
 		hotel.crearProductoMenu(horaI, horaF, llevable, nombre, precio);
 	}
 	

@@ -352,7 +352,7 @@ public class WindowManager {
 		return listaHabitaciones;
 	}
 	
-	public void agregarServicioHotel(String nombre, double precio) {
+	public void agregarServicioHotel(String nombre, int precio) {
 		Admin admin = (Admin) usuarioActual;
 		admin.crearServicioHotel(nombre, precio);
 	}
@@ -362,7 +362,7 @@ public class WindowManager {
 		admin.eliminarServicioHotel(id);
 	}
 	
-	public void añadirServicioHabitacion(int id, String nombre, double precio) {
+	public void añadirServicioHabitacion(int id, String nombre, int precio) {
 		Admin admin = (Admin) usuarioActual;
 		admin.añadirServicioHabitacion(id, nombre, precio);
 	}
@@ -372,7 +372,7 @@ public class WindowManager {
 		admin.setCaracteristicasHabitacion(caracteristicas, id);
 	}
 	
-	public Servicio crearServicio(String nombre, double precio) {
+	public Servicio crearServicio(String nombre, int precio) {
 		Admin admin = (Admin) usuarioActual;
 		return admin.crearServicio(nombre, precio);
 	}
@@ -426,7 +426,7 @@ public class WindowManager {
 		return empleado.getMenu();
 	}
 	
-	public void crearProductoMenu(LocalTime horaI, LocalTime horaF, boolean llevable,String nombre, double precio){
+	public void crearProductoMenu(LocalTime horaI, LocalTime horaF, boolean llevable,String nombre, int precio){
 		Admin admin = (Admin)usuarioActual;
 		admin.crearProductoMenu(horaI, horaF, llevable, nombre, precio);
 	}
@@ -630,9 +630,9 @@ public class WindowManager {
     		}
         	// JFrame para probar
 
-    		JFrame pruebas = new AdminHabitacionesFrame(windowManager);
+    		JFrame pruebas = new EmpleadoMenuPrincipal(windowManager);
     		// Menú de ese Frame
-    		JFrame menu = new AdminMenuPrincipal(windowManager);
+    		JFrame menu = new EmpleadoMenuPrincipal(windowManager);
     		
     		windowManager.setPruebas(pruebas, menu);
     		

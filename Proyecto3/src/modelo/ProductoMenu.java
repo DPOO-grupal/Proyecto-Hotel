@@ -12,7 +12,7 @@ public class ProductoMenu extends Servicio{
 	private boolean llevable;
 	
 //Constructor
-	public ProductoMenu(LocalTime horarioI, LocalTime horarioF, boolean llevable,String nombre, double precio) {
+	public ProductoMenu(LocalTime horarioI, LocalTime horarioF, boolean llevable,String nombre, int precio) {
 		super(nombre, precio);
 		this.horarioI = horarioI;
 		this.horarioF = horarioF;

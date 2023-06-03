@@ -15,6 +15,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -341,6 +342,7 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 	    tablaFaltantes.setDefaultEditor(Object.class, null);
 	    tablaFaltantes.getTableHeader().setBackground(Color.decode("#204473"));
 	    tablaFaltantes.getTableHeader().setForeground(Color.white);
+	    tablaFaltantes.getTableHeader().setReorderingAllowed(false);
 	    tablaFaltantes.getTableHeader().setFont(fontTabla);
 	    tablaFaltantes.setBackground(Color.decode("#B2BBA4"));
 	    tablaFaltantes.setRowHeight(50);
@@ -496,7 +498,12 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 	    	String[] precios = new String[3];
 	    	for (int i = 0; i < precios.length; i++) {
 	    		try {
-					precios[i] = tarifa.getPrecio(tipos[i])+"";
+	    			double precio = tarifa.getPrecio(tipos[i]);
+	    			NumberFormat nf= NumberFormat.getInstance();
+	    			nf.setMaximumFractionDigits(0);
+	    		    String precioS = nf.format(precio);
+	    		    precios[i] = precioS;
+					//precios[i] = tarifa.getPrecio(tipos[i])+"";
 				} catch (Exception e) {
 					precios[i] = "Faltante";
 				}

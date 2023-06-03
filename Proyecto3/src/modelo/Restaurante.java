@@ -19,11 +19,13 @@ public class Restaurante implements Serializable{
 	}
 	
 	public void quitarProducto(ProductoMenu producto) {
-		for (int i = 0; i < menu.size(); i++) {
-			if (producto.equals(menu.get(i))) {
-				menu.remove(i);
-			}
-		}
+		int llave = producto.getId();
+		menu.remove(llave);
+//		for (int i = 0; i < menu.size(); i++) {
+//			if (producto.equals(menu.get(i))) {
+//				menu.remove(i);
+//			}
+//		}
 	}
 	
 	public HashMap<Integer, ProductoMenu> getMenu(){

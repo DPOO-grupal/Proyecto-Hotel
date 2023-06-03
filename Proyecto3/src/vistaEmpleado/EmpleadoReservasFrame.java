@@ -240,6 +240,7 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
         tablaTarifas = new JTable(modeloTabla);
         tablaTarifas.getTableHeader().setBackground(Color.decode("#204473"));
         tablaTarifas.getTableHeader().setForeground(Color.white);
+        tablaTarifas.getTableHeader().setReorderingAllowed(false);
         tablaTarifas.getTableHeader().setFont(fontTabla);
         tablaTarifas.setBackground(Color.decode("#B2BBA4"));
         tablaTarifas.setRowHeight(50);
@@ -354,6 +355,7 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 		    tablaDisponibles.setDefaultEditor(Object.class, null);
 		    tablaDisponibles.getTableHeader().setBackground(Color.decode("#204473"));
 		    tablaDisponibles.getTableHeader().setForeground(Color.white);
+		    tablaDisponibles.getTableHeader().setReorderingAllowed(false);
 		    tablaDisponibles.getTableHeader().setFont(fontTabla);
 		    tablaDisponibles.setBackground(Color.decode("#B2BBA4"));
 		    tablaDisponibles.setRowHeight(50);

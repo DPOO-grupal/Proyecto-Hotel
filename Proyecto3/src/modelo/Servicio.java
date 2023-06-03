@@ -8,12 +8,12 @@ public class Servicio implements Serializable{
 
 	//Atributos
 	private String nombre;
-	private double precio;
+	private int precio;
 	private int id;
 	private static int numServicios;
 	
 //Constructor
-	public Servicio(String nombre, double precio) {
+	public Servicio(String nombre, int precio) {
 		this.nombre = nombre;
 		this.precio = precio;
 		this.id = numServicios;
@@ -33,7 +33,7 @@ public class Servicio implements Serializable{
 		return this.nombre;
 	}
 	
-	public double getPrecio() {
+	public int getPrecio() {
 		return this.precio;
 	}
 	

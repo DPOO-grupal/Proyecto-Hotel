@@ -12,6 +12,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -660,6 +661,12 @@ public class AdminHabitacionesFrame extends EmpleadoHabitacionesFrame implements
 	public void cargarTablaEServicios(Integer ID) {
 		ArrayList<String[]> servicios = windowManager.getServicios(ID+"");
 		for (String[] servicio : servicios) {
+			double precio = Double.parseDouble(servicio[1]);
+			NumberFormat nf= NumberFormat.getInstance();
+			nf.setMaximumFractionDigits(0);
+		    String precioS = nf.format(precio);
+		    servicio[1] = precioS;
+		    //precioS = precioS.substring(0, precioS.length()-3);
 			modeloETablaServicios.addRow(servicio);
 		}
 	}
@@ -1093,7 +1100,7 @@ public class AdminHabitacionesFrame extends EmpleadoHabitacionesFrame implements
 			String nombre = modeloETablaServicios.getValueAt(i, 0).toString();
 			String precioS = modeloETablaServicios.getValueAt(i, 1).toString().replace(",", "");
 			String precio = precioS.replace(".", "");
-			Servicio servicio = windowManager.crearServicio(nombre, Double.parseDouble(precio));
+			Servicio servicio = windowManager.crearServicio(nombre, Integer.parseInt(precio));
 			array.add(servicio);
 		}
 		return array;

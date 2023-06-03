@@ -14,6 +14,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -180,6 +182,7 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
         tablaServicios.setDefaultEditor(Object.class, null);
         tablaServicios.getTableHeader().setBackground(Color.decode("#204473"));
         tablaServicios.getTableHeader().setForeground(Color.white);
+        tablaServicios.getTableHeader().setReorderingAllowed(false);
         tablaServicios.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
         tablaServicios.setFont(new Font("Times New Roman", 1, 20));
         tablaServicios.setRowHeight(70);
@@ -219,6 +222,7 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 	    tablaOrden.setDefaultEditor(Object.class, null);
 	    tablaOrden.getTableHeader().setBackground(Color.decode("#204473"));
 	    tablaOrden.getTableHeader().setForeground(Color.white);
+	    tablaOrden.getTableHeader().setReorderingAllowed(false);
 	    tablaOrden.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
 	    tablaOrden.setFont(new Font("Times New Roman", 1, 20));
 	    tablaOrden.setRowHeight(70);
@@ -299,9 +303,10 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		for (Servicio servicio : listaServicios) {
 	        String nombre = servicio.getNombre();
 	        double precio = servicio.getPrecio();
-	        DecimalFormat df=new DecimalFormat("#,###.00");
-	        String precioS = df.format(precio);
-	        precioS = precioS.substring(0, precioS.length()-3);
+	        NumberFormat nf= NumberFormat.getInstance();
+			nf.setMaximumFractionDigits(0);
+		    String precioS = nf.format(precio);
+		    //precioS = precioS.substring(0, precioS.length()-3);
 	        modeloTablaServicios.addRow(new Object[]{nombre, precioS, "ICON"});
 	    }
 		

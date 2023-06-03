@@ -284,7 +284,7 @@ public class Hotel implements Serializable{
 		
 	}
 	
-	public void crearServicioHotel(String nombre, double precio) {
+	public void crearServicioHotel(String nombre, int precio) {
 		Servicio servicio = new Servicio(nombre, precio);
 		serviciosHotel.put(servicio.getId(), servicio);
 	}
@@ -327,7 +327,7 @@ public class Hotel implements Serializable{
 		
 	}
 	
-	public void añadirServicioHabitacion(int id, String nombre, double precio) {
+	public void añadirServicioHabitacion(int id, String nombre, int precio) {
 		Habitacion habitacion =	habitaciones.get(id);
 		Servicio servicio = new Servicio(nombre, precio);
 		habitacion.añadirServicioHabitacion(servicio);
@@ -364,7 +364,7 @@ public class Hotel implements Serializable{
 		habitaciones.put(id, habitacion);
 	}
 	
-	public Servicio crearServicio(String nombre, double precio) {
+	public Servicio crearServicio(String nombre, int precio) {
 		Servicio servicio = new Servicio(nombre, precio);
 		return servicio;
 	}
@@ -627,7 +627,7 @@ public class Hotel implements Serializable{
 	}
 
 	
-	public void crearProductoMenu(LocalTime horaI, LocalTime horaF, boolean llevable,String nombre, double precio) {
+	public void crearProductoMenu(LocalTime horaI, LocalTime horaF, boolean llevable,String nombre, int precio) {
 		ProductoMenu productoMenu = new ProductoMenu(horaI, horaF, llevable, nombre, precio);
 		restaurante.añadirProducto(productoMenu);
 	}

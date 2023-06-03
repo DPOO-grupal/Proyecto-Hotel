@@ -214,7 +214,7 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 		try {
 			String nombre = cajaNombreAgregar.getText();
 			String preci = cajaPrecioAgregar.getText().replace(",", "");
-			Double precio = Double.parseDouble(preci.replace(".", ""));
+			int precio = Integer.parseInt(preci.replace(".", ""));
 			LocalTime horaInicial = horaIAgregar.getTime();
 			LocalTime horaFinal = horaFAgregar.getTime();
 			boolean llevable = cajaLlevableAgregar.isSelected();
