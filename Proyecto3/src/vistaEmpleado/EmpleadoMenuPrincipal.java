@@ -9,6 +9,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
@@ -57,6 +58,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	protected JPanel panelHoy;
 	protected JButton pagar;
 	protected JFrame formasDePagoFrame;
+	private JFrame frameFactura;
 
 	public EmpleadoMenuPrincipal(WindowManager windowManager){
         setLayout(new BorderLayout());
@@ -314,7 +316,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	}
 	
 	public void factura (String idGrupo) {
-		JFrame frameFactura = new JFrame();
+		frameFactura = new JFrame();
 		frameFactura.setSize(400, 500);
 		frameFactura.setLocationRelativeTo(null);
 		frameFactura.setLayout(new GridLayout(1,0,0,0));
@@ -365,14 +367,15 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		
 		
 		for (Servicio servicioHabitacion : listaServiciosGrupo.keySet()) {
-			JLabel nombreServicio = new JLabel(servicioHabitacion.getNombre());
-			JLabel precioServicio = new JLabel(servicioHabitacion.getPrecio()+"");
+			int cantidad = listaServiciosGrupo.get(servicioHabitacion);
+			JLabel nombreServicio = new JLabel(servicioHabitacion.getNombre()+" x"+cantidad);
+			JLabel precioServicio = new JLabel(servicioHabitacion.getPrecio()*cantidad+"");
 			
 			panelPrincipal.add(nombreServicio);
 			panelPrincipal.add(precioServicio);
 			
 			double precioSer = servicioHabitacion.getPrecio();
-			precioTotalFactura+=precioSer;
+			precioTotalFactura+=(precioSer*cantidad);
 		}		
 		
 		panelPrincipal.add(new JLabel("____________________________"));
@@ -390,7 +393,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		JLabel pagado = new JLabel(saldoPagado+"");
 		panelPrincipal.add(pagado);
 		
-		precioReserva -= saldoPagado;
+		precioTotalFactura -= saldoPagado;
 		
 		JLabel tituloTotal = new JLabel("TOTAL A PAGAR");
 		tituloTotal.setFont(new Font("arial", 1, 14));
@@ -650,6 +653,8 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 			
 		case "Pagar":
 			windowManager.mostraVentanaPagos(formasDePagoFrame);
+			Dimension tamañoPantalla = getSize();
+			frameFactura.setLocation(50, 50);
 			break;
 			
 		case "Refrescar ocupacion diaria":

@@ -11,8 +11,10 @@ import java.awt.event.ActionListener;
 public class FormasDePagoFrame extends JFrame implements ActionListener{
 
     private JRadioButton efectivo;
-    private JRadioButton tarjeta;
-    private JRadioButton transferencia;
+    private JRadioButton visa;
+    private JRadioButton mastercard;
+    private JRadioButton dinersClub;
+    private JRadioButton americanExpress;
 	private JButton cancelar;
 	private JButton continuar;
 
@@ -28,32 +30,41 @@ public class FormasDePagoFrame extends JFrame implements ActionListener{
     
     public void panelOpcionesPagos() {
     	JPanel panelPagos = new JPanel();
-    	panelPagos.setLayout(new GridLayout(4, 1));
+    	panelPagos.setLayout(new GridLayout(5, 1));
     	panelPagos.setBackground(Color.decode("#b2bba4"));
-    	panelPagos.setBorder(BorderFactory.createEmptyBorder(20, 10, 200, 20));
+    	panelPagos.setBorder(BorderFactory.createEmptyBorder(20, 10, 130, 20));
 
 
-        JLabel titlePago = new JLabel("SELECCIONE UNA FORMA DE\n PAGO");
+        JLabel titlePago = new JLabel("SELECCIONE UNA FORMA DE PAGO");
         titlePago.setFont(new Font("arial", 1, 18));
         panelPagos.add(titlePago);
 
-        efectivo = new JRadioButton("Efectivo");
-        efectivo.setFont(new Font("arial", 1, 20));
-        panelPagos.add(efectivo);
+        visa = new JRadioButton("Visa");
+        visa.setFont(new Font("arial", Font.PLAIN, 20));
+        visa.addActionListener(this);
+        panelPagos.add(visa);
 
-        tarjeta = new JRadioButton("Tarjeta");
-        tarjeta.setFont(new Font("arial", 1, 20));
-        panelPagos.add(tarjeta);
+        mastercard = new JRadioButton("Mastercard");
+        mastercard.setFont(new Font("arial", Font.PLAIN, 20));
+        mastercard.addActionListener(this);
+        panelPagos.add(mastercard);
 
-        transferencia = new JRadioButton("Transferencia");
-        transferencia.setFont(new Font("arial", 1, 20));
-        panelPagos.add(transferencia);
+        americanExpress = new JRadioButton("American Express");
+        americanExpress.setFont(new Font("arial", Font.PLAIN, 20));
+        americanExpress.addActionListener(this);
+        panelPagos.add(americanExpress);
+        
+        dinersClub = new JRadioButton("Diners Club");
+        dinersClub.setFont(new Font("arial", Font.PLAIN, 20));
+        dinersClub.addActionListener(this);
+        panelPagos.add(dinersClub);
         
 
         ButtonGroup buttonGroup = new ButtonGroup();
-        buttonGroup.add(efectivo);
-        buttonGroup.add(tarjeta);
-        buttonGroup.add(transferencia);
+        buttonGroup.add(visa);
+        buttonGroup.add(mastercard);
+        buttonGroup.add(americanExpress);
+        buttonGroup.add(dinersClub);
 
 
         add(panelPagos, BorderLayout.CENTER);
@@ -89,20 +100,21 @@ public class FormasDePagoFrame extends JFrame implements ActionListener{
 		cancelar.setFont(new Font("Arial", Font.PLAIN, 20));
 		cancelar.setBackground(Color.decode("#204473"));
 		cancelar.setForeground(Color.WHITE);
+		cancelar.addActionListener(this);
 		panelBotones.add(cancelar);
 		
 		continuar = new JButton("Continuar");
 		continuar.setFont(new Font("Arial", Font.PLAIN, 20));
 		continuar.setBackground(Color.decode("#204473"));
-		cancelar.setForeground(Color.WHITE);
+		continuar.setForeground(Color.WHITE);
+		continuar.addActionListener(this);
 		panelBotones.add(continuar);
 		
 		add(panelBotones, BorderLayout.SOUTH);
 		
 	}
     
-    
-    
+      
     public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {		
 		case "Cancelar":

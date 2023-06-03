@@ -1,5 +1,6 @@
 package controlador;
 
+import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.LocalTime;
@@ -31,6 +32,7 @@ import modelo.Servicio;
 import modelo.Tarifa;
 import modelo.TipoHabitacion;
 import modelo.Usuario;
+import vistaAdmin.AdminHabitacionesFrame;
 import vistaAdmin.AdminMenuPrincipal;
 import vistaAdmin.AutenticacionFrame;
 import vistaAdmin.FrameBaseInfo;
@@ -128,7 +130,7 @@ public class WindowManager {
 		}
 		
 		// configuraciones generales
-		ventanaActual.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		ventanaActual.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		ventanaActual.setResizable(false);
 		ventanaActual.setVisible(true);
 		
@@ -629,7 +631,7 @@ public class WindowManager {
     		}
         	// JFrame para probar
 
-    		JFrame pruebas = new AdminHabitacionesFrame(windowManager);
+    		JFrame pruebas = new AdminMenuPrincipal(windowManager);
     		// Menú de ese Frame
     		JFrame menu = new AdminMenuPrincipal(windowManager);
     		
