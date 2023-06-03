@@ -45,14 +45,18 @@ import controlador.WindowManager;
 public class AutenticacionFrame extends JFrame implements ActionListener{
 	
 	private WindowManager windowManager;
-	private JTextField usuJTextField;
-	private JPasswordField contraJPasswordField;
-	private int intentos;
+	protected JTextField usuJTextField;
+	protected JPasswordField contraJPasswordField;
+	protected int intentos;
 	
 	public AutenticacionFrame(WindowManager windowManager) {
 		
 		this.windowManager = windowManager;
 		intentos = 0;
+		cargueComponentes();
+		
+	}
+	public void cargueComponentes() {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		
 		
