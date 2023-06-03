@@ -32,16 +32,16 @@ public class HuespedAutenticacion extends AutenticacionFrame{
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		GridBagConstraints constraints = new GridBagConstraints();
 		setLayout(gridBagLayout);
-		ImageIcon imageIcon = new ImageIcon("img/Tipos-de-hoteles.jpg");
+		ImageIcon imageIcon = new ImageIcon("img/HotelAutenticar.jpg");
 		Image imagen = imageIcon.getImage();
-		Image scaledImage = imagen.getScaledInstance(1920, 1080, Image.SCALE_AREA_AVERAGING);
+		Image scaledImage = imagen.getScaledInstance(1627, 1080, Image.SCALE_AREA_AVERAGING);
         ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
 
         
         
         JPanel infoJPanel = new JPanel(gridBagLayout); 
         infoJPanel.setBackground(Color.yellow);
-
+        infoJPanel.setBackground(Color.decode("#183356"));
         
         JPanel panelimage = new JPanel(gridBagLayout); 
         panelimage.setBackground(Color.blue);
@@ -61,6 +61,8 @@ public class HuespedAutenticacion extends AutenticacionFrame{
         constraints.gridy = 0;
         constraints.ipadx = 100;
         constraints.ipady = 100;
+
+        constraints.ipady = 100;
         constraints.insets = new Insets(10, 10, 10, 10);
         infoJPanel.add(imageLabel1,constraints);
         
@@ -68,6 +70,7 @@ public class HuespedAutenticacion extends AutenticacionFrame{
         Font fontTextfiel = new Font("Arial",0, 15);
         JLabel usuJLabel = new JLabel("Usuario");
         usuJLabel.setFont(font);
+        usuJLabel.setForeground(Color.white);
         constraints.insets = new Insets(10, 10, 5, 10);
         constraints.gridx = 0;
         constraints.gridy = 1;
@@ -89,6 +92,8 @@ public class HuespedAutenticacion extends AutenticacionFrame{
         infoJPanel.add(usuJTextField,constraints);
         
         JLabel contraJLabel = new JLabel("Contraseña");
+        contraJLabel.setForeground(Color.white);
+
         contraJLabel.setFont(font);
         constraints.insets = new Insets(10, 10, 5, 10);
         
@@ -110,13 +115,14 @@ public class HuespedAutenticacion extends AutenticacionFrame{
 //        Ingresar.putClientProperty( "JButton.buttonType", "roundRect" );
         Ingresar.addActionListener(this);
         Ingresar.setFont(font);
-        Ingresar.setBackground(Color.decode("#183356"));
-        Ingresar.setForeground(Color.white);
+        Ingresar.setBackground( Color.decode("#ACCAF2"));
+        Ingresar.setForeground(Color.BLACK);
         constraints.anchor = GridBagConstraints.CENTER;
         constraints.ipady = 10;
         constraints.gridy = 5;
         infoJPanel.add(Ingresar,constraints);
-        
+        constraints.insets = new Insets(0, 0, 0, 0);
+
         constraints.gridx = 1;
         constraints.gridy = 0;
         constraints.gridwidth = 1;
@@ -126,14 +132,15 @@ public class HuespedAutenticacion extends AutenticacionFrame{
         constraints.weighty = 1;
         constraints.anchor = GridBagConstraints.EAST;
         constraints.fill = GridBagConstraints.VERTICAL;
-        constraints.ipadx = 300;
+        constraints.ipadx = 200;
         add(infoJPanel,constraints);
         
-        JLabel imageLabel = new JLabel(scaledImageIcon);
-        imageLabel.setBackground(Color.red);
+        JLabel imageLabe = new JLabel(scaledImageIcon);
+        imageLabe.setBackground(Color.red);
         constraints.anchor = GridBagConstraints.WEST;
-        constraints.ipadx = 1;
-        constraints.fill = GridBagConstraints.NONE;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.ipadx = -1;
+        constraints.ipady = -1;
 
         constraints.gridx = 0;
         constraints.gridy = 0;
@@ -141,18 +148,20 @@ public class HuespedAutenticacion extends AutenticacionFrame{
         constraints.gridheight = 1;
         constraints.weightx = 1;
         constraints.weighty = 1;
+        constraints.insets =  new Insets(-100, -20, -100, -20);
         
-
+        panelimage.add(imageLabe,constraints);
         
-        
-        panelimage.add(imageLabel,constraints);
-        
-        constraints.anchor = GridBagConstraints.WEST;
+        constraints.anchor = GridBagConstraints.CENTER;
         constraints.fill = GridBagConstraints.BOTH;
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.gridwidth = 2;
         constraints.gridheight = 1;
+        constraints.ipadx = 1;
+        constraints.ipady = 1;
+        constraints.insets =  new Insets(0, 0, 0, 0);
+        
 
 
         add(panelimage,constraints);
