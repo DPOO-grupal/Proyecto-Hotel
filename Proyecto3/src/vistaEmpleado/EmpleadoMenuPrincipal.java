@@ -309,7 +309,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		panelCheckIn.setLayout(gridbag);
 		panelCheckIn.setBackground(Color.decode("#ccd2c2"));
 		
-		Integer[] idsGrupos = windowManager.getGruposContenedor();
+		Integer[] idsGrupos = windowManager.getGruposUnChecked();
 		boxHabitaciones = new JComboBox<>(idsGrupos);
 		boxHabitaciones.setSelectedIndex(-1);
 		boxHabitaciones.setFont(new Font("Times New Roman", Font.PLAIN, 25));
@@ -360,7 +360,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		panelCheckIn.setLayout(gridbag);
 		panelCheckIn.setBackground(Color.decode("#ccd2c2"));
 		
-		Integer[] idsGrupos = windowManager.getGruposContenedor();
+		Integer[] idsGrupos = windowManager.getGruposChecked();
 		boxHabitaciones = new JComboBox<>(idsGrupos);
 		boxHabitaciones.setSelectedIndex(-1);
 		boxHabitaciones.setFont(new Font("Times New Roman", Font.PLAIN, 25));
@@ -578,7 +578,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	public void ocupacionHoy() {
 		modeloTablaHoy.getDataVector().removeAllElements();
         modeloTablaHoy.fireTableDataChanged();
-		Integer[] habitaciones = getHabitaciones();
+		Integer[] habitaciones = windowManager.getHabitacionesIds();
 		Integer[] ocupadas = getOcupadas();
 		String[][] matriz = cargarHabitaciones(habitaciones.length, habitaciones);
 		if ((matriz.length) == 0) {
@@ -676,11 +676,6 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		}
 		return matriz;
 	}
-	
-	public Integer[] getHabitaciones() {
-		Integer[] habitaciones = windowManager.getHabitacionesContenedor();
-		return habitaciones;
-	}
 
 	public Integer[] getOcupadas() {
 		Integer[] ocupadas = windowManager.ocupacionHoy();
@@ -738,7 +733,17 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Primero seleccione un ID");
 			}
 			else {
+				int idGrupo = Integer.parseInt(boxHabitaciones.getSelectedItem()+"");
+				Grupo grupo = null;
+				try {
+					grupo = windowManager.getGrupo(idGrupo);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				grupo.setCheck(true);
 				frameCheckIn.dispose();
+				JOptionPane.showMessageDialog(null, "Check-In exitoso. Disfrute su estadia en el hotel :D");
 			}
 			break;
 			

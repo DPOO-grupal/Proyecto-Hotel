@@ -14,6 +14,7 @@ public class Grupo implements Serializable{
 	private int vReal;
 	private int vRelativo;
 	private int capacidadCamas;
+	private boolean check;
 
 	private Reserva reserva;
 	
@@ -136,6 +137,14 @@ public class Grupo implements Serializable{
 	public void borrarHabitaciones() {
 		this.listaHabitaciones = new ArrayList<Integer>();
 		
+	}
+
+	public boolean getCheck() {
+		return check;
+	}
+
+	public void setCheck(boolean check) {
+		this.check = check;
 	}
 	
 }

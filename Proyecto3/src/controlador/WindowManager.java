@@ -286,7 +286,7 @@ public class WindowManager {
 		return ((Empleado) usuarioActual).ocupacionHoy();
 	}
 	
-	public Integer[] getHabitacionesContenedor() {
+	public Integer[] getHabitacionesIds() {
 		HashMap<Integer,Habitacion> mapa = ((Empleado) usuarioActual).getHabitaciones();
 		if (mapa == null) {
 			return new Integer[0];	
@@ -300,19 +300,71 @@ public class WindowManager {
 			return resultados;
 		}
 	}
+	public Integer[] getGruposChecked() {
+		ArrayList<Grupo> grupos = getGruposSinClasificar();
+		ArrayList<Integer> arrayChecked = new ArrayList<>();
+		for (Grupo grupo : grupos) {
+			if (grupo.getCheck()) {
+				arrayChecked.add(grupo.getId());
+			}
+		}
+		Object[] x = arrayChecked.toArray();
+		int[] r = Arrays.stream(x).mapToInt(o -> (int)o).toArray();
+		Integer[] resultados = Arrays.stream(r).boxed().toArray( Integer[]::new );
+		Arrays.sort(resultados);
+		return resultados;
+	}
 	
-	public Integer[] getGruposContenedor() {
+	public Integer[] getGruposUnChecked() {
+		ArrayList<Grupo> grupos = getGruposSinClasificar();
+		ArrayList<Integer> arrayUnChecked = new ArrayList<>();
+		for (Grupo grupo : grupos) {
+			if (!grupo.getCheck()) {
+				arrayUnChecked.add(grupo.getId());
+			}
+		}
+		Object[] x = arrayUnChecked.toArray();
+		int[] r = Arrays.stream(x).mapToInt(o -> (int)o).toArray();
+		Integer[] resultados = Arrays.stream(r).boxed().toArray( Integer[]::new );
+		Arrays.sort(resultados);
+		return resultados;
+	}
+	
+	
+	public ArrayList<Grupo> getGruposSinClasificar() {
+		ArrayList<Grupo> resultado = new ArrayList<>();
 		HashMap<Integer, Grupo> mapa = ((Empleado) usuarioActual).getGrupos();
 		if (mapa == null) {
-			return new Integer[0];	
+			return resultado;	
 		}
 		else {
-			Set<Integer> y = mapa.keySet();
-			Object[] x = y.toArray();
-			int[] r = Arrays.stream(x).mapToInt(o -> (int)o).toArray();
-			Integer[] resultados = Arrays.stream(r).boxed().toArray( Integer[]::new );
-			Arrays.sort(resultados);
-			return resultados;
+			for (Grupo grupo : mapa.values()) {
+				resultado.add(grupo);
+			}
+			return resultado;
+		}
+	}
+	
+	public Integer[][] getGruposIdsClasificadoss() {
+		ArrayList<Integer[]> resultado = new ArrayList<>();
+		ArrayList<Integer> checked = new ArrayList<>();
+		ArrayList<Integer> unchecked = new ArrayList<>();
+		HashMap<Integer, Grupo> mapa = ((Empleado) usuarioActual).getGrupos();
+		if (mapa == null) {
+			return new Integer[2][0];	
+		}
+		else {
+			for (Grupo grupo : mapa.values()) {
+				if (grupo.getCheck()) {
+					checked.add((Integer) grupo.getId());
+				}
+				else {
+					unchecked.add((Integer) grupo.getId());
+				}
+			}
+			resultado.add((Integer[]) checked.toArray());
+			resultado.add((Integer[]) unchecked.toArray());
+			return (Integer[][]) resultado.toArray();
 		}
 	}
 	
