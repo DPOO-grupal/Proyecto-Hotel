@@ -258,13 +258,7 @@ public class EmpleadoHabitacionesFrame extends FrameBaseInfo implements MouseLis
 	
 	public void llenarTablaServicios(String ID) {
 		ArrayList<String[]> servicios = windowManager.getServicios(ID);
-		DecimalFormat df=new DecimalFormat("#,###.00");
 		for (String[] servicio : servicios) {
-			String precioS = servicio[1].replace(",", "");
-			precioS = precioS.replace(".", "");
-			Double precioD = Double.parseDouble(precioS);
-			String precio = df.format(precioD);
-			servicio[1] = precio.substring(0, precio.length()-3);
 			modeloTablaServicios.addRow(servicio);
 		}
 	}
