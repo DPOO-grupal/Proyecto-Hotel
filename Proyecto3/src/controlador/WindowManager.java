@@ -2,24 +2,20 @@ package controlador;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
-import java.util.ArrayList;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.temporal.TemporalField;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+
 import org.jdesktop.swingx.JXDatePicker;
 
 import com.formdev.flatlaf.FlatLightLaf;
@@ -29,32 +25,19 @@ import modelo.Cama;
 import modelo.Empleado;
 import modelo.Grupo;
 import modelo.Habitacion;
-import modelo.Servicio;
-import modelo.Tarifa;
 import modelo.Huesped;
 import modelo.ProductoMenu;
-import modelo.Reserva;
+import modelo.Servicio;
+import modelo.Tarifa;
 import modelo.TipoHabitacion;
 import modelo.Usuario;
+import vistaAdmin.AdminMenuPrincipal;
 import vistaAdmin.AutenticacionFrame;
-import vistaAdmin.CrearHabitacionFrame;
 import vistaAdmin.FrameBaseInfo;
-import vistaAdmin.AdminHabitacionesFrame;
-import vistaAdmin.AdminMenuPrincipal;
-import vistaAdmin.AdminRestauranteFrame;
-import vistaAdmin.AdminHabitacionesFrame;
-import vistaAdmin.AdminMenuPrincipal;
-import vistaAdmin.AdminRestauranteFrame;
-import vistaAdmin.AdminServiciosFrame;
-import vistaEmpleado.EmpleadoHabitacionesFrame;
-import vistaAdmin.AdminTarifasFrame;
 import vistaEmpleado.EmpleadoMenuPrincipal;
-import vistaEmpleado.EmpleadoRestauranteFrame;
-import vistaEmpleado.EmpleadoServiciosFrame;
-import vistaEmpleado.EmpleadoTarifasFrame;
 
 public class WindowManager {
-	private JFrame ventandaActual;
+	private JFrame ventanaActual;
 	private JFrame menu;
 	private JFrame autenticacionFrame;
 	private Usuario usuarioActual;
@@ -96,29 +79,60 @@ public class WindowManager {
 	}
 
 	public void mostraVentana(JFrame ventana) {
-		if(ventandaActual != null) {
-			ventandaActual.dispose();
+		if(ventanaActual != null) {
+			ventanaActual.dispose();
 		}
 		
-		ventandaActual = ventana;
+		ventanaActual = ventana;
 		try {
-			((FrameBaseInfo)ventandaActual).resetDatos();
+			((FrameBaseInfo)ventanaActual).resetDatos();
 		}
 		catch (ClassCastException e) {
 			try {
-				((EmpleadoMenuPrincipal)ventandaActual).resetDatos();
+				((EmpleadoMenuPrincipal)ventanaActual).resetDatos();
 			}
 			catch (ClassCastException e1) {
 			}
 		}
 		
 		// configuraciones generales
-		ventandaActual.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ventandaActual.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		ventandaActual.setResizable(false);
-		ventandaActual.setVisible(true);
+		ventanaActual.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		ventanaActual.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		ventanaActual.setResizable(false);
+		ventanaActual.setVisible(true);
 		
-		ventandaActual.addWindowListener(new WindowAdapter() {
+		ventanaActual.addWindowListener(new WindowAdapter() {
+	        @Override
+	        public void windowClosing(WindowEvent e) {
+	            Usuario.guardarInformacion();
+	        }
+	    });
+		
+	}
+	
+	public void mostraVentanaPagos(JFrame ventana) {
+		if(ventanaActual != null) {
+//			ventanaActual.dispose();
+		}
+		
+		ventanaActual = ventana;
+		try {
+			((FrameBaseInfo)ventanaActual).resetDatos();
+		}
+		catch (ClassCastException e) {
+			try {
+				((EmpleadoMenuPrincipal)ventanaActual).resetDatos();
+			}
+			catch (ClassCastException e1) {
+			}
+		}
+		
+		// configuraciones generales
+		ventanaActual.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		ventanaActual.setResizable(false);
+		ventanaActual.setVisible(true);
+		
+		ventanaActual.addWindowListener(new WindowAdapter() {
 	        @Override
 	        public void windowClosing(WindowEvent e) {
 	            Usuario.guardarInformacion();
