@@ -301,6 +301,21 @@ public class WindowManager {
 		}
 	}
 	
+	public Integer[] getGruposContenedor() {
+		HashMap<Integer, Grupo> mapa = ((Empleado) usuarioActual).getGrupos();
+		if (mapa == null) {
+			return new Integer[0];	
+		}
+		else {
+			Set<Integer> y = mapa.keySet();
+			Object[] x = y.toArray();
+			int[] r = Arrays.stream(x).mapToInt(o -> (int)o).toArray();
+			Integer[] resultados = Arrays.stream(r).boxed().toArray( Integer[]::new );
+			Arrays.sort(resultados);
+			return resultados;
+		}
+	}
+	
 	public Habitacion getHabitacion(int id) {
 		Admin admin = (Admin) usuarioActual;
 		return admin.getHabitacion(id);

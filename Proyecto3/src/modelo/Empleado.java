@@ -134,6 +134,10 @@ public class Empleado extends Usuario  {
 		return hotel.getHabitaciones();
 	}
 	
+	public HashMap<Integer, Grupo> getGrupos() {
+		return hotel.getGrupos();
+	}
+	
 	public ArrayList<String[]> getServicios(String ID) {
 		return hotel.getServiciosHabitacion(ID);
 	}

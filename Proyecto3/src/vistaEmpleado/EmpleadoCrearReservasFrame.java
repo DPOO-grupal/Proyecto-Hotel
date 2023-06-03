@@ -11,8 +11,11 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,6 +23,7 @@ import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -30,6 +34,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.NumberFormatter;
 
 import org.jdesktop.swingx.JXDatePicker;
 
@@ -40,7 +45,7 @@ import modelo.TipoHabitacion;
 import modelo.Usuario;
 import vistaAdmin.FrameBaseInfo;
 
-public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseListener {
+public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseListener, KeyListener {
 
 	private JTable tablaTarifas;
 	private DefaultTableModel modeloTabla;
@@ -374,6 +379,7 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 
 			panelCrear.add(campo, constraints);
 		}
+		datos[2].addKeyListener(this);
 
 		panelCrear.add(new JLabel());
 
@@ -456,6 +462,11 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 	    	int precioHabitacion;
 			try {
 				precioHabitacion = getPrecioHabitacionReserva(habitacion);
+//				double precio = Double.parseDouble(precioHabitacion+"");
+//				NumberFormat nf= NumberFormat.getInstance();
+//				nf.setMaximumFractionDigits(0);
+//			    String precioS = nf.format(precio);
+//			    precioHabitacion = Integer.parseInt(precioS);
 				String[] data = {habitacion.getId()+"",""+habitacion.getCapacidad(), ""+precioHabitacion, habitacion.getCaracteristicas()};
 		    	modelodisponibles.addRow(data);
 			} catch (Exception e) {
@@ -648,6 +659,54 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 	public void resetDatos() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		 // TODO Auto-generated method stub
+        JTextField caja = (JTextField) e.getSource();
+        int numeros;
+        try {
+            String cadena = caja.getText().replace(",", "");
+            cadena = cadena.replace(".", "");
+            numeros = Integer.parseInt(cadena);
+            NumberFormatter numberFormatter = new NumberFormatter();
+            numberFormatter.setValueClass(Integer.class);
+            numberFormatter.setMinimum(1);
+            numberFormatter.setMaximum(Integer.MAX_VALUE);
+            numberFormatter.setAllowsInvalid(false);
+            JFormattedTextField input = new JFormattedTextField(numberFormatter);
+            input.setText(numeros + "");
+            String texto = input.getText();
+            if (texto.length() == 0) {
+                texto = caja.getText();
+                texto = texto.substring(0, texto.length() - 1);
+                caja.setText(texto);
+            }
+            else {
+                caja.setText(input.getText());
+            }
+        } catch (NumberFormatException nfe) {
+            String texto = caja.getText();
+            if (texto.length() > 0) {
+                texto = texto.substring(0, texto.length() - 1);
+            }
+            else {
+            }
+            caja.setText(texto);
+        }
 	}
 
 }

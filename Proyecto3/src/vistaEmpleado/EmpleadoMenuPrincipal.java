@@ -17,6 +17,7 @@ import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -57,6 +58,10 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	protected JPanel panelHoy;
 	protected JButton pagar;
 	protected JFrame formasDePagoFrame;
+	private JComboBox boxHabitaciones;
+	private JPanel panelCheckIn;
+	private JButton okCheckIn;
+	private JFrame frameCheckIn;
 
 	public EmpleadoMenuPrincipal(WindowManager windowManager){
         setLayout(new BorderLayout());
@@ -259,6 +264,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
           PanelOcupacion.add(scrollPanelAnual, constraints);
 	    
 		panelDerecho.add(PanelOcupacion, BorderLayout.CENTER);
+		boxHabitaciones = new JComboBox<Integer>();
 	}
 
 	protected void setBotones() {
@@ -293,24 +299,105 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	}
 	
 	public void checkIn() {
-		UIManager.put("OptionPane.minimumSize",new Dimension(400,200));
-		JOptionPane.showInputDialog(null, "Ingrese el número de su grupo para el check-in", "Check-in", JOptionPane.PLAIN_MESSAGE);
+		GridBagLayout gridbag = new GridBagLayout();
+		GridBagConstraints constraints = new GridBagConstraints();
+
+		frameCheckIn =  new JFrame("Check In");
+		frameCheckIn.setLocationRelativeTo(null);
+		frameCheckIn.setSize(350, 250);
+		panelCheckIn = new JPanel();
+		panelCheckIn.setLayout(gridbag);
+		panelCheckIn.setBackground(Color.decode("#ccd2c2"));
+		
+		Integer[] idsGrupos = windowManager.getGruposContenedor();
+		boxHabitaciones = new JComboBox<>(idsGrupos);
+		boxHabitaciones.setSelectedIndex(-1);
+		boxHabitaciones.setFont(new Font("Times New Roman", Font.PLAIN, 25));
+		JLabel LCheckIn = new JLabel("Elija su numero de reserva");
+		LCheckIn.setForeground(Color.black);
+		LCheckIn.setFont(new Font("Times New Roman", Font.PLAIN, 25));
+		
+		constraints.weightx = 1;
+		constraints.weighty = 1;
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		constraints.anchor = GridBagConstraints.CENTER;
+		constraints.ipady = 20;
+		constraints.ipadx = 60;
+		constraints.anchor = GridBagConstraints.CENTER;
+		constraints.insets = new Insets(-30, 20, -20, 20);
+		panelCheckIn.add(boxHabitaciones, constraints);
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.insets = new Insets(-20, 20, -20, 20);
+		panelCheckIn.add(LCheckIn, constraints);
+		
+		okCheckIn = new JButton("Check In");
+		okCheckIn.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		okCheckIn.addActionListener(this);
+		
+		constraints.weightx = 1;
+		constraints.weighty = 1;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		constraints.ipady = 10;
+		constraints.ipadx = 20;
+		constraints.insets = new Insets(-10, 20, 20, 20);
+		panelCheckIn.add(okCheckIn, constraints);
+		
+		frameCheckIn.add(panelCheckIn);
+		frameCheckIn.setVisible(true);
 	}
 	
 	public void checkOut() {
-		try {
-			UIManager.put("OptionPane.minimumSize",new Dimension(400,200));
-			String idGrupo = JOptionPane.showInputDialog(null, "Ingrese el número de su grupo para el check-out", "Check-out", JOptionPane.PLAIN_MESSAGE);
-			factura(idGrupo);
-			//windowManager.checkOut(Integer.parseInt(idGrupo));
-		} catch (Exception e) {
-			String error = e.getMessage();
-			if (error.contains("null")) {
-				JOptionPane.showMessageDialog(null, "No existe el grupo");
-			} else {
-				JOptionPane.showMessageDialog(null, "Seleccione un grupo");
-			}
-		}
+		GridBagLayout gridbag = new GridBagLayout();
+		GridBagConstraints constraints = new GridBagConstraints();
+
+		frameCheckIn =  new JFrame("Check Out");
+		frameCheckIn.setLocationRelativeTo(null);
+		frameCheckIn.setSize(350, 250);
+		panelCheckIn = new JPanel();
+		panelCheckIn.setLayout(gridbag);
+		panelCheckIn.setBackground(Color.decode("#ccd2c2"));
+		
+		Integer[] idsGrupos = windowManager.getGruposContenedor();
+		boxHabitaciones = new JComboBox<>(idsGrupos);
+		boxHabitaciones.setSelectedIndex(-1);
+		boxHabitaciones.setFont(new Font("Times New Roman", Font.PLAIN, 25));
+		JLabel LCheckIn = new JLabel("Elija su numero de reserva");
+		LCheckIn.setForeground(Color.black);
+		LCheckIn.setFont(new Font("Times New Roman", Font.PLAIN, 25));
+		
+		constraints.weightx = 1;
+		constraints.weighty = 1;
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		constraints.anchor = GridBagConstraints.CENTER;
+		constraints.ipady = 20;
+		constraints.ipadx = 60;
+		constraints.insets = new Insets(-30, 20, -20, 20);
+		panelCheckIn.add(boxHabitaciones, constraints);
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.anchor = GridBagConstraints.CENTER;
+		constraints.insets = new Insets(-20, 20, -20, 20);
+		panelCheckIn.add(LCheckIn, constraints);
+		
+		okCheckIn = new JButton("Check Out");
+		okCheckIn.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+		okCheckIn.addActionListener(this);
+		
+		constraints.weightx = 1;
+		constraints.weighty = 1;
+		constraints.gridx = 0;
+		constraints.gridy = 2;
+		constraints.ipady = 10;
+		constraints.ipadx = 20;
+		constraints.insets = new Insets(-10, 20, 20, 20);
+		panelCheckIn.add(okCheckIn, constraints);
+		
+		frameCheckIn.add(panelCheckIn);
+		frameCheckIn.setVisible(true);
 	}
 	
 	public void factura (String idGrupo) {
@@ -609,6 +696,8 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	}
 	
 	public void resetDatos() {
+		ocupacionHoy();
+		ocupacionAnual();
 		revalidate();
 	}
 
@@ -644,8 +733,40 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 			checkIn();
 			break;
 			
+		case "Check In":
+			if (boxHabitaciones.getSelectedIndex() == -1) {
+				JOptionPane.showMessageDialog(null, "Primero seleccione un ID");
+			}
+			else {
+				frameCheckIn.dispose();
+			}
+			break;
+			
 		case "Check-Out":
 			checkOut();
+			break;
+			
+		case "Check Out":
+			if (boxHabitaciones.getSelectedIndex() == -1) {
+				JOptionPane.showMessageDialog(null, "Primero seleccione un ID");
+			}
+			else {
+				try {
+					String idGrupo = boxHabitaciones.getSelectedItem()+"";
+					factura(idGrupo);
+					//windowManager.checkOut(Integer.parseInt(idGrupo));
+				} 
+				catch (Exception e1) {
+					String error = e1.getMessage();
+					if (error.contains("null")) {
+						JOptionPane.showMessageDialog(null, "No existe el grupo");
+					} else {
+						JOptionPane.showMessageDialog(null, error);
+					}
+				}
+				resetDatos();
+				frameCheckIn.dispose();
+			}
 			break;
 			
 		case "Pagar":
