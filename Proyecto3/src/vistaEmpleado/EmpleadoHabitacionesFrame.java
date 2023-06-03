@@ -25,6 +25,7 @@ import controlador.WindowManager;
 import modelo.Habitacion;
 import modelo.Servicio;
 import vistaAdmin.FrameBaseInfo;
+import java.text.DecimalFormat;
 
 public class EmpleadoHabitacionesFrame extends FrameBaseInfo implements MouseListener{
 	

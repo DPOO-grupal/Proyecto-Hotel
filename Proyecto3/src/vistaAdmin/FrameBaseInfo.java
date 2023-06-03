@@ -101,7 +101,7 @@ public abstract class FrameBaseInfo extends JFrame implements ActionListener{
 	    volverButton.setBackground(Color.decode("#D0ECF2"));
 	    volverButton.setFont(font);
 	    volverButton.addActionListener(this);
-	    // AÃ±adirlo al Panel
+	    // Añadirlo al Panel
 	    panelVolver.add(volverButton);
 	}
 	

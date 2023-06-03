@@ -386,9 +386,7 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 		for(ProductoMenu servicio : menu)
 			if (servicio.getNombre().equals(nombre)) {
 				precioServicio = servicio.getHorarioI();
-				System.out.println("EmpleadoRestauranteFrame.getHoraI()");
 			}
-		System.out.println(precioServicio);
 		return precioServicio;
 		}
 	
@@ -398,9 +396,7 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 		for(ProductoMenu servicio : menu)
 			if (servicio.getNombre().equals(nombre)) {
 				precioServicio = servicio.getHorarioF();
-				System.out.println("EmpleadoRestauranteFrame.getHoraF()");
 			}
-		System.out.println(precioServicio);
 		return precioServicio;
 		}
 	

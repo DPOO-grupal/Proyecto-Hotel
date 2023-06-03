@@ -11,7 +11,6 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -23,19 +22,15 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSlider;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import controlador.WindowManager;
 import modelo.Grupo;
-import modelo.Habitacion;
 import modelo.Reserva;
 import modelo.Servicio;
 import vistaAdmin.AdminHabitacionesFrame;
@@ -60,7 +55,8 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	protected JButton setFecha;
 	protected JFrame reservasFrame;
 	protected JPanel panelHoy;
-	private JButton pagar;
+	protected JButton pagar;
+	protected JFrame formasDePagoFrame;
 
 	public EmpleadoMenuPrincipal(WindowManager windowManager){
         setLayout(new BorderLayout());
@@ -90,6 +86,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		serviciosFrame = new EmpleadoServiciosFrame(windowManager);
 		habitacionesFrame = new EmpleadoHabitacionesFrame(windowManager);
 		restauranteFrame = new EmpleadoRestauranteFrame(windowManager);
+		formasDePagoFrame = new FormasDePagoFrame(windowManager);
 		
 		ocupacionHoy();
 		ocupacionAnual();
@@ -318,20 +315,13 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	
 	public void factura (String idGrupo) {
 		JFrame frameFactura = new JFrame();
-		frameFactura.setSize(300, 500);
+		frameFactura.setSize(400, 500);
 		frameFactura.setLocationRelativeTo(null);
-		frameFactura.setLayout(new GridLayout(1,0));
+		frameFactura.setLayout(new GridLayout(1,0,0,0));
 		frameFactura.setBackground(Color.decode("#ccd2c2"));
 
 		
 		double precioTotalFactura = 0;
-		//ArrayList<String[]> listaServiciosHabitacion = new ArrayList<String[]>();
-//		String[] ejemplo1 = {"Lomo", "13000"};
-//		String[] ejemplo2 = {"Carne", "12000"};
-//		String[] ejemplo3 = {"Pulpo", "11000"};
-//		listaServiciosHabitacion.add(ejemplo1);
-//		listaServiciosHabitacion.add(ejemplo2);
-//		listaServiciosHabitacion.add(ejemplo3);
 		
 		
 		HashMap<Servicio, Integer> listaServiciosGrupo = new HashMap<>();
@@ -352,14 +342,19 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		int tamañoColumnas = 10+listaServiciosGrupo.size();
 		
 		JPanel panelPrincipal = new JPanel();
-		panelPrincipal.setLayout(new GridLayout(tamañoColumnas,2,2,0));
+		panelPrincipal.setLayout(new GridLayout(tamañoColumnas,2));
 		panelPrincipal.setBackground(Color.decode("#ccd2c2"));
+		panelPrincipal.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
 		
 		
-		JLabel tituloFactura = new JLabel("FACTURA DEL GRUPO:");
+		JLabel tituloFactura = new JLabel("FACTURA GRUPO");
+		tituloFactura.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		JLabel tituloIdGrupo = new JLabel(idGrupo);
+		tituloIdGrupo.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 		JLabel tituloServicio = new JLabel("SERVICIO");
+		tituloServicio.setFont(new Font("arial", 1, 12));
 		JLabel tituloPrecio = new JLabel("PRECIO");
+		tituloPrecio.setFont(new Font("arial", 1, 12));
 		
 		panelPrincipal.add(tituloFactura);
 		panelPrincipal.add(tituloIdGrupo);
@@ -398,9 +393,11 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		precioReserva -= saldoPagado;
 		
 		JLabel tituloTotal = new JLabel("TOTAL A PAGAR");
+		tituloTotal.setFont(new Font("arial", 1, 14));
 		panelPrincipal.add(tituloTotal);
 		
 		JLabel total = new JLabel(precioTotalFactura+"");
+		total.setFont(new Font("arial", 1, 14));
 		panelPrincipal.add(total);
 		
 		panelPrincipal.add(new JLabel("____________________________"));
@@ -444,20 +441,16 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 //		modeloTablaAnual.fireTableDataChanged();
 		Date dia = windowManager.getDia();
 		for (int i = 0 ; i < 12 ; i++) {
-			//System.out.println("-----------------------NUEVO MES: " + i + " --- DIA DE BUSQUEDA: " + dia.toString() + "-------------------------------");
 			int ocupacionesMes = 0;
 			int cantidadDias = hastaFinMes(dia);
 			ocupacionesMes = contarOcupacionesMes(dia, cantidadDias);
-			//System.out.println("ocupacionesMes " + ocupacionesMes + ",cantidadDias " + cantidadDias);
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(dia);
-//			calendar.set(dia.getYear(), dia.getMonth()+1, 1);
 			calendar.add(Calendar.MONTH, 1);
 			calendar.set(Calendar.DAY_OF_MONTH, 1);
 			dia = calendar.getTime();
 			int totalHabitaciones = windowManager.getTotalHabitaciones();
 			int maximoPosible =  30*totalHabitaciones;
-			//System.out.println("Total: " + totalHabitaciones);
 			Color color = new ColorUIResource(Color.WHITE);
 			if (maximoPosible == 0) {
 				color = new ColorUIResource(Color.WHITE);
@@ -483,8 +476,6 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		for (int j = 0 ; j < cantidadDias ; j++) {
 			int incremento = windowManager.contarOcupadasDia(dia);
 			contadorOcupadas += incremento;
-			//System.out.println("Incremento: " + incremento + ", Ocupadas: " + contadorOcupadas);
-			//System.out.println("====================================  NUEVO DIA: " + dia.toString());
 			dia = windowManager.pasarDia(dia);
 		}
 		return contadorOcupadas;
@@ -589,8 +580,6 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 				}
 			}			
 			matriz = new String[cantidadFilas][cantidadColumnas];
-//			System.out.println("Filas: " + cantidadFilas + ", Columnas: " + cantidadColumnas + ".");
-//			System.out.println("Len arreglo: " + lenArreglo);
 		}		
 		
 		for (int i = 0 ; i < lenArreglo ; i++) {
@@ -598,10 +587,6 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 			int col = (habitaciones[i]%100)-1;
 			matriz[fila][col] = habitaciones[i] + "";
 		}
-		//System.out.println("Len matriz " + matriz.length);
-//		for (int i = 0; i < 3; i++) {
-//		    for (int j = 0; j < 1; j++) {
-//		        System.out.println(matriz[i][j] + " ");}}
 		return matriz;
 	}
 	
@@ -609,7 +594,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		Integer[] habitaciones = windowManager.getHabitacionesContenedor();
 		return habitaciones;
 	}
-	
+
 	public Integer[] getOcupadas() {
 		Integer[] ocupadas = windowManager.ocupacionHoy();
 		return ocupadas;
@@ -633,26 +618,26 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		switch (e.getActionCommand()) {
 		case "Tarifas":
 			windowManager.mostraVentana(tarifasFrame);
-
 			break;
+			
 		case "Servicios":
-
 			windowManager.mostraVentana(serviciosFrame);
 			break;
+			
 		case "Habitaciones":
-
 			windowManager.mostraVentana(habitacionesFrame);
 			break;
+			
 		case "Restaurante":
-
 			windowManager.mostraVentana(restauranteFrame);
 			break;
+			
 		case "Reservas":
 			windowManager.mostraVentana(reservasFrame);
 			break;
+			
 		case "Cerrar sesion":
-			windowManager.cerrarSesion();;
-
+			windowManager.cerrarSesion();
 			break;
 			
 		case "Check-In":
@@ -664,6 +649,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 			break;
 			
 		case "Pagar":
+			windowManager.mostraVentanaPagos(formasDePagoFrame);
 			break;
 			
 		case "Refrescar ocupacion diaria":
