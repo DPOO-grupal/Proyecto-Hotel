@@ -135,7 +135,7 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 		constraints.ipadx = 1;
 		constraints.ipady = 1;
 		constraints.anchor = GridBagConstraints.NORTHWEST;
-	    //constraints.fill = GridBagConstraints.BOTH;
+	    constraints.fill = GridBagConstraints.BOTH;
 	    constraints.insets = new Insets(0, 0, 0, 0);
 		
 		panelDerecho.add(panelBuscar,constraints);
