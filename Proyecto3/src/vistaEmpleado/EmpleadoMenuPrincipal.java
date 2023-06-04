@@ -12,6 +12,7 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -402,6 +403,12 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		frameCheckIn.setVisible(true);
 	}
 	
+	public String formatComas(double valorInicial) {
+        NumberFormat nf= NumberFormat.getInstance();
+		nf.setMaximumFractionDigits(0);
+	    return nf.format(valorInicial);
+	}
+	
 	public void factura (String idGrupo) {
 		frameFactura = new JFrame();
 		frameFactura.setSize(400, 500);
@@ -458,7 +465,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		for (Servicio servicioHabitacion : listaServiciosGrupo.keySet()) {
 			int cantidad = listaServiciosGrupo.get(servicioHabitacion);
 			JLabel nombreServicio = new JLabel(servicioHabitacion.getNombre()+" x"+cantidad);
-			JLabel precioServicio = new JLabel(servicioHabitacion.getPrecio()*cantidad+"");
+			JLabel precioServicio = new JLabel(formatComas(Double.parseDouble(servicioHabitacion.getPrecio()*cantidad+"")));
 			
 			panelPrincipal.add(nombreServicio);
 			panelPrincipal.add(precioServicio);
@@ -473,14 +480,14 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		JLabel reserva = new JLabel("VALOR RESERVA");
 		panelPrincipal.add(reserva);
 		
-		JLabel precioReser = new JLabel(precioReserva+"");
+		JLabel precioReser = new JLabel(formatComas(precioReserva));
 		precioTotalFactura+=precioReserva;
 		panelPrincipal.add(precioReser);
 		
 		JLabel tituloPagado = new JLabel("SALDO PAGADO");
 		panelPrincipal.add(tituloPagado);
 		
-		JLabel pagado = new JLabel(saldoPagado+"");
+		JLabel pagado = new JLabel(formatComas(saldoPagado));
 		panelPrincipal.add(pagado);
 		
 		precioTotalFactura -= saldoPagado;
@@ -489,7 +496,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		tituloTotal.setFont(new Font("arial", 1, 14));
 		panelPrincipal.add(tituloTotal);
 		
-		JLabel total = new JLabel(precioTotalFactura+"");
+		JLabel total = new JLabel(formatComas(precioTotalFactura));
 		total.setFont(new Font("arial", 1, 14));
 		panelPrincipal.add(total);
 		

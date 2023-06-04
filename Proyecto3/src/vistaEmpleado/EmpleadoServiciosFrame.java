@@ -315,7 +315,7 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		modeloTablaOrden.fireTableDataChanged();
 		for (String nombreServicio : listaOrden.keySet()) {
 			int cantidad = listaOrden.get(nombreServicio);
-			modeloTablaOrden.addRow(new Object[]{nombreServicio+" x"+cantidad, "ICON", "ICON"});
+			modeloTablaOrden.addRow(new Object[]{cantidad+"x "+nombreServicio, "ICON", "ICON"});
 			}
 	}
 	
@@ -444,7 +444,9 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 			if (e.getSource()==tablaOrden) {
 				int rowOrd = tablaOrden.getSelectedRow();
 				int columnOrd = tablaOrden.getSelectedColumn();
-				String nombreOrden = tablaOrden.getValueAt(rowOrd, columnOrd).toString();
+				String nombre = tablaOrden.getValueAt(rowOrd, columnOrd).toString();
+				String[] splited = nombre.split(" ", 2);
+				String nombreOrden = splited[1];
 				double preci = Double.parseDouble(getPrecio(nombreOrden));
 				DecimalFormat df = new DecimalFormat("#,###.00");
 		        String precio = df.format(preci);
