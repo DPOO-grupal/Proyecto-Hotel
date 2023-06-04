@@ -32,6 +32,7 @@ import javax.swing.JSpinner;
 import javax.swing.JComboBox;
 
 import controlador.WindowManager;
+import modelo.Grupo;
 import modelo.Habitacion;
 import modelo.Servicio;
 import vistaAdmin.FrameBaseInfo;
@@ -319,7 +320,19 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 	}
 	
 	protected void cargarComboBox() {
-		ArrayList<Integer> opciones = windowManager.getArrayHabitaciones();
+		Integer[] gruposChecked = windowManager.getGruposChecked();
+		ArrayList<Integer> opciones = new ArrayList<>();
+		for (Integer idChecked : gruposChecked) {
+			try {
+				Grupo grupo = windowManager.getGrupo(idChecked);
+				for (Integer idHabitacion : grupo.getListaHabitaciones()) {
+					opciones.add(idHabitacion);				
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		cajaNumeroHabitacion.removeAllItems();
 		for (Integer opcion : opciones) {
 			cajaNumeroHabitacion.addItem(opcion);			
@@ -474,6 +487,7 @@ public class EmpleadoServiciosFrame extends FrameBaseInfo implements MouseListen
 		cajaCantidad.setText("");
 		cajaNombre.setText("");
 		cajaPrecio.setText("");
+		listaOrden.clear();
 		cargarDatos();
 		cargarComboBox();
 		cajaNumeroHabitacion.setSelectedIndex(-1);

@@ -744,9 +744,15 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				grupo.setCheck(true);
-				frameCheckIn.dispose();
-				JOptionPane.showMessageDialog(null, "Check-In exitoso. Disfrute su estadia en el hotel :D");
+				boolean fechaValida = windowManager.validarCheckIn(grupo);
+				if (fechaValida) {
+					grupo.setCheck(true);
+					frameCheckIn.dispose();
+					JOptionPane.showMessageDialog(null, "Check-In exitoso. Disfrute su estadia en el hotel :D");
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Solo puede hacer check-In el primer dia de su reserva");
+				}
 			}
 			break;
 			

@@ -609,6 +609,11 @@ public class WindowManager {
 
 		return empleado.hayReserva();
 	}
+	
+	public boolean validarCheckIn(Grupo grupo) {
+		return true;
+	}
+	
 	public void forzarCancelarReserva() {
 		Empleado empleado = (Empleado) usuarioActual;
 		empleado.forzarCancelarReserva();
@@ -700,7 +705,7 @@ public class WindowManager {
 
     		JFrame pruebas = new AdminMenuPrincipal(windowManager);
     		// Menú de ese Frame
-    		JFrame menu = new EmpleadoMenuPrincipal(windowManager);
+    		JFrame menu = new AdminMenuPrincipal(windowManager);
     		
     		windowManager.setPruebas(pruebas, menu);
     		

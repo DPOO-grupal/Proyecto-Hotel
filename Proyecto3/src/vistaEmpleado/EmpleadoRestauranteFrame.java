@@ -41,6 +41,7 @@ import java.text.NumberFormat;
 
 
 import controlador.WindowManager;
+import modelo.Grupo;
 import modelo.ProductoMenu;
 import modelo.Servicio;
 import vistaAdmin.FrameBaseInfo;
@@ -337,7 +338,19 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 	}
 	
 	protected void cargarComboBox() {
-		ArrayList<Integer> opciones = windowManager.getArrayHabitaciones();
+		Integer[] gruposChecked = windowManager.getGruposChecked();
+		ArrayList<Integer> opciones = new ArrayList<>();
+		for (Integer idChecked : gruposChecked) {
+			try {
+				Grupo grupo = windowManager.getGrupo(idChecked);
+				for (Integer idHabitacion : grupo.getListaHabitaciones()) {
+					opciones.add(idHabitacion);				
+				}
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		cajaNumeroHabitacion.removeAllItems();
 		for (Integer opcion : opciones) {
 			cajaNumeroHabitacion.addItem(opcion);			
@@ -368,12 +381,12 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 	
 	protected String getPrecio(String nombre) {
 		Collection<ProductoMenu> menu = windowManager.getMenu().values();
-		String nombreServicio = null;
+		String precioServicio = null;
 		for(Servicio servicio : menu)
 			if (servicio.getNombre().equals(nombre)) {
-				nombreServicio = String.valueOf(servicio.getPrecio());
+				precioServicio = String.valueOf(servicio.getPrecio());
 			}
-		return nombreServicio;
+		return precioServicio;
 		}
 	
 	protected int getId(String nombre) {
@@ -618,6 +631,7 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 		cajaCantidad.setText("");
 		cajaNombre.setText("");
 		cajaPrecio.setText("");
+		listaOrden.clear();
 		cargarDatos();
 		cargarComboBox();
 		cajaNumeroHabitacion.setSelectedIndex(-1);
