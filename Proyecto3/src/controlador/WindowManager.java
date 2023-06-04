@@ -320,7 +320,9 @@ public class WindowManager {
 		ArrayList<Grupo> grupos = getGruposSinClasificar();
 		ArrayList<Integer> arrayUnChecked = new ArrayList<>();
 		for (Grupo grupo : grupos) {
-			if (!grupo.getCheck()) {
+			boolean noHaCheckeado = grupo.getCheck() ? false : true;
+			boolean diaValido = grupo.getReserva().getFechaI().equals(getHoy());			
+			if (noHaCheckeado && diaValido) {
 				arrayUnChecked.add(grupo.getId());
 			}
 		}
@@ -611,7 +613,23 @@ public class WindowManager {
 	}
 	
 	public boolean validarCheckIn(Grupo grupo) {
-		return true;
+		Date fechaI = grupo.getReserva().getFechaI();
+		Date hoy = getHoy();
+		return fechaI.equals(hoy);
+	}
+	
+	public boolean validarCheckOut(Grupo grupo) {
+		Date fechaF = grupo.getReserva().getFechaF();
+		Date hoy = getHoy();
+		boolean resultado;
+		int comparacion = hoy.compareTo(fechaF);
+		if (comparacion > 0) {
+			resultado = false;
+		}
+		else {
+			resultado = true;
+		}
+		return resultado;
 	}
 	
 	public void forzarCancelarReserva() {

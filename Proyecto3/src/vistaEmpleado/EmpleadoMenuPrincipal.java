@@ -768,20 +768,22 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Primero seleccione un ID");
 			}
 			else {
+				int idGrupo = Integer.parseInt(boxHabitaciones.getSelectedItem()+"");
+				Grupo grupo = null;
 				try {
-					String idGrupo = boxHabitaciones.getSelectedItem()+"";
-					factura(idGrupo);
-					//windowManager.checkOut(Integer.parseInt(idGrupo));
-				} 
-				catch (Exception e1) {
-					String error = e1.getMessage();
-					if (error.contains("null")) {
-						JOptionPane.showMessageDialog(null, "No existe el grupo");
-					} else {
-						JOptionPane.showMessageDialog(null, error);
-					}
+					grupo = windowManager.getGrupo(idGrupo);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
-				resetDatos();
+				boolean fechaValida = windowManager.validarCheckOut(grupo);
+				if (fechaValida) {
+					factura(idGrupo+"");	
+					resetDatos();
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Su reserva ya termino y no hizo check out a tiempo.\nHable con la gerencia del hotel para ajustar los detalles de su multa");
+				}
 				frameCheckIn.dispose();
 			}
 			break;
