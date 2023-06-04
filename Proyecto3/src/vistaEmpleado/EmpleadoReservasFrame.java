@@ -20,9 +20,11 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -51,9 +53,12 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 	private JTable tablaTarifas;
 	private JButton crearReserva;
 	private JButton cancelarReserva;
-	private JTextField buscarJTextField;
 	private JFrame verReservasFrame;
-	private int numeroReserva;
+	protected JFrame crearReservasFrame;
+	protected int numeroReserva;
+	protected JComponent idGrupo;
+	protected JPanel panelBuscar;
+
 
 	public EmpleadoReservasFrame(WindowManager windowManager) {
 		super(windowManager);
@@ -62,6 +67,7 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 		panelIzquierdo.add(panelCrear, BorderLayout.CENTER);
         panelIzquierdo.add(panelVolver, BorderLayout.WEST);
 		add(panelIzquierdo, BorderLayout.SOUTH);
+		crearReservasFrame = new EmpleadoCrearReservasFrame(windowManager);
 	}
 
 	@Override
@@ -74,7 +80,7 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 	    Font font = new Font("Arial", Font.BOLD, 20);
 		Font fontLabels = new Font("Arial", Font.BOLD, 15);
 
-		JPanel panelBuscar = new JPanel();
+		panelBuscar = new JPanel();
 		panelBuscar.setBackground(Color.decode("#accaf2"));
 		panelBuscar.setPreferredSize(new Dimension(150,100));
 		panelBuscar.setBorder(BorderFactory.createEmptyBorder(10, 100, 10, 100));
@@ -93,16 +99,16 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 		panelBuscar.add(titulo,constraints);
   
 		
-		buscarJTextField = new JTextField();
-		buscarJTextField.setPreferredSize(new Dimension(10, 40));
-		buscarJTextField.addKeyListener(this);
+		idGrupo = new JTextField();
+		idGrupo.setPreferredSize(new Dimension(10, 40));
+		idGrupo.addKeyListener(this);
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 	
 		constraints.fill = GridBagConstraints.HORIZONTAL;
 		constraints.insets = new Insets(1, 0, 1, 0);
 
-		panelBuscar.add(buscarJTextField,constraints);
+		panelBuscar.add(idGrupo,constraints);
 		
 		JButton buscarButton = new JButton("Buscar Reserva");
 		buscarButton.setPreferredSize(new Dimension(200, 40));
@@ -135,7 +141,7 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 		constraints.ipadx = 1;
 		constraints.ipady = 1;
 		constraints.anchor = GridBagConstraints.NORTHWEST;
-	    //constraints.fill = GridBagConstraints.BOTH;
+	    constraints.fill = GridBagConstraints.BOTH;
 	    constraints.insets = new Insets(0, 0, 0, 0);
 		
 		panelDerecho.add(panelBuscar,constraints);
@@ -269,6 +275,8 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 	    constraints.weightx = 1;
 	    
 	    panelDerecho.add(scrollPanel, constraints);
+	
+
 
 	}
 
@@ -396,12 +404,19 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 	}
 
 	private void cancelarReserva() {
-		//windowManager.cancelarReserva();
+		try {
+			windowManager.cancelarReserva(numeroReserva);
+			resetDatos();
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
+		}
 		
 	}
+
 	
-	
-	private void llenarDatosReserva(int parseInt) {
+	protected void llenarDatosReserva(int parseInt) {
 		modeloTabla.getDataVector().removeAllElements();
 		modeloTabla.fireTableDataChanged();
 		
@@ -463,7 +478,8 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 	protected void actionPerformedFrame(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "Crear Reserva":
-			windowManager.mostraVentana(new EmpleadoCrearReservasFrame(windowManager));
+			((EmpleadoCrearReservasFrame) crearReservasFrame).estadoReserva();
+			windowManager.mostraVentana(crearReservasFrame);
 			break;
 		case "Cancelar Reserva":
 			cancelarReserva();
@@ -479,9 +495,10 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 
 	}
 
-	private void buscarReserva() {
+	protected void buscarReserva() {
 		try {
-			int grupo = Integer.parseInt(buscarJTextField.getText().replace(".", "").replace(",", ""));
+			int grupo = Integer.parseInt(((JTextField) idGrupo).getText().replace(".", "").replace(",", ""));
+			numeroReserva = grupo;
 			llenarDatosReserva(grupo);
 		}catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Ingrese un numero valido", "Error datos", JOptionPane.ERROR_MESSAGE);;
@@ -526,7 +543,19 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 
 	@Override
 	public void resetDatos() {
-		// TODO Auto-generated method stub
+		modeloTabla.getDataVector().removeAllElements();
+		modeloTabla.fireTableDataChanged();
+		
+
+		datos[0].setText("");
+		datos[1].setText("");
+		datos[2].setText("");
+		datos[3].setText("");
+		datos[4].setText("");
+		datos[5].setText("");
+		
+		modeloTabla.getDataVector().removeAllElements();
+		modeloTabla.fireTableDataChanged();
 		
 	}
 

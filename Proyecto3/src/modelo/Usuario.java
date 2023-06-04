@@ -18,15 +18,13 @@ public class Usuario implements Serializable{
 		this.area = area;
 	}
 	
-	public boolean iniciarSesion(String password) {
+	public void iniciarSesion(String password) throws Exception {
 		
-		boolean autent = false;
 		
-		if (this.password.equals(password)) {
-			autent = true;
+		if (!this.password.equals(password)) {
+			throw new Exception("Contraseña Incorrecta");
 		}
-		
-		return autent;
+			
 	}
 	
 	public void cerrarSesion() {
@@ -40,6 +38,10 @@ public class Usuario implements Serializable{
 	public static void cargarInformacion() {
 		hotel.cargarInformacion();
 
+	}
+	
+	public void borrarDatos() {
+		hotel.borrarDatos();
 	}
 	public static void setHoy(Date fecha) {
 		hotel.setHoy(fecha);
@@ -79,6 +81,11 @@ public class Usuario implements Serializable{
 			return false;
 		Usuario other = (Usuario) obj;
 		return Objects.equals(login, other.login) && Objects.equals(password, other.password);
+	}
+	
+	public String formatoFecha(Date date) {
+		return hotel.formatoFecha(date);
+		 
 	}
 	
 }

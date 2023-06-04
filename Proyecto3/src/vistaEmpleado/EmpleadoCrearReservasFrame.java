@@ -24,6 +24,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -59,6 +60,10 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 	public EmpleadoCrearReservasFrame(WindowManager windowManager) {
 
 		super(windowManager);
+		
+	}
+	
+	public void estadoReserva() {
 		if(windowManager.hayReserva()) {
 			JOptionPane.showMessageDialog(null, "Hay una reserva en curso");
 			fechaF.setEnabled(false);
@@ -206,6 +211,7 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.anchor = GridBagConstraints.NORTHWEST;
 		constraints.weighty = 0.1;
+		constraints.weightx = 1;
 	    
 	    
 	    panelDerecho.add(panelHabi, constraints);
@@ -423,6 +429,8 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 			return;
 
 		}
+		
+		
 	    selectHabitacion = new JFrame();
 	    selectHabitacion.setSize(new Dimension(700,500));
 	    selectHabitacion.setLocationRelativeTo(null);
@@ -457,7 +465,7 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 		modelodisponibles.fireTableDataChanged();
 		
 		boolean todas = true;
-		
+		int cantidad = 0;
 	    for (Habitacion habitacion:disponibles) {
 	    	int precioHabitacion;
 			try {
@@ -471,13 +479,17 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 		    	modelodisponibles.addRow(data);
 			} catch (Exception e) {
 				todas = false;
+				cantidad += 1;
 			}
 	    	
 	    }
 	    
 	    if (!todas) {
 	    	JOptionPane.showMessageDialog(null, "Algunas habitaciones no fueron mostradas por no tener tarifa", "Tarifa Faltantes", JOptionPane.ERROR_MESSAGE);;
-	    }
+	    } else if(disponibles.isEmpty() || disponibles.size() == cantidad) {
+	    	JOptionPane.showMessageDialog(null, "No hay habitaciones disponibles para esta fecha o categoria", "No hay habitaciones", JOptionPane.ERROR_MESSAGE);;
+	    	return;
+		}
 	    
 	    JScrollPane scrollPane = new JScrollPane(tablaDisponibles);
 	    selectHabitacion.add(scrollPane);
@@ -564,7 +576,7 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 	}
 	
 
-	private void crearReserva() {
+	protected void crearReserva() {
 		try {
 			int id = windowManager.getGrupoEnCurso().getId();
 			windowManager.completarReserva();

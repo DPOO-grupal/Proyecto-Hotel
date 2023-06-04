@@ -39,10 +39,10 @@ import vistaAdmin.FrameBaseInfo;
 import vistaEmpleado.EmpleadoMenuPrincipal;
 
 public class WindowManager {
-	private JFrame ventanaActual;
-	private JFrame menu;
-	private JFrame autenticacionFrame;
-	private Usuario usuarioActual;
+	protected JFrame ventanaActual;
+	protected JFrame menu;
+	protected JFrame autenticacionFrame;
+	protected Usuario usuarioActual;
 	private JFrame pruebas;
 		
 	
@@ -721,7 +721,8 @@ public class WindowManager {
 
 
 	public void borrarDatos() {
-		// TODO Auto-generated method stub
+		usuarioActual.borrarDatos();
+		volverMenu();
 		
 	}
 
