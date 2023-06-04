@@ -120,7 +120,7 @@ public class AdminTarifasFrame extends EmpleadoTarifasFrame implements KeyListen
 	private void borrarTarifa() {
 		if (!datos[0].getText().isBlank()) {
 			Date fecha = fechaMostrar[0].getDate();
-			TipoHabitacion tipo  = TipoHabitacion.valueOf( datos[0].getText());
+			TipoHabitacion tipo  = TipoHabitacion.valueOf( datos[0].getText().toUpperCase());
 			windowManager.borrarTarifa(fecha, tipo);
 			buscarTarifa();
 			
