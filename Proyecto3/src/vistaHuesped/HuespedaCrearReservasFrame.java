@@ -12,6 +12,7 @@ public class HuespedaCrearReservasFrame extends EmpleadoCrearReservasFrame {
 	public HuespedaCrearReservasFrame(HuespedManager huespedManager) {
 		super(huespedManager);
 		this.huespedManager = huespedManager;
+
 	}
 	
 	@Override
@@ -19,18 +20,29 @@ public class HuespedaCrearReservasFrame extends EmpleadoCrearReservasFrame {
 		try {
 			int id = huespedManager.getGrupoEnCurso().getId();
 			huespedManager.añadirReservaAHuesped(id);
-			System.out.println("HuespedaCrearReservasFrame.crearReserva()");
-			System.out.println(id);
 			huespedManager.completarReserva();
 			JOptionPane.showMessageDialog(null, "Su numero de Reserva es " + id);
 			volverMenu();
 		} catch (Exception e) {
-			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, e.getMessage());
 
 		}
 		
 	}
+	@Override
+	public void estadoReserva() {
+		super.estadoReserva();
+		if(!huespedManager.hayReserva()) {
+			huespedManager.reservaSoloConLider();
+			huespedManager.añadirLider();
+			resetDatos();
+
+		}
+		
+
+	}
+	
+	
 
 }
 

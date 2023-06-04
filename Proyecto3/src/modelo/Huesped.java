@@ -32,7 +32,7 @@ public class Huesped extends Usuario implements Serializable{
 	public Huesped(String login, String password, String documento, String nombre, String email, String telefono, int edad) {
 		super(login, password, "Huesped");
 		this.documento = documento;
-		this.nombre = nombre;
+		this.nombre = login;
 		this.email = email;
 		this.telefono = telefono;
 		this.edad = edad;
@@ -59,6 +59,27 @@ public class Huesped extends Usuario implements Serializable{
 		return edad;
 	}
 	
+	
+	public void setDocumento(String documento) {
+		this.documento = documento;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public void setEdad(int edad) {
+		this.edad = edad;
+	}
+
 	// INICIO RESERVAS ------------------------------------------
 	public ArrayList<Integer> idHuespedReservas() {
 		return hotel.idHuespedReservas();
@@ -66,6 +87,10 @@ public class Huesped extends Usuario implements Serializable{
 	
 	public void añadirReservaAHuesped(int idGrupo) {
 		hotel.añadirReservaAHuesped(idGrupo);
+	}
+	
+	public void reservaSoloConLider() {
+		hotel.reservaSoloConLider();
 	}
 	
 
@@ -150,7 +175,21 @@ public class Huesped extends Usuario implements Serializable{
 	
 	// FIN RESERVAS ---------------------------------------------
 
+	public Date getHoy() {
+		return hotel.getHoy();
+	}
 	
+	public Date pasarDia(Date dia) {
+		return hotel.pasarDia(dia);
+	}
+	
+	public Date pasarMes(Date dia, int i) {
+		return hotel.pasarMes(dia, i);
+	}
+	
+	public Date pasarAnno(Date start) {
+        return hotel.pasarAnno(start);
+    }
 	@Override
 	public int hashCode() {
 		return Objects.hash(documento, nombre);

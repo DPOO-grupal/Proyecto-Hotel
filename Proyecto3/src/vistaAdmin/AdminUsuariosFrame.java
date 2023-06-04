@@ -210,8 +210,8 @@ public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
 		panelCrear.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
 		panelCrear.setBackground(Color.decode("#204473"));
 		
-		datos = new JTextField[4];
-		String[] titulos = {"Nombre", "Contraseña", "Área", "Tipo"};
+		datos = new JTextField[3];
+		String[] titulos = {"Nombre", "Contraseña", "Área"};
 		
 		Font fontLabel = new Font("Arial", Font.BOLD, 20);
 
@@ -248,9 +248,12 @@ public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
 	    panelCrear.add(tipo, constraints);
 		
 		comboTipo = new JComboBox<>();
-		String[] opciones = {"", "Admin", "Empleado"};
+		String[] opciones = {"Admin", "Empleado", "Huesped"};
 		comboTipo.setPreferredSize(new Dimension(200, 30));
 		comboTipo = new JComboBox<>(opciones);
+		comboTipo.setSelectedIndex(-1);
+		comboTipo.setName("TiposUsuarios");
+		comboTipo.addActionListener(this);
 		constraints.gridx = 0;
 		constraints.gridy = (9);
 		constraints.ipady = (7);
@@ -273,16 +276,41 @@ public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
 	}
 	
 	public void agregarUsuario() {
+		for (int i = 0; i < datos.length; i++) {
+			if (datos[i].getText().isBlank()) {
+				JOptionPane.showMessageDialog(null, "Llene todos los datos");
+				return;
+			}
+		}
+		
+		if (comboTipo.getSelectedIndex() < 0) {
+			JOptionPane.showMessageDialog(null, "Llene todos los datos");
+			return;
+		}
+		
 		String login = datos[0].getText();
 		String password = datos[1].getText();
 		String area = datos[2].getText();
-		int tipo = comboTipo.getSelectedIndex();
-		windowManager.agregarUsuario(login, password, area, tipo);
+		int tipo = comboTipo.getSelectedIndex() + 1;
+		try {
+			windowManager.agregarUsuario(login, password, area, tipo);
+		} catch (Exception e) {
+			int opcion = JOptionPane.showConfirmDialog(null, "El usuario ya existe, ¿Desea editarlo?", "Error Agregar usuario", JOptionPane.YES_NO_OPTION);
+			if (opcion == JOptionPane.YES_OPTION ) {
+				try {
+					windowManager.agregarUsuario(login, password, area, tipo, true);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+		}
 		cargarDatos();
 		datos[0].setText("");
 		datos[1].setText("");
 		datos[2].setText("");
-		comboTipo.setSelectedIndex(0);
+		comboTipo.setSelectedIndex(-1);
 	}
 	
 	public void quitarUsuario() {
@@ -325,6 +353,18 @@ public class AdminUsuariosFrame extends FrameBaseInfo implements ActionListener{
 			break;
 
 		default:
+			if (comboTipo.getSelectedIndex()==2) {
+				datos[2].setText("Huesped");
+				datos[2].setEnabled(false);
+			}else {
+				if (datos[2].getText().equals("Huesped")) {
+					datos[2].setText("");
+				}
+				datos[2].setEnabled(true);
+
+
+			}
+			
 			break;
 		}
 	}
