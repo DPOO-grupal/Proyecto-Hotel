@@ -440,6 +440,11 @@ public class Hotel implements Serializable{
 	
 	public void cancelarReserva(int id) throws Exception {
 		Grupo grupo = grupos.get(id);
+		
+		if (grupo == null) {
+			throw new Exception("Debe primero buscar una reserva");
+		}
+		
 		Date fechaI = grupo.getReserva().getFechaI();
 		boolean cancelada = false;
 		
@@ -455,7 +460,7 @@ public class Hotel implements Serializable{
 		}
 		
 		if (!cancelada) {
-			Exception e = new Exception("No es posible cancelar la reserva");
+			Exception e = new Exception("No es posible cancelar la reserva, pues no está entre los tiempos de calcelación");
 			throw e;
 		}
 				

@@ -395,7 +395,6 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 			if (tabla.getName().equals("TablaTarifas")) {
 				int row = tablaTarifas.getSelectedRow();
 				String fechaString = ((String) tablaTarifas.getValueAt(row, 0));
-				System.out.println("EmpleadoTarifasFrame.mouseClicked()");
 				String tipo = (String) tablaTarifas.getValueAt(row, 2);
 				String precio = (String) tablaTarifas.getValueAt(row, 1);
 				Calendar calendar = Calendar.getInstance();

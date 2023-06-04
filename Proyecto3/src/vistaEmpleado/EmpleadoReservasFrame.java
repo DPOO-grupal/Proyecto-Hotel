@@ -396,7 +396,12 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 	}
 
 	private void cancelarReserva() {
-		//windowManager.cancelarReserva();
+		try {
+			windowManager.cancelarReserva(numeroReserva);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
+		}
 		
 	}
 	
@@ -482,6 +487,7 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 	private void buscarReserva() {
 		try {
 			int grupo = Integer.parseInt(buscarJTextField.getText().replace(".", "").replace(",", ""));
+			numeroReserva = grupo;
 			llenarDatosReserva(grupo);
 		}catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "Ingrese un numero valido", "Error datos", JOptionPane.ERROR_MESSAGE);;
