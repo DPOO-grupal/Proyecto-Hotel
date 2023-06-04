@@ -476,8 +476,10 @@ public class EmpleadoReservasFrame extends FrameBaseInfo implements MouseListene
 	}
 	@Override
 	protected void actionPerformedFrame(ActionEvent e) {
+		System.out.println("EmpleadoReservasFrame.actionPerformedFrame()");
 		switch (e.getActionCommand()) {
 		case "Crear Reserva":
+			System.out.println("Crear reserva");
 			((EmpleadoCrearReservasFrame) crearReservasFrame).estadoReserva();
 			windowManager.mostraVentana(crearReservasFrame);
 			break;

@@ -74,8 +74,8 @@ public class WindowManager {
 	}
 	
 	public Date getHoy() {
-		Empleado empleado = (Empleado) usuarioActual;
-		return empleado.getHoy();
+		Huesped huesped = (Huesped) usuarioActual;
+		return huesped.getHoy();
 	}
 
 	public void mostraVentana(JFrame ventana) {
@@ -160,7 +160,7 @@ public class WindowManager {
 		
 	}
 	
-	public void inciarSecion() {
+	public void inciarSecion() throws Exception {
 		if (usuarioActual.getClass() == Empleado.class) {
 			Empleado empleado = (Empleado) usuarioActual;
 			menu = new EmpleadoMenuPrincipal(this);
@@ -170,6 +170,8 @@ public class WindowManager {
 			Admin admin = (Admin) usuarioActual;
 			menu = new AdminMenuPrincipal(this);
 			mostraVentana(menu);
+		}else {
+			throw new Exception("Usuario invalido");
 		}
 	}
 	
@@ -205,11 +207,17 @@ public class WindowManager {
 		return lista;
 	}
 	
-	public void agregarUsuario(String login, String password, String area, int tipo) {
+	public void agregarUsuario(String login, String password, String area, int tipo, boolean sobreEscibir) throws Exception {
 		if (usuarioActual.getClass() == Admin.class) {
 			Admin admin = (Admin) usuarioActual;
-			admin.añadirUsuario(login, password, area, tipo); 
+			admin.añadirUsuario(login, password, area, tipo, sobreEscibir); 
 		}
+	}
+	
+
+	public void agregarUsuario(String login, String password, String area, int tipo) throws Exception {
+		agregarUsuario(login, password, area, tipo, false);
+		
 	}
 	
 	public void quitarUsuario(String nombre) {
@@ -370,12 +378,6 @@ public class WindowManager {
 		return admin.getHabitacion(id);
 	}
 	
-	public Date getDia() {
-		Empleado empleado = (Empleado) usuarioActual;
-		return empleado.getDia();
-				
-	}
-	
 	public int contarOcupadasDia(Date dia) {
 		Empleado empleado = (Empleado) usuarioActual;
 		return empleado.contarOcupadasDia(dia);
@@ -483,7 +485,7 @@ public class WindowManager {
 		return tipo;
 	}
 	
-	// Reservas
+
 		
 	public HashMap<Integer, ProductoMenu> getMenu() {
 		Empleado empleado = (Empleado)usuarioActual;
@@ -510,40 +512,7 @@ public class WindowManager {
 		return date;
 	}
 	
-	public ArrayList<Habitacion> DiponiblesParaGrupoEnCurso(TipoHabitacion tipo) throws Exception {
-		Empleado empleado = (Empleado) usuarioActual;
-		return empleado.DiponiblesParaGrupoEnCurso(tipo);
-	}
-	
-	public void llenarHabitaciones(int idHabitacion) throws Exception {
-		Empleado empleado = (Empleado) usuarioActual;
-		empleado.añadirHabitacion(idHabitacion);
-	}
 
-	public void llenarHuespeds(String documento, String nombre, String email, String telefono, int edad) throws Exception {
-		Empleado empleado = (Empleado) usuarioActual;
-		empleado.añadirHuesped(documento, nombre, email, telefono, edad);;
-	}
-	
-	public int getPrecioHabitacionReserva(Habitacion habitacion) throws Exception {
-		Empleado empleado = (Empleado) usuarioActual;
-		return (int)empleado.getPrecioHabitacionReserva(habitacion);
-	}
-	
-	public void crearReserva(Date fechaI, Date fechaF) throws Exception {
-		Empleado empleado = (Empleado) usuarioActual;
-		empleado.crearReserva(fechaI, fechaF);
-	}
-	
-	public void cambiarFechaReserva(Date fechaI, Date fechaF) throws Exception {
-		Empleado empleado = (Empleado) usuarioActual;
-		empleado.cambiarFechaReserva(fechaI, fechaF);
-	}
-	public void completarReserva() throws Exception {
-		Empleado empleado = (Empleado) usuarioActual;
-		empleado.completarReserva();
-	}
-	
 	// Tarifas
 	public Collection<Tarifa> consultarTarifas(Date fechaI, Date fechaF) {
 		return ((Empleado) usuarioActual).consultarTarifas(fechaI, fechaF);
@@ -588,23 +557,96 @@ public class WindowManager {
 
 	// FinTarifas
 	
+	// inicio Reservas
+	public HashMap<Integer,Grupo> mostrarReservas(Date fechaI, Date fechaF) throws Exception {
+		Huesped huesped = (Huesped) usuarioActual;
+		
+		return huesped.mostrarReservas(fechaI, fechaF);
+	}
+	public Grupo getGrupo(int id) throws Exception {
+		Huesped huesped = (Huesped) usuarioActual;
+		return huesped.getGrupo(id);
+	}
+	public ArrayList<Integer> getArrayHabitaciones() {
+		Huesped huesped = (Huesped) usuarioActual;
+		return huesped.getArrayHabitaciones();
+	}
 	
-	public ArrayList<Integer> getListaHabitacionesGrupo() {
-		Empleado empleado = (Empleado) usuarioActual;
-
-		return empleado.getListaHabitacionesGrupo();
+	public void cancelarReserva(int id) throws Exception {
+		Huesped huesped = (Huesped) usuarioActual;
+		huesped.cancelarReserva(id);
+		
 	}	
-	public ArrayList<Huesped> getHuespedesGrupoEnCurso() {
-		Empleado empleado = (Empleado) usuarioActual;
-
-		return empleado.getHuespedesGrupoEnCurso();
+	
+	public void crearReserva(Date fechaI, Date fechaF) throws Exception {
+		Huesped huesped = (Huesped) usuarioActual;
+		huesped.crearReserva(fechaI, fechaF);
+	}
+	
+	public void cambiarFechaReserva(Date fechaI, Date fechaF) throws Exception {
+		Huesped huesped = (Huesped) usuarioActual;
+		huesped.cambiarFechaReserva(fechaI, fechaF);
+	}
+	public void completarReserva() throws Exception {
+		Huesped huesped = (Huesped) usuarioActual;
+		huesped.completarReserva();
 	}
 	
 	public boolean hayReserva() {
-		Empleado empleado = (Empleado) usuarioActual;
-
-		return empleado.hayReserva();
+		Huesped huesped = (Huesped) usuarioActual;
+		
+		return huesped.hayReserva();
 	}
+	
+	public ArrayList<Habitacion> DiponiblesParaGrupoEnCurso(TipoHabitacion tipo) throws Exception {
+		Huesped huesped = (Huesped) usuarioActual;
+		return huesped.DiponiblesParaGrupoEnCurso(tipo);
+	}
+	public int getPrecioHabitacionReserva(Habitacion habitacion) throws Exception {
+		Huesped huesped = (Huesped) usuarioActual;
+		return (int)huesped.getPrecioHabitacionReserva(habitacion);
+	}
+	
+	public void llenarHabitaciones(int idHabitacion) throws Exception {
+		Huesped huesped = (Huesped) usuarioActual;
+		huesped.añadirHabitacion(idHabitacion);
+	}
+	public ArrayList<Integer> getListaHabitacionesGrupo() {
+		Huesped huesped = (Huesped) usuarioActual;
+		
+		return huesped.getListaHabitacionesGrupo();
+	}	
+
+	public void llenarHuespeds(String documento, String nombre, String email, String telefono, int edad) throws Exception {
+		Huesped huesped = (Huesped) usuarioActual;
+		huesped.añadirHuesped(documento, nombre, email, telefono, edad);;
+	}
+	
+
+	
+	public ArrayList<Huesped> getHuespedesGrupoEnCurso() {
+		Huesped huesped = (Huesped) usuarioActual;
+
+		return huesped.getHuespedesGrupoEnCurso();
+	}
+	
+	public void forzarCancelarReserva() {
+		Huesped huesped = (Huesped) usuarioActual;
+		huesped.forzarCancelarReserva();
+		
+	}
+	
+	public Grupo getGrupoEnCurso() {
+		Huesped huesped = (Huesped) usuarioActual;
+		return huesped.getGrupoEnCurso();
+	}
+	
+	public String getCaracteristicas(Integer ID) {
+		Huesped huesped = (Huesped) usuarioActual;
+		return huesped.getCaracteristicasHabitacion(ID);
+	}
+	// fin reservas
+
 	
 	public boolean validarCheckIn(Grupo grupo) {
 		Date fechaI = grupo.getReserva().getFechaI();
@@ -625,56 +667,18 @@ public class WindowManager {
 		}
 		return resultado;
 	}
-	
-	public void forzarCancelarReserva() {
-		Empleado empleado = (Empleado) usuarioActual;
-		empleado.forzarCancelarReserva();
-		
-	}
-	
-	public void cancelarReserva(int id) throws Exception {
-		Empleado empleado = (Empleado) usuarioActual;
-		empleado.cancelarReserva(id);
-		
-	}	
-	
-	public HashMap<Integer,Grupo> mostrarReservas(Date fechaI, Date fechaF) throws Exception {
-		Empleado empleado = (Empleado) usuarioActual;
 
-		return empleado.mostrarReservas(fechaI, fechaF);
-	}
-	
-	
-	public Grupo getGrupo(int id) throws Exception {
-		Empleado empleado = (Empleado) usuarioActual;
-		return empleado.getGrupo(id);
-	}
-	
-	public ArrayList<Integer> getArrayHabitaciones() {
-		Empleado empleado = (Empleado) usuarioActual;
-		return empleado.getArrayHabitaciones();
-	}
 	
 	public String formatoFecha(Date date) {
 		Empleado empleado = (Empleado) usuarioActual;
 		return empleado.formatoFecha(date);
 	}
 	
-	public String getCaracteristicas(Integer ID) {
-		Empleado empleado = (Empleado) usuarioActual;
-		return empleado.getCaracteristicasHabitacion(ID);
-	}
-	
-	public Grupo getGrupoEnCurso() {
-		Empleado empleado = (Empleado) usuarioActual;
-		return empleado.getGrupoEnCurso();
-	}
 	
 	public Grupo checkOut(int idGrupo) {
 		Empleado empleado = (Empleado) usuarioActual;
 		return empleado.checkOut(idGrupo);
 	}
-	// fin reservas
 	
 	public static void main(String[] args) {
 		
@@ -719,6 +723,8 @@ public class WindowManager {
 		volverMenu();
 		
 	}
+
+
 
 
 

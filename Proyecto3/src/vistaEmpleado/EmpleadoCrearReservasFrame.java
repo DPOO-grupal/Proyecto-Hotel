@@ -40,6 +40,7 @@ import javax.swing.text.NumberFormatter;
 import org.jdesktop.swingx.JXDatePicker;
 
 import controlador.WindowManager;
+import modelo.Grupo;
 import modelo.Habitacion;
 import modelo.Huesped;
 import modelo.TipoHabitacion;
@@ -54,8 +55,8 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 	private JButton cancelarReserva;
 	private JTextField numHabitacion;
 	private JFrame selectHabitacion;
-	private JXDatePicker fechaI;
-	private JXDatePicker fechaF;
+	protected JXDatePicker fechaI;
+	protected JXDatePicker fechaF;
 
 	public EmpleadoCrearReservasFrame(WindowManager windowManager) {
 
@@ -66,9 +67,7 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 	public void estadoReserva() {
 		if(windowManager.hayReserva()) {
 			JOptionPane.showMessageDialog(null, "Hay una reserva en curso");
-			fechaF.setEnabled(false);
-			fechaI.setEnabled(false);
-		};
+		}
 	}
 
 	protected void setPanelInfo() {
@@ -562,7 +561,7 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 		
 	}
 
-	private void EstablecerFecha() {
+	protected void establecerFecha() {
 		try {
 			fechasValidas(fechaI.getDate(),fechaF.getDate());
 			fechaF.setEnabled(false);
@@ -611,7 +610,7 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 			cambiarFecha();
 			break;
 		case "Establecer Fecha":
-			EstablecerFecha();
+			establecerFecha();
 			break;
 		case "Crear Reserva":
 			crearReserva();
@@ -669,7 +668,34 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 
 	@Override
 	public void resetDatos() {
-		// TODO Auto-generated method stub
+		if(windowManager.hayReserva()) {
+			Grupo grupo = windowManager.getGrupoEnCurso();
+			Date dateI =  grupo.getReserva().getFechaI();
+			if (dateI == null) {
+				fechaI.setDate( windowManager.getHoy());
+				fechaI.setEnabled(true);
+
+			}else {
+				fechaI.setDate(dateI);
+				fechaI.setEnabled(false);
+
+			}
+			
+			Date dateF =  grupo.getReserva().getFechaI();
+			if (dateI == null) {
+				fechaF.setDate( windowManager.getHoy());
+				fechaF.setEnabled(true);
+				
+			}else {
+				fechaF.setDate(dateF);
+				fechaF.setEnabled(false);
+
+			}
+			
+			
+		}
+		
+		llenarTablaReserva();
 		
 	}
 

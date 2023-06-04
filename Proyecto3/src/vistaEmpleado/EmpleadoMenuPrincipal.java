@@ -212,7 +212,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
   	//Creacion de la tabla servicios
   		String[] columnasAnual = new String[12]; //Nombre de las columnas
   		String[] meses = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
-  		Date dia = windowManager.getDia();
+  		Date dia = windowManager.getHoy();
   		for (int i = 0 ; i < 12 ; i++) {
   			String mes = meses[windowManager.pasarMes(dia, i).getMonth()];
   			columnasAnual[i] = mes;
@@ -540,7 +540,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	public void ocupacionAnual() {
 //		modeloTablaAnual.getDataVector().removeAllElements();
 //		modeloTablaAnual.fireTableDataChanged();
-		Date dia = windowManager.getDia();
+		Date dia = windowManager.getHoy();
 		for (int i = 0 ; i < 12 ; i++) {
 			int ocupacionesMes = 0;
 			int cantidadDias = hastaFinMes(dia);
