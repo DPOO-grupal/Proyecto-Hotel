@@ -9,7 +9,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
@@ -27,11 +26,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import Pagos.PagosFrame;
 import controlador.WindowManager;
 import modelo.Grupo;
 import modelo.Reserva;
@@ -59,13 +58,12 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	protected JFrame reservasFrame;
 	protected JPanel panelHoy;
 	protected JButton pagar;
-	protected JFrame formasDePagoFrame;
 	private JComboBox boxHabitaciones;
 	private JPanel panelCheckIn;
 	private JButton okCheckIn;
 	private JFrame frameCheckIn;
 	private JFrame frameFactura;
-	private static Double precioTotalFactura;
+	private JFrame PagosFrame;
 
 	public EmpleadoMenuPrincipal(WindowManager windowManager){
         setLayout(new BorderLayout());
@@ -88,14 +86,12 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 
 		// FRAMES
 		
-        precioTotalFactura = 0.0;
 		tarifasFrame = new EmpleadoTarifasFrame(windowManager);
 		serviciosFrame = new EmpleadoServiciosFrame(windowManager);
 		reservasFrame = new EmpleadoReservasFrame(windowManager);
 		serviciosFrame = new EmpleadoServiciosFrame(windowManager);
 		habitacionesFrame = new EmpleadoHabitacionesFrame(windowManager);
 		restauranteFrame = new EmpleadoRestauranteFrame(windowManager);
-		formasDePagoFrame = new FormasDePagoFrame(windowManager);
 		
 		ocupacionHoy();
 		ocupacionAnual();
@@ -419,7 +415,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		
 
 		
-		precioTotalFactura = 0.0;
+		//precioTotalFactura = 0.0;
 		
 		
 		HashMap<Servicio, Integer> listaServiciosGrupo = new HashMap<>();
@@ -463,6 +459,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		panelPrincipal.add(tituloPrecio);
 		
 		
+		double precioTotalFactura = 0;
 		for (Servicio servicioHabitacion : listaServiciosGrupo.keySet()) {
 			int cantidad = listaServiciosGrupo.get(servicioHabitacion);
 			JLabel nombreServicio = new JLabel(servicioHabitacion.getNombre()+" x"+cantidad);
@@ -520,6 +517,8 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		
 		frameFactura.add(scroll);
 		frameFactura.setVisible(true);
+		
+		PagosFrame = new PagosFrame(windowManager, precioTotalFactura);
 	}
 	
 	public void colorearTablaAnio(int i, Color color, String cantidad) {
@@ -710,14 +709,6 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		ocupacionAnual();
 		revalidate();
 	}
-	
-	public static double getPrecioTotalFactura() {
-		return precioTotalFactura;
-	}
-	
-	public static void setPrecioTotalFactura(double precioTotal) {
-		 precioTotalFactura=precioTotal;
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -806,7 +797,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 			break;
 			
 		case "Pagar":
-			windowManager.mostraVentanaPagos(formasDePagoFrame);
+			windowManager.mostraVentanaPagos(PagosFrame);
 			frameFactura.setLocation(60, 70);
 			frameFactura.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 			break;

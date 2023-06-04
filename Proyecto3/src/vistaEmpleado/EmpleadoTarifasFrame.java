@@ -328,7 +328,6 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 		try {
 			fechasValidas(dateI, dateF);
 			Collection<Tarifa> tarifasColl = windowManager.consultarTarifas(dateI, dateF);
-			System.out.println("Las tarifas son " + tarifasColl.size());
 			llenarTabla(tarifasColl);
 		} catch (Exception e) {
 			fechaBusqueda[0].setDate(windowManager.getHoy());
@@ -395,7 +394,6 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 			if (tabla.getName().equals("TablaTarifas")) {
 				int row = tablaTarifas.getSelectedRow();
 				String fechaString = ((String) tablaTarifas.getValueAt(row, 0));
-				System.out.println("EmpleadoTarifasFrame.mouseClicked()");
 				String tipo = (String) tablaTarifas.getValueAt(row, 1);
 				String precio = (String) tablaTarifas.getValueAt(row, 2);
 				Calendar calendar = Calendar.getInstance();

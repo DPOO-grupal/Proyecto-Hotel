@@ -604,7 +604,6 @@ public class AdminHabitacionesFrame extends EmpleadoHabitacionesFrame implements
 		
 		Habitacion habitacion = windowManager.getHabitacion(ID);
 		String caracteristics = habitacion.getCaracteristicas().substring(29, habitacion.getCaracteristicas().length()-1);
-		System.out.println(caracteristics);
 		String[] caracteristicas = caracteristics.split(", ");
 		TipoHabitacion tipo = habitacion.getTipoHabitacion();
 		cargarTablaECamas(ID);

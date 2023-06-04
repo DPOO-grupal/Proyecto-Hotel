@@ -367,7 +367,6 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 			NumberFormat nf= NumberFormat.getInstance();
 			nf.setMaximumFractionDigits(0);
 		    String precioS = nf.format(precio);
-		    //precioS = precioS.substring(0, precioS.length()-3);
 			modeloTablaMenu.addRow(new Object[]{nombre, precioS, "ICON"});
 		}
 		
@@ -537,7 +536,6 @@ public class EmpleadoRestauranteFrame extends FrameBaseInfo implements MouseList
 				String nombre = tablaOrden.getValueAt(rowOrd, columnOrd).toString();
 				String[] splited = nombre.split(" ", 2);
 				String nombreOrden = splited[1];
-				System.out.println(nombreOrden);
 				double precioOrden = Double.parseDouble(getPrecio(nombreOrden));
 				DecimalFormat df = new DecimalFormat("#,###.00");
 		        String precio = df.format(precioOrden);

@@ -231,7 +231,6 @@ public class Hotel implements Serializable{
 			calendar.setTime(tarifa.getFechaDate());
 			
 			int diaSemana = (calendar.get(Calendar.DAY_OF_WEEK)+5)%7;
-			System.out.println("dia: " + diaSemana+ "Estado: " + diasValores[diaSemana]);
 			if (diasValores[diaSemana]) {
 				try {
 					tarifa.updatePrecio(tipo, valor);
@@ -265,8 +264,6 @@ public class Hotel implements Serializable{
 			try {
 				tarifa.updatePrecio(tipo, valor);
 			} catch (Exception e) {
-				System.out.println("Hotel.crearTarifasSobreFechas()");
-				System.out.println(e.getMessage());
 				tarifasFaltantes.add(tarifa);
 			}
 		}
@@ -491,8 +488,6 @@ public class Hotel implements Serializable{
 		}
 		;
 		resultado =(grupoEnCurso.getvRelativo() <= grupoEnCurso.getCapacidadCamas());
-		System.out.println(grupoEnCurso.getvRelativo());
-		System.out.print(grupoEnCurso.getCapacidadCamas());
 		
 		if(resultado) {
 			
@@ -887,25 +882,14 @@ public class Hotel implements Serializable{
 		//return r;
 	}
 	public void printOcupados() {
-		//System.out.println("------------INICIO LLAVES------------");
 		Set<Date> keyss = ocupados.keySet();
 		for (Date dia : keyss) {
-			System.out.println("Dia " + dia.toString());
 		}
-		//System.out.println("------------FIN LLAVES------------");
 	}
 	
 	public int contarOcupadasDia(Date diaX) {
-//		diaX.setHours(0);
-//		diaX.setMinutes(0);
-//		diaX.setSeconds(0);
-//		GregorianCalendar gregorianCalendar = new GregorianCalendar();
-//        gregorianCalendar.setTime(diaX);
-//        System.out.println("LA LLAVE ACTUAL ES: " + diaX.toString() + "///////////////////////////////////////////////////////");
-//        printOcupados();
 		HashMap<Integer, Integer> mapa = ocupados.get(diaX);
 		if (mapa == null) {
-			//System.out.println("Null");
 			return 0;	
 		}
 		else {

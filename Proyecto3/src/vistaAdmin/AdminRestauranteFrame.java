@@ -250,7 +250,6 @@ public class AdminRestauranteFrame extends EmpleadoRestauranteFrame implements M
 					}
 			}
 		} catch (Exception e) {
-			System.err.println(e); 
 			JOptionPane.showMessageDialog(null, "Debes llenar todos los espacios");
 		}
 		

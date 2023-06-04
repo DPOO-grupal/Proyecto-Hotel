@@ -1,6 +1,5 @@
 package controlador;
 
-import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.LocalTime;
@@ -32,7 +31,6 @@ import modelo.Servicio;
 import modelo.Tarifa;
 import modelo.TipoHabitacion;
 import modelo.Usuario;
-import vistaAdmin.AdminHabitacionesFrame;
 import vistaAdmin.AdminMenuPrincipal;
 import vistaAdmin.AutenticacionFrame;
 import vistaAdmin.FrameBaseInfo;
