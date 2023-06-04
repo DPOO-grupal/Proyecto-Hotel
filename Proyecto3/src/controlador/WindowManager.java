@@ -130,7 +130,7 @@ public class WindowManager {
 		}
 		
 		// configuraciones generales
-		ventanaActual.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		ventanaActual.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		ventanaActual.setResizable(false);
 		ventanaActual.setVisible(true);
 		
@@ -681,21 +681,6 @@ public class WindowManager {
         if (opcion == JOptionPane.YES_OPTION) {
         	try {
     			windowManager.autenticar("root", "Cookie");
-    			
-    			//Date pruebaI = new Date();
-    			//Date pruebaF = new Date();
-    			
-    			//Calendar cal = Calendar.getInstance();
-    	        //cal.setTime(pruebaI);
-    	        //cal.add(Calendar.DAY_OF_MONTH, 1);
-    	        //pruebaF = cal.getTime();
-    	        
-    			//String[] nombres = {"Juanes"};
-    			//String[] documentos = {"1000252720"};
-    			//String[] emails = {"Juanes@gmail.com"};
-    			//String[] telefonos = {"3005628702"};
-    			//int[] edades = {19};
-    			//windowManager.cargarReserva(pruebaI, pruebaF, 1, nombres, documentos, emails, telefonos, edades);
     		
         	} catch (Exception e) {
     			// TODO Auto-generated catch block

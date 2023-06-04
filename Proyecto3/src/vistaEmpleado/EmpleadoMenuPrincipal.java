@@ -408,6 +408,8 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		frameFactura.setLocationRelativeTo(null);
 		frameFactura.setLayout(new GridLayout(1,0,0,0));
 		frameFactura.setBackground(Color.decode("#ccd2c2"));
+		frameFactura.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
 
 		
 		double precioTotalFactura = 0;
@@ -472,6 +474,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		panelPrincipal.add(reserva);
 		
 		JLabel precioReser = new JLabel(precioReserva+"");
+		precioTotalFactura+=precioReserva;
 		panelPrincipal.add(precioReser);
 		
 		JLabel tituloPagado = new JLabel("SALDO PAGADO");

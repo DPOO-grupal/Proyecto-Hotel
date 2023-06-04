@@ -7,22 +7,25 @@ import controlador.WindowManager;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class FormasDePagoFrame extends JFrame implements ActionListener{
 
-    private JRadioButton efectivo;
-    private JRadioButton visa;
-    private JRadioButton mastercard;
-    private JRadioButton dinersClub;
-    private JRadioButton americanExpress;
-	private JButton cancelar;
+    private JButton cancelar;
 	private JButton continuar;
+	private ArrayList<String> listaDePagos;
+	private JRadioButton formaDePago;
 
     public FormasDePagoFrame(WindowManager windowManager) {
         setTitle("Formas de pago");
         setSize(600, 500);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+        listaDePagos = new ArrayList<>();
+        listaDePagos.add("Visa");
+        listaDePagos.add("Mastercard");
+        listaDePagos.add("American Express");
+        listaDePagos.add("Diners Club");
         panelOpcionesPagos();
         panelValorFactura();
         panelBotones();
@@ -38,35 +41,16 @@ public class FormasDePagoFrame extends JFrame implements ActionListener{
         JLabel titlePago = new JLabel("SELECCIONE UNA FORMA DE PAGO");
         titlePago.setFont(new Font("arial", 1, 18));
         panelPagos.add(titlePago);
-
-        visa = new JRadioButton("Visa");
-        visa.setFont(new Font("arial", Font.PLAIN, 20));
-        visa.addActionListener(this);
-        panelPagos.add(visa);
-
-        mastercard = new JRadioButton("Mastercard");
-        mastercard.setFont(new Font("arial", Font.PLAIN, 20));
-        mastercard.addActionListener(this);
-        panelPagos.add(mastercard);
-
-        americanExpress = new JRadioButton("American Express");
-        americanExpress.setFont(new Font("arial", Font.PLAIN, 20));
-        americanExpress.addActionListener(this);
-        panelPagos.add(americanExpress);
         
-        dinersClub = new JRadioButton("Diners Club");
-        dinersClub.setFont(new Font("arial", Font.PLAIN, 20));
-        dinersClub.addActionListener(this);
-        panelPagos.add(dinersClub);
+        ButtonGroup grupoBotonesPago = new ButtonGroup();
+        for (String nombrePago : listaDePagos) {
+        	formaDePago = new JRadioButton(nombrePago);
+        	grupoBotonesPago.add(formaDePago);
+        	formaDePago.setFont(new Font("arial", Font.PLAIN, 20));
+        	formaDePago.addActionListener(this);
+            panelPagos.add(formaDePago);
+		}
         
-
-        ButtonGroup buttonGroup = new ButtonGroup();
-        buttonGroup.add(visa);
-        buttonGroup.add(mastercard);
-        buttonGroup.add(americanExpress);
-        buttonGroup.add(dinersClub);
-
-
         add(panelPagos, BorderLayout.CENTER);
 	}
     
