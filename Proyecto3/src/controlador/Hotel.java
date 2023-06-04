@@ -37,6 +37,7 @@ public class Hotel implements Serializable{
 	private TreeMap<Date, HashMap<Integer, Integer>> ocupados;
 	private Grupo grupoEnCurso;
 	private HashMap<Integer, Grupo> grupos;
+	private HashMap<Usuario, ArrayList<Integer>> huespedReservas;
 	private TreeMap<Date, Tarifa> tarifas;
 	private Persistencia datos;
 	private HashMap<String, Usuario> usuarios;
@@ -57,6 +58,7 @@ public class Hotel implements Serializable{
 		serviciosHotel = new HashMap<Integer, Servicio>();
 		restaurante= new Restaurante();
 		ocupados = new TreeMap<Date, HashMap<Integer, Integer>>(); // <Date, <ID habitacion, ID grupo>
+		huespedReservas = new HashMap<Usuario, ArrayList<Integer>>();
 	}
 	
 	
@@ -75,7 +77,6 @@ public class Hotel implements Serializable{
 	public void autenticar(String login, String password) throws Exception {
 		
 		Usuario usuarioActual = null;
-		Exception e = new Exception("el usuario no existe");
 
 		usuarioActual = usuarios.get(login);
 		
@@ -84,7 +85,7 @@ public class Hotel implements Serializable{
 			this.usuarioActual = usuarioActual;
 		
 		} else {
-			throw e;
+			throw new Exception("el usuario no existe");
 		}
 
 	}
@@ -442,7 +443,7 @@ public class Hotel implements Serializable{
 		Grupo grupo = grupos.get(id);
 		
 		if (grupo == null) {
-			throw new Exception("Debe primero buscar una reserva");
+			throw new Exception("Numero de reserva invalido");
 		}
 		
 		Date fechaI = grupo.getReserva().getFechaI();
@@ -454,7 +455,13 @@ public class Hotel implements Serializable{
 		fechaI = volverDia(fechaI);
 		
 		if(hoy.before(fechaI)) {
+			
+			for(int habitacion: grupo.getListaHabitaciones()) {
+				ocupados.remove(habitacion);
+			}
+			
 			grupos.remove(id);
+			
 			cancelada = true;
 			
 		}
@@ -712,8 +719,8 @@ public class Hotel implements Serializable{
 			data(hotelDatos);
 		} else {
 			inicializarTarifas();
-			añadirUsuario("root", "Cookie", "Lobby", 1);
-			añadirUsuario("E1", "Empleado", "Lobby", 1);
+			añadirUsuario("root", "Cookie", "Admin", 1);
+			añadirUsuario("E1", "E1", "Empleado", 2);
 		}
 				
 	}
@@ -734,8 +741,11 @@ public class Hotel implements Serializable{
 		setRestaurante(hotelDatos.getRestaurante());
 		
 		setServiciosHotel(hotelDatos.getServiciosHotel());
+		
+		setHuespedReservas(hotelDatos.getHuespedReservas());
 	}
-	
+
+
 	public void guardarInformacion() {
 		Hotel hotel = new Hotel();
 		hotel.setHoy(hoy);
@@ -842,6 +852,14 @@ public class Hotel implements Serializable{
 		
 		this.usuarioActual = usuarioActual;
 	}
+	
+	public HashMap<Usuario, ArrayList<Integer>> getHuespedReservas() {
+		return huespedReservas;
+	}
+
+	public void setHuespedReservas(HashMap<Usuario, ArrayList<Integer>> huespedReservas) {
+		this.huespedReservas = huespedReservas;
+	}
 
 
 	public Date getHoy() {
@@ -926,8 +944,35 @@ public class Hotel implements Serializable{
 	}
 
 	public void borrarDatos() {
-		// TODO Auto-generated method stub
+		grupos = new HashMap <Integer, Grupo>();
+		tarifas = new TreeMap<Date, Tarifa>();
+		habitaciones = new HashMap<Integer, Habitacion>();
+		serviciosHotel = new HashMap<Integer, Servicio>();
+		restaurante= new Restaurante();
+		ocupados = new TreeMap<Date, HashMap<Integer, Integer>>(); // <Date, <ID habitacion, ID grupo>
+				
+	}
+
+	public ArrayList<Integer> idHuespedReservas() {
+		System.out.println("Hotel.idHuespedReservas()");
+		ArrayList<Integer> ids = huespedReservas.get(usuarioActual);
+		if (ids == null) {
+			ids = new ArrayList<Integer>();
+		}
 		
+		return ids;
+	}
+	
+	public void añadirReservaAHuesped(int idGrupo) {
+		System.out.println("Hotel.añadirReservaAHuesped()");
+		ArrayList<Integer> ids = huespedReservas.get(usuarioActual);
+		if (ids == null) {
+			ids = new ArrayList<Integer>();
+			System.out.println("Ids Nulo");
+		}
+		System.out.println(idGrupo);
+		ids.add(idGrupo);
+		huespedReservas.put(usuarioActual, ids);
 	}
 
 

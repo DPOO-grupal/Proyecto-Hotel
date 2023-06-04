@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 
-public class Empleado extends Usuario  {
+public class Empleado extends Huesped  {
 	
 	public Empleado (String login, String password, String area) {
 		super(login, password, area);
@@ -20,93 +20,6 @@ public class Empleado extends Usuario  {
 	}
 	
 // FIN TARIFAS ---------------------------------------------
-
-// INICIO RESERVAS ------------------------------------------
-
-	public HashMap<Integer,Grupo> mostrarReservas(Date fechaI, Date fechaF) throws Exception {
-		return hotel.mostrarReservas(fechaI, fechaF);
-	}
-	
-	public Grupo getGrupo(int id) throws Exception {
-		return hotel.getGrupo(id);
-	}
-	
-	public ArrayList<Integer> getArrayHabitaciones() {
-		return hotel.getArrayHabitaciones();
-	}
-	
-	public void cancelarReserva(int id) throws Exception {
-		hotel.cancelarReserva(id);
-		
-	}	
-	
-	public void crearReserva(Date fechaI, Date fechaF) throws Exception {
-		hotel.crearReserva(fechaI, fechaF);
-	}
-	
-	public void cambiarFechaReserva(Date fechaI, Date fechaF) throws Exception {
-		hotel.cambiarFechaReserva(fechaI, fechaF);
-				
-	}
-	
-	
-	public void añadirHuesped(String documento, String nombre, String email, String telefono, int edad) throws Exception {
-		hotel.añadirHuesped(documento,nombre, email,telefono,edad);
-	}
-	public void añadirHabitacion(int idHabi) throws Exception {
-		hotel.añadirHabitacionReserva(idHabi);
-	}
-
-	public void completarReserva() throws Exception {
-		hotel.completarReserva();
-	}
-	
-	public boolean hayReserva() {
-		Grupo grupo = hotel.getGrupoEnCurso();
-		if (grupo==null) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-	
-	public ArrayList<Habitacion> DiponiblesParaGrupoEnCurso(TipoHabitacion tipo) throws Exception {
-		return hotel.DiponiblesParaGrupoEnCurso(tipo);
-		
-	}
-	
-	public double getPrecioHabitacionReserva(Habitacion habitacion) throws Exception {
-		return hotel.getPrecioHabitacionReserva(habitacion);
-	}
-	
-	public int getIdGrupo() {
-		return hotel.getGrupoEnCurso().getId();
-	}
-	
-	public ArrayList<Integer> getListaHabitacionesGrupo() {
-		return hotel.getListaHabitacionesGrupo();
-	}	
-	public ArrayList<Huesped> getHuespedesGrupoEnCurso() {
-		return hotel.getHuespedesGrupoEnCurso();
-	}
-	
-	public Grupo getGrupoEnCurso() {
-		return hotel.getGrupoEnCurso();
-	}
-	public void forzarCancelarReserva() {
-		hotel.setGrupoEnCurso(null);
-	}
-	
-	public String formatoFecha(Date date) {
-		return hotel.formatoFecha(date);
-		 
-	}
-	
-	public String getCaracteristicasHabitacion(Integer ID) {
-		return hotel.getCaracteristicasHabitacion(ID);
-	}
-	
-// FIN RESERVAS ---------------------------------------------
 
 //INICIO SERVICIOS HOTEL -----------------------------------------------------
 	
@@ -195,5 +108,7 @@ public class Empleado extends Usuario  {
 	public Date pasarMes(Date dia, int i) {
 		return hotel.pasarMes(dia, i);
 	}
+
+
 
 }

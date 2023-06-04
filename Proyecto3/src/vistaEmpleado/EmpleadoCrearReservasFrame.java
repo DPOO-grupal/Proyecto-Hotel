@@ -20,6 +20,7 @@ import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -54,6 +55,10 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 	public EmpleadoCrearReservasFrame(WindowManager windowManager) {
 
 		super(windowManager);
+		
+	}
+	
+	public void estadoReserva() {
 		if(windowManager.hayReserva()) {
 			JOptionPane.showMessageDialog(null, "Hay una reserva en curso");
 			fechaF.setEnabled(false);
@@ -560,7 +565,7 @@ public class EmpleadoCrearReservasFrame extends FrameBaseInfo implements MouseLi
 	}
 	
 
-	private void crearReserva() {
+	protected void crearReserva() {
 		try {
 			int id = windowManager.getGrupoEnCurso().getId();
 			windowManager.completarReserva();
