@@ -9,7 +9,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
@@ -27,11 +26,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import Pagos.PagosFrame;
 import controlador.WindowManager;
 import modelo.Grupo;
 import modelo.Reserva;
@@ -59,12 +58,12 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	protected JFrame reservasFrame;
 	protected JPanel panelHoy;
 	protected JButton pagar;
-	protected JFrame formasDePagoFrame;
 	private JComboBox boxHabitaciones;
 	private JPanel panelCheckIn;
 	private JButton okCheckIn;
 	private JFrame frameCheckIn;
 	private JFrame frameFactura;
+	private JFrame PagosFrame;
 
 	public EmpleadoMenuPrincipal(WindowManager windowManager){
         setLayout(new BorderLayout());
@@ -87,14 +86,12 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 
 		// FRAMES
 		
-
 		tarifasFrame = new EmpleadoTarifasFrame(windowManager);
 		serviciosFrame = new EmpleadoServiciosFrame(windowManager);
 		reservasFrame = new EmpleadoReservasFrame(windowManager);
 		serviciosFrame = new EmpleadoServiciosFrame(windowManager);
 		habitacionesFrame = new EmpleadoHabitacionesFrame(windowManager);
 		restauranteFrame = new EmpleadoRestauranteFrame(windowManager);
-		formasDePagoFrame = new FormasDePagoFrame(windowManager);
 		
 		ocupacionHoy();
 		ocupacionAnual();
@@ -415,19 +412,19 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		frameFactura.setLocationRelativeTo(null);
 		frameFactura.setLayout(new GridLayout(1,0,0,0));
 		frameFactura.setBackground(Color.decode("#ccd2c2"));
-		frameFactura.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
+		
 
 		
-		double precioTotalFactura = 0;
+		//precioTotalFactura = 0.0;
 		
 		
 		HashMap<Servicio, Integer> listaServiciosGrupo = new HashMap<>();
 		double precioReserva = 0;
 		double saldoPagado = 0;
+		Grupo grupo = null;
 		
 		try {
-			Grupo grupo = windowManager.getGrupo(Integer.parseInt(idGrupo));
+			grupo = windowManager.getGrupo(Integer.parseInt(idGrupo));
 			listaServiciosGrupo = grupo.getListaServicios();
 			Reserva reserva = grupo.getReserva();
 			precioReserva += reserva.getPrecioReserva();
@@ -462,6 +459,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		panelPrincipal.add(tituloPrecio);
 		
 		
+		double precioTotalFactura = 0;
 		for (Servicio servicioHabitacion : listaServiciosGrupo.keySet()) {
 			int cantidad = listaServiciosGrupo.get(servicioHabitacion);
 			JLabel nombreServicio = new JLabel(servicioHabitacion.getNombre()+" x"+cantidad);
@@ -500,6 +498,8 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		total.setFont(new Font("arial", 1, 14));
 		panelPrincipal.add(total);
 		
+		//grupo.setPrecioTotalFactura(precioTotalFactura);
+		
 		panelPrincipal.add(new JLabel("____________________________"));
 		panelPrincipal.add(new JLabel("____________________________"));
 		
@@ -517,7 +517,8 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		
 		frameFactura.add(scroll);
 		frameFactura.setVisible(true);
-		windowManager.checkOut(Integer.parseInt(idGrupo) );
+		
+		PagosFrame = new PagosFrame(windowManager, precioTotalFactura);
 	}
 	
 	public void colorearTablaAnio(int i, Color color, String cantidad) {
@@ -796,9 +797,9 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 			break;
 			
 		case "Pagar":
-			windowManager.mostraVentanaPagos(formasDePagoFrame);
-			Dimension tamañoPantalla = getSize();
-			frameFactura.setLocation(50, 50);
+			windowManager.mostraVentanaPagos(PagosFrame);
+			frameFactura.setLocation(60, 70);
+			frameFactura.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 			break;
 			
 		case "Refrescar ocupacion diaria":

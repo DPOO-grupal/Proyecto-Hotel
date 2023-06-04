@@ -328,7 +328,6 @@ public class EmpleadoTarifasFrame extends FrameBaseInfo implements MouseListener
 		try {
 			fechasValidas(dateI, dateF);
 			Collection<Tarifa> tarifasColl = windowManager.consultarTarifas(dateI, dateF);
-			System.out.println("Las tarifas son " + tarifasColl.size());
 			llenarTabla(tarifasColl);
 		} catch (Exception e) {
 			fechaBusqueda[0].setDate(windowManager.getHoy());
