@@ -39,12 +39,6 @@ public class PagosFrame extends JFrame implements ActionListener{
         listaDePagos.add("Mastercard");
         listaDePagos.add("American Express");
         listaDePagos.add("Diners Club");
-        listaDePagos.add("Diners Club");
-        listaDePagos.add("Diners Club");
-        listaDePagos.add("Diners Club");
-        listaDePagos.add("Diners Club");
-        listaDePagos.add("Diners Club");
-        listaDePagos.add("Diners Club");
         
         panelOpcionesPagos();
         panelValorFactura();
@@ -135,7 +129,6 @@ public class PagosFrame extends JFrame implements ActionListener{
 		GridBagConstraints constraints = new GridBagConstraints();
 		panelCentral.setLayout(new GridBagLayout());
 		panelCentral.setBackground(Color.decode("#b2bba4"));
-		//panelCentral.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		
 		Font fontGeneralTitulos = new Font("Arial", 1, 20);
 		Font fontGeneral = new Font("Arial", Font.PLAIN, 20);
@@ -316,8 +309,12 @@ public class PagosFrame extends JFrame implements ActionListener{
 			break;
 			
 		case "Continuar":
+			FormasDePago.cargarDatosPagos();
 			datosPago();
 			setVisible(false);
+			break;
+			
+		case "Efectuar pago":
 			break;
 
 		default:
