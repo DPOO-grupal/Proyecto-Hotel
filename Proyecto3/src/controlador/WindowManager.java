@@ -112,11 +112,7 @@ public class WindowManager {
 		
 	}
 	
-	public void mostraVentanaPagos(JFrame ventana) {
-		if(ventanaActual != null) {
-//			ventanaActual.dispose();
-		}
-		
+	public void mostraVentanaPagos(JFrame ventana) {		
 		ventanaActual = ventana;
 		try {
 			((FrameBaseInfo)ventanaActual).resetDatos();

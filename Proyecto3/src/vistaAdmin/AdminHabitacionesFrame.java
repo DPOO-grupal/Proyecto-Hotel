@@ -303,11 +303,11 @@ public class AdminHabitacionesFrame extends EmpleadoHabitacionesFrame implements
 		GridBagConstraints constraints = new GridBagConstraints();
 		
 		frameEditar = new JFrame("Editar habitacion");
-		frameEditar.setLocationRelativeTo(null);
 		frameEditar.setSize(700, 650);
 		panelEditar = new JPanel();
 		panelEditar.setLayout(gridbag);
 		panelEditar.setBackground(Color.decode("#ccd2c2"));
+		frameEditar.setLocationRelativeTo(null);
 		
 		
 		cajaETipo.setFont(new Font("Times New Roman", Font.PLAIN, 20));

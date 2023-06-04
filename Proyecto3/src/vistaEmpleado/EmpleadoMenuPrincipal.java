@@ -64,6 +64,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	private JButton okCheckIn;
 	private JFrame frameCheckIn;
 	private JFrame frameFactura;
+	private static Double precioTotalFactura;
 
 	public EmpleadoMenuPrincipal(WindowManager windowManager){
         setLayout(new BorderLayout());
@@ -86,7 +87,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 
 		// FRAMES
 		
-
+        precioTotalFactura = 0.0;
 		tarifasFrame = new EmpleadoTarifasFrame(windowManager);
 		serviciosFrame = new EmpleadoServiciosFrame(windowManager);
 		reservasFrame = new EmpleadoReservasFrame(windowManager);
@@ -408,19 +409,19 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		frameFactura.setLocationRelativeTo(null);
 		frameFactura.setLayout(new GridLayout(1,0,0,0));
 		frameFactura.setBackground(Color.decode("#ccd2c2"));
-		frameFactura.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
+		
 
 		
-		double precioTotalFactura = 0;
+		precioTotalFactura = 0.0;
 		
 		
 		HashMap<Servicio, Integer> listaServiciosGrupo = new HashMap<>();
 		double precioReserva = 0;
 		double saldoPagado = 0;
+		Grupo grupo = null;
 		
 		try {
-			Grupo grupo = windowManager.getGrupo(Integer.parseInt(idGrupo));
+			grupo = windowManager.getGrupo(Integer.parseInt(idGrupo));
 			listaServiciosGrupo = grupo.getListaServicios();
 			Reserva reserva = grupo.getReserva();
 			precioReserva += reserva.getPrecioReserva();
@@ -493,6 +494,8 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		total.setFont(new Font("arial", 1, 14));
 		panelPrincipal.add(total);
 		
+		//grupo.setPrecioTotalFactura(precioTotalFactura);
+		
 		panelPrincipal.add(new JLabel("____________________________"));
 		panelPrincipal.add(new JLabel("____________________________"));
 		
@@ -510,7 +513,6 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		
 		frameFactura.add(scroll);
 		frameFactura.setVisible(true);
-		windowManager.checkOut(Integer.parseInt(idGrupo) );
 	}
 	
 	public void colorearTablaAnio(int i, Color color, String cantidad) {
@@ -701,6 +703,14 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		ocupacionAnual();
 		revalidate();
 	}
+	
+	public static double getPrecioTotalFactura() {
+		return precioTotalFactura;
+	}
+	
+	public static void setPrecioTotalFactura(double precioTotal) {
+		 precioTotalFactura=precioTotal;
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -771,7 +781,6 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 				try {
 					String idGrupo = boxHabitaciones.getSelectedItem()+"";
 					factura(idGrupo);
-					//windowManager.checkOut(Integer.parseInt(idGrupo));
 				} 
 				catch (Exception e1) {
 					String error = e1.getMessage();
@@ -788,8 +797,8 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 			
 		case "Pagar":
 			windowManager.mostraVentanaPagos(formasDePagoFrame);
-			Dimension tamañoPantalla = getSize();
-			frameFactura.setLocation(50, 50);
+			frameFactura.setLocation(60, 70);
+			frameFactura.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 			break;
 			
 		case "Refrescar ocupacion diaria":

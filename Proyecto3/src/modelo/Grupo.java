@@ -15,8 +15,8 @@ public class Grupo implements Serializable{
 	private int vRelativo;
 	private int capacidadCamas;
 	private boolean check;
-
 	private Reserva reserva;
+	private double precioTotalFactura = 0;
 	
 	public Grupo(Reserva reserva) {
 		this.huespedes = new ArrayList<Huesped>();
@@ -107,6 +107,14 @@ public class Grupo implements Serializable{
 
 	public void setListaServicios(HashMap<Servicio, Integer> listaServicios) {
 		this.listaServicios = listaServicios;
+	}
+	
+	public void setPrecioTotalFactura(Double precioTotalFactura) {
+		this.precioTotalFactura=precioTotalFactura;
+	}
+	
+	public double getPrecioTotalFactura() {
+		return this.precioTotalFactura;
 	}
 	
 	public int getCapacidadCamas() {

@@ -3,7 +3,7 @@ package vistaEmpleado;
 import javax.swing.*;
 
 import controlador.WindowManager;
-
+import vistaEmpleado.EmpleadoMenuPrincipal;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,11 +15,14 @@ public class FormasDePagoFrame extends JFrame implements ActionListener{
 	private JButton continuar;
 	private ArrayList<String> listaDePagos;
 	private JRadioButton formaDePago;
+	private double precioTotalFactura;
 
     public FormasDePagoFrame(WindowManager windowManager) {
-        setTitle("Formas de pago");
+        this.precioTotalFactura = EmpleadoMenuPrincipal.getPrecioTotalFactura();
+        System.out.println(precioTotalFactura+"");
+    	setTitle("Formas de pago");
         setSize(600, 500);
-        setLocationRelativeTo(null);
+        setLocation(560, 70);
         setLayout(new BorderLayout());
         listaDePagos = new ArrayList<>();
         listaDePagos.add("Visa");
@@ -60,10 +63,12 @@ public class FormasDePagoFrame extends JFrame implements ActionListener{
     	panelValor.setBackground(Color.decode("#ccd2c2"));
     	panelValor.setBorder(BorderFactory.createEmptyBorder(100, 10, 200, 10));
     	
+    	
+    	
     	JLabel valorFactura = new JLabel("VALOR A PAGAR");
     	valorFactura.setFont(new Font("Arial", 1, 25));
     	
-    	JLabel valor = new JLabel("120000");
+    	JLabel valor = new JLabel(precioTotalFactura+"");
     	valor.setFont(new Font("Arial", Font.PLAIN, 20));
     	
     	panelValor.add(valorFactura);
