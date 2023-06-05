@@ -9,7 +9,7 @@ public class AmericanExpress extends FormasDePago{
 	private int numeroTrasanccion = 0;
 
 	public AmericanExpress() {
-		path = "data/AmericanExpressDatos.txt";
+		path = "datosPagos/AmericanExpressDatos.txt";
 		tarjetas = new HashMap<>();
 		cargarDatosPagos();
 	}
@@ -20,7 +20,7 @@ public class AmericanExpress extends FormasDePago{
 		numeroTrasanccion ++;
 		
         try {
-            FileWriter escritor = new FileWriter("data/RegistrosAmericanExpress.txt", true); // La ruta del archivo y el segundo parámetro "true" indica que se debe agregar al final del archivo
+            FileWriter escritor = new FileWriter("datosPagos/RegistrosAmericanExpress.txt", true); // La ruta del archivo y el segundo parámetro "true" indica que se debe agregar al final del archivo
 
             escritor.write(contenido);
             escritor.close();

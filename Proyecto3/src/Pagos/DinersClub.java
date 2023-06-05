@@ -9,7 +9,7 @@ public class DinersClub extends FormasDePago{
 	private int numeroTrasanccion = 0;
 
 	public DinersClub() {
-		path = "data/DinersClubDatos.txt";
+		path = "datosPagos/DinersClubDatos.txt";
 		tarjetas = new HashMap<>();
 		cargarDatosPagos();
 	}
@@ -20,7 +20,7 @@ public class DinersClub extends FormasDePago{
 		numeroTrasanccion ++;
 		
         try {
-            FileWriter escritor = new FileWriter("data/RegistrosDinersClub.txt", true); // La ruta del archivo y el segundo parámetro "true" indica que se debe agregar al final del archivo
+            FileWriter escritor = new FileWriter("datosPagos/RegistrosDinersClub.txt", true); // La ruta del archivo y el segundo parámetro "true" indica que se debe agregar al final del archivo
 
             escritor.write(contenido);
             escritor.close();
