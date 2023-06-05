@@ -389,6 +389,7 @@ public class PagosFrame extends JFrame implements ActionListener{
 			if (tarjeta!=null) {
 				boolean montoVerificado = verificarMonto((int) precioTotalFactura);
 				if (montoVerificado) {
+					windowManager.añadirLogFacturas(precioTotalFactura);
 					pasarela.registrarPago((int) precioTotalFactura);
 					JOptionPane.showMessageDialog(null, "Pago exitoso");
 					datosPagoFrame.dispose();

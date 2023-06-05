@@ -24,6 +24,8 @@ import javax.swing.JPanel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
@@ -91,7 +93,7 @@ public class AdminReportesFrame extends JFrame implements ActionListener {
 	    }
 
 	    // Grafico 1
-	    JFreeChart grafico1 = ChartFactory.createBarChart("Ganancia en ventas", "Producto", "Precio",
+	    JFreeChart grafico1 = ChartFactory.createBarChart("Ganancia en ventas", "Producto", "Ganancia",
 	            dataset1, PlotOrientation.VERTICAL, false, true, false);
 	    grafico1.setBackgroundPaint(panelGraficos.getBackground());
 
@@ -100,7 +102,10 @@ public class AdminReportesFrame extends JFrame implements ActionListener {
 	    plot1.setForegroundAlpha(1);
 	    BarRenderer renderer1 = (BarRenderer) plot1.getRenderer();
 	    renderer1.setSeriesPaint(0, Color.decode("#204473")); // Cambiar el color de las barras
-	    
+	    CategoryAxis domainAxis = plot1.getDomainAxis();
+        CategoryLabelPositions labelPositions = domainAxis.getCategoryLabelPositions();
+        CategoryLabelPositions newLabelPositions = CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6.0);
+        domainAxis.setCategoryLabelPositions(newLabelPositions);
 	    ChartPanel panelGrafico1 = new ChartPanel(grafico1);
 	    //panelGrafico1.setPreferredSize(new Dimension(500, 500));
 	    constraints.gridx = 0;
@@ -118,6 +123,11 @@ public class AdminReportesFrame extends JFrame implements ActionListener {
 	    plot2.setForegroundAlpha(1);
 	    BarRenderer renderer2 = (BarRenderer) plot2.getRenderer();
         renderer2.setSeriesPaint(0, Color.decode("#027373"));
+        
+        CategoryAxis domainAxis1 = plot2.getDomainAxis();
+        CategoryLabelPositions labelPositions1 = domainAxis1.getCategoryLabelPositions();
+        CategoryLabelPositions newLabelPositions1 = CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6.0);
+        domainAxis1.setCategoryLabelPositions(newLabelPositions1);
         
 	    ChartPanel panelGrafico2 = new ChartPanel(grafico2);
 	    panelGrafico2.setPreferredSize(new Dimension(500, 500));
@@ -146,6 +156,42 @@ public class AdminReportesFrame extends JFrame implements ActionListener {
 
 	    panelGraficos.add(panelGrafico3, constraints);
 	    
+	    
+	    
+	 // Grafico 4
+	    
+	    HashMap<String, Integer> datosFacturas = windowManager.datosReporteFacturas();
+	    DefaultCategoryDataset dataset4 = new DefaultCategoryDataset();
+	    for (Entry<String, Integer> entry : datosFacturas.entrySet()) {
+	        int valor = entry.getValue();
+	        String nombre = entry.getKey();
+	        dataset4.setValue(valor, "Productos", nombre);
+	    }
+	    
+	    JFreeChart grafico4 = ChartFactory.createBarChart("Ganancias Facturadas por dia", "Dia", "Ganancia",
+	    		dataset4, PlotOrientation.VERTICAL, false, true, false);
+
+	    grafico4.setBackgroundPaint(panelGraficos.getBackground());
+	    
+	    CategoryPlot plot4 = grafico4.getCategoryPlot();
+	    plot4.setBackgroundPaint(panelGraficos.getBackground());
+	    plot4.setForegroundAlpha(1);
+	    BarRenderer renderer4 = (BarRenderer) plot4.getRenderer();
+        renderer4.setSeriesPaint(0, Color.decode("#027373"));
+        
+        CategoryAxis domainAxis4 = plot4.getDomainAxis();
+        CategoryLabelPositions labelPositions4 = domainAxis4.getCategoryLabelPositions();
+        CategoryLabelPositions newLabelPositions4 = CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6.0);
+        domainAxis4.setCategoryLabelPositions(newLabelPositions4);
+        
+	    ChartPanel panelGrafico4 = new ChartPanel(grafico4);
+	    panelGrafico4.setPreferredSize(new Dimension(500, 500));
+
+	    constraints.gridx = 0;  
+	    constraints.gridy = 1;
+
+	    panelGraficos.add(panelGrafico4, constraints);
+	    
 	 
 	}
 
@@ -159,7 +205,6 @@ public class AdminReportesFrame extends JFrame implements ActionListener {
 	}
 
 	private XYDataset createDataset() {
-		System.out.println("AdminReportesFrame.createDataset()");
 	    ArrayList<int[]> restauranteDatos = windowManager.datosReporteRestaurante();
         Collections.sort(restauranteDatos, Comparator.comparingInt(arr -> arr[0]));
 
@@ -167,7 +212,6 @@ public class AdminReportesFrame extends JFrame implements ActionListener {
 
 	    for (int i = 0; i < restauranteDatos.size(); i++) {
 	    	int[] tem = restauranteDatos.get(i);
-			System.out.println(tem[0] + ", " + tem[1]);
 	    	
 			data[0][i] = tem[0];
 	    	data[1][i] = tem[1];

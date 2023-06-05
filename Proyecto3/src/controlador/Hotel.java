@@ -1001,4 +1001,13 @@ public class Hotel implements Serializable {
 		return datos.datosReporteRestaurante();
 	}
 
+	public void añadirLogFacturas(double precioTotalFactura) {
+		datos.añadirLogFacturas(hoy, getTotalHabitaciones());
+		
+	}
+	
+	public HashMap<String, Integer> datosReporteFacturas() {
+		return datos.datosReporteFacturas();
+	}
+
 }

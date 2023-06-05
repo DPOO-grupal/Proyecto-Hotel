@@ -1,7 +1,9 @@
 package modelo;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
@@ -259,10 +261,46 @@ public class Persistencia implements Serializable{
 		}
 		return resultado;	
 	}
-	public void añadirLogFacturas(ProductoMenu producto, int cantidad, Reserva reserva) {
+	public void añadirLogFacturas(Date date, int precio) {
 		File file = new File("log/" + arhivosLog[1]);
-		String linea = (producto.getPrecio()*cantidad) + "," + reserva.getPrecioReservaDia();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		String fechaString = sdf.format(date);
+		String linea = (fechaString + "," + precio);
 		añadirLineaLog(file, linea);
+	}
+	
+	public HashMap<String, Integer> datosReporteFacturas() {
+		HashMap<String, Integer> resultado = new HashMap<>();
+		String[] datos = new String[3];
+		BufferedReader br = null;
+		
+		try {
+			br = new BufferedReader(new FileReader("log/facturas.log"));
+			String linea = br.readLine();
+			while (linea != null) {
+				datos = linea.split(",");
+				Integer valor = resultado.get(datos[0]);
+				if(valor == null) {
+					valor = 0;
+				}
+				valor += Integer.parseInt(datos[1]);
+				resultado.put(datos[0], valor);
+				linea = br.readLine();
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return resultado;	
 	}
 	
 	public void carpetaLog() {

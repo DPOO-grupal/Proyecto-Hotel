@@ -154,6 +154,15 @@ public class Admin extends Empleado {
 	public ArrayList<int[]> datosReporteRestaurante() {
 		// TODO Auto-generated method stub
 		return hotel.datosReporteRestaurante();
+	}
+
+	public void añadirLogFacturas(double precioTotalFactura) {
+		hotel.añadirLogFacturas(precioTotalFactura);
+	}
+
+	public HashMap<String, Integer> datosReporteFacturas() {
+		// TODO Auto-generated method stub
+		return hotel.datosReporteFacturas();
 	} 
 
 

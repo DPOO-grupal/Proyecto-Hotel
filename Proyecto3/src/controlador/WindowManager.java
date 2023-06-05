@@ -749,6 +749,20 @@ public class WindowManager {
 	}
 
 
+	public void añadirLogFacturas(double precioTotalFactura) {
+		Admin admin = (Admin) usuarioActual;
+		admin.añadirLogFacturas(precioTotalFactura);
+		
+		
+	}
+	
+	public HashMap<String, Integer> datosReporteFacturas() {
+		Admin admin = (Admin) usuarioActual;
+		return admin.datosReporteFacturas();
+		
+	}
+
+
 
 
 
