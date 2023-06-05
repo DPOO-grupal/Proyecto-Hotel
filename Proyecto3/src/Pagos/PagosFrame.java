@@ -40,6 +40,7 @@ public class PagosFrame extends JFrame implements ActionListener{
 	private FormasDePago pasarela;
 	private Tarjeta tarjeta;
 	private int idGrupo;
+	private boolean debeHacerCheckOut = false;
 	
 	public PagosFrame(WindowManager windowManager, double precioTotalFactura, String idGrupo) {
         this.precioTotalFactura = precioTotalFactura;
@@ -55,12 +56,11 @@ public class PagosFrame extends JFrame implements ActionListener{
         listaDePagos = new ArrayList<>();
         
         try {
-            FileReader lector = new FileReader(new File("data/Pasarelas.txt"));
+            FileReader lector = new FileReader(new File("datosPagos/Pasarelas.txt"));
             BufferedReader buffer = new BufferedReader(lector);
 
             String linea;
             while ((linea = buffer.readLine()) != null) {
-                System.out.println("Leida: "+linea);
                 listaDePagos.add(linea);
             }
 
@@ -93,7 +93,6 @@ public class PagosFrame extends JFrame implements ActionListener{
         	formaDePago.setFont(new Font("arial", Font.PLAIN, 20));
         	formaDePago.addActionListener(this);
         	listaBotones.add(formaDePago);
-        	System.out.println("Boton añadido: " + formaDePago.getText());
             panelPagos.add(formaDePago);
 		}
         JScrollPane scroll = new JScrollPane(panelPagos);
@@ -335,7 +334,6 @@ public class PagosFrame extends JFrame implements ActionListener{
 	}
     
     public void autenticar() {
-    	System.out.println("Pasarela elegida en autenticar: " + pasarelaString);
     	String documento = cajaDocumento.getText();
     	int numeroTarjeta = Integer.parseInt(cajaNumeroTarjeta.getText());
     	String fechaVencimiento = cajaFechaVencimiento.getText();
@@ -396,7 +394,12 @@ public class PagosFrame extends JFrame implements ActionListener{
 					datosPagoFrame.dispose();
 					setEnabled(true);
 					dispose();
-					windowManager.checkOut(idGrupo);
+					if (debeHacerCheckOut) {
+						windowManager.checkOut(idGrupo);
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Su reserva no se cobrará al hacer CheckOut. Tan solo deberá pagar por lo que consuma durante su estadía en el hotel. Nos vemos pronto ;D");
+					}
 					windowManager.cargarMenuPrincipal();
 					
 				}else {
@@ -426,6 +429,10 @@ public class PagosFrame extends JFrame implements ActionListener{
 		cajaNumeroSeguridad.setText("");
 		
 		
+	}
+
+	public void setDebeHacerCheckOut(boolean debeHacerCheckOut) {
+		this.debeHacerCheckOut = debeHacerCheckOut;
 	}
 
     

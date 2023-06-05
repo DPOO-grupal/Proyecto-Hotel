@@ -3,6 +3,7 @@ package Pagos;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Random;
 
 public class AmericanExpress extends FormasDePago{
 	
@@ -16,7 +17,8 @@ public class AmericanExpress extends FormasDePago{
 
 	@Override
 	public void registrarPago(int montoPagado) {
-		String contenido = "Código de transacción: AMEX-" + numeroTrasanccion + ", Monto pagado: " + montoPagado + ",\n";
+		Random random = new Random();
+		String contenido = "Código de transacción: AMEX-" + random.nextInt(9999) + ", Monto pagado: " + montoPagado + ",\n";
 		numeroTrasanccion ++;
 		
         try {
@@ -25,7 +27,6 @@ public class AmericanExpress extends FormasDePago{
             escritor.write(contenido);
             escritor.close();
 
-            System.out.println("Contenido agregado al archivo correctamente.");
         } catch (IOException e) {
             System.out.println("Ocurrió un error al agregar contenido al archivo: " + e.getMessage());
         }

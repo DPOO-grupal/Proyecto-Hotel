@@ -20,6 +20,7 @@ import org.jdesktop.swingx.JXDatePicker;
 
 import com.formdev.flatlaf.FlatLightLaf;
 
+import Pagos.PagosFrame;
 import modelo.Admin;
 import modelo.Cama;
 import modelo.Empleado;
@@ -116,7 +117,7 @@ public class WindowManager {
 		
 	}
 	
-	public void mostraVentanaPagos(JFrame ventana) {		
+	public void mostraVentanaPagos(JFrame ventana, boolean hacerCheckOut) {		
 		ventanaActual = ventana;
 		try {
 			((FrameBaseInfo)ventanaActual).resetDatos();
@@ -131,6 +132,7 @@ public class WindowManager {
 		
 		// configuraciones generales
 //		ventanaActual.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		((PagosFrame)ventanaActual).setDebeHacerCheckOut(hacerCheckOut);
 		ventanaActual.setResizable(false);
 		ventanaActual.setVisible(true);
 		

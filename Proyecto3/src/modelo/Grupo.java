@@ -134,9 +134,12 @@ public class Grupo implements Serializable{
 		listaServicios.put(servicio, cantidad);
 		if (pagarEnSitio) {
 			saldoPagado+=servicio.getPrecio()*cantidad;
-		}
-		
-		
+		}		
+	}
+	
+	public void pagarReservaConDescuento(double precioReserva) {
+		reserva.setPrecioReserva(precioReserva);
+		saldoPagado+=precioReserva;
 	}
 
 	public void setReserva(Reserva reserva) {

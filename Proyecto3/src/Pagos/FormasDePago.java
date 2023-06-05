@@ -46,8 +46,6 @@ public abstract class FormasDePago {
                 String fechaVencimiento = formaDePago[4];
                 int numeroSeguridad = Integer.parseInt(formaDePago[5]);
                 int monto = Integer.parseInt(formaDePago[6]);
-                System.out.println("FormasDePago.cargarDatosPagos()");
-                System.out.println(numeroTarjeta);
                 Tarjeta tarjeta = new Tarjeta(nombre, numeroCelular, documento, numeroTarjeta, fechaVencimiento, numeroSeguridad, monto);
                 tarjetas.put(numeroTarjeta, tarjeta);
             }

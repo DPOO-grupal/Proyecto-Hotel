@@ -794,8 +794,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 			break;
 			
 		case "Pagar":
-			windowManager.mostraVentanaPagos(PagosFrame);
-			frameFactura.setLocation(60, 70);
+			windowManager.mostraVentanaPagos(PagosFrame, true);
 			frameFactura.dispose();
 			break;
 			
