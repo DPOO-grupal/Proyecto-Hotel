@@ -292,10 +292,8 @@ public class HuespedAutenticacion extends AutenticacionFrame{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		super.actionPerformed(e);
-		System.out.println("HuespedAutenticacion.actionPerformed()");
-		System.out.println(e.getActionCommand());
+
 		if(e.getActionCommand().equals("Terminar")) {
-			System.out.println("Terminar");
 			String login = datos[0].getText(); 
 			String contraseña = datos[1].getText(); 
 			String documento = datos[5].getText(); 

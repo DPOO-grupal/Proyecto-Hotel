@@ -1,5 +1,6 @@
 package controlador;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -359,6 +360,10 @@ public class Hotel implements Serializable {
 		Servicio servicio = restaurante.getProducto(idServicio);
 		Grupo grupo = grupos.get(idGrupo);
 		grupo.añadirServicio(servicio, cantidad, pagarEnSitio);
+		
+		// Añadir a log
+		datos.añadirLogProductos((ProductoMenu) servicio, cantidad);	
+		datos.añadirLogRestaurante((ProductoMenu) servicio, cantidad, grupo.getReserva());	
 		return servicio;
 	}
 
@@ -958,7 +963,9 @@ public class Hotel implements Serializable {
 		serviciosHotel = new HashMap<Integer, Servicio>();
 		restaurante = new Restaurante();
 		ocupados = new TreeMap<Date, HashMap<Integer, Integer>>(); // <Date, <ID habitacion, ID grupo>
-
+		datos.borrarLog(new File("log/productos.log"));
+		datos.borrarLog(new File("log/restaurante.log"));
+		datos.borrarLog(new File("log/facturas.log"));
 	}
 
 	public ArrayList<Integer> idHuespedReservas() {
@@ -981,6 +988,12 @@ public class Hotel implements Serializable {
 		System.out.println(idGrupo);
 		ids.add(idGrupo);
 		huespedReservas.put(usuarioActual, ids);
+	}
+	
+	public HashMap<String, int[]> datosReporteProductos() {
+		return datos.obtenerLogProductos();
+
+		
 	}
 
 }

@@ -76,9 +76,7 @@ public class HuespedManager extends WindowManager{
 	
 	
 	public void añadirUsuarioHuesped(String login, String password, String documento, String email, String telefono, int edad) throws Exception {
-		System.out.println("HuespedManager.añadirUsuarioHuesped()");
 		if (usuarioActual== null) {
-			System.out.println("Usuario nulo");
 			usuarioActual = new Admin(null, null, null);
 			try {
 				((Admin)usuarioActual).añadirUsuarioHuesped(login, password, documento, documento, email, telefono, edad);
@@ -89,9 +87,6 @@ public class HuespedManager extends WindowManager{
 			}
 		}else {
 			
-			System.out.println("Completar");
-			System.out.println(usuarioActual.getClass());
-			System.out.println(((Huesped)usuarioActual).getArea());
 			
 			completarHuesped(documento, email, telefono, edad);
 		}
@@ -113,7 +108,6 @@ public class HuespedManager extends WindowManager{
 	
 
 	public void añadirLider() {
-		System.out.println("HuespedManager.añadirLider()");
 		Huesped huesped = (Huesped) usuarioActual;
 		try {
 			llenarHuespeds(huesped.getDocumento(), huesped.getNombre(), huesped.getEmail(), huesped.getTelefono(), huesped.getEdad());

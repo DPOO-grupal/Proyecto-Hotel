@@ -147,6 +147,10 @@ public class Admin extends Empleado {
 		
 	}
 
+	public HashMap<String, int[]> datosReporteProductos() {
+		return hotel.datosReporteProductos();
+	} 
+
 
 
 

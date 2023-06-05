@@ -23,6 +23,7 @@ import vistaEmpleado.EmpleadoTarifasFrame;
 public class AdminMenuPrincipal extends EmpleadoMenuPrincipal implements ActionListener {
 	
 	private JFrame usuariosFrame;
+	private JFrame reportesFrame;
 
 
 	public AdminMenuPrincipal(WindowManager windowManager){
@@ -32,6 +33,7 @@ public class AdminMenuPrincipal extends EmpleadoMenuPrincipal implements ActionL
 		restauranteFrame = new AdminRestauranteFrame(windowManager);
 		habitacionesFrame = new AdminHabitacionesFrame(windowManager);
 		serviciosFrame = new AdminServiciosFrame(windowManager);
+		reportesFrame = new AdminReportesFrame(windowManager);
 	}
 
 	@Override
@@ -48,6 +50,7 @@ public class AdminMenuPrincipal extends EmpleadoMenuPrincipal implements ActionL
 	    					"Habitaciones", 
 	    					"Restaurante", 
 	    					"Reservas",
+	    					"Reportes",
 	    					"Cerrar sesion",
 	    					"Borrar Datos"};
 	    
@@ -78,6 +81,9 @@ public class AdminMenuPrincipal extends EmpleadoMenuPrincipal implements ActionL
 			break;
 		case "Borrar Datos":
 			windowManager.borrarDatos();
+			break;
+		case "Reportes":
+			windowManager.mostraVentana(reportesFrame);
 			break;
 		default:
 			break;
