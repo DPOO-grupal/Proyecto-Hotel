@@ -32,6 +32,7 @@ import modelo.Tarifa;
 import modelo.TipoHabitacion;
 import modelo.Usuario;
 import vistaAdmin.AdminMenuPrincipal;
+import vistaAdmin.AdminReportesFrame;
 import vistaAdmin.AutenticacionFrame;
 import vistaAdmin.FrameBaseInfo;
 import vistaEmpleado.EmpleadoMenuPrincipal;
@@ -92,6 +93,11 @@ public class WindowManager {
 				((EmpleadoMenuPrincipal)ventanaActual).resetDatos();
 			}
 			catch (ClassCastException e1) {
+				try {
+					((AdminReportesFrame)ventanaActual).resetDatos();
+				}
+				catch (ClassCastException e2) {
+				}
 			}
 		}
 		
@@ -717,7 +723,14 @@ public class WindowManager {
 
 }
 
+	// Reportes
+	
+	public HashMap<String, int[]> datosReporteProductos() {
+		Admin admin = (Admin) usuarioActual;
+		return admin.datosReporteProductos();
+	} 
 
+	
 	public void borrarDatos() {
 		usuarioActual.borrarDatos();
 		volverMenu();

@@ -2,6 +2,7 @@ package modelo;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
@@ -15,10 +16,13 @@ public class Persistencia implements Serializable{
 	private File directorio=new File("./data/");
 	private File dataFile = new File("./data/hotel.ser");
 	private File staticDataFile = new File("./data/static.txt");
+	private String[] arhivosLog = {"productos.log", "facturas.log", "restaurante.log"};
 	
 	// constructor
 	
 	public Persistencia () {;
+	
+	
 		
 		if(!directorio.exists()) {
 			directorio.mkdir();
@@ -41,6 +45,19 @@ public class Persistencia implements Serializable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		carpetaLog();
+		// ArchivosLog
+		
+		for(String fileString : arhivosLog) {
+			File file = new File("log/" + fileString);
+			if(!file.exists()) {	
+				crearLog(file);
+			}
+		}
+		
+		
+		
 	}
 	// abrir archivo guardar
 	public void abrirOutput () throws IOException {
@@ -160,5 +177,104 @@ public class Persistencia implements Serializable{
 		guardarStaticData(0, 0, new ArrayList<Integer>());
 		
 	}
+	
+	// Archivos log
+	
+	
+	public void añadirLogProductos(ProductoMenu producto, int cantidad) {
+		File file = new File("log/" + arhivosLog[0]);
+		String linea = producto.getNombre() + "," + producto.getPrecio() + "," + cantidad;
+		añadirLineaLog(file, linea);
+	}
+	
+	public HashMap<String, int[]> obtenerLogProductos() {
+		System.out.println("Persistencia.obtenerLogProductos()");
+		HashMap<String, int[]> resultado = new HashMap<String, int[]>();
+		int[] valores = new int[2];
+		String[] datos = new String[3];
+		BufferedReader br;
+		
+		 try {
+			 br = new BufferedReader(new FileReader("log/productos.log"));
+			 String linea = br.readLine();
+			 while (linea != null) {
+				 	System.out.println(linea);
+				 	datos = linea.split(",");
+				 	valores = resultado.get(datos[0]);
+				 	if (valores == null) {
+				 		valores =  new int[2];
+				 	}
+					valores[0] += Integer.parseInt(datos[1]);
+					valores[1] += Integer.parseInt(datos[2]);
+				 	resultado.put(datos[0], valores);
+					linea = br.readLine();
+
+
+				}
+			 
+			 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return resultado;		
+	}
+	
+	public void añadirLogRestaurante(ProductoMenu producto, int cantidad, Reserva reserva) {
+		File file = new File("log/" + arhivosLog[2]);
+		String linea = (producto.getPrecio()*cantidad) + "," + reserva.getPrecioReservaDia();
+		añadirLineaLog(file, linea);
+	}
+	public void añadirLogFacturas(ProductoMenu producto, int cantidad, Reserva reserva) {
+		File file = new File("log/" + arhivosLog[1]);
+		String linea = (producto.getPrecio()*cantidad) + "," + reserva.getPrecioReservaDia();
+		añadirLineaLog(file, linea);
+	}
+	
+	public void carpetaLog() {
+		File directorioLog = new File("log");
+		if(!directorioLog .exists()) {
+			directorioLog.mkdir();
+		}
+	}
+	
+	public void crearLog(File file) {
+		try {
+			file.createNewFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void borrarLog(File file) {
+		file.delete();
+		try {
+			file.createNewFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void añadirLineaLog(File file, String linea) {
+	    BufferedWriter writer = null;
+	    try {
+	        writer = new BufferedWriter(new FileWriter(file, true));
+	        writer.write(linea);
+	        writer.newLine();
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    } finally {
+	        if (writer != null) {
+	            try {
+	                writer.close();
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+	}
+	
+	
+
 	
 }
