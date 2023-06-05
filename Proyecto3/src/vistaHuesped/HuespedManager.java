@@ -55,7 +55,11 @@ public class HuespedManager extends WindowManager{
 	}
 	
 	
-	
+	@Override
+	public void volverMenu() {
+		// TODO Auto-generated method stub
+		cerrarSesion();
+	}
 	@Override
 	public void volverReserva() {
 		mostraVentana(menu);
