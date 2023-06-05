@@ -124,7 +124,7 @@ public class WindowManager {
 		}
 		
 		// configuraciones generales
-		ventanaActual.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+//		ventanaActual.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		ventanaActual.setResizable(false);
 		ventanaActual.setVisible(true);
 		
@@ -674,7 +674,11 @@ public class WindowManager {
 		Empleado empleado = (Empleado) usuarioActual;
 		return empleado.checkOut(idGrupo);
 	}
-	// fin reservas
+
+	public void cargarMenuPrincipal() {
+		volverMenu();
+		//((EmpleadoMenuPrincipal) menu).resetDatos();
+	}
 	
 	public static void main(String[] args) {
 		

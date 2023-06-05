@@ -4,23 +4,23 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class DinersClub extends FormasDePago{
+public class MasterCard extends FormasDePago{
 	
 	private int numeroTrasanccion = 0;
 
-	public DinersClub() {
-		path = "data/DinersClubDatos.txt";
+	public MasterCard() {
+		path = "data/MasterCardDatos.txt";
 		tarjetas = new HashMap<>();
 		cargarDatosPagos();
 	}
 
 	@Override
 	public void registrarPago(int montoPagado) {
-		String contenido = "Código de transacción: DICLU-" + numeroTrasanccion + ", Monto pagado: " + montoPagado + ",\n";
-		numeroTrasanccion ++;
+		String contenido = "Código de transacción: MASC-" + numeroTrasanccion + ", Monto pagado: " + montoPagado + ",\n";
+		numeroTrasanccion ++ ;
 		
         try {
-            FileWriter escritor = new FileWriter("data/RegistrosDinersClub.txt", true); // La ruta del archivo y el segundo parámetro "true" indica que se debe agregar al final del archivo
+            FileWriter escritor = new FileWriter("data/RegistrosMasterCard.txt", true); // La ruta del archivo y el segundo parámetro "true" indica que se debe agregar al final del archivo
 
             escritor.write(contenido);
             escritor.close();
