@@ -103,6 +103,7 @@ public class HuespedManager extends WindowManager{
 		((Huesped) usuarioActual).setEmail(email);
 		((Huesped) usuarioActual).setTelefono(telefono);
 		((Huesped) usuarioActual).setEdad(edad);
+		((Huesped) usuarioActual).setNombre(usuarioActual.getLogin());
 	}
 	
 	public void reservaSoloConLider() {

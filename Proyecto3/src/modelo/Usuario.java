@@ -58,6 +58,10 @@ public class Usuario implements Serializable{
 		
 	}
 
+	public String getLogin() {
+		return login;
+	}
+
 	public static Usuario getUsuarioActual() {
 		return hotel.getUsuarioActual();
 	}
