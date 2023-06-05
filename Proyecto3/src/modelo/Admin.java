@@ -149,6 +149,11 @@ public class Admin extends Empleado {
 
 	public HashMap<String, int[]> datosReporteProductos() {
 		return hotel.datosReporteProductos();
+	}
+
+	public ArrayList<int[]> datosReporteRestaurante() {
+		// TODO Auto-generated method stub
+		return hotel.datosReporteRestaurante();
 	} 
 
 
