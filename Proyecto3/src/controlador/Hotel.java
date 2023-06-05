@@ -467,6 +467,7 @@ public class Hotel implements Serializable {
 		}
 
 		Date fechaI = grupo.getReserva().getFechaI();
+		Date fechaF = grupo.getReserva().getFechaF();
 		boolean cancelada = false;
 
 		// 48 horas, dos dias
@@ -477,8 +478,11 @@ public class Hotel implements Serializable {
 		if (hoy.before(fecha)) {
 
 			for (int habitacion : grupo.getListaHabitaciones()) {
-				HashMap<Integer, Integer> ocupacion = ocupados.get(fechaI);
-				ocupacion.remove(habitacion);
+				for (Date fechaX : getDateRange(fechaI, fechaF)) {
+					HashMap<Integer, Integer> ocupacion = ocupados.get(fechaX);
+					ocupacion.remove(habitacion);
+					ocupados.put(fechaX, ocupacion);
+				}
 			}
 
 			grupos.remove(id);
@@ -964,6 +968,7 @@ public class Hotel implements Serializable {
 		serviciosHotel = new HashMap<Integer, Servicio>();
 		restaurante = new Restaurante();
 		ocupados = new TreeMap<Date, HashMap<Integer, Integer>>(); // <Date, <ID habitacion, ID grupo>
+		inicializarTarifas();
 		datos.borrarLog(new File("log/productos.log"));
 		datos.borrarLog(new File("log/restaurante.log"));
 		datos.borrarLog(new File("log/facturas.log"));
