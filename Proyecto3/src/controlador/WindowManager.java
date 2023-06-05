@@ -736,6 +736,10 @@ public class WindowManager {
 		Admin admin = (Admin) usuarioActual;
 		return admin.datosReporteProductos();
 	} 
+	public ArrayList<int[]> datosReporteRestaurante() {
+		Admin admin = (Admin) usuarioActual;
+		return admin.datosReporteRestaurante();
+	} 
 
 	
 	public void borrarDatos() {
