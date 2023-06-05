@@ -152,13 +152,8 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
         modeloTablaHoy = new DefaultTableModel(columnas, 0);
           
         //Filas de la tabla
-//        String[] filaPrueba = {"0"};
-//  	    modeloTablaHoy.addRow(filaPrueba);
   	    //Diseño de la tabla
           tablaHoy = new JTable(modeloTablaHoy);
-//          tablaHoy.setShowHorizontalLines(true);
-//          tablaHoy.setShowVerticalLines(true);
-//          tablaHoy.setGridColor(Color.BLACK);
           tablaHoy.getTableHeader().setBackground(Color.decode("#204473"));
           tablaHoy.getTableHeader().setForeground(Color.white);
           tablaHoy.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
@@ -518,8 +513,10 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		frameFactura.add(scroll);
 		frameFactura.setVisible(true);
 		
-		PagosFrame = new PagosFrame(windowManager, precioTotalFactura);
+		PagosFrame = new PagosFrame(windowManager, precioTotalFactura, idGrupo);
 	}
+	
+	
 	
 	public void colorearTablaAnio(int i, Color color, String cantidad) {
 		DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
@@ -799,7 +796,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		case "Pagar":
 			windowManager.mostraVentanaPagos(PagosFrame);
 			frameFactura.setLocation(60, 70);
-			frameFactura.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+			frameFactura.dispose();
 			break;
 			
 		case "Refrescar ocupacion diaria":
