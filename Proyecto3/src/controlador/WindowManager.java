@@ -705,28 +705,29 @@ public class WindowManager {
 		
 	
 		
-       int opcion = JOptionPane.showConfirmDialog(null, "¿Deseas hacer pruebas?", "Panel de Opciones", JOptionPane.YES_NO_OPTION);
-
-        if (opcion == JOptionPane.YES_OPTION) {
-        	try {
-    			windowManager.autenticar("root", "Cookie");
-    		
-        	} catch (Exception e) {
-    			// TODO Auto-generated catch block
-    			e.printStackTrace();
-    		}
-        	// JFrame para probar
-
-    		JFrame pruebas = new AdminMenuPrincipal(windowManager);
-    		// Menú de ese Frame
-    		JFrame menu = new AdminMenuPrincipal(windowManager);
-    		
-    		windowManager.setPruebas(pruebas, menu);
-    		
-        } else {
-        	windowManager.iniciarAutenticacion();
-        }
+//       int opcion = JOptionPane.showConfirmDialog(null, "¿Deseas hacer pruebas?", "Panel de Opciones", JOptionPane.YES_NO_OPTION);
+//
+//        if (opcion == JOptionPane.YES_OPTION) {
+//        	try {
+//    			windowManager.autenticar("root", "Cookie");
+//    		
+//        	} catch (Exception e) {
+//    			// TODO Auto-generated catch block
+//    			e.printStackTrace();
+//    		}
+//        	// JFrame para probar
+//
+//    		JFrame pruebas = new AdminMenuPrincipal(windowManager);
+//    		// Menú de ese Frame
+//    		JFrame menu = new AdminMenuPrincipal(windowManager);
+//    		
+//    		windowManager.setPruebas(pruebas, menu);
+//    		
+//        } else {
+//        	windowManager.iniciarAutenticacion();
+//        }
 		
+        windowManager.iniciarAutenticacion();
 
 }
 
