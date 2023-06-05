@@ -140,7 +140,7 @@ public class AutenticacionFrame extends JFrame implements ActionListener{
         add(panel,gBC);
 	}
 	
-	public void inciarSecion() {
+	public void inciarSecion() throws Exception {
 		String login = usuJTextField.getText();
 		String passWord = new String(contraJPasswordField.getPassword());
 		
@@ -148,8 +148,11 @@ public class AutenticacionFrame extends JFrame implements ActionListener{
 			windowManager.autenticar(login, passWord);
 			intentos ++;
 		} catch (Exception e) {
-			if (intentos < 3) {
+			if(e.getMessage().contains("Huesped")){
+				throw e;
+			}else if (intentos < 3) {
 				JOptionPane.showMessageDialog(null, "Opss, " + e.getMessage());
+			
 			}else {
 				JOptionPane.showMessageDialog(null, "Demaciados intentos, intente mas tarde");
 
@@ -160,7 +163,11 @@ public class AutenticacionFrame extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Iniciar Sesion")) {
-			inciarSecion();
+			try {
+				inciarSecion();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 		}
 		
 	}

@@ -12,9 +12,19 @@ public class Admin extends Empleado {
 		super(login, password, area);
 	}
 	
-	public void añadirUsuario(String login, String password, String area, int tipo) {
-		hotel.añadirUsuario(login, password, area, tipo);
+	public void añadirUsuario(String login, String password, String area, int tipo) throws Exception {
+		añadirUsuario(login, password, area, tipo, false);
 	}
+	
+	public void añadirUsuario(String login, String password, String area, int tipo, boolean sobreEscibir) throws Exception {
+		hotel.añadirUsuario(login, password, area, tipo, sobreEscibir);
+		
+	}
+	
+	public void añadirUsuarioHuesped(String login, String password, String documento, String nombre, String email,
+			String telefono, int edad) throws Exception {
+		hotel.añadirUsuarioHuesped(login, password, documento, nombre, email, telefono, edad);
+		}
 
 // INICIO TARIFAS ---------------------------------------------
 	
@@ -136,6 +146,12 @@ public class Admin extends Empleado {
 		hotel.borrarDatos();
 		
 	}
+
+	public HashMap<String, int[]> datosReporteProductos() {
+		return hotel.datosReporteProductos();
+	} 
+
+
 
 
 

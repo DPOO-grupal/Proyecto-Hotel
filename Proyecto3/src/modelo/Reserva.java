@@ -1,6 +1,7 @@
 package modelo;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Reserva implements Serializable{
@@ -17,6 +18,18 @@ public class Reserva implements Serializable{
 
 	public void setPrecioReserva(double precioReserva) {
 		this.precioReserva = precioReserva;
+	}
+	
+	public int getPrecioReservaDia() {
+		System.out.println("Reserva.setPrecioReservaDia()");;
+		Calendar calendarI = Calendar.getInstance();
+		calendarI.setTime(fechaI);
+		Calendar calendarF = Calendar.getInstance();
+		calendarF.setTime(fechaF);
+		
+		int dias = calendarI.compareTo(calendarF) + 1;
+		System.out.println(dias);
+		return (int) (precioReserva / dias);
 	}
 
 	public Date getFechaI() {

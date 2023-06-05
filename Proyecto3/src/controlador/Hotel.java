@@ -1,5 +1,6 @@
 package controlador;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -29,8 +30,8 @@ import modelo.*;
  * @author tu papa
  *
  */
-public class Hotel implements Serializable{
-	
+public class Hotel implements Serializable {
+
 	/**
 	 * 
 	 */
@@ -46,79 +47,95 @@ public class Hotel implements Serializable{
 	private Restaurante restaurante;
 	private Usuario usuarioActual;
 	private Date hoy;
-	
-	
 
 	public Hotel() {
 		// TODO inicializar todas las estructuras
-		grupos = new HashMap <Integer, Grupo>();
+		grupos = new HashMap<Integer, Grupo>();
 		usuarios = new HashMap<String, Usuario>();
 		tarifas = new TreeMap<Date, Tarifa>();
 		habitaciones = new HashMap<Integer, Habitacion>();
 		serviciosHotel = new HashMap<Integer, Servicio>();
-		restaurante= new Restaurante();
+		restaurante = new Restaurante();
 		ocupados = new TreeMap<Date, HashMap<Integer, Integer>>(); // <Date, <ID habitacion, ID grupo>
 		huespedReservas = new HashMap<Usuario, ArrayList<Integer>>();
 	}
-	
-	
-
 
 	public boolean usuarioExiste(String login) {
-		
+
 		boolean exist = false;
-		
+
 		if (usuarios.containsKey(login))
 			exist = false;
-		
+
 		return exist;
 	}
-	
+
 	public void autenticar(String login, String password) throws Exception {
-		
+
 		Usuario usuarioActual = null;
 
 		usuarioActual = usuarios.get(login);
-		
+
 		if (usuarioActual != null) {
 			usuarioActual.iniciarSesion(password);
 			this.usuarioActual = usuarioActual;
-		
+
 		} else {
 			throw new Exception("el usuario no existe");
 		}
 
 	}
+
 	/**
 	 * Crea un Usuario dependiento su tipo y lo añade al HashMap Usuarios
-	 * @param tipo 1 para Admin, 2 para Empleado
+	 * 
+	 * @param tipo 1 para Admin, 2 para Empleado, 3 para huesped
+	 * @throws Exception 
 	 */
-	public void añadirUsuario(String login, String password, String area, int tipo) {
+	public void añadirUsuario(String login, String password, String area, int tipo, boolean sobreEscribir ) throws Exception {
+		if (usuarios.get(login)!= null && !sobreEscribir) {
+			throw new Exception("El usuario ya existe");
+		}
 		switch (tipo) {
 		case 1:
 			Admin admin = new Admin(login, password, area);
 			usuarios.put(login, admin);
 			break;
-		
+
 		case 2:
 			Empleado empleado = new Empleado(login, password, area);
 			usuarios.put(login, empleado);
 			break;
-			
+		case 3:
+			Huesped huesped = new Huesped(login, password, area);
+			usuarios.put(login, huesped);
+			break;
+
 		default:
 			break;
 		}
-		
+
 	}
 	
+	public void añadirUsuario(String login, String password, String area, int tipo) throws Exception {
+		añadirUsuario(login, password, area, tipo, false);
+	}
+
+	public void añadirUsuarioHuesped(String login, String password, String documento, String nombre, String email,
+			String telefono, int edad) throws Exception {
+		Huesped huesped = new Huesped(login, password, documento, nombre, email, telefono, edad);
+		añadirUsuario(login, password, "Huesped", 3, false);
+		usuarios.put(login, huesped);
+	}
+
 	public void quitarUsuario(String nombre) {
 		usuarios.remove(nombre);
 	}
-	
+
 	public void quitarHabitacion(Integer ID) {
 		habitaciones.remove(ID);
 	}
-	
+
 	public boolean reservada(Integer ID) {
 		try {
 			Date first = ocupados.ceilingKey(this.hoy);
@@ -133,33 +150,32 @@ public class Hotel implements Serializable{
 				}
 			}
 			return false;
-		}
-		catch (NoSuchElementException e) {
+		} catch (NoSuchElementException e) {
 			return false;
 		}
 	}
-	
-	public void inicializarTarifas(){
+
+	public void inicializarTarifas() {
 		// TODO promando
 		Tarifa tarifa;
 		Date fechaI;
 		Date fechaF;
-		
+
 		// Arbol completamente vacio
 		if (tarifas.size() == 0) {
 			fechaI = hoy;
 			fechaF = pasarAnno(hoy);
-			
+
 			for (Date fecha : getDateRange(fechaI, fechaF)) {
 				tarifa = new Tarifa(fecha);
 				tarifas.put(fecha, tarifa);
 			}
 		} else {
-			
+
 			// Llenar dias antes de los que estan en el arbol
 			fechaI = hoy;
 			fechaF = tarifas.firstKey();
-			if(fechaI.before(fechaF)) {
+			if (fechaI.before(fechaF)) {
 				ArrayList<Date> rango = getDateRange(fechaI, fechaF);
 				for (Date fecha : rango) {
 					if (fecha.before(fechaF)) {
@@ -168,7 +184,7 @@ public class Hotel implements Serializable{
 					}
 				}
 			}
-			
+
 			// Llenar dias despues de los que estan en el arbol
 			fechaI = tarifas.lastKey();
 			fechaF = pasarAnno(hoy);
@@ -181,28 +197,23 @@ public class Hotel implements Serializable{
 				}
 			}
 		}
-		
-		
-		
-		
+
 	}
-
-
 
 	public Collection<Tarifa> consultarTarifas(Date fechaI, Date fechaF) {
 		fechaF = pasarDia(fechaF);
-		SortedMap<Date, Tarifa> rangoTarifas = tarifas.subMap(fechaI, fechaF);		
-		
+		SortedMap<Date, Tarifa> rangoTarifas = tarifas.subMap(fechaI, fechaF);
+
 		return rangoTarifas.values();
 	}
-	
+
 	public Date pasarMes(Date start, int i) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(start);
-        cal.add(Calendar.MONTH, i);
-        return cal.getTime();
-    }
-	
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(start);
+		cal.add(Calendar.MONTH, i);
+		return cal.getTime();
+	}
+
 	public ArrayList<Tarifa> TarifasFaltantes() {
 		Date fechaF = pasarAnno(hoy);
 		boolean completo;
@@ -212,42 +223,44 @@ public class Hotel implements Serializable{
 		for (Tarifa tarifa : rangoTarifas.values()) {
 
 			completo = tarifa.completo();
-			
+
 			if (!completo) {
-				faltantes.add(tarifa); 
+				faltantes.add(tarifa);
 			}
 		}
 		return faltantes;
 	}
-	
-	public ArrayList<Tarifa> crearTarifasRango(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor, boolean[] diasValores){
+
+	public ArrayList<Tarifa> crearTarifasRango(Date fechaI, Date fechaF, TipoHabitacion tipo, double valor,
+			boolean[] diasValores) {
 		ArrayList<Tarifa> tarifasFaltantes = new ArrayList<>();
-		
+
 		fechaF = pasarDia(fechaF);
 		SortedMap<Date, Tarifa> rangoTarifas = tarifas.subMap(fechaI, fechaF);
-		
+
 		for (Tarifa tarifa : rangoTarifas.values()) {
 
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(tarifa.getFechaDate());
-			
-			int diaSemana = (calendar.get(Calendar.DAY_OF_WEEK)+5)%7;
+
+			int diaSemana = (calendar.get(Calendar.DAY_OF_WEEK) + 5) % 7;
+			System.out.println("dia: " + diaSemana + "Estado: " + diasValores[diaSemana]);
 			if (diasValores[diaSemana]) {
 				try {
 					tarifa.updatePrecio(tipo, valor);
 				} catch (Exception e) {
-		
+
 					tarifasFaltantes.add(tarifa);
 				}
 			}
-			
+
 		}
 		return tarifasFaltantes;
-		
+
 	}
-	
-	public void ForzarTarifasSobreTarifas(ArrayList<Tarifa> tarifas,  TipoHabitacion tipo, double valor){
-		
+
+	public void ForzarTarifasSobreTarifas(ArrayList<Tarifa> tarifas, TipoHabitacion tipo, double valor) {
+
 		for (Tarifa tarifa : tarifas) {
 			try {
 				tarifa.updatePrecio(tipo, valor, true);
@@ -256,8 +269,8 @@ public class Hotel implements Serializable{
 			}
 		}
 	}
-	
-	public ArrayList<Tarifa> crearTarifasSobreFechas(ArrayList<Date> fechas,  TipoHabitacion tipo, double valor){
+
+	public ArrayList<Tarifa> crearTarifasSobreFechas(ArrayList<Date> fechas, TipoHabitacion tipo, double valor) {
 		ArrayList<Tarifa> tarifasFaltantes = new ArrayList<>();
 
 		for (Date fecha : fechas) {
@@ -271,116 +284,119 @@ public class Hotel implements Serializable{
 		return tarifasFaltantes;
 
 	}
-	
+
 	public void borrarTarifa(Date fecha, TipoHabitacion tipo) {
 		Tarifa tarifa = tarifas.get(fecha);
 		try {
-			tarifa.updatePrecio(tipo,-1,  true);
+			tarifa.updatePrecio(tipo, -1, true);
 		} catch (Exception e) {
 
 		}
-		
+
 	}
-	
+
 	public void crearServicioHotel(String nombre, int precio) {
 		Servicio servicio = new Servicio(nombre, precio);
 		serviciosHotel.put(servicio.getId(), servicio);
 	}
-	
+
 	public void eliminarServicioHotel(int id) {
 		serviciosHotel.remove(id);
 	}
-	
-	public HashMap<Integer, Servicio> getServiciosHotel(){
+
+	public HashMap<Integer, Servicio> getServiciosHotel() {
 		return serviciosHotel;
 	}
-	
+
 	public ArrayList<String[]> getServiciosHabitacion(String ID) {
 		ArrayList<String[]> array = new ArrayList<>();
 		Habitacion habitacion = habitaciones.get(Integer.parseInt(ID));
 		ArrayList<Servicio> listaServicios = habitacion.getServicios();
 		for (Servicio servicio : listaServicios) {
-			String[] contenedora = {servicio.getNombre(), servicio.getPrecio()+""};
+			String[] contenedora = { servicio.getNombre(), servicio.getPrecio() + "" };
 			array.add(contenedora);
 		}
 		return array;
 	}
-	
+
 	public ArrayList<String[]> getCamasHabitacion(String ID) {
 		ArrayList<String[]> array = new ArrayList<>();
 		Habitacion habitacion = habitaciones.get(Integer.parseInt(ID));
 		ArrayList<Cama> listaCamas = habitacion.getCamas();
 		for (Cama cama : listaCamas) {
 			String apto = cama.getAptoParaNiño() ? "Si" : "No";
-			String[] contenedora = {cama.getCapacidadCama()+"", apto};
+			String[] contenedora = { cama.getCapacidadCama() + "", apto };
 			array.add(contenedora);
 		}
 		return array;
 	}
-	
+
 	public void setCaracteristicas(String caracteristicas, int id) {
-		Habitacion habitacion =	habitaciones.get(id);
-		habitacion.setCaracteristicas(caracteristicas);;
+		Habitacion habitacion = habitaciones.get(id);
+		habitacion.setCaracteristicas(caracteristicas);
+		;
 		habitaciones.put(id, habitacion);
-		
+
 	}
-	
+
 	public void añadirServicioHabitacion(int id, String nombre, int precio) {
-		Habitacion habitacion =	habitaciones.get(id);
+		Habitacion habitacion = habitaciones.get(id);
 		Servicio servicio = new Servicio(nombre, precio);
 		habitacion.añadirServicioHabitacion(servicio);
 		habitaciones.put(id, habitacion);
 	}
-	
-	public Servicio añadirServicioHotelHabitacion(int idHabitacion, int idServicio, int cantidad, boolean pagarEnSitio) {
+
+	public Servicio añadirServicioHotelHabitacion(int idHabitacion, int idServicio, int cantidad,
+			boolean pagarEnSitio) {
 		int idGrupo = ocupados.get(hoy).get(idHabitacion);
 		Servicio servicio = serviciosHotel.get(idServicio);
 		Grupo grupo = grupos.get(idGrupo);
 		grupo.añadirServicio(servicio, cantidad, pagarEnSitio);
 		return servicio;
 	}
-	
+
 	public Servicio añadirProductoMenuHabitacion(int idHabitacion, int idServicio, int cantidad, boolean pagarEnSitio) {
 		int idGrupo = ocupados.get(hoy).get(idHabitacion);
 		Servicio servicio = restaurante.getProducto(idServicio);
 		Grupo grupo = grupos.get(idGrupo);
 		grupo.añadirServicio(servicio, cantidad, pagarEnSitio);
+		
+		// Añadir a log
+		datos.añadirLogProductos((ProductoMenu) servicio, cantidad);	
+		datos.añadirLogRestaurante((ProductoMenu) servicio, cantidad, grupo.getReserva());	
 		return servicio;
 	}
-	
-	
+
 	public void crearCama(int id, int capacidadCama, boolean aptoParaNiño) {
-		Habitacion habitacion =	habitaciones.get(id);
+		Habitacion habitacion = habitaciones.get(id);
 		Cama cama = new Cama(capacidadCama, aptoParaNiño);
 		habitacion.añadirCamas(cama);
-		habitaciones.put(id, habitacion);	
+		habitaciones.put(id, habitacion);
 	}
-	
-	
+
 	public void crearHabitacion(TipoHabitacion tipo, int id) {
 		Habitacion habitacion = new Habitacion(tipo, id);
 		habitaciones.put(id, habitacion);
 	}
-	
+
 	public Servicio crearServicio(String nombre, int precio) {
 		Servicio servicio = new Servicio(nombre, precio);
 		return servicio;
 	}
-	
-	
-	public HashMap<Integer,Grupo> mostrarReservas(Date fechaI, Date fechaF) throws Exception {
-		HashMap<Integer,Grupo> resultado = new HashMap<Integer,Grupo>();
+
+	public HashMap<Integer, Grupo> mostrarReservas(Date fechaI, Date fechaF) throws Exception {
+		HashMap<Integer, Grupo> resultado = new HashMap<Integer, Grupo>();
 		Grupo grupo;
 		Reserva reserva;
 		fechaF = pasarDia(fechaF);
 		SortedMap<Date, HashMap<Integer, Integer>> rangoTarifas = ocupados.subMap(fechaI, fechaF);
-		
+
 		for (HashMap<Integer, Integer> mapa : rangoTarifas.values()) {
 			for (int idGrupo : mapa.values()) {
 				grupo = grupos.get(idGrupo);
 				reserva = grupo.getReserva();
 				if (reserva.getFechaI().after(fechaI) || reserva.getFechaI().equals(fechaI)) {
-					if(reserva.getFechaF().before(fechaF) || reserva.getFechaF().equals(fechaF)) {
+					if (reserva.getFechaF().before(fechaF) || reserva.getFechaF().equals(fechaF)) {
 						resultado.put(idGrupo, grupo);
 					}
 				}
@@ -391,109 +407,117 @@ public class Hotel implements Serializable{
 			Exception e = new Exception("No hay reservas en ese rango");
 			throw e;
 		}
-		
+
 		return resultado;
 	}
 
 	public void crearReserva(Date fechaI, Date fechaF) throws Exception {
-		
+
 		if (fechaI == null || fechaF == null) {
 			Exception e = new Exception("Debe ingresar las fechas");
 			throw e;
 		}
-		
+
 		Reserva reserva = new Reserva(fechaI, fechaF);
 		if (grupoEnCurso == null) {
 			Grupo grupo = new Grupo(reserva);
 			grupoEnCurso = grupo;
-			
+
 		} else {
 			cambiarFechaReserva(fechaI, fechaF);
 		}
-				
+
 	}
-	
+
 	public void cambiarFechaReserva(Date fechaI, Date fechaF) throws Exception {
-		
+
 		if (fechaI == null || fechaF == null) {
 			Exception e = new Exception("Debe ingresar las fechas");
 			throw e;
 		}
-		
+
 		Reserva reserva = new Reserva(fechaI, fechaF);
 		grupoEnCurso.setReserva(reserva);
 		grupoEnCurso.borrarHabitaciones();
-				
+
 	}
 	
+	public void reservaSoloConLider() {
+		Reserva reserva = new Reserva(null, null);
+		Grupo grupo = new Grupo(reserva);
+		grupoEnCurso = grupo;
+
+	}
+
 	public Grupo getGrupo(int id) throws Exception {
 		Grupo grupo = grupos.get(id);
-		
+
 		if (grupo == null) {
 			throw new Exception("El Numero ingresado no esta registrado");
 		}
-		
+
 		return grupo;
 	}
-	
+
 	public void cancelarReserva(int id) throws Exception {
 		Grupo grupo = grupos.get(id);
-		
+
 		if (grupo == null) {
 			throw new Exception("Numero de reserva invalido");
 		}
-		
+
 		Date fechaI = grupo.getReserva().getFechaI();
 		boolean cancelada = false;
-		
+
 		// 48 horas, dos dias
-		
+
 		fechaI = volverDia(fechaI);
 		fechaI = volverDia(fechaI);
-		
-		if(hoy.before(fechaI)) {
-			
-			for(int habitacion: grupo.getListaHabitaciones()) {
+
+		if (hoy.before(fechaI)) {
+
+			for (int habitacion : grupo.getListaHabitaciones()) {
 				ocupados.remove(habitacion);
 			}
-			
+
 			grupos.remove(id);
-			
+
 			cancelada = true;
-			
+
 		}
-		
+
 		if (!cancelada) {
-			Exception e = new Exception("No es posible cancelar la reserva, pues no está entre los tiempos de calcelación");
+			Exception e = new Exception(
+					"No es posible cancelar la reserva, pues no está entre los tiempos de calcelación");
 			throw e;
 		}
-				
+
 	}
 
-
-	public void añadirHuesped(String documento, String nombre, String email, String telefono, int edad) throws Exception {
+	public void añadirHuesped(String documento, String nombre, String email, String telefono, int edad)
+			throws Exception {
 		if (grupoEnCurso == null) {
 			Exception e = new Exception("Debe establecer una fecha");
 			throw e;
-		} 
+		}
 		Huesped huesped = new Huesped(documento, nombre, email, telefono, edad);
 		grupoEnCurso.añadirHuesped(huesped);
 	}
-	
+
 	public void añadirHabitacionReserva(int idHabitacion) throws Exception {
 		Habitacion habi = habitaciones.get(idHabitacion);
-		int precioHabitacion = (int)getPrecioHabitacionReserva(habi);
+		int precioHabitacion = (int) getPrecioHabitacionReserva(habi);
 		grupoEnCurso.añadirHabitacion(idHabitacion, habi.getCapacidad(), precioHabitacion);
 	}
-	
+
 	public void completarReserva() throws Exception {
 		boolean resultado = false;
-		
+
 		if (grupoEnCurso == null) {
 			Exception e = new Exception("Debe establecer una fecha");
 			throw e;
 		}
-		
+
 		if (grupoEnCurso.getLider() == null) {
 			Exception e = new Exception("Debe añadir almenos un huesped");
 			throw e;
@@ -506,106 +530,104 @@ public class Hotel implements Serializable{
 			for (int idHabi: grupoEnCurso.getListaHabitaciones()) {
 				llenarOcupados(idHabi);
 			}
-			
+
 			grupos.put(grupoEnCurso.getId(), grupoEnCurso);
 			grupoEnCurso = null;
-			
 
 		} else {
 			Exception e = new Exception("Aun No hay suficientes habitaciones");
 			throw e;
 		}
-		
+
 	}
-	
+
 	public ArrayList<Integer> getArrayHabitaciones() {
-		Set<Integer> set = habitaciones.keySet();	
+		Set<Integer> set = habitaciones.keySet();
 		ArrayList<Integer> array = new ArrayList<>();
 		for (Integer ID : set) {
 			array.add(ID);
 		}
 		return array;
 	}
-	
+
 	public ArrayList<Integer> getListaHabitacionesGrupo() {
 		if (grupoEnCurso == null) {
 			return new ArrayList<Integer>();
 		}
 		return grupoEnCurso.getListaHabitaciones();
-	}	
-	
+	}
+
 	public ArrayList<Huesped> getHuespedesGrupoEnCurso() {
 		if (grupoEnCurso == null) {
 			return new ArrayList<Huesped>();
 		}
 		return grupoEnCurso.getHuespedes();
 	}
-	
-	private ArrayList<Habitacion> consultarDisponibilidad (Date FechaI, Date FechaF, TipoHabitacion tipo) {
+
+	private ArrayList<Habitacion> consultarDisponibilidad(Date FechaI, Date FechaF, TipoHabitacion tipo) {
 		ArrayList<Habitacion> habLista = new ArrayList<Habitacion>();
 		FechaF = pasarDia(FechaF);
-		SortedMap<Date, HashMap<Integer, Integer>> filtrado =  ocupados.subMap(FechaI, FechaF);
-		
+		SortedMap<Date, HashMap<Integer, Integer>> filtrado = ocupados.subMap(FechaI, FechaF);
+
 		for (Entry<Integer, Habitacion> kv : habitaciones.entrySet()) {
 			boolean aniadir = true;
 			int id = kv.getKey();
-			
+
 			for (HashMap<Integer, Integer> ocupa2 : filtrado.values()) {
-				if(ocupa2.containsKey(id))
+				if (ocupa2.containsKey(id))
 					aniadir = false;
 			}
-			
-			if(aniadir) {
+
+			if (aniadir) {
 				Habitacion habi = kv.getValue();
-				if(habi.getTipoHabitacion() == tipo) {
+				if (habi.getTipoHabitacion() == tipo) {
 					habLista.add(habi);
 				}
 			}
 		}
-		
+
 		return habLista;
 	}
-	
+
 	public ArrayList<Habitacion> DiponiblesParaGrupoEnCurso(TipoHabitacion tipo) throws Exception {
 		if (grupoEnCurso == null) {
 			Exception e = new Exception("No hay grupo");
 			throw e;
 		}
-		return consultarDisponibilidad(grupoEnCurso.getReserva().getFechaI(), grupoEnCurso.getReserva().getFechaF(), tipo);
-		
+		return consultarDisponibilidad(grupoEnCurso.getReserva().getFechaI(), grupoEnCurso.getReserva().getFechaF(),
+				tipo);
+
 	}
-		
+
 	public String formatoFecha(Date fecha) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-	    String fechaString = sdf.format(fecha);
+		String fechaString = sdf.format(fecha);
 		return fechaString;
 	}
-	
+
 	public String getCaracteristicasHabitacion(Integer ID) {
 		Habitacion habitacion = habitaciones.get(ID);
 		return habitacion.getCaracteristicas();
 	}
-	
+
 	public double getPrecioHabitacionReserva(Habitacion habitacion) throws Exception {
-		TipoHabitacion tipo = habitacion.getTipoHabitacion(); 
+		TipoHabitacion tipo = habitacion.getTipoHabitacion();
 		double precio = habitacion.getPrecioServicios();
 		Date FechaI = grupoEnCurso.getReserva().getFechaI();
 		Date FechaF = grupoEnCurso.getReserva().getFechaF();
-		for (Tarifa tarifas: consultarTarifas(FechaI, FechaF)) {
+		for (Tarifa tarifas : consultarTarifas(FechaI, FechaF)) {
 			precio += tarifas.getPrecio(tipo);
 		}
 		return precio;
-		
 
-		
 	}
-	
+
 	public void llenarOcupados(int idHabitacion) {
 		Date fechaInicial = grupoEnCurso.getReserva().getFechaI();
 		Date fechaFinal = grupoEnCurso.getReserva().getFechaF();
 		int idGrupo = grupoEnCurso.getId();
 		ArrayList<Date> llaves = getDateRange(fechaInicial, fechaFinal);
-		for(Date fecha : llaves) {
+		for (Date fecha : llaves) {
 			HashMap<Integer, Integer> mapa = ocupados.get(fecha);
 			if (mapa == null) {
 				mapa = new HashMap<Integer, Integer>();
@@ -614,11 +636,11 @@ public class Hotel implements Serializable{
 			ocupados.put(fecha, mapa);
 		}
 	}
-	
+
 	public Grupo checkOut(int idGrupo) {
 		Grupo grupo = grupos.get(idGrupo);
 		grupos.remove(idGrupo);
-		
+
 		ArrayList<Integer> idsHabitaciones = grupo.getListaHabitaciones();
 		Reserva reserva = grupo.getReserva();
 		Date fechaI = reserva.getFechaI();
@@ -633,74 +655,70 @@ public class Hotel implements Serializable{
 		return grupo;
 	}
 
-	
-	public void crearProductoMenu(LocalTime horaI, LocalTime horaF, boolean llevable,String nombre, int precio) {
+	public void crearProductoMenu(LocalTime horaI, LocalTime horaF, boolean llevable, String nombre, int precio) {
 		ProductoMenu productoMenu = new ProductoMenu(horaI, horaF, llevable, nombre, precio);
 		restaurante.añadirProducto(productoMenu);
 	}
-	
+
 	public void eliminarProductoMenu(ProductoMenu productoMenu) {
 		restaurante.quitarProducto(productoMenu);
 	}
-	
+
 	public void añadirProductoRestaurante(ProductoMenu productoMenu) {
 		restaurante.añadirProducto(productoMenu);
 	}
-	
+
 	public HashMap<Integer, ProductoMenu> getMenu() {
 		return restaurante.getMenu();
 	}
-	
-    public ArrayList<Date> getDateRange(Date start, Date end) {
-        ArrayList<Date> rango = new ArrayList<Date>();
-        Date fechaI = (Date) start.clone();
 
-        while(fechaI.before(end) || fechaI.equals(end)) {
-            rango.add(fechaI); 
-            fechaI = pasarDia(fechaI);
-        }
-        
-        return rango;
-    }
-	
-    public Date pasarDia(Date start) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(start);
-        cal.add(Calendar.DAY_OF_MONTH, 1);
-        return cal.getTime();
-    }
-    
-	
+	public ArrayList<Date> getDateRange(Date start, Date end) {
+		ArrayList<Date> rango = new ArrayList<Date>();
+		Date fechaI = (Date) start.clone();
+
+		while (fechaI.before(end) || fechaI.equals(end)) {
+			rango.add(fechaI);
+			fechaI = pasarDia(fechaI);
+		}
+
+		return rango;
+	}
+
+	public Date pasarDia(Date start) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(start);
+		cal.add(Calendar.DAY_OF_MONTH, 1);
+		return cal.getTime();
+	}
+
 	private Date volverDia(Date end) {
 		Calendar cal = Calendar.getInstance();
-        cal.setTime(end);
-        cal.add(Calendar.DAY_OF_MONTH, -1);
-        return cal.getTime();
+		cal.setTime(end);
+		cal.add(Calendar.DAY_OF_MONTH, -1);
+		return cal.getTime();
 	}
-	
-    public Date pasarAnno(Date start) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(start);
-        cal.add(Calendar.YEAR, 1);
-        return cal.getTime();
-    }
 
+	public Date pasarAnno(Date start) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(start);
+		cal.add(Calendar.YEAR, 1);
+		return cal.getTime();
+	}
 
 	public void cargarInformacion() {
 		datos = new Persistencia();
 		ArrayList<Integer> nums = datos.leerStaticData();
 		ArrayList<Integer> pisoIds = new ArrayList<Integer>();
-		
+
 		Servicio.setNumServicios(nums.get(0));
 		Grupo.setNumGrupo(nums.get(1));
-		
+
 		for (int i = 2; i < nums.size(); i++) {
 			pisoIds.add(nums.get(i));
-			
+
 		}
 		Habitacion.setPisoIds(pisoIds);
-		
-		
+
 		Hotel hotelDatos = null;
 		try {
 			datos.abrirInput();
@@ -709,37 +727,47 @@ public class Hotel implements Serializable{
 		} catch (ClassNotFoundException | IOException e) {
 			e.printStackTrace();
 		}
-				
+
 		if (hotelDatos != null) {
 			data(hotelDatos);
 		} else {
 			inicializarTarifas();
-			añadirUsuario("root", "Cookie", "Admin", 1);
-			añadirUsuario("E1", "E1", "Empleado", 2);
+			try {
+				añadirUsuario("root", "Cookie", "Admin", 1);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				añadirUsuario("E1", "E1", "Empleado", 2);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-				
+
 	}
-	public void data (Hotel hotelDatos) {
-		
+
+	public void data(Hotel hotelDatos) {
+
 		setOcupados(hotelDatos.getOcupados());
-		
+
 		setGrupoEnCurso(hotelDatos.getGrupoEnCurso());
 
 		setGrupos(hotelDatos.getGrupos());
-		
+
 		setTarifas(hotelDatos.getTarifas());
-		
+
 		setUsuarios(hotelDatos.getUsuarios());
 
 		setHabitaciones(hotelDatos.getHabitaciones());
-		
+
 		setRestaurante(hotelDatos.getRestaurante());
-		
+
 		setServiciosHotel(hotelDatos.getServiciosHotel());
-		
+
 		setHuespedReservas(hotelDatos.getHuespedReservas());
 	}
-
 
 	public void guardarInformacion() {
 		Hotel hotel = new Hotel();
@@ -750,12 +778,11 @@ public class Hotel implements Serializable{
 			datos.escribir(hotel);
 			datos.cerrarOutput();
 			datos.guardarStaticData(Servicio.getNumServicios(), Grupo.getNumGrupo(), Habitacion.getPisoIds());
-			
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public TreeMap<Date, HashMap<Integer, Integer>> getOcupados() {
@@ -777,19 +804,20 @@ public class Hotel implements Serializable{
 	public HashMap<String, Usuario> getUsuarios() {
 		return usuarios;
 	}
-	
+
 	public String getTipo(String login) {
 		Usuario usuario = usuarios.get(login);
 		String tipo = "Usuario";
 		if (usuario.getClass() == Admin.class) {
 			tipo = "Admin";
-		}
-		else if (usuario.getClass() == Empleado.class) {
+		} else if (usuario.getClass() == Empleado.class) {
 			tipo = "Empleado";
+		} else if (usuario.getClass() == Huesped.class) {
+			tipo = "Huesped";
 		}
 		return tipo;
 	}
-	
+
 	public String getArea(String login) {
 		Usuario usuario = usuarios.get(login);
 		return usuario.getArea();
@@ -798,11 +826,11 @@ public class Hotel implements Serializable{
 	public HashMap<Integer, Habitacion> getHabitaciones() {
 		return habitaciones;
 	}
-	
+
 	public Habitacion getHabitacion(int id) {
 		return habitaciones.get(id);
 	}
-	
+
 	public Cama crearCama(int capacidad, boolean exclusiva) {
 		return new Cama(capacidad, exclusiva);
 	}
@@ -839,15 +867,16 @@ public class Hotel implements Serializable{
 	public void setRestaurante(Restaurante restaurante) {
 		this.restaurante = restaurante;
 	}
+
 	public Usuario getUsuarioActual() {
 		return usuarioActual;
 	}
 
 	public void setUsuarioActual(Usuario usuarioActual) {
-		
+
 		this.usuarioActual = usuarioActual;
 	}
-	
+
 	public HashMap<Usuario, ArrayList<Integer>> getHuespedReservas() {
 		return huespedReservas;
 	}
@@ -856,11 +885,10 @@ public class Hotel implements Serializable{
 		this.huespedReservas = huespedReservas;
 	}
 
-
 	public Date getHoy() {
 		return hoy;
 	}
-	
+
 	public void setHoy(Date hoy) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(hoy);
@@ -880,36 +908,37 @@ public class Hotel implements Serializable{
 		String[] lista = set.toArray(String[]::new);
 		return lista;
 	}
-	
+
 	public boolean checkUsuario(String nombre) {
 		Usuario usuario = usuarios.get(nombre);
 		return usuarioActual.equals(usuario);
 	}
-	
+
 	public Integer[] ocupacionHoy() {
 		HashMap<Integer, Integer> mapa = ocupados.get(hoy);
 		if (mapa == null) {
-			return new Integer[0];	
-		}
-		else {
+			return new Integer[0];
+		} else {
 			Set<Integer> setInt = mapa.keySet();
 			Object[] resultado = (Object[]) setInt.toArray();
 			Arrays.sort(resultado);
 			Integer[] integerArray = new Integer[resultado.length];
-	        for (int i = 0; i < resultado.length; i++) {
-	            integerArray[i] = (Integer)resultado[i];
-	        }
+			for (int i = 0; i < resultado.length; i++) {
+				integerArray[i] = (Integer) resultado[i];
+			}
 			return integerArray;
 		}
-		//Integer[] r = {104, 105, 202, 203, 206, 308};
-		//return r;
+		// Integer[] r = {104, 105, 202, 203, 206, 308};
+		// return r;
 	}
+
 	public void printOcupados() {
+		// System.out.println("------------INICIO LLAVES------------");
 		Set<Date> keyss = ocupados.keySet();
 		for (Date dia : keyss) {
 		}
 	}
-	
+
 	public int contarOcupadasDia(Date diaX) {
 		HashMap<Integer, Integer> mapa = ocupados.get(diaX);
 		if (mapa == null) {
@@ -922,19 +951,21 @@ public class Hotel implements Serializable{
 			return resultado;
 		}
 	}
-	
+
 	public int getTotalHabitaciones() {
 		return habitaciones.keySet().size();
 	}
 
 	public void borrarDatos() {
-		grupos = new HashMap <Integer, Grupo>();
+		grupos = new HashMap<Integer, Grupo>();
 		tarifas = new TreeMap<Date, Tarifa>();
 		habitaciones = new HashMap<Integer, Habitacion>();
 		serviciosHotel = new HashMap<Integer, Servicio>();
-		restaurante= new Restaurante();
+		restaurante = new Restaurante();
 		ocupados = new TreeMap<Date, HashMap<Integer, Integer>>(); // <Date, <ID habitacion, ID grupo>
-				
+		datos.borrarLog(new File("log/productos.log"));
+		datos.borrarLog(new File("log/restaurante.log"));
+		datos.borrarLog(new File("log/facturas.log"));
 	}
 
 	public ArrayList<Integer> idHuespedReservas() {
@@ -943,10 +974,10 @@ public class Hotel implements Serializable{
 		if (ids == null) {
 			ids = new ArrayList<Integer>();
 		}
-		
+
 		return ids;
 	}
-	
+
 	public void añadirReservaAHuesped(int idGrupo) {
 		System.out.println("Hotel.añadirReservaAHuesped()");
 		ArrayList<Integer> ids = huespedReservas.get(usuarioActual);
@@ -958,9 +989,11 @@ public class Hotel implements Serializable{
 		ids.add(idGrupo);
 		huespedReservas.put(usuarioActual, ids);
 	}
+	
+	public HashMap<String, int[]> datosReporteProductos() {
+		return datos.obtenerLogProductos();
 
-
-
-
+		
+	}
 
 }

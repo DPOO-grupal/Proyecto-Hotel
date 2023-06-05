@@ -5,65 +5,39 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class FormasDePago {
-	protected String nombreDueño;
-	protected String numeroCelular;
-	protected String documento;
-	protected int numeroTarjeta;
-	protected String fechaVencimiento;
-	protected int numeroDeSeguridad;
-	protected int monto;
-	protected static int numeroTransaccion;
-	protected String pasarela;
-	protected static ArrayList<FormasDePago> listaTarjetas;
+public abstract class FormasDePago {
 	
-	public FormasDePago(String nombreDueño, String numeroCelular, String documento, int numeroTarjeta, String fechaVencimiento, int numeroDeSeguridad, int monto, String pasarela) {
-		this.nombreDueño = nombreDueño;
-		this.numeroCelular = numeroCelular;
-		this.documento = documento;
-		this.numeroTarjeta = numeroTarjeta;
-		this.fechaVencimiento = fechaVencimiento;
-		this.numeroDeSeguridad = numeroDeSeguridad;
-		this.monto = monto;
-		this.pasarela = pasarela;
-		numeroTransaccion += 1;
+	protected String path;
+	protected HashMap<Integer, Tarjeta> tarjetas;
+	
+	public Tarjeta autenticar(String documento, int numeroTarjeta, String fechaDeVencimiento, int numeroDeSeguridad) {
+		Tarjeta tarjeta = new Tarjeta(null, null, documento, numeroTarjeta, fechaDeVencimiento, numeroDeSeguridad, 0);
+		if (tarjetas.get(numeroTarjeta) == null) {
+			return null;
 		}
-	
-	public boolean autenticar(String nombre, String documento, int numeroTarjeta, String fechaDeVencimiento, int numeroDeSeguridad) {
-		if (!(this.nombreDueño==nombre))
-			return false;
-		else if (!(this.documento==documento))
-			return false;
-		else if (!(this.numeroTarjeta==numeroTarjeta))
-			return false;
-		else if (!(this.fechaVencimiento==fechaDeVencimiento))
-			return false;
-		else if (!(this.numeroDeSeguridad==numeroDeSeguridad))
-			return false;
-		else 
-			return true;
+		else if(tarjetas.get(numeroTarjeta).equals(tarjeta)){
+			return tarjetas.get(numeroTarjeta);
+		} else {
+			return null;
+		}
 	}
 	
-	protected boolean verificarMonto(int saldoAPagar) {
-		if (saldoAPagar<=this.monto) 
-			return true;
-		else 
-			return false;		
+	protected boolean verificarMonto(int saldoAPagar, int numeroDeTarjeta) {
+		Tarjeta tarjeta = tarjetas.get(numeroDeTarjeta);
+		return saldoAPagar<=tarjeta.getMonto();
 	}
 	
-	public void registrarPago() {
-		
-	}
+	public abstract void registrarPago(int montoPagado);
 	
-	public static void cargarDatosPagos() {
+	
+	public void cargarDatosPagos() {
         try {
-            FileReader lector = new FileReader(new File("./data/DatosDePagos.txt"));
+            FileReader lector = new FileReader(new File(path));
             BufferedReader buffer = new BufferedReader(lector);
-
             String linea;
             while ((linea = buffer.readLine()) != null) {
-                System.out.println(linea);
                 String[] formaDePago = linea.split(",");
                 String nombre = formaDePago[0];
                 String numeroCelular = formaDePago[1];
@@ -72,18 +46,13 @@ public class FormasDePago {
                 String fechaVencimiento = formaDePago[4];
                 int numeroSeguridad = Integer.parseInt(formaDePago[5]);
                 int monto = Integer.parseInt(formaDePago[6]);
-                String pasarela = formaDePago[7];
-                
-                FormasDePago tarjeta = new FormasDePago(nombre, numeroCelular, documento, numeroTarjeta, fechaVencimiento, numeroSeguridad, monto, pasarela);
-                listaTarjetas.add(tarjeta);
-            
+                Tarjeta tarjeta = new Tarjeta(nombre, numeroCelular, documento, numeroTarjeta, fechaVencimiento, numeroSeguridad, monto);
+                tarjetas.put(numeroTarjeta, tarjeta);
             }
-
             buffer.close();
             lector.close();
         } catch (IOException e) {
             System.out.println("Ocurrió un error al leer el archivo: " + e.getMessage());
         }
-    }
-		
+    }	
 }

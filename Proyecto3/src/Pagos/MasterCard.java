@@ -4,13 +4,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.random.RandomGenerator;
 
-public class DinersClub extends FormasDePago{
+public class MasterCard extends FormasDePago{
 	
+	private int numeroTrasanccion = 0;
 
-	public DinersClub() {
-		path = "datosPagos/DinersClubDatos.txt";
+	public MasterCard() {
+		path = "datosPagos/MasterCardDatos.txt";
 		tarjetas = new HashMap<>();
 		cargarDatosPagos();
 	}
@@ -18,10 +18,11 @@ public class DinersClub extends FormasDePago{
 	@Override
 	public void registrarPago(int montoPagado) {
 		Random random = new Random();
-		String contenido = "Código de transacción: DICLU-" + random.nextInt(9999) + ", Monto pagado: " + montoPagado + ",\n";
+		String contenido = "Código de transacción: MASC-" + random.nextInt(9999) + ", Monto pagado: " + montoPagado + ",\n";
+		numeroTrasanccion ++ ;
 		
         try {
-            FileWriter escritor = new FileWriter("datosPagos/RegistrosDinersClub.txt", true); // La ruta del archivo y el segundo parámetro "true" indica que se debe agregar al final del archivo
+            FileWriter escritor = new FileWriter("datosPagos/RegistrosMasterCard.txt", true); // La ruta del archivo y el segundo parámetro "true" indica que se debe agregar al final del archivo
 
             escritor.write(contenido);
             escritor.close();

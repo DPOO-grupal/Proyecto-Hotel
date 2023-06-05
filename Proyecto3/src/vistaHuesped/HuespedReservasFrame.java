@@ -3,6 +3,7 @@ package vistaHuesped;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
 import javax.swing.JComboBox;
@@ -10,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import controlador.WindowManager;
+import vistaEmpleado.EmpleadoCrearReservasFrame;
 import vistaEmpleado.EmpleadoReservasFrame;
 
 public class HuespedReservasFrame extends EmpleadoReservasFrame {
@@ -69,9 +71,10 @@ public class HuespedReservasFrame extends EmpleadoReservasFrame {
 	
 	@Override
 	public void resetDatos() {
-		// TODO Auto-generated method stub
 		super.resetDatos();
 		idHuespedReservas();
 	}
+	
+
 
 }

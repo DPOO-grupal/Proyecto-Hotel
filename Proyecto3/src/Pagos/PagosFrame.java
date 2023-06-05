@@ -10,6 +10,13 @@ import java.awt.event.ActionListener;
 import java.awt.image.AreaAveragingScaleFilter;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.File;
+
+import Pagos.*;
 
 public class PagosFrame extends JFrame implements ActionListener{
 
@@ -27,18 +34,41 @@ public class PagosFrame extends JFrame implements ActionListener{
 	private JTextField cajaNumeroSeguridad;
 	private JButton botonEfectuarPago;
 	private JTextField cajaApellido;
-
-    public PagosFrame(WindowManager windowManager, double precioTotalFactura) {
+	private WindowManager windowManager;
+	private ArrayList<JRadioButton> listaBotones; 
+	private String pasarelaString;
+	private FormasDePago pasarela;
+	private Tarjeta tarjeta;
+	private int idGrupo;
+	private boolean debeHacerCheckOut = false;
+	
+	public PagosFrame(WindowManager windowManager, double precioTotalFactura, String idGrupo) {
         this.precioTotalFactura = precioTotalFactura;
+        this.idGrupo=Integer.parseInt(idGrupo);
+        this.windowManager=windowManager;
+        listaBotones = new ArrayList<>();
+        pasarelaString = "Default";
     	setTitle("Formas de pago");
         setSize(600, 500);
         setLocation(560, 70);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
         listaDePagos = new ArrayList<>();
-        listaDePagos.add("Visa");
-        listaDePagos.add("Mastercard");
-        listaDePagos.add("American Express");
-        listaDePagos.add("Diners Club");
+        
+        try {
+            FileReader lector = new FileReader(new File("datosPagos/Pasarelas.txt"));
+            BufferedReader buffer = new BufferedReader(lector);
+
+            String linea;
+            while ((linea = buffer.readLine()) != null) {
+                listaDePagos.add(linea);
+            }
+
+            buffer.close();
+            lector.close();
+        } catch (IOException e) {
+            System.out.println("Ocurrió un error al leer el archivo: " + e.getMessage());
+        }
         
         panelOpcionesPagos();
         panelValorFactura();
@@ -62,6 +92,7 @@ public class PagosFrame extends JFrame implements ActionListener{
         	grupoBotonesPago.add(formaDePago);
         	formaDePago.setFont(new Font("arial", Font.PLAIN, 20));
         	formaDePago.addActionListener(this);
+        	listaBotones.add(formaDePago);
             panelPagos.add(formaDePago);
 		}
         JScrollPane scroll = new JScrollPane(panelPagos);
@@ -301,26 +332,109 @@ public class PagosFrame extends JFrame implements ActionListener{
 		
 		
 	}
+    
+    public void autenticar() {
+    	String documento = cajaDocumento.getText();
+    	int numeroTarjeta = Integer.parseInt(cajaNumeroTarjeta.getText());
+    	String fechaVencimiento = cajaFechaVencimiento.getText();
+    	int numeroSeguridad = Integer.parseInt(cajaNumeroSeguridad.getText());
+    	pasarela = null;
+    	for (int i = 0; i < listaBotones.size(); i++) {
+    		if (pasarelaString.equals(listaBotones.get(i).getText())) {
+    			//pasarela.auntenticar();
+				try {
+					String nombreDeClase = "Pagos."+pasarelaString;
+					Class<?> clase = Class.forName(nombreDeClase);
+					pasarela = (FormasDePago) clase.newInstance();
+					//tarjetaAutenticada.autenticar(documento, numeroTarjeta, fechaVencimiento, numeroSeguridad);
+					//clase.getMethod("autenticar").invoke(instancia);
+					
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+    		}
+		}
+    	tarjeta = pasarela.autenticar(documento, numeroTarjeta, fechaVencimiento, numeroSeguridad);
+	}
+    
+    private boolean verificarMonto(int precioTotalFactura) {
+    	return pasarela.verificarMonto(precioTotalFactura, tarjeta.getNumeroTarjeta());
+    }
       
     public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {		
 		case "Cancelar":
 			setVisible(false);
+			JOptionPane.showMessageDialog(null, "Pago cancelado");
 			break;
 			
 		case "Continuar":
-			FormasDePago.cargarDatosPagos();
-			datosPago();
-			setVisible(false);
+			boolean funciona = false;
+			for (JRadioButton jRadioButton : listaBotones) {
+				if (jRadioButton.isSelected()) {
+					funciona = true;
+					pasarelaString = jRadioButton.getText();
+					datosPago();
+					setVisible(false);
+				}
+			}
+			if (!funciona)
+				JOptionPane.showMessageDialog(null, "Seleccione un metodo de pago");
 			break;
 			
 		case "Efectuar pago":
+			autenticar();
+			if (tarjeta!=null) {
+				boolean montoVerificado = verificarMonto((int) precioTotalFactura);
+				if (montoVerificado) {
+					pasarela.registrarPago((int) precioTotalFactura);
+					JOptionPane.showMessageDialog(null, "Pago exitoso");
+					datosPagoFrame.dispose();
+					setEnabled(true);
+					dispose();
+					if (debeHacerCheckOut) {
+						windowManager.checkOut(idGrupo);
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Su reserva no se cobrará al hacer CheckOut. Tan solo deberá pagar por lo que consuma durante su estadía en el hotel. Nos vemos pronto ;D");
+					}
+					windowManager.cargarMenuPrincipal();
+					
+				}else {
+					JOptionPane.showMessageDialog(null, "Monto insuficiente. Escoja otro método de pago o inténtelo de nuevo cuando tenga monto suficiente");
+					datosPagoFrame.dispose();
+					setEnabled(true);
+					dispose();
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "Datos incorrectos", "Error de autenticación", JOptionPane.ERROR_MESSAGE);
+				resetDatos();
+			}
 			break;
 
 		default:
 			break;
 		}
 	}
+
+	private void resetDatos() {
+		cajaNombre.setText("");
+		cajaApellido.setText("");
+		cajaDocumento.setText("");
+		cajaCelular.setText("");
+		cajaNumeroTarjeta.setText("");
+		cajaFechaVencimiento.setText("");
+		cajaNumeroSeguridad.setText("");
+		
+		
+	}
+
+	public void setDebeHacerCheckOut(boolean debeHacerCheckOut) {
+		this.debeHacerCheckOut = debeHacerCheckOut;
+	}
+
     
 }
 

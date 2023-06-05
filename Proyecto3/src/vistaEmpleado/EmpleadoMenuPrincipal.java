@@ -152,13 +152,8 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
         modeloTablaHoy = new DefaultTableModel(columnas, 0);
           
         //Filas de la tabla
-//        String[] filaPrueba = {"0"};
-//  	    modeloTablaHoy.addRow(filaPrueba);
   	    //Diseño de la tabla
           tablaHoy = new JTable(modeloTablaHoy);
-//          tablaHoy.setShowHorizontalLines(true);
-//          tablaHoy.setShowVerticalLines(true);
-//          tablaHoy.setGridColor(Color.BLACK);
           tablaHoy.getTableHeader().setBackground(Color.decode("#204473"));
           tablaHoy.getTableHeader().setForeground(Color.white);
           tablaHoy.getTableHeader().setFont(new Font("Times New Roman", 1, 30));
@@ -212,7 +207,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
   	//Creacion de la tabla servicios
   		String[] columnasAnual = new String[12]; //Nombre de las columnas
   		String[] meses = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
-  		Date dia = windowManager.getDia();
+  		Date dia = windowManager.getHoy();
   		for (int i = 0 ; i < 12 ; i++) {
   			String mes = meses[windowManager.pasarMes(dia, i).getMonth()];
   			columnasAnual[i] = mes;
@@ -518,8 +513,10 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 		frameFactura.add(scroll);
 		frameFactura.setVisible(true);
 		
-		PagosFrame = new PagosFrame(windowManager, precioTotalFactura);
+		PagosFrame = new PagosFrame(windowManager, precioTotalFactura, idGrupo);
 	}
+	
+	
 	
 	public void colorearTablaAnio(int i, Color color, String cantidad) {
 		DefaultTableCellRenderer modelocentrar = new DefaultTableCellRenderer();
@@ -540,7 +537,7 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 	public void ocupacionAnual() {
 //		modeloTablaAnual.getDataVector().removeAllElements();
 //		modeloTablaAnual.fireTableDataChanged();
-		Date dia = windowManager.getDia();
+		Date dia = windowManager.getHoy();
 		for (int i = 0 ; i < 12 ; i++) {
 			int ocupacionesMes = 0;
 			int cantidadDias = hastaFinMes(dia);
@@ -797,9 +794,8 @@ public class EmpleadoMenuPrincipal extends JFrame implements ActionListener {
 			break;
 			
 		case "Pagar":
-			windowManager.mostraVentanaPagos(PagosFrame);
-			frameFactura.setLocation(60, 70);
-			frameFactura.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+			windowManager.mostraVentanaPagos(PagosFrame, true);
+			frameFactura.dispose();
 			break;
 			
 		case "Refrescar ocupacion diaria":

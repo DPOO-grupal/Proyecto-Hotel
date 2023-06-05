@@ -69,13 +69,8 @@ public class Empleado extends Huesped  {
 	
 //FIN PRODUCTO MENU -----------------------------------------------------------
 
-	public Date getHoy() {
-		return hotel.getHoy();
-	}
 	
-	private Date pasarAnno(Date start) {
-        return hotel.pasarAnno(start);
-    }
+
 
 	public Grupo checkOut(int idGrupo) {
 		return hotel.checkOut(idGrupo);
@@ -92,9 +87,6 @@ public class Empleado extends Huesped  {
 		return hotel.ocupacionHoy();
 	}
 	
-	public Date getDia() {
-		return hotel.getHoy();
-	}
 	
 	public int contarOcupadasDia(Date dia) {
 		//hotel.printOcupados();
@@ -105,13 +97,7 @@ public class Empleado extends Huesped  {
 		return hotel.getTotalHabitaciones();
 	}
 	
-	public Date pasarDia(Date dia) {
-		return hotel.pasarDia(dia);
-	}
-	
-	public Date pasarMes(Date dia, int i) {
-		return hotel.pasarMes(dia, i);
-	}
+
 
 
 
