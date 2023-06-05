@@ -188,17 +188,15 @@ public class Persistencia implements Serializable{
 	}
 	
 	public HashMap<String, int[]> obtenerLogProductos() {
-		System.out.println("Persistencia.obtenerLogProductos()");
 		HashMap<String, int[]> resultado = new HashMap<String, int[]>();
 		int[] valores = new int[2];
 		String[] datos = new String[3];
-		BufferedReader br;
+		BufferedReader br = null;
 		
 		 try {
 			 br = new BufferedReader(new FileReader("log/productos.log"));
 			 String linea = br.readLine();
 			 while (linea != null) {
-				 	System.out.println(linea);
 				 	datos = linea.split(",");
 				 	valores = resultado.get(datos[0]);
 				 	if (valores == null) {
@@ -208,21 +206,58 @@ public class Persistencia implements Serializable{
 					valores[1] += Integer.parseInt(datos[2]);
 				 	resultado.put(datos[0], valores);
 					linea = br.readLine();
-
-
 				}
-			 
 			 
 		} catch (IOException e) {
 			e.printStackTrace();
+		}finally {
+			if (br != null) {
+	            try {
+	            	br.close();
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }
+	        }
 		}
 		return resultado;		
 	}
+	
 	
 	public void añadirLogRestaurante(ProductoMenu producto, int cantidad, Reserva reserva) {
 		File file = new File("log/" + arhivosLog[2]);
 		String linea = (producto.getPrecio()*cantidad) + "," + reserva.getPrecioReservaDia();
 		añadirLineaLog(file, linea);
+	}
+	public ArrayList<int[]> datosReporteRestaurante() {
+		ArrayList<int[]> resultado = new ArrayList<int[]>();
+		int[] valores;
+		String[] datos = new String[3];
+		BufferedReader br = null;
+		
+		try {
+			br = new BufferedReader(new FileReader("log/restaurante.log"));
+			String linea = br.readLine();
+			while (linea != null) {
+				valores = new int[2];
+				datos = linea.split(",");
+				valores[0] = Integer.parseInt(datos[0]);
+				valores[1] = Integer.parseInt(datos[1]);
+				resultado.add(valores);
+				linea = br.readLine();
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return resultado;	
 	}
 	public void añadirLogFacturas(ProductoMenu producto, int cantidad, Reserva reserva) {
 		File file = new File("log/" + arhivosLog[1]);
@@ -246,7 +281,9 @@ public class Persistencia implements Serializable{
 		}
 	}
 	public void borrarLog(File file) {
+		
 		file.delete();
+		
 		try {
 			file.createNewFile();
 		} catch (IOException e) {
@@ -273,6 +310,7 @@ public class Persistencia implements Serializable{
 	        }
 	    }
 	}
+
 	
 	
 

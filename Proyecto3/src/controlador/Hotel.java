@@ -996,4 +996,9 @@ public class Hotel implements Serializable {
 		
 	}
 
+	public ArrayList<int[]> datosReporteRestaurante() {
+		// TODO Auto-generated method stub
+		return datos.datosReporteRestaurante();
+	}
+
 }
