@@ -17,6 +17,7 @@ public class Visa extends FormasDePago{
 
 	@Override
 	public void registrarPago(int montoPagado) {
+		
 		Random random = new Random();
 		String contenido = "Código de transacción: VIS-" + random.nextInt(9999)  + ", Monto pagado: " + montoPagado + ",\n";
 		numeroTrasanccion ++;

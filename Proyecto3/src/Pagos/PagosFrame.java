@@ -377,7 +377,7 @@ public class PagosFrame extends JFrame implements ActionListener{
 					funciona = true;
 					pasarelaString = jRadioButton.getText();
 					datosPago();
-					setVisible(false);
+					//setVisible(false);
 				}
 			}
 			if (!funciona)
@@ -405,8 +405,9 @@ public class PagosFrame extends JFrame implements ActionListener{
 				}else {
 					JOptionPane.showMessageDialog(null, "Monto insuficiente. Escoja otro método de pago o inténtelo de nuevo cuando tenga monto suficiente");
 					datosPagoFrame.dispose();
+					setVisible(true);
 					setEnabled(true);
-					dispose();
+					//dispose();
 				}
 			} else {
 				JOptionPane.showMessageDialog(null, "Datos incorrectos", "Error de autenticación", JOptionPane.ERROR_MESSAGE);
