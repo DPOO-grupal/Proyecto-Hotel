@@ -471,13 +471,14 @@ public class Hotel implements Serializable {
 
 		// 48 horas, dos dias
 
-		fechaI = volverDia(fechaI);
-		fechaI = volverDia(fechaI);
+		Date fecha = volverDia(fechaI);
+		fecha = volverDia(fecha);
 
-		if (hoy.before(fechaI)) {
+		if (hoy.before(fecha)) {
 
 			for (int habitacion : grupo.getListaHabitaciones()) {
-				ocupados.remove(habitacion);
+				HashMap<Integer, Integer> ocupacion = ocupados.get(fechaI);
+				ocupacion.remove(habitacion);
 			}
 
 			grupos.remove(id);
